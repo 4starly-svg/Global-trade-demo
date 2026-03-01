@@ -2,243 +2,237 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-
+<title>Global Trade Capital Premium Demo</title>
 <style>
-* {margin:0;padding:0;box-sizing:border-box;}
-
-body{
-    font-family:'Inter',sans-serif;
-    background:linear-gradient(-45deg,#0b1220,#0e1a2b,#0c1a33,#101c2f);
-    background-size:400% 400%;
-    animation:gradientMove 25s ease infinite;
-    color:#fff;
-    min-height:100vh;
-    overflow-x:hidden;
+/* ---------- Global Reset ---------- */
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:#081625; color:#fff; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
 }
 
-@keyframes gradientMove{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+/* ---------- Animated Background ---------- */
+body::before {
+  content:""; position:fixed; top:0; left:0; width:100%; height:100%;
+  background: linear-gradient(45deg, #0c1a2b, #112c4d, #0c1a2b, #0c1a2b);
+  background-size: 400% 400%; z-index:-1; animation:moveBG 30s ease infinite;
+}
+@keyframes moveBG {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 40px;
+/* ---------- Header ---------- */
+header {
+  padding:28px 60px; font-size:30px; font-weight:800; letter-spacing:2px;
+  border-bottom:1px solid #1f2a3b; background:rgba(16,32,59,0.9); text-align:center;
+  backdrop-filter: blur(4px);
 }
 
-.logo{
-    font-size:20px;
-    font-weight:700;
-    letter-spacing:1px;
+/* ---------- Language Toggle ---------- */
+.toggle-lang {
+  position:fixed; top:30px; right:30px; z-index:1000;
+  background:#1f2a3b; border:none; color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer;
+  font-weight:700; transition:.3s ease;
 }
+.toggle-lang:hover { opacity:.85; }
 
-.toggle{
-    cursor:pointer;
-    padding:6px 14px;
-    border:1px solid rgba(255,255,255,0.2);
-    border-radius:20px;
-    font-size:14px;
+/* ---------- Ticker ---------- */
+.ticker-wrap {
+  overflow:hidden; border-bottom:1px solid #1f2a3b; background:rgba(16,32,59,0.9);
 }
-
-.portfolio{
-    padding:30px 40px;
+.ticker {
+  display:inline-block; white-space:nowrap; padding:12px 0;
+  animation:scroll 30s linear infinite; font-size:14px; color:#c0c8d4;
 }
+.ticker span { margin-right:80px; }
+@keyframes scroll { from{transform:translateX(100%);} to{transform:translateX(-100%);} }
 
-.balance{
-    font-size:34px;
-    font-weight:700;
+/* ---------- Landing Folders ---------- */
+.home { display:flex; justify-content:center; align-items:center; gap:60px; height:70vh; flex-wrap:wrap; }
+.folder {
+  width:320px; height:240px; display:flex; align-items:center; justify-content:center;
+  background:rgba(16,32,59,0.7); border:1px solid #1f2a3b; border-radius:24px;
+  font-size:28px; font-weight:700; letter-spacing:2px; cursor:pointer;
+  transition:all .4s ease; position:relative; text-align:center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
-
-.pnl{
-    margin-top:6px;
-    font-size:16px;
-    color:#27d17f;
+.folder::after {
+  content:""; position:absolute; inset:0; border-radius:24px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0));
+  pointer-events:none;
 }
+.folder:hover { transform:translateY(-10px) scale(1.05); background:#1a2a44; border-color:#253454; }
 
-.grid{
-    padding:20px 40px 60px 40px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
+/* ---------- Sections ---------- */
+.section { display:none; padding:60px 80px; animation:fade .35s ease; }
+@keyframes fade { from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
+.back { font-size:14px; color:#7f8899; cursor:pointer; margin-bottom:40px; letter-spacing:1px; }
+h2 { margin:0 0 40px 0; font-weight:600; letter-spacing:1px; }
+
+/* ---------- Market Cards ---------- */
+.market-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(380px,1fr)); gap:20px; }
+.card {
+  background:rgba(16,32,59,0.7); border:1px solid #1f2a3b; border-radius:16px;
+  padding:20px 24px; display:flex; justify-content:space-between; align-items:center;
+  transition:.3s ease; cursor:pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.5);
 }
+.card:hover { background:#1a2a44; border-color:#253454; transform:scale(1.02); }
+.symbol { font-weight:600; letter-spacing:1px; display:flex; align-items:center; }
+.symbol img { width:32px; height:32px; margin-right:12px; border-radius:6px; }
+.price { margin-left:15px; color:#d1d5db; font-weight:600; }
+.change { margin-left:10px; font-weight:500; }
+.green{color:#22c55e} .red{color:#ef4444}
 
-.card{
-    background:rgba(255,255,255,0.05);
-    backdrop-filter:blur(12px);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:16px;
-    padding:20px;
-    transition:0.25s ease;
-    cursor:pointer;
+/* ---------- Buttons ---------- */
+.actions button {
+  background:#ffffff; border:none; padding:6px 14px; margin-left:8px;
+  border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:.2s ease;
 }
+.actions button:hover { opacity:.85; }
 
-.card:hover{
-    box-shadow:0 0 25px rgba(0,120,255,0.4);
-    transform:translateY(-3px);
+/* ---------- Footer ---------- */
+footer {
+  margin-top:100px; padding:50px; text-align:center;
+  border-top:1px solid #1f2a3b; font-size:12px; color:#a0a8b0; background:rgba(16,32,59,0.9);
+  backdrop-filter: blur(4px);
 }
-
-.symbol{
-    font-weight:600;
-    font-size:16px;
-}
-
-.price{
-    margin-top:8px;
-    font-size:22px;
-    font-weight:700;
-}
-
-.change{
-    margin-top:4px;
-    font-size:14px;
-}
-
-.green{color:#27d17f;}
-.red{color:#ff4d4d;}
-
-.trade-panel{
-    position:fixed;
-    right:-400px;
-    top:0;
-    width:380px;
-    height:100%;
-    background:#0d1726;
-    padding:30px;
-    transition:0.4s ease;
-    box-shadow:-5px 0 25px rgba(0,0,0,0.5);
-}
-
-.trade-panel.active{
-    right:0;
-}
-
-.trade-panel h2{
-    margin-bottom:20px;
-}
-
-input{
-    width:100%;
-    padding:10px;
-    margin-bottom:15px;
-    background:#111c2e;
-    border:none;
-    border-radius:8px;
-    color:white;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    margin-top:8px;
-    font-weight:600;
-    cursor:pointer;
-}
-
-.buy{background:#1e88ff;color:white;}
-.sell{background:#ff4d4d;color:white;}
-
-.close{
-    position:absolute;
-    top:15px;
-    right:20px;
-    cursor:pointer;
-    font-size:20px;
-}
-
-body.rtl{
-    direction:rtl;
-    font-family:'Cairo',sans-serif;
-}
+footer img { width:50px; margin:0 10px; vertical-align:middle; }
+.testimonial { font-style:italic; margin:10px 0; color:#b0c0d0; }
+.about, .partners { margin-top:40px; text-align:center; }
 </style>
 </head>
 <body>
 
-<header>
-<div class="logo">Global Trade Capital</div>
-<div class="toggle" onclick="toggleLang()">AR</div>
-</header>
+<header>GLOBAL TRADE CAPITAL</header>
+<button class="toggle-lang" onclick="toggleLang()">العربية / EN</button>
 
-<section class="portfolio">
-<div class="balance">$124,892.42</div>
-<div class="pnl">+ $1,245.22 Today</div>
-</section>
-
-<section class="grid" id="assetGrid"></section>
-
-<div class="trade-panel" id="tradePanel">
-<div class="close" onclick="closePanel()">✕</div>
-<h2 id="tradeSymbol">Trade</h2>
-<input type="number" placeholder="Quantity">
-<button class="buy">Buy</button>
-<button class="sell">Sell</button>
+<div class="ticker-wrap">
+  <div class="ticker" id="ticker"></div>
 </div>
 
+<!-- ---------- Landing Folders ---------- -->
+<div id="home" class="home">
+  <div class="folder" onclick="openSection('stocks')">STOCKS</div>
+  <div class="folder" onclick="openSection('crypto')">CRYPTO</div>
+  <div class="folder" onclick="openSection('fx')">FX</div>
+</div>
+
+<!-- ---------- Stocks Section ---------- -->
+<div id="stocks" class="section">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <h2>Equities</h2>
+  <div class="market-grid" id="stocksList"></div>
+</div>
+
+<!-- ---------- Crypto Section ---------- -->
+<div id="crypto" class="section">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <h2>Digital Assets</h2>
+  <div class="market-grid" id="cryptoList"></div>
+</div>
+
+<!-- ---------- FX Section ---------- -->
+<div id="fx" class="section">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <h2>Foreign Exchange</h2>
+  <div class="market-grid" id="fxList"></div>
+</div>
+
+<!-- ---------- About / Testimonials / Partners ---------- -->
+<div class="about">
+  <h2>About Us</h2>
+  <p>Global Trade Capital provides professional institutional trading infrastructure for stocks, crypto, and FX. Our demo simulates real market environments with live updates.</p>
+</div>
+<div class="testimonials">
+  <h2>Testimonials</h2>
+  <div class="testimonial">"Best demo trading platform I've ever seen!" — Investor A</div>
+  <div class="testimonial">"Sleek, fast, and very professional." — Trader B</div>
+</div>
+<div class="partners">
+  <h2>Partner Banks</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bank_of_Libya_logo.png" alt="Bank of Libya">
+  <img src="https://via.placeholder.com/50x50?text=B2" alt="Bank 2">
+  <img src="https://via.placeholder.com/50x50?text=B3" alt="Bank 3">
+</div>
+
+<footer>
+  <div>Global Trade Capital — Institutional Trading Infrastructure</div>
+  <div>Contact Us: info@globaltrade.ly</div>
+  <div style="margin-top:20px;">Disclaimer: Demo only. Not connected to live markets.</div>
+</footer>
+
 <script>
-const assets = [
-{symbol:"AAPL",price:187.32},
-{symbol:"MSFT",price:402.11},
-{symbol:"TSLA",price:211.45},
-{symbol:"NVDA",price:721.88},
-{symbol:"AMZN",price:172.22},
-{symbol:"META",price:498.55},
-{symbol:"BTC",price:63250.44},
-{symbol:"ETH",price:3455.77},
-{symbol:"SOL",price:142.66},
-{symbol:"BNB",price:389.12},
-{symbol:"EUR/USD",price:1.0821},
-{symbol:"USD/JPY",price:150.33}
-];
+// ---------- Navigation ----------
+function openSection(id){ document.getElementById("home").style.display="none"; document.getElementById(id).style.display="block"; }
+function goBack(){ document.querySelectorAll(".section").forEach(s=>s.style.display="none"); document.getElementById("home").style.display="flex"; }
 
-const grid=document.getElementById("assetGrid");
+// ---------- Arabic / English Toggle ----------
+let arabic=false;
+function toggleLang(){
+  arabic=!arabic;
+  document.querySelectorAll('.folder').forEach(f=>{
+    if(arabic){ f.textContent=f.textContent==='STOCKS'?'أسهم':f.textContent==='CRYPTO'?'عملات رقمية':'فوركس'; }
+    else{ f.textContent=f.textContent==='أسهم'?'STOCKS':f.textContent==='عملات رقمية'?'CRYPTO':'FX'; }
+  });
+  document.querySelector('header').textContent=arabic?'رأس المال التجاري العالمي':'GLOBAL TRADE CAPITAL';
+}
 
-assets.forEach(asset=>{
+// ---------- Create Cards with fake live updates ----------
+function createCards(id,list,logos){
+  const container=document.getElementById(id+"List");
+  list.forEach((item,i)=>{
+    let price=(Math.random()*200+20).toFixed(2);
     const card=document.createElement("div");
     card.className="card";
     card.innerHTML=`
-        <div class="symbol">${asset.symbol}</div>
-        <div class="price" id="price-${asset.symbol}">${asset.price}</div>
-        <div class="change" id="change-${asset.symbol}">0.00%</div>
+      <div class="symbol">
+        <img src="${logos[i]}" alt="${item} logo">${item}
+        <span class="price">$${price}</span>
+        <span class="change green">0.0%</span>
+      </div>
+      <div class="actions">
+        <button>BUY</button>
+        <button>SELL</button>
+      </div>
     `;
-    card.onclick=()=>openTrade(asset.symbol);
-    grid.appendChild(card);
+    container.appendChild(card);
 
-    simulate(asset);
-});
-
-function simulate(asset){
     setInterval(()=>{
-        let change=(Math.random()-0.5)*0.8;
-        asset.price+=change;
-        let percent=((change/asset.price)*100).toFixed(2);
-        document.getElementById(`price-${asset.symbol}`).innerText=asset.price.toFixed(2);
-        let changeEl=document.getElementById(`change-${asset.symbol}`);
-        changeEl.innerText=(percent>0?"+":"")+percent+"%";
-        changeEl.className="change "+(percent>=0?"green":"red");
-    },2000+Math.random()*4000);
+      const delta=((Math.random()*4-2)).toFixed(2);
+      price=(parseFloat(price)+parseFloat(delta)).toFixed(2);
+      const color=delta>=0?"green":"red";
+      card.querySelector('.price').textContent='$'+price;
+      card.querySelector('.change').textContent=delta+'%';
+      card.querySelector('.change').className='change '+color;
+    }, 2000 + Math.random()*3000);
+  });
 }
 
-function openTrade(symbol){
-    document.getElementById("tradePanel").classList.add("active");
-    document.getElementById("tradeSymbol").innerText="Trade "+symbol;
-}
+// ---------- Realistic Logos ----------
+createCards("stocks", ["AAPL","NVDA","TSLA","AMZN","MSFT","META"],
+           ["https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com",
+            "https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com",
+            "https://logo.clearbit.com/microsoft.com","https://logo.clearbit.com/meta.com"]);
 
-function closePanel(){
-    document.getElementById("tradePanel").classList.remove("active");
-}
+createCards("crypto", ["BTC","ETH","SOL","XRP","ADA"],
+           ["https://cryptologos.cc/logos/bitcoin-btc-logo.png",
+            "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+            "https://cryptologos.cc/logos/solana-sol-logo.png",
+            "https://cryptologos.cc/logos/xrp-xrp-logo.png",
+            "https://cryptologos.cc/logos/cardano-ada-logo.png"]);
 
-function toggleLang(){
-    document.body.classList.toggle("rtl");
-}
+createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],
+           ["https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg",
+            "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+            "https://upload.wikimedia.org/wikipedia/en/2/21/Flag_of_Japan.svg",
+            "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg"]);
+
+// ---------- Ticker ----------
+let tickerData=["AAPL 187.42 +1.2%","NVDA 914.33 +2.1%","BTC 62,350 +2.3%","EUR/USD 1.0842","TSLA 214.55 -0.8%"];
+document.getElementById("ticker").innerHTML=tickerData.join("  |  ");
 </script>
-
 </body>
 </html>
