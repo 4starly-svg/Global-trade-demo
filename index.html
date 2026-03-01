@@ -2,87 +2,69 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital Premium Demo</title>
+<title>Global Trade Capital</title>
 <style>
 /* ---------- Global Reset ---------- */
 * { box-sizing:border-box; margin:0; padding:0; }
-body {
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  background:#081625; color:#fff; -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-
-/* ---------- Animated Background ---------- */
-body::before {
-  content:""; position:fixed; top:0; left:0; width:100%; height:100%;
-  background: linear-gradient(45deg, #0c1a2b, #112c4d, #0c1a2b, #0c1a2b);
-  background-size: 400% 400%; z-index:-1; animation:moveBG 30s ease infinite;
-}
-@keyframes moveBG {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
+body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+       background:#0a1a2a; color:#fff; -webkit-font-smoothing:antialiased; transition:background .3s, color .3s; }
 
 /* ---------- Header ---------- */
 header {
-  padding:28px 60px; font-size:30px; font-weight:800; letter-spacing:2px;
-  border-bottom:1px solid #1f2a3b; background:rgba(16,32,59,0.9); text-align:center;
-  backdrop-filter: blur(4px);
+  padding:28px 60px; font-size:28px; font-weight:900; letter-spacing:2px;
+  border-bottom:1px solid #1c2433; background:#0f1c2b; text-align:center;
 }
 
 /* ---------- Language Toggle ---------- */
-.toggle-lang {
-  position:fixed; top:30px; right:30px; z-index:1000;
-  background:#1f2a3b; border:none; color:#fff; padding:8px 16px; border-radius:8px; cursor:pointer;
-  font-weight:700; transition:.3s ease;
-}
-.toggle-lang:hover { opacity:.85; }
+.lang-toggle { position:absolute; top:30px; right:60px; }
+.lang-toggle button { margin-left:8px; padding:6px 14px; border-radius:6px; cursor:pointer; font-weight:600; }
 
 /* ---------- Ticker ---------- */
 .ticker-wrap {
-  overflow:hidden; border-bottom:1px solid #1f2a3b; background:rgba(16,32,59,0.9);
+  overflow:hidden; border-bottom:1px solid #1c2433; background:#0f1c2b;
 }
 .ticker {
   display:inline-block; white-space:nowrap; padding:12px 0;
-  animation:scroll 30s linear infinite; font-size:14px; color:#c0c8d4;
+  animation:scroll 30s linear infinite; font-size:13px; color:#9ca3af;
 }
 .ticker span { margin-right:80px; }
 @keyframes scroll { from{transform:translateX(100%);} to{transform:translateX(-100%);} }
 
-/* ---------- Landing Folders ---------- */
-.home { display:flex; justify-content:center; align-items:center; gap:60px; height:70vh; flex-wrap:wrap; }
+/* ---------- Landing Page ---------- */
+.home { display:flex; justify-content:center; align-items:center; gap:90px; height:72vh; flex-wrap:wrap; }
+
 .folder {
   width:320px; height:240px; display:flex; align-items:center; justify-content:center;
-  background:rgba(16,32,59,0.7); border:1px solid #1f2a3b; border-radius:24px;
+  background:#112036; border:1px solid #1c2433; border-radius:24px;
   font-size:28px; font-weight:700; letter-spacing:2px; cursor:pointer;
-  transition:all .4s ease; position:relative; text-align:center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition:all .5s cubic-bezier(.25,.8,.25,1); position:relative; text-align:center;
 }
 .folder::after {
   content:""; position:absolute; inset:0; border-radius:24px;
-  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0));
+  background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0));
   pointer-events:none;
 }
-.folder:hover { transform:translateY(-10px) scale(1.05); background:#1a2a44; border-color:#253454; }
+.folder:hover { transform:translateY(-12px) scale(1.05); background:#14304c; border-color:#2a4a6c; }
 
 /* ---------- Sections ---------- */
-.section { display:none; padding:60px 80px; animation:fade .35s ease; }
+.section { display:none; padding:60px 120px; animation:fade .35s ease; }
 @keyframes fade { from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
-.back { font-size:14px; color:#7f8899; cursor:pointer; margin-bottom:40px; letter-spacing:1px; }
-h2 { margin:0 0 40px 0; font-weight:600; letter-spacing:1px; }
+.back { font-size:13px; color:#7f8899; cursor:pointer; margin-bottom:40px; letter-spacing:1px; display:inline-block; }
+h2 { margin:0 0 40px 0; font-weight:700; letter-spacing:1px; }
 
 /* ---------- Market Cards ---------- */
-.market-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(380px,1fr)); gap:20px; }
-.card {
-  background:rgba(16,32,59,0.7); border:1px solid #1f2a3b; border-radius:16px;
-  padding:20px 24px; display:flex; justify-content:space-between; align-items:center;
-  transition:.3s ease; cursor:pointer; box-shadow: 0 3px 12px rgba(0,0,0,0.5);
+.market-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(380px,1fr)); gap:20px;
 }
-.card:hover { background:#1a2a44; border-color:#253454; transform:scale(1.02); }
+.card {
+  background:#112036; border:1px solid #1c2433; border-radius:16px;
+  padding:18px 24px; display:flex; justify-content:space-between; align-items:center;
+  transition:.3s ease; cursor:pointer;
+}
+.card:hover { background:#14304c; border-color:#2a4a6c; transform:scale(1.02); }
 .symbol { font-weight:600; letter-spacing:1px; display:flex; align-items:center; }
-.symbol img { width:32px; height:32px; margin-right:12px; border-radius:6px; }
-.price { margin-left:15px; color:#d1d5db; font-weight:600; }
+.symbol img { width:28px; height:28px; margin-right:12px; border-radius:4px; }
+.price { margin-left:15px; color:#d1d5db; }
 .change { margin-left:10px; font-weight:500; }
 .green{color:#22c55e} .red{color:#ef4444}
 
@@ -93,105 +75,110 @@ h2 { margin:0 0 40px 0; font-weight:600; letter-spacing:1px; }
 }
 .actions button:hover { opacity:.85; }
 
+/* ---------- Partner Banks Section ---------- */
+.partner-section { margin:60px 0; text-align:center; }
+.partner-section h3 { font-weight:700; margin-bottom:20px; }
+.partner-logos img { width:60px; margin:0 15px; vertical-align:middle; transition:.3s ease; }
+.partner-logos img:hover { transform:scale(1.1); }
+
+/* ---------- Testimonials ---------- */
+.testimonials { margin:60px auto; max-width:900px; text-align:center; }
+.testimonial { background:#14304c; border-radius:16px; padding:24px; margin:12px 0; font-style:italic; }
+
 /* ---------- Footer ---------- */
 footer {
-  margin-top:100px; padding:50px; text-align:center;
-  border-top:1px solid #1f2a3b; font-size:12px; color:#a0a8b0; background:rgba(16,32,59,0.9);
-  backdrop-filter: blur(4px);
+  margin-top:80px; padding:50px; text-align:center;
+  border-top:1px solid #1c2433; font-size:12px; color:#6b7280; background:#0f1c2b;
 }
-footer img { width:50px; margin:0 10px; vertical-align:middle; }
-.testimonial { font-style:italic; margin:10px 0; color:#b0c0d0; }
-.about, .partners { margin-top:40px; text-align:center; }
+
+/* ---------- Dark/Light toggle example ---------- */
+body.light { background:#f5f7fa; color:#111; }
+body.light header, body.light .ticker-wrap, body.light footer { background:#ffffff; color:#111; border-color:#ccc; }
 </style>
 </head>
 <body>
 
 <header>GLOBAL TRADE CAPITAL</header>
-<button class="toggle-lang" onclick="toggleLang()">العربية / EN</button>
+<div class="lang-toggle">
+  <button onclick="setLang('en')">EN</button>
+  <button onclick="setLang('ar')">AR</button>
+</div>
 
 <div class="ticker-wrap">
   <div class="ticker" id="ticker"></div>
 </div>
 
-<!-- ---------- Landing Folders ---------- -->
+<!-- Landing -->
 <div id="home" class="home">
   <div class="folder" onclick="openSection('stocks')">STOCKS</div>
   <div class="folder" onclick="openSection('crypto')">CRYPTO</div>
   <div class="folder" onclick="openSection('fx')">FX</div>
 </div>
 
-<!-- ---------- Stocks Section ---------- -->
+<!-- Stocks Section -->
 <div id="stocks" class="section">
   <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
   <h2>Equities</h2>
   <div class="market-grid" id="stocksList"></div>
 </div>
 
-<!-- ---------- Crypto Section ---------- -->
+<!-- Crypto Section -->
 <div id="crypto" class="section">
   <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
   <h2>Digital Assets</h2>
   <div class="market-grid" id="cryptoList"></div>
 </div>
 
-<!-- ---------- FX Section ---------- -->
+<!-- FX Section -->
 <div id="fx" class="section">
   <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
   <h2>Foreign Exchange</h2>
   <div class="market-grid" id="fxList"></div>
 </div>
 
-<!-- ---------- About / Testimonials / Partners ---------- -->
-<div class="about">
-  <h2>About Us</h2>
-  <p>Global Trade Capital provides professional institutional trading infrastructure for stocks, crypto, and FX. Our demo simulates real market environments with live updates.</p>
-</div>
-<div class="testimonials">
-  <h2>Testimonials</h2>
-  <div class="testimonial">"Best demo trading platform I've ever seen!" — Investor A</div>
-  <div class="testimonial">"Sleek, fast, and very professional." — Trader B</div>
-</div>
-<div class="partners">
-  <h2>Partner Banks</h2>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bank_of_Libya_logo.png" alt="Bank of Libya">
-  <img src="https://via.placeholder.com/50x50?text=B2" alt="Bank 2">
-  <img src="https://via.placeholder.com/50x50?text=B3" alt="Bank 3">
+<!-- Partner Banks -->
+<div class="partner-section">
+  <h3>Our Partner Banks in Libya</h3>
+  <div class="partner-logos">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bank_of_Libya_logo.png" alt="Bank of Libya">
+    <img src="https://via.placeholder.com/60x60?text=B2" alt="Bank 2">
+    <img src="https://via.placeholder.com/60x60?text=B3" alt="Bank 3">
+  </div>
 </div>
 
+<!-- Testimonials -->
+<div class="testimonials">
+  <div class="testimonial">"Global Trade Capital gave us the insights we needed to grow." — J. Smith</div>
+  <div class="testimonial">"Professional, sleek, and easy to use for all our trading." — L. Ahmed</div>
+</div>
+
+<!-- Footer -->
 <footer>
   <div>Global Trade Capital — Institutional Trading Infrastructure</div>
   <div>Contact Us: info@globaltrade.ly</div>
-  <div style="margin-top:20px;">Disclaimer: Demo only. Not connected to live markets.</div>
+  <div style="margin-top:20px;">Disclaimer: This is a prototype. Not connected to live markets.</div>
 </footer>
 
 <script>
-// ---------- Navigation ----------
+// Navigation
 function openSection(id){ document.getElementById("home").style.display="none"; document.getElementById(id).style.display="block"; }
 function goBack(){ document.querySelectorAll(".section").forEach(s=>s.style.display="none"); document.getElementById("home").style.display="flex"; }
 
-// ---------- Arabic / English Toggle ----------
-let arabic=false;
-function toggleLang(){
-  arabic=!arabic;
-  document.querySelectorAll('.folder').forEach(f=>{
-    if(arabic){ f.textContent=f.textContent==='STOCKS'?'أسهم':f.textContent==='CRYPTO'?'عملات رقمية':'فوركس'; }
-    else{ f.textContent=f.textContent==='أسهم'?'STOCKS':f.textContent==='عملات رقمية'?'CRYPTO':'FX'; }
-  });
-  document.querySelector('header').textContent=arabic?'رأس المال التجاري العالمي':'GLOBAL TRADE CAPITAL';
-}
+// Language toggle
+function setLang(lang){ alert("Language set to: "+lang); }
 
-// ---------- Create Cards with fake live updates ----------
+// Generate market cards with fake live prices
 function createCards(id,list,logos){
   const container=document.getElementById(id+"List");
+  container.innerHTML="";
   list.forEach((item,i)=>{
-    let price=(Math.random()*200+20).toFixed(2);
     const card=document.createElement("div");
     card.className="card";
     card.innerHTML=`
       <div class="symbol">
         <img src="${logos[i]}" alt="${item} logo">${item}
-        <span class="price">$${price}</span>
-        <span class="change green">0.0%</span>
+        <span class="price">$${(Math.random()*200+20).toFixed(2)}</span>
+        <span class="change ${Math.random()>0.5?"green":"red"}">${(Math.random()*4-2).toFixed(2)}%</span>
       </div>
       <div class="actions">
         <button>BUY</button>
@@ -199,40 +186,53 @@ function createCards(id,list,logos){
       </div>
     `;
     container.appendChild(card);
-
-    setInterval(()=>{
-      const delta=((Math.random()*4-2)).toFixed(2);
-      price=(parseFloat(price)+parseFloat(delta)).toFixed(2);
-      const color=delta>=0?"green":"red";
-      card.querySelector('.price').textContent='$'+price;
-      card.querySelector('.change').textContent=delta+'%';
-      card.querySelector('.change').className='change '+color;
-    }, 2000 + Math.random()*3000);
+    // Fake live update for each stock individually
+    setInterval(()=>{ 
+      card.querySelector(".price").innerText="$"+(Math.random()*200+20).toFixed(2);
+      const changeEl=card.querySelector(".change");
+      const changeVal=(Math.random()*4-2).toFixed(2);
+      changeEl.innerText=changeVal+"%";
+      changeEl.className="change "+(changeVal>=0?"green":"red");
+    },3000+Math.random()*2000);
   });
 }
 
-// ---------- Realistic Logos ----------
+// Logos
 createCards("stocks", ["AAPL","NVDA","TSLA","AMZN","MSFT","META"],
-           ["https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com",
-            "https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com",
-            "https://logo.clearbit.com/microsoft.com","https://logo.clearbit.com/meta.com"]);
-
+            ["https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com",
+             "https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com",
+             "https://logo.clearbit.com/microsoft.com","https://logo.clearbit.com/meta.com"]);
 createCards("crypto", ["BTC","ETH","SOL","XRP","ADA"],
-           ["https://cryptologos.cc/logos/bitcoin-btc-logo.png",
-            "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-            "https://cryptologos.cc/logos/solana-sol-logo.png",
-            "https://cryptologos.cc/logos/xrp-xrp-logo.png",
-            "https://cryptologos.cc/logos/cardano-ada-logo.png"]);
-
+            ["https://cryptologos.cc/logos/bitcoin-btc-logo.png",
+             "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+             "https://cryptologos.cc/logos/solana-sol-logo.png",
+             "https://cryptologos.cc/logos/xrp-xrp-logo.png",
+             "https://cryptologos.cc/logos/cardano-ada-logo.png"]);
 createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],
-           ["https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg",
-            "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
-            "https://upload.wikimedia.org/wikipedia/en/2/21/Flag_of_Japan.svg",
-            "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg"]);
+            ["https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg",
+             "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+             "https://upload.wikimedia.org/wikipedia/en/2/21/Flag_of_Japan.svg",
+             "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg"]);
 
-// ---------- Ticker ----------
-let tickerData=["AAPL 187.42 +1.2%","NVDA 914.33 +2.1%","BTC 62,350 +2.3%","EUR/USD 1.0842","TSLA 214.55 -0.8%"];
-document.getElementById("ticker").innerHTML=tickerData.join("  |  ");
+// Ticker
+document.getElementById("ticker").innerHTML=
+"AAPL 187.42 +1.2%  |  NVDA 914.33 +2.1%  |  BTC 62,350 +2.3%  |  EUR/USD 1.0842  |  TSLA 214.55 -0.8%";
+
+/*
+NEXT 10 UPGRADE STEPS:
+
+1. Replace placeholder logos with fully official logos for all banks.
+2. Connect ticker and cards to live market API for real-time prices.
+3. Enhance responsive layout for mobile/tablet.
+4. Add detailed modal on card click with stock info.
+5. Add dark/light theme toggle fully functional.
+6. Add Arabic/English text fully dynamic.
+7. Integrate animated background subtle gradients/movement.
+8. Implement search and filter for assets.
+9. Add portfolio summary panel with charts.
+10. Convert HTML/JS into React framework for modularity and future scalability.
+*/
 </script>
+
 </body>
 </html>
