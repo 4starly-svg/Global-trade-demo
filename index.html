@@ -5,15 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade Capital</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
 
 body{
-background:linear-gradient(135deg,#0a0f1c,#0f172a);
+background:#0b0f19;
 color:white;
-overflow-x:hidden;
 }
 
 /* HEADER */
@@ -21,121 +25,103 @@ header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:25px 60px;
-background:rgba(255,255,255,0.03);
-backdrop-filter:blur(15px);
+padding:22px 60px;
+background:#0e1422;
 border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
-/* PREMIUM SVG LOGO */
 .logo{
-display:flex;
-align-items:center;
-gap:12px;
-font-size:20px;
 font-weight:700;
+font-size:20px;
 letter-spacing:1px;
 }
 
-.logo svg{
-width:32px;
-height:32px;
-animation:spin 6s linear infinite;
-}
-
-@keyframes spin{
-from{transform:rotate(0deg);}
-to{transform:rotate(360deg);}
-}
-
 .nav a{
-color:#ccc;
-margin-left:25px;
+color:#aaa;
+margin-left:28px;
 text-decoration:none;
 font-weight:500;
-transition:0.3s;
 }
 
-.nav a:hover{color:#00f5ff;}
+.nav a:hover{
+color:white;
+}
 
 /* HERO */
 .hero{
-text-align:center;
-padding:90px 20px 50px 20px;
+padding:80px 60px 40px 60px;
 }
 
 .hero h1{
-font-size:44px;
+font-size:40px;
 font-weight:700;
 }
 
 .hero p{
-color:#aaa;
-margin-top:15px;
+margin-top:12px;
+color:#8f98b2;
+font-size:18px;
 }
 
-/* ROTATING TICKER */
-.ticker{
-margin-top:30px;
-font-size:18px;
-font-weight:600;
-color:#00f5ff;
-height:30px;
-overflow:hidden;
+/* TABS */
+.tabs{
+display:flex;
+gap:30px;
+padding:20px 60px;
+border-bottom:1px solid rgba(255,255,255,0.05);
+}
+
+.tab{
+cursor:pointer;
+padding-bottom:10px;
+color:#9ca3af;
+font-weight:500;
 position:relative;
 }
 
-.ticker-item{
+.tab.active{
+color:white;
+}
+
+.tab.active::after{
+content:'';
 position:absolute;
+left:0;
+bottom:-1px;
 width:100%;
-opacity:0;
-transition:opacity 0.8s ease;
+height:2px;
+background:white;
 }
 
-.ticker-item.active{
-opacity:1;
-}
-
-/* MARKET GRID */
-.section{
-padding:70px 60px;
-}
-
+/* GRID */
 .grid{
+padding:40px 60px 80px 60px;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-gap:30px;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:22px;
 }
 
 .card{
-background:rgba(255,255,255,0.05);
-padding:30px;
-border-radius:18px;
-transition:0.4s;
-border:1px solid rgba(255,255,255,0.05);
+background:#111827;
+padding:22px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,0.04);
+transition:0.2s ease;
 }
 
 .card:hover{
-transform:translateY(-8px);
-box-shadow:0 0 20px rgba(0,245,255,0.3);
-background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.15);
 }
 
 .symbol{
-display:flex;
-align-items:center;
-gap:10px;
-font-weight:600;
-}
-
-.symbol img{
-width:24px;
-height:24px;
+font-size:14px;
+color:#9ca3af;
 }
 
 .price{
-font-size:24px;
-margin-top:12px;
+font-size:22px;
+margin-top:8px;
+font-weight:600;
 }
 
 .change{
@@ -143,25 +129,28 @@ margin-top:6px;
 font-size:14px;
 }
 
-/* LANGUAGE TOGGLE */
-.lang-btn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#00f5ff;
-color:black;
-padding:10px 16px;
-border-radius:8px;
-cursor:pointer;
-font-weight:600;
-}
-
 /* FOOTER */
 footer{
-text-align:center;
 padding:40px;
-color:#666;
+text-align:center;
+color:#6b7280;
 border-top:1px solid rgba(255,255,255,0.05);
+}
+
+/* HIDE SECTIONS */
+.market-section{
+display:none;
+}
+
+.market-section.active{
+display:grid;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+header,.hero,.tabs,.grid{
+padding:25px;
+}
 }
 </style>
 </head>
@@ -169,14 +158,7 @@ border-top:1px solid rgba(255,255,255,0.05);
 <body>
 
 <header>
-<div class="logo">
-<svg viewBox="0 0 100 100">
-<circle cx="50" cy="50" r="40" stroke="#00f5ff" stroke-width="6" fill="none"/>
-<path d="M30 60 L50 35 L70 60" stroke="#00ff88" stroke-width="6" fill="none"/>
-</svg>
-GLOBAL TRADE CAPITAL
-</div>
-
+<div class="logo">GLOBAL TRADE CAPITAL</div>
 <div class="nav">
 <a href="#">Markets</a>
 <a href="#">Portfolio</a>
@@ -186,90 +168,79 @@ GLOBAL TRADE CAPITAL
 </header>
 
 <section class="hero">
-<h1 id="mainTitle">Institutional Market Access</h1>
-<p id="subTitle">Trade Global Stocks, Crypto & Forex</p>
-
-<div class="ticker">
-<div class="ticker-item active">AAPL $185.23 ▲ 0.42%</div>
-<div class="ticker-item">TSLA $210.88 ▼ 0.21%</div>
-<div class="ticker-item">BTC/USD $43,210 ▲ 1.14%</div>
-<div class="ticker-item">EUR/USD 1.0912 ▲ 0.05%</div>
-</div>
+<h1>Institutional Trading Infrastructure</h1>
+<p>Multi-Asset Access | Global Liquidity | Professional Execution</p>
 </section>
 
-<section class="section">
-<div class="grid">
-
-<div class="card">
-<div class="symbol">
-<img src="https://logo.clearbit.com/apple.com">
-AAPL
-</div>
-<div class="price">$185.23</div>
-<div class="change" style="color:#00ff88;">+0.42%</div>
+<!-- TABS -->
+<div class="tabs">
+<div class="tab active" onclick="switchTab('stocks', this)">Stocks</div>
+<div class="tab" onclick="switchTab('crypto', this)">Crypto</div>
+<div class="tab" onclick="switchTab('forex', this)">Forex (FX)</div>
 </div>
 
+<!-- STOCKS -->
+<div id="stocks" class="grid market-section active">
 <div class="card">
-<div class="symbol">
-<img src="https://logo.clearbit.com/tesla.com">
-TSLA
+<div class="symbol">AAPL</div>
+<div class="price">$185.32</div>
+<div class="change" style="color:#22c55e;">+0.42%</div>
 </div>
+
+<div class="card">
+<div class="symbol">TSLA</div>
 <div class="price">$210.88</div>
-<div class="change" style="color:#ff4d4d;">-0.21%</div>
+<div class="change" style="color:#ef4444;">-0.18%</div>
+</div>
 </div>
 
+<!-- CRYPTO -->
+<div id="crypto" class="grid market-section">
 <div class="card">
-<div class="symbol">
-<img src="https://logo.clearbit.com/bitcoin.org">
-BTC/USD
-</div>
+<div class="symbol">BTC/USD</div>
 <div class="price">$43,210</div>
-<div class="change" style="color:#00ff88;">+1.14%</div>
+<div class="change" style="color:#22c55e;">+1.12%</div>
 </div>
 
 <div class="card">
-<div class="symbol">
-<img src="https://logo.clearbit.com/ecb.europa.eu">
-EUR/USD
+<div class="symbol">ETH/USD</div>
+<div class="price">$2,310</div>
+<div class="change" style="color:#22c55e;">+0.85%</div>
 </div>
+</div>
+
+<!-- FOREX -->
+<div id="forex" class="grid market-section">
+<div class="card">
+<div class="symbol">EUR/USD</div>
 <div class="price">1.0912</div>
-<div class="change" style="color:#00ff88;">+0.05%</div>
+<div class="change" style="color:#22c55e;">+0.04%</div>
 </div>
 
+<div class="card">
+<div class="symbol">GBP/USD</div>
+<div class="price">1.2745</div>
+<div class="change" style="color:#ef4444;">-0.02%</div>
 </div>
-</section>
-
-<div class="lang-btn" onclick="toggleLang()">AR</div>
+</div>
 
 <footer>
-© 2026 Global Trade Capital — Institutional Grade Platform
+© 2026 Global Trade Capital. All Rights Reserved.
 </footer>
 
 <script>
+function switchTab(tabId, element){
+document.querySelectorAll('.market-section').forEach(sec=>{
+sec.classList.remove('active');
+});
 
-/* ROTATING TICKER */
-let items=document.querySelectorAll(".ticker-item");
-let index=0;
+document.querySelectorAll('.tab').forEach(tab=>{
+tab.classList.remove('active');
+});
 
-setInterval(()=>{
-items[index].classList.remove("active");
-index=(index+1)%items.length;
-items[index].classList.add("active");
-},3000);
-
-/* LANGUAGE TOGGLE */
-let arabic=false;
-function toggleLang(){
-arabic=!arabic;
-if(arabic){
-document.getElementById("mainTitle").innerText="وصول مؤسسي للأسواق";
-document.getElementById("subTitle").innerText="تداول الأسهم والعملات الرقمية والفوركس";
-}else{
-document.getElementById("mainTitle").innerText="Institutional Market Access";
-document.getElementById("subTitle").innerText="Trade Global Stocks, Crypto & Forex";
+document.getElementById(tabId).classList.add('active');
+element.classList.add('active');
 }
-}
-
 </script>
 
 </body>
