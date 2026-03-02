@@ -5,44 +5,71 @@
 <title>Global Trade Capital</title>
 <style>
 body{margin:0;font-family:Arial;background:#0f172a;color:white}
-h2{color:#22c55e}
+h1,h2{color:#22c55e}
 button{cursor:pointer}
 
-/* Dashboard */
-#dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px;padding:60px}
-.card{
-background:rgba(34,197,94,0.2);
+/* NAV */
+#navbar{
+background:#111827;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 0 15px rgba(0,0,0,0.5)
+}
+#logo{font-size:22px;font-weight:bold;color:#22c55e}
+.nav-btn{
+background:#22c55e;
+color:black;
+padding:8px 15px;
+border:none;
+border-radius:6px;
+font-weight:bold
+}
+
+/* DASHBOARD */
+#dashboard{
 padding:60px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px
+}
+.card{
+background:rgba(34,197,94,0.15);
+padding:50px;
 text-align:center;
 border-radius:20px;
-font-size:22px;
+font-size:20px;
 font-weight:bold;
 transition:0.3s;
 box-shadow:0 0 15px rgba(34,197,94,0.3)
 }
 .card:hover{
-transform:scale(1.1);
-box-shadow:0 0 35px #22c55e
+transform:scale(1.05);
+box-shadow:0 0 30px #22c55e
 }
 
-/* Pages */
+/* PAGES */
 .page{display:none;padding:50px}
 .item{
-background:#111;
+background:#111827;
 padding:20px;
 margin:15px 0;
 border-radius:12px;
-transition:0.3s;
+transition:0.3s
 }
 .item:hover{
-box-shadow:0 0 15px #22c55e;
-transform:translateX(10px)
+transform:translateX(10px);
+box-shadow:0 0 15px #22c55e
 }
 
-.back{background:#22c55e;color:black;padding:10px 15px;border:none;border-radius:8px;margin-bottom:20px}
-
-/* Stock Detail */
-#stock-detail img{width:120px;margin-bottom:20px}
+/* STOCK DETAIL */
+.detail-box{
+background:#111827;
+padding:30px;
+border-radius:15px;
+box-shadow:0 0 20px rgba(34,197,94,0.4)
+}
 .action-btn{
 padding:10px 20px;
 border:none;
@@ -54,62 +81,100 @@ font-weight:bold
 .sell{background:#ef4444;color:white}
 .save{background:#3b82f6;color:white}
 
+/* FOOTER */
+#footer{
+margin-top:60px;
+padding:30px;
+background:#111827;
+text-align:center;
+font-size:14px;
+color:#aaa
+}
+
 </style>
 </head>
 <body>
 
+<!-- NAVBAR -->
+<div id="navbar">
+<div id="logo">Global Trade Capital</div>
+<button class="nav-btn" onclick="goHome()">Dashboard</button>
+</div>
+
 <!-- DASHBOARD -->
 <div id="dashboard">
 <div class="card" onclick="openPage('stocks-main')">Stocks</div>
-<div class="card" onclick="alert('Crypto Coming Next Upgrade')">Crypto</div>
-<div class="card" onclick="alert('FX Coming Next Upgrade')">FX</div>
-<div class="card" onclick="alert('Learn Page Coming Next Upgrade')">Learn How To Trade</div>
+<div class="card" onclick="openPage('crypto-page')">Crypto</div>
+<div class="card" onclick="openPage('fx-page')">FX</div>
+<div class="card" onclick="openPage('learn-page')">Learn How To Trade</div>
 </div>
 
 <!-- STOCKS MAIN -->
 <div id="stocks-main" class="page">
-<button class="back" onclick="goHome()">⬅ Back</button>
 <h2>Stocks Categories</h2>
-
 <div class="item" onclick="openPage('top-movers')">Top Market Movers</div>
-<div class="item" onclick="openPage('weekly-lows')">This Week's Lows</div>
-<div class="item" onclick="openPage('most-volume')">Most Volume</div>
-<div class="item" onclick="openPage('analyst-picks')">Analyst Picks</div>
-<div class="item" onclick="openPage('trade-engine')">Stock Trade Engine</div>
+<div class="item">This Week's Lows</div>
+<div class="item">Most Volume</div>
+<div class="item">Analyst Picks</div>
 </div>
 
-<!-- CATEGORY: TOP MOVERS -->
+<!-- TOP MOVERS -->
 <div id="top-movers" class="page">
-<button class="back" onclick="openPage('stocks-main')">⬅ Back</button>
 <h2>Top Market Movers</h2>
-
-<div class="item" onclick="openStock('Apple','apple.png')">Apple</div>
-<div class="item" onclick="openStock('Tesla','tesla.png')">Tesla</div>
-<div class="item" onclick="openStock('Amazon','amazon.png')">Amazon</div>
-<div class="item" onclick="openStock('Microsoft','microsoft.png')">Microsoft</div>
-<div class="item" onclick="openStock('Nvidia','nvidia.png')">Nvidia</div>
+<div class="item" onclick="openStock('Apple')">Apple</div>
+<div class="item" onclick="openStock('Tesla')">Tesla</div>
+<div class="item" onclick="openStock('Amazon')">Amazon</div>
+<div class="item" onclick="openStock('Microsoft')">Microsoft</div>
+<div class="item" onclick="openStock('Nvidia')">Nvidia</div>
 </div>
 
 <!-- STOCK DETAIL -->
 <div id="stock-detail" class="page">
-<button class="back" onclick="history.back()">⬅ Back</button>
 <h2 id="stock-name"></h2>
-<img id="stock-logo" src="">
+<div class="detail-box">
 <p>Market Cap: $<span id="marketcap"></span></p>
 <p>52 Week High: $<span id="high"></span></p>
 <p>52 Week Low: $<span id="low"></span></p>
 <p>Volume: <span id="volume"></span></p>
 <p>Analyst Rating: <span id="rating"></span></p>
-
 <br>
 <button class="action-btn buy">Buy</button>
 <button class="action-btn sell">Sell</button>
 <button class="action-btn save">Save Trade</button>
 </div>
+</div>
+
+<!-- CRYPTO -->
+<div id="crypto-page" class="page">
+<h2>Crypto Market</h2>
+<div class="item">Bitcoin</div>
+<div class="item">Ethereum</div>
+<div class="item">Solana</div>
+</div>
+
+<!-- FX -->
+<div id="fx-page" class="page">
+<h2>Foreign Exchange</h2>
+<div class="item">EUR/USD</div>
+<div class="item">GBP/USD</div>
+<div class="item">USD/JPY</div>
+</div>
+
+<!-- LEARN -->
+<div id="learn-page" class="page">
+<h2>Learn Trading</h2>
+<div class="item">Beginner Guide</div>
+<div class="item">Risk Management</div>
+<div class="item">Technical Analysis</div>
+</div>
+
+<!-- FOOTER -->
+<div id="footer">
+© 2026 Global Trade Capital. Institutional Trading Platform.
+</div>
 
 <script>
 
-/* Navigation */
 function openPage(id){
 document.querySelectorAll('.page').forEach(p=>p.style.display='none');
 document.getElementById('dashboard').style.display='none';
@@ -121,12 +186,9 @@ document.querySelectorAll('.page').forEach(p=>p.style.display='none');
 document.getElementById('dashboard').style.display='grid';
 }
 
-/* Open Stock Detail */
-function openStock(name,logo){
+function openStock(name){
 openPage('stock-detail');
 document.getElementById('stock-name').innerText=name;
-document.getElementById('stock-logo').src="logos/"+logo;
-
 document.getElementById('marketcap').innerText=(Math.random()*1000000).toFixed(0);
 document.getElementById('high').innerText=(Math.random()*1000).toFixed(2);
 document.getElementById('low').innerText=(Math.random()*500).toFixed(2);
