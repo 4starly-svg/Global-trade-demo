@@ -8,139 +8,160 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: 'Inter', sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 
-body {
-    background: linear-gradient(135deg, #0f172a, #0a0f1c);
-    color: white;
+body{
+background:linear-gradient(135deg,#0a0f1c,#0f172a);
+color:white;
+overflow-x:hidden;
 }
 
 /* HEADER */
-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px 60px;
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(10px);
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 60px;
+background:rgba(255,255,255,0.03);
+backdrop-filter:blur(15px);
+border-bottom:1px solid rgba(255,255,255,0.05);
 }
 
-.logo {
-    font-size:22px;
-    font-weight:700;
-    background: linear-gradient(90deg,#00f5ff,#00ff88);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+/* PREMIUM SVG LOGO */
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+font-size:20px;
+font-weight:700;
+letter-spacing:1px;
 }
 
-.nav a {
-    color:#ccc;
-    margin-left:25px;
-    text-decoration:none;
-    font-weight:500;
+.logo svg{
+width:32px;
+height:32px;
+animation:spin 6s linear infinite;
 }
 
-.nav a:hover {
-    color:#00f5ff;
+@keyframes spin{
+from{transform:rotate(0deg);}
+to{transform:rotate(360deg);}
 }
+
+.nav a{
+color:#ccc;
+margin-left:25px;
+text-decoration:none;
+font-weight:500;
+transition:0.3s;
+}
+
+.nav a:hover{color:#00f5ff;}
 
 /* HERO */
-.hero {
-    text-align:center;
-    padding:100px 20px;
+.hero{
+text-align:center;
+padding:90px 20px 50px 20px;
 }
 
-.hero h1 {
-    font-size:48px;
-    font-weight:700;
+.hero h1{
+font-size:44px;
+font-weight:700;
 }
 
-.hero p {
-    margin-top:20px;
-    color:#aaa;
-    font-size:18px;
+.hero p{
+color:#aaa;
+margin-top:15px;
 }
 
-/* MARKET STATUS */
-.market-status {
-    margin-top:20px;
-    font-size:16px;
-    font-weight:600;
+/* ROTATING TICKER */
+.ticker{
+margin-top:30px;
+font-size:18px;
+font-weight:600;
+color:#00f5ff;
+height:30px;
+overflow:hidden;
+position:relative;
 }
 
-.open { color:#00ff88; }
-.closed { color:#ff4d4d; }
-
-/* DASHBOARD CARDS */
-.section {
-    padding:60px;
+.ticker-item{
+position:absolute;
+width:100%;
+opacity:0;
+transition:opacity 0.8s ease;
 }
 
-.section h2 {
-    margin-bottom:30px;
-    font-size:28px;
+.ticker-item.active{
+opacity:1;
 }
 
-.grid {
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-    gap:25px;
+/* MARKET GRID */
+.section{
+padding:70px 60px;
 }
 
-.card {
-    background: rgba(255,255,255,0.05);
-    padding:25px;
-    border-radius:15px;
-    transition:0.3s;
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:30px;
 }
 
-.card:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-5px);
+.card{
+background:rgba(255,255,255,0.05);
+padding:30px;
+border-radius:18px;
+transition:0.4s;
+border:1px solid rgba(255,255,255,0.05);
 }
 
-.symbol {
-    font-size:18px;
-    font-weight:600;
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 20px rgba(0,245,255,0.3);
+background:rgba(255,255,255,0.08);
 }
 
-.price {
-    font-size:22px;
-    margin-top:10px;
+.symbol{
+display:flex;
+align-items:center;
+gap:10px;
+font-weight:600;
 }
 
-.change {
-    margin-top:5px;
-    font-size:14px;
+.symbol img{
+width:24px;
+height:24px;
 }
 
-/* SCOPE SECTION */
-.scope {
-    padding:80px 60px;
-    background: linear-gradient(135deg,#111827,#0f172a);
+.price{
+font-size:24px;
+margin-top:12px;
 }
 
-.scope h2 {
-    margin-bottom:20px;
+.change{
+margin-top:6px;
+font-size:14px;
 }
 
-.scope p {
-    color:#aaa;
-    max-width:800px;
-    line-height:1.6;
+/* LANGUAGE TOGGLE */
+.lang-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#00f5ff;
+color:black;
+padding:10px 16px;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
 }
 
 /* FOOTER */
-footer {
-    text-align:center;
-    padding:30px;
-    color:#666;
-    font-size:14px;
+footer{
+text-align:center;
+padding:40px;
+color:#666;
+border-top:1px solid rgba(255,255,255,0.05);
 }
 </style>
 </head>
@@ -148,100 +169,106 @@ footer {
 <body>
 
 <header>
-    <div class="logo">GLOBAL TRADE CAPITAL</div>
-    <div class="nav">
-        <a href="#">Markets</a>
-        <a href="#">Invest</a>
-        <a href="#">Scope</a>
-        <a href="#">Contact</a>
-    </div>
+<div class="logo">
+<svg viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="40" stroke="#00f5ff" stroke-width="6" fill="none"/>
+<path d="M30 60 L50 35 L70 60" stroke="#00ff88" stroke-width="6" fill="none"/>
+</svg>
+GLOBAL TRADE CAPITAL
+</div>
+
+<div class="nav">
+<a href="#">Markets</a>
+<a href="#">Portfolio</a>
+<a href="#">Scope</a>
+<a href="#">Contact</a>
+</div>
 </header>
 
 <section class="hero">
-    <h1>Institutional-Grade Trading Platform</h1>
-    <p>Global Markets. Forex. Crypto. Stocks. Real-Time Data.</p>
-    <div class="market-status" id="marketStatus"></div>
+<h1 id="mainTitle">Institutional Market Access</h1>
+<p id="subTitle">Trade Global Stocks, Crypto & Forex</p>
+
+<div class="ticker">
+<div class="ticker-item active">AAPL $185.23 ▲ 0.42%</div>
+<div class="ticker-item">TSLA $210.88 ▼ 0.21%</div>
+<div class="ticker-item">BTC/USD $43,210 ▲ 1.14%</div>
+<div class="ticker-item">EUR/USD 1.0912 ▲ 0.05%</div>
+</div>
 </section>
 
 <section class="section">
-    <h2>Markets Overview</h2>
-    <div class="grid" id="marketGrid">
-        <div class="card">
-            <div class="symbol">AAPL</div>
-            <div class="price" id="aapl">Loading...</div>
-            <div class="change" id="aaplChange"></div>
-        </div>
+<div class="grid">
 
-        <div class="card">
-            <div class="symbol">TSLA</div>
-            <div class="price" id="tsla">Loading...</div>
-            <div class="change" id="tslaChange"></div>
-        </div>
+<div class="card">
+<div class="symbol">
+<img src="https://logo.clearbit.com/apple.com">
+AAPL
+</div>
+<div class="price">$185.23</div>
+<div class="change" style="color:#00ff88;">+0.42%</div>
+</div>
 
-        <div class="card">
-            <div class="symbol">BTC/USD</div>
-            <div class="price" id="btc">Loading...</div>
-            <div class="change" id="btcChange"></div>
-        </div>
+<div class="card">
+<div class="symbol">
+<img src="https://logo.clearbit.com/tesla.com">
+TSLA
+</div>
+<div class="price">$210.88</div>
+<div class="change" style="color:#ff4d4d;">-0.21%</div>
+</div>
 
-        <div class="card">
-            <div class="symbol">EUR/USD</div>
-            <div class="price" id="eurusd">Loading...</div>
-            <div class="change" id="eurusdChange"></div>
-        </div>
-    </div>
+<div class="card">
+<div class="symbol">
+<img src="https://logo.clearbit.com/bitcoin.org">
+BTC/USD
+</div>
+<div class="price">$43,210</div>
+<div class="change" style="color:#00ff88;">+1.14%</div>
+</div>
+
+<div class="card">
+<div class="symbol">
+<img src="https://logo.clearbit.com/ecb.europa.eu">
+EUR/USD
+</div>
+<div class="price">1.0912</div>
+<div class="change" style="color:#00ff88;">+0.05%</div>
+</div>
+
+</div>
 </section>
 
-<section class="scope">
-    <h2>Expansion Scope</h2>
-    <p>
-    Global Trade Capital is structured to expand into a full-scale brokerage ecosystem,
-    integrating white-label clearing partners, liquidity providers, and multi-asset execution.
-    The roadmap includes regulatory licensing, Arabic-English platform localization,
-    AI-driven portfolio automation, and regional expansion across MENA markets.
-    </p>
-</section>
+<div class="lang-btn" onclick="toggleLang()">AR</div>
 
 <footer>
-    © 2026 Global Trade Capital. All Rights Reserved.
+© 2026 Global Trade Capital — Institutional Grade Platform
 </footer>
 
 <script>
 
-/* MARKET STATUS (US TIME SIMULATION) */
-function updateMarketStatus() {
-    const now = new Date();
-    const hour = now.getUTCHours();
-    const status = document.getElementById("marketStatus");
+/* ROTATING TICKER */
+let items=document.querySelectorAll(".ticker-item");
+let index=0;
 
-    if (hour >= 14 && hour <= 21) {
-        status.innerHTML = "US Market Status: <span class='open'>OPEN</span>";
-    } else {
-        status.innerHTML = "US Market Status: <span class='closed'>CLOSED</span>";
-    }
+setInterval(()=>{
+items[index].classList.remove("active");
+index=(index+1)%items.length;
+items[index].classList.add("active");
+},3000);
+
+/* LANGUAGE TOGGLE */
+let arabic=false;
+function toggleLang(){
+arabic=!arabic;
+if(arabic){
+document.getElementById("mainTitle").innerText="وصول مؤسسي للأسواق";
+document.getElementById("subTitle").innerText="تداول الأسهم والعملات الرقمية والفوركس";
+}else{
+document.getElementById("mainTitle").innerText="Institutional Market Access";
+document.getElementById("subTitle").innerText="Trade Global Stocks, Crypto & Forex";
 }
-
-updateMarketStatus();
-
-/* SIMULATED LIVE DATA (Replace with API Later) */
-function randomPrice(base) {
-    return (base + (Math.random() - 0.5) * 5).toFixed(2);
 }
-
-function updatePrices() {
-    document.getElementById("aapl").innerText = "$" + randomPrice(185);
-    document.getElementById("tsla").innerText = "$" + randomPrice(210);
-    document.getElementById("btc").innerText = "$" + randomPrice(43000);
-    document.getElementById("eurusd").innerText = randomPrice(1.09);
-
-    document.getElementById("aaplChange").innerText = "+0.45%";
-    document.getElementById("tslaChange").innerText = "-0.22%";
-    document.getElementById("btcChange").innerText = "+1.10%";
-    document.getElementById("eurusdChange").innerText = "+0.05%";
-}
-
-updatePrices();
-setInterval(updatePrices, 4000);
 
 </script>
 
