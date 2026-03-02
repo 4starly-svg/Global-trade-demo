@@ -2,26 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital v4.1</title>
+<title>Global Trade Capital - Demo 4.1</title>
 <style>
 /* ---------- Global Reset ---------- */
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
        background: linear-gradient(135deg, #0f1c3d, #0a0c11);
-       color:#fff; -webkit-font-smoothing:antialiased;
-       transition: background 0.5s ease; }
+       color:#fff; -webkit-font-smoothing:antialiased; transition: background 0.5s ease; }
 
 /* ---------- Header ---------- */
 header {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:20px 60px; font-size:26px; font-weight:800; letter-spacing:2px;
-  border-bottom:1px solid #171a23; background:#0e1118;
+  padding:28px 60px; font-size:28px; font-weight:800; letter-spacing:2px;
+  border-bottom:1px solid #171a23; background:#0e1118; text-align:center;
 }
-header img.logo { height:40px; margin-right:15px; }
 
 /* ---------- Language Switch ---------- */
-.lang-switch { cursor:pointer; font-size:14px; padding:6px 12px; border:1px solid #22c55e; border-radius:6px; color:#22c55e; }
-.lang-switch:hover { background:#22c55e; color:#0e1118; }
+.lang-switch {
+  position:absolute; top:30px; right:40px;
+  background:#1c2130; border:none; padding:6px 12px; color:#fff;
+  border-radius:6px; cursor:pointer; font-weight:600;
+}
+.lang-switch:hover { background:#22c55e; color:#111; }
 
 /* ---------- Top Navigation (Option B) ---------- */
 nav {
@@ -34,29 +35,31 @@ nav a:hover { color:#22c55e; }
 /* ---------- Ticker ---------- */
 .ticker-wrap {
   overflow:hidden; border-bottom:1px solid #171a23; background:#0e1118;
-  padding:8px 0;
+  position:relative; height:30px;
 }
 .ticker {
-  display:inline-block; white-space:nowrap; animation:scroll 20s linear infinite; font-size:14px; color:#9ca3af;
+  display:inline-block; white-space:nowrap; padding:8px 0;
+  font-size:14px; font-weight:600;
+  animation:scroll 30s linear infinite;
 }
-.ticker span { margin-right:80px; font-weight:600; }
+.ticker span { margin-right:80px; }
 @keyframes scroll { from{transform:translateX(100%);} to{transform:translateX(-100%);} }
 
-/* ---------- Landing Page Folders ---------- */
+/* ---------- Landing Page ---------- */
 .home { display:flex; justify-content:center; align-items:center; gap:60px; height:70vh; flex-wrap:wrap; }
 .folder {
-  width:280px; height:210px; display:flex; align-items:center; justify-content:center;
+  width:260px; height:200px; display:flex; align-items:center; justify-content:center;
   background:#11151f; border:1px solid #1c2130; border-radius:20px;
   font-size:26px; font-weight:700; letter-spacing:2px; cursor:pointer;
-  transition:all .35s ease; position:relative; text-align:center;
-  box-shadow:0 5px 15px rgba(0,0,0,0.3); color:#22c55e;
+  text-align:center; position:relative; box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  transition: all .35s ease;
 }
 .folder::after {
   content:""; position:absolute; inset:0; border-radius:20px;
   background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0));
   pointer-events:none;
 }
-.folder:hover { transform:translateY(-8px); background:#141a26; border-color:#252b3d; }
+.folder:hover { transform:translateY(-8px); background:#141a26; border-color:#252b3d; box-shadow:0 8px 25px rgba(34,197,94,0.4); }
 
 /* ---------- Sections ---------- */
 .section { display:none; padding:50px 80px; animation:fade .35s ease; }
@@ -66,16 +69,17 @@ h2 { margin:0 0 30px 0; font-weight:600; letter-spacing:1px; }
 
 /* ---------- Market Cards ---------- */
 .market-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px;
 }
 .card {
   background:#11151f; border:1px solid #1c2130; border-radius:14px;
   padding:16px 20px; display:flex; justify-content:space-between; align-items:center;
   transition:.25s ease; cursor:pointer; position:relative;
+  box-shadow:0 0 10px rgba(34,197,94,0.1);
 }
-.card:hover { background:#141a26; border-color:#252b3d; transform:translateY(-4px); }
+.card:hover { background:#141a26; border-color:#252b3d; transform:translateY(-4px); box-shadow:0 0 20px rgba(34,197,94,0.4); }
 .symbol { font-weight:600; letter-spacing:1px; display:flex; align-items:center; }
-.symbol img { width:24px; height:24px; margin-right:10px; border-radius:4px; }
+.symbol img { width:28px; height:28px; margin-right:10px; border-radius:4px; }
 .price { margin-left:12px; color:#d1d5db; }
 .change { margin-left:8px; font-weight:500; }
 .green{color:#22c55e} .red{color:#ef4444}
@@ -90,12 +94,6 @@ h2 { margin:0 0 30px 0; font-weight:600; letter-spacing:1px; }
 }
 .actions button:hover { opacity:.85; }
 
-/* ---------- Portfolio Panel ---------- */
-.portfolio { display:flex; justify-content:space-around; margin:30px 0; flex-wrap:wrap; gap:20px; }
-.portfolio-card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:20px; flex:1; min-width:200px; text-align:center; }
-.portfolio-card h3 { font-size:18px; margin-bottom:10px; }
-.portfolio-card p { font-size:14px; color:#d1d5db; }
-
 /* ---------- Partner Banks ---------- */
 .partner-section { display:flex; justify-content:center; align-items:center; gap:40px; margin:50px 0; flex-wrap:wrap; }
 .partner-section img { width:60px; transition:.25s ease; }
@@ -106,6 +104,12 @@ h2 { margin:0 0 30px 0; font-weight:600; letter-spacing:1px; }
 .testimonial { min-width:100%; padding:20px; text-align:center; background:#11151f; border-radius:12px; margin-right:20px; }
 .testimonial p { font-style:italic; color:#d1d5db; }
 .testimonial h4 { margin-top:10px; font-weight:600; color:#22c55e; }
+
+/* ---------- Portfolio Panel ---------- */
+.portfolio { display:flex; justify-content:space-around; margin:30px 0; flex-wrap:wrap; gap:20px; }
+.portfolio-card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:20px; flex:1; min-width:200px; text-align:center; }
+.portfolio-card h3 { font-size:18px; margin-bottom:10px; }
+.portfolio-card p { font-size:14px; color:#d1d5db; }
 
 /* ---------- Contact Section ---------- */
 .contact { background:#11151f; padding:40px; border-radius:14px; margin:40px 0; text-align:center; }
@@ -119,17 +123,13 @@ footer {
   border-top:1px solid #171a23; font-size:12px; color:#6b7280; background:#0e1118;
 }
 footer img { width:50px; margin:0 10px; vertical-align:middle; }
+
 </style>
 </head>
 <body>
 
-<header>
-  <div style="display:flex; align-items:center;">
-    <img src="https://via.placeholder.com/40x40?text=GTC" class="logo" alt="Global Trade Logo">
-    GLOBAL TRADE CAPITAL
-  </div>
-  <div class="lang-switch" onclick="toggleLang()">EN/AR</div>
-</header>
+<header>GLOBAL TRADE CAPITAL</header>
+<button class="lang-switch" onclick="toggleLang()">EN/AR</button>
 
 <nav>
   <a href="#" onclick="openSection('stocks')">STOCKS</a>
@@ -196,7 +196,7 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
 <!-- ---------- Testimonials Carousel ---------- -->
 <div class="testimonials" id="testimonials">
   <div class="testimonial">
-    <p>"Global Trade Capital made my trading experience so smooth and professional."</p>
+    <p>"Global Trade Capital made my trading experience smooth and professional."</p>
     <h4>— Ahmed T.</h4>
   </div>
   <div class="testimonial">
@@ -209,17 +209,6 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
   </div>
 </div>
 
-<!-- ---------- Learning Section ---------- -->
-<div id="learning" class="section">
-  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
-  <h2>Beginner Guide</h2>
-  <p>Learn how to trade stocks and crypto. Simple steps in English and Arabic.</p>
-  <audio controls>
-    <source src="beginner_guide_en_ar.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-</div>
-
 <!-- ---------- Contact Section ---------- -->
 <div class="section contact" id="contact-section">
   <h3>Contact Us</h3>
@@ -227,6 +216,15 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
   <input type="email" placeholder="Email">
   <textarea rows="4" placeholder="Message"></textarea>
   <button>Send Message</button>
+</div>
+
+<!-- ---------- Audio Tutorial ---------- -->
+<div class="section contact">
+  <h3>Beginner's Audio Tutorial (EN/AR)</h3>
+  <audio controls>
+    <source src="demo-tutorial.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 </div>
 
 <!-- ---------- Footer ---------- -->
@@ -252,15 +250,10 @@ function goBack(){
 let lang = "en";
 function toggleLang(){
   lang = lang === "en" ? "ar" : "en";
-  alert("Language switched to " + (lang==="en"?"English":"Arabic"));
+  alert("Language switched to: "+(lang==="en"?"English":"Arabic"));
 }
 
-// ---------- Ticker ----------
-const tickerData = ["AAPL 145.32 ▲0.5%", "BTC 29,800 ▼1.2%", "EUR/USD 1.12 ▲0.1%", "TSLA 718.45 ▲2.0%", "ETH 1,880 ▼0.8%"];
-const tickerEl = document.getElementById("ticker");
-tickerEl.innerHTML = tickerData.map(t=>`<span>${t}</span>`).join("");
-
-// ---------- Market Cards ----------
+// ---------- Create Market Cards ----------
 function createCards(id,list,logos){
   const container=document.getElementById(id+"List");
   list.forEach((item,i)=>{
@@ -282,10 +275,12 @@ function createCards(id,list,logos){
       </div>
     `;
     container.appendChild(card);
-    drawSparkline(card.querySelector(".sparkline"), color);
+    drawSparkline(card.querySelector(".sparkline"));
   });
 }
-function drawSparkline(canvas,color){
+
+// ---------- Mini Sparkline Generator ----------
+function drawSparkline(canvas){
   const ctx=canvas.getContext("2d");
   canvas.width=canvas.offsetWidth;
   canvas.height=canvas.offsetHeight;
@@ -293,12 +288,17 @@ function drawSparkline(canvas,color){
   ctx.beginPath();
   ctx.moveTo(0,canvas.height-points[0]);
   points.forEach((p,i)=>ctx.lineTo(i*(canvas.width/points.length),canvas.height-p));
-  ctx.strokeStyle=color==="green"?"#22c55e":"#ef4444";
+  ctx.strokeStyle="#22c55e";
   ctx.lineWidth=1.5;
   ctx.stroke();
 }
 
-// ---------- Mock Data ----------
+// ---------- Ticker Data ----------
+const tickerData=["AAPL +1.2%","NVDA +0.8%","TSLA -0.5%","BTC +3.2%","ETH +2.1%","EUR/USD +0.2%"];
+const tickerElem=document.getElementById("ticker");
+tickerData.forEach(t=>{const span=document.createElement("span"); span.textContent=t; tickerElem.appendChild(span);});
+
+// ---------- Realistic Logos ----------
 createCards("stocks", ["AAPL","NVDA","TSLA","AMZN","MSFT","META"],
            ["https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com",
             "https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com",
@@ -314,8 +314,8 @@ createCards("crypto", ["BTC","ETH","SOL","XRP","ADA"],
 createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],
            ["https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg",
             "https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_the_United_Kingdom.svg",
-            "https://upload.wikimedia.org/wikipedia/commons/2/20/Flag_of_Japan.svg",
-            "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg"]);
+            "https://upload.wikimedia.org/wikipedia/commons/1/12/Flag_of_Japan.svg",
+            "https://upload.wikimedia.org/wikipedia/commons/f/f0/Flag_of_Switzerland.svg"]);
 </script>
 </body>
 </html>
