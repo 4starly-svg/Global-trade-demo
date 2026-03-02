@@ -1,215 +1,170 @@
-<!-- Stocks Page -->
-<div id="stocks-page" class="asset-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">Stocks</h2>
-  <div class="asset-grid" id="stocks-subfiles">
-    <!-- Mock sub-files for Stocks -->
-    <div class="asset-card" onclick="openTradeEngine('AAPL')">
-      <div>Apple Inc.</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('TSLA')">
-      <div>Tesla Inc.</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('AMZN')">
-      <div>Amazon.com</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Global Trade Capital</title>
+  <style>
+    body { margin:0; font-family:Arial, sans-serif; background:#0f172a; color:#fff; }
+    #dashboard { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:50px; }
+    .card { background:rgba(34,197,94,0.2); border-radius:15px; padding:40px; text-align:center; cursor:pointer; transition:all 0.3s ease; }
+    .card:hover { transform:scale(1.05); }
+    .ticker { background:#111; padding:10px 0; overflow:hidden; white-space:nowrap; }
+    .ticker span { display:inline-block; padding-left:100%; animation:scroll 20s linear infinite; }
+    @keyframes scroll { 0% { transform:translateX(0%);} 100% { transform:translateX(-100%);} }
+    .asset-page { display:none; padding:50px; }
+    .asset-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+    .asset-card { background:#111; padding:20px; border-radius:10px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:all 0.3s ease; }
+    .asset-card:hover { box-shadow:0 0 20px #22c55e; transform:translateY(-5px); }
+    .buy-btn, .sell-btn { padding:5px 10px; border:none; border-radius:5px; cursor:pointer; }
+    .buy-btn { background:#22c55e; color:#000; }
+    .sell-btn { background:#ef4444; color:#fff; }
+    .back-btn { background:#22c55e; color:#000; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; margin-bottom:20px; }
+  </style>
+</head>
+<body>
 
-<!-- Crypto Page -->
-<div id="crypto-page" class="asset-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">Crypto</h2>
-  <div class="asset-grid" id="crypto-subfiles">
-    <!-- Mock sub-files for Crypto -->
-    <div class="asset-card" onclick="openTradeEngine('BTC')">
-      <div>Bitcoin (BTC)</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('ETH')">
-      <div>Ethereum (ETH)</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('BNB')">
-      <div>Binance Coin (BNB)</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
+  <!-- Top Bar & Ticker -->
+  <div style="display:flex; justify-content:space-between; align-items:center; padding:15px 50px; background:#111;">
+    <h1>Global Trade Capital</h1>
+    <button onclick="toggleLang()">EN/AR</button>
   </div>
-</div>
+  <div class="ticker"><span>▲ AAPL 189.32 | ▼ TSLA 242.19 | ▲ BTC 67234.22 | ▲ ETH 3211.87 | ▲ EUR/USD 1.0845 | ▼ GBP/USD 1.2154</span></div>
 
-<!-- FX Page -->
-<div id="fx-page" class="asset-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">FX Pairs</h2>
-  <div class="asset-grid" id="fx-subfiles">
-    <!-- Mock sub-files for FX -->
-    <div class="asset-card" onclick="openTradeEngine('EURUSD')">
-      <div>EUR / USD</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('GBPUSD')">
-      <div>GBP / USD</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('USDJPY')">
-      <div>USD / JPY</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
+  <!-- Main Dashboard -->
+  <div id="dashboard">
+    <div class="card" onclick="openAssetPage('stocks-page')">Stocks</div>
+    <div class="card" onclick="openAssetPage('crypto-page')">Crypto</div>
+    <div class="card" onclick="openAssetPage('fx-page')">FX</div>
+    <div class="card" onclick="openAssetPage('learn-page')">Learn How to Trade</div>
+  </div>
+
+  <!-- Stocks Page -->
+  <div id="stocks-page" class="asset-page">
+    <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+    <h2 style="color:#22c55e;">Stocks</h2>
+    <div class="asset-grid" id="stocks-subfiles">
+      <div class="asset-card" onclick="openTradeEngine('AAPL')"><div>Apple Inc.</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+      <div class="asset-card" onclick="openTradeEngine('TSLA')"><div>Tesla Inc.</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+      <div class="asset-card" onclick="openTradeEngine('AMZN')"><div>Amazon.com</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
     </div>
   </div>
-</div>
+
+  <!-- Crypto Page -->
+  <div id="crypto-page" class="asset-page">
+    <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+    <h2 style="color:#22c55e;">Crypto</h2>
+    <div class="asset-grid" id="crypto-subfiles">
+      <div class="asset-card" onclick="openTradeEngine('BTC')"><div>Bitcoin (BTC)</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+      <div class="asset-card" onclick="openTradeEngine('ETH')"><div>Ethereum (ETH)</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+      <div class="asset-card" onclick="openTradeEngine('BNB')"><div>Binance Coin (BNB)</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+    </div>
+  </div>
+
+  <!-- FX Page -->
+  <div id="fx-page" class="asset-page">
+    <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+    <h2 style="color:#22c55e;">FX Pairs</h2>
+    <div class="asset-grid" id="fx-subfiles">
+      <div class="asset-card" onclick="openTradeEngine('EURUSD')"><div>EUR / USD</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+      <div class="asset-card" onclick="openTradeEngine('GBPUSD')"><div>GBP / USD</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+      <div class="asset-card" onclick="openTradeEngine('USDJPY')"><div>USD / JPY</div><div><button class="buy-btn">Buy</button><button class="sell-btn">Sell</button></div></div>
+    </div>
+  </div>
+
+  <!-- Learn How to Trade Page -->
+  <div id="learn-page" class="asset-page">
+    <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+    <h2 style="color:#22c55e;">Learn How to Trade</h2>
+    <div style="margin-top:30px;">
+      <video width="600" controls>
+        <source src="video/learn-trading.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div style="margin-top:20px;">
+      <h3>Audio Lessons</h3>
+      <audio controls>
+        <source src="audio/lesson1.mp3" type="audio/mpeg">
+      </audio>
+      <audio controls>
+        <source src="audio/lesson2.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </div>
+
+  <!-- Trade Engine Modal -->
+  <div id="trade-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); color:#fff; z-index:9999; overflow:auto; padding:50px;">
+    <button onclick="closeTradeModal()" style="background:#22c55e;color:#000;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;">✖ Close</button>
+    <h2 id="modal-asset-name" style="margin-top:20px; color:#22c55e;"></h2>
+    <div style="margin-top:20px;">
+      <p>Market Cap: <span id="modal-marketcap">$0</span></p>
+      <p>52-Week High: <span id="modal-high">$0</span></p>
+      <p>52-Week Low: <span id="modal-low">$0</span></p>
+      <p>Volume: <span id="modal-volume">0</span></p>
+      <p>Analyst Rating: <span id="modal-analyst">N/A</span></p>
+    </div>
+    <div style="margin-top:30px;">
+      <button onclick="buyAsset()" style="background:#22c55e;color:#000;padding:10px 20px;border:none;border-radius:5px;margin-right:15px;cursor:pointer;">Buy</button>
+      <button onclick="sellAsset()" style="background:#ef4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">Sell</button>
+    </div>
+  </div>
+
+  <!-- Partners & Banks -->
+  <div id="partners" style="padding:50px; display:flex; flex-wrap:wrap; gap:40px;">
+    <h2 style="width:100%; color:#22c55e;">Our Partners & Banks</h2>
+    <img src="logos/bank1.png" alt="Bank 1" width="120">
+    <img src="logos/bank2.png" alt="Bank 2" width="120">
+    <img src="logos/bank3.png" alt="Bank 3" width="120">
+    <img src="logos/visa.png" alt="Visa" width="80">
+    <img src="logos/mastercard.png" alt="MasterCard" width="80">
+  </div>
+
+  <!-- Testimonials -->
+  <div id="testimonials" style="padding:50px; background: rgba(0,0,0,0.6); border-radius:15px;">
+    <h2 style="color:#22c55e;">Testimonials</h2>
+    <div style="margin-top:20px;">
+      <p>"Global Trade Capital made learning trading so simple!" - Ahmed S.</p>
+      <p>"I love the mock trading engine. Great for practice." - Fatima M.</p>
+      <p>"The dashboard looks professional and sleek." - Khaled R.</p>
+    </div>
+  </div>
+
+  <!-- Contact & Social -->
+  <div id="contact" style="padding:50px;">
+    <h2 style="color:#22c55e;">Contact Us</h2>
+    <p>Email: support@globaltrade.ly</p>
+    <p>Facebook: <img src="logos/facebook.png" alt="Facebook" width="25"> / GlobalTradeCapital</p>
+    <p>WhatsApp: <img src="logos/whatsapp.png" alt="WhatsApp" width="25"> +218 92 123 4567</p>
+  </div>
+
+  <!-- Disclaimer -->
+  <div id="disclaimer" style="padding:50px; font-size:14px; color:#f87171;">
+    <h2>Disclaimer</h2>
+    <p>All trading examples and asset prices shown are <strong>mock data</strong> for educational purposes only. No real trades are being executed.</p>
+  </div>
 
 <script>
-function openTradeEngine(asset){
-  alert("Opening trade engine for " + asset + " (mock data)");
-  // Here we can later populate the modal with stock/crypto/FX details
+// JS Functions
+function toggleLang(){ alert('Language switched (mock)'); }
+function openAssetPage(page){
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('stocks-page').style.display='none';
+  document.getElementById('crypto-page').style.display='none';
+  document.getElementById('fx-page').style.display='none';
+  document.getElementById('learn-page').style.display='none';
+  document.getElementById(page).style.display='block';
 }
-</script>
-<!-- Stocks Page -->
-<div id="stocks-page" class="asset-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">Stocks</h2>
-  <div class="asset-grid" id="stocks-subfiles">
-    <!-- Mock sub-files for Stocks -->
-    <div class="asset-card" onclick="openTradeEngine('AAPL')">
-      <div>Apple Inc.</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('TSLA')">
-      <div>Tesla Inc.</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('AMZN')">
-      <div>Amazon.com</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Crypto Page -->
-<div id="crypto-page" class="asset-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">Crypto</h2>
-  <div class="asset-grid" id="crypto-subfiles">
-    <!-- Mock sub-files for Crypto -->
-    <div class="asset-card" onclick="openTradeEngine('BTC')">
-      <div>Bitcoin (BTC)</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('ETH')">
-      <div>Ethereum (ETH)</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('BNB')">
-      <div>Binance Coin (BNB)</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- FX Page -->
-<div id="fx-page" class="asset-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">FX Pairs</h2>
-  <div class="asset-grid" id="fx-subfiles">
-    <!-- Mock sub-files for FX -->
-    <div class="asset-card" onclick="openTradeEngine('EURUSD')">
-      <div>EUR / USD</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('GBPUSD')">
-      <div>GBP / USD</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-    <div class="asset-card" onclick="openTradeEngine('USDJPY')">
-      <div>USD / JPY</div>
-      <div>
-        <button class="buy-btn">Buy</button>
-        <button class="sell-btn">Sell</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-function openTradeEngine(asset){
-  alert("Opening trade engine for " + asset + " (mock data)");
-  // Here we can later populate the modal with stock/crypto/FX details
+function backToDashboard(){
+  document.getElementById('dashboard').style.display='grid';
+  document.getElementById('stocks-page').style.display='none';
+  document.getElementById('crypto-page').style.display='none';
+  document.getElementById('fx-page').style.display='none';
+  document.getElementById('learn-page').style.display='none';
+  document.getElementById('trade-modal').style.display='none';
 }
-</script>
-<!-- Trade Engine Modal -->
-<div id="trade-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); color:#fff; z-index:9999; overflow:auto; padding:50px;">
-  <button onclick="closeTradeModal()" style="background:#22c55e;color:#000;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;">✖ Close</button>
-  <h2 id="modal-asset-name" style="margin-top:20px; color:#22c55e;"></h2>
-  <div style="margin-top:20px;">
-    <p>Market Cap: <span id="modal-marketcap">$0</span></p>
-    <p>52-Week High: <span id="modal-high">$0</span></p>
-    <p>52-Week Low: <span id="modal-low">$0</span></p>
-    <p>Volume: <span id="modal-volume">0</span></p>
-    <p>Analyst Rating: <span id="modal-analyst">N/A</span></p>
-  </div>
-  <div style="margin-top:30px;">
-    <button onclick="buyAsset()" style="background:#22c55e;color:#000;padding:10px 20px;border:none;border-radius:5px;margin-right:15px;cursor:pointer;">Buy</button>
-    <button onclick="sellAsset()" style="background:#ef4444;color:#fff;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">Sell</button>
-  </div>
-</div>
 
-<script>
+// Trade Engine Modal
 function openTradeEngine(asset){
-  // Mock dynamic values
   let marketData = {
     'AAPL': {marketcap:'$2.8T', high:'$198.50', low:'$130.20', volume:'75M', analyst:'Buy'},
     'TSLA': {marketcap:'$1.1T', high:'$250.00', low:'$101.50', volume:'65M', analyst:'Hold'},
@@ -227,117 +182,21 @@ function openTradeEngine(asset){
   document.getElementById('modal-low').innerText = marketData[asset].low;
   document.getElementById('modal-volume').innerText = marketData[asset].volume;
   document.getElementById('modal-analyst').innerText = marketData[asset].analyst;
-
   document.getElementById('trade-modal').style.display='block';
 }
-
-function closeTradeModal(){
-  document.getElementById('trade-modal').style.display='none';
-}
-
+function closeTradeModal(){ document.getElementById('trade-modal').style.display='none'; }
 function buyAsset(){ alert("Buy order placed (mock)"); }
 function sellAsset(){ alert("Sell order placed (mock)"); }
-</script>
-<!-- Learn How to Trade Page -->
-<div id="learn-page" style="display:none; padding:50px;">
-  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
-  <h2 style="color:#22c55e;">Learn How to Trade</h2>
-  <div style="margin-top:30px;">
-    <video width="600" controls>
-      <source src="video/learn-trading.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-  <div style="margin-top:20px;">
-    <h3>Audio Lessons</h3>
-    <audio controls>
-      <source src="audio/lesson1.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-    <audio controls>
-      <source src="audio/lesson2.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-</div>
 
-<!-- Partners & Banks -->
-<div id="partners" style="padding:50px; display:flex; flex-wrap:wrap; gap:40px;">
-  <h2 style="width:100%; color:#22c55e;">Our Partners & Banks</h2>
-  <img src="logos/bank1.png" alt="Bank 1" width="120">
-  <img src="logos/bank2.png" alt="Bank 2" width="120">
-  <img src="logos/bank3.png" alt="Bank 3" width="120">
-  <img src="logos/visa.png" alt="Visa" width="80">
-  <img src="logos/mastercard.png" alt="MasterCard" width="80">
-</div>
-
-<!-- Testimonials -->
-<div id="testimonials" style="padding:50px; background: rgba(0,0,0,0.6); border-radius:15px;">
-  <h2 style="color:#22c55e;">Testimonials</h2>
-  <div style="margin-top:20px;">
-    <p>"Global Trade Capital made learning trading so simple!" - Ahmed S.</p>
-    <p>"I love the mock trading engine. Great for practice." - Fatima M.</p>
-    <p>"The dashboard looks professional and sleek." - Khaled R.</p>
-  </div>
-</div>
-
-<!-- Contact & Social -->
-<div id="contact" style="padding:50px;">
-  <h2 style="color:#22c55e;">Contact Us</h2>
-  <p>Email: support@globaltrade.ly</p>
-  <p>Facebook: <img src="logos/facebook.png" alt="Facebook" width="25"> / GlobalTradeCapital</p>
-  <p>WhatsApp: <img src="logos/whatsapp.png" alt="WhatsApp" width="25"> +218 92 123 4567</p>
-</div>
-
-<!-- Disclaimer -->
-<div id="disclaimer" style="padding:50px; font-size:14px; color:#f87171;">
-  <h2>Disclaimer</h2>
-  <p>All trading examples and asset prices shown are <strong>mock data</strong> for educational purposes only. No real trades are being executed.</p>
-</div>
-<script>
-// Additional JS for hover effects, ticker updates, mock dynamic animations
-
-// Ticker scroll (optional dynamic updates)
+// Ticker update
 const tickerSpan = document.querySelector('.ticker span');
 let tickerValues = ['▲ AAPL 189.32','▼ TSLA 242.19','▲ BTC 67234.22','▲ ETH 3211.87','▲ EUR/USD 1.0845','▼ GBP/USD 1.2154'];
 function updateTicker(){
   tickerValues.push(tickerValues.shift());
   tickerSpan.innerText = tickerValues.join(' | ');
 }
-setInterval(updateTicker, 5000); // scroll update every 5s
-
-// Card hover animations (slight scale on hover)
-const cards = document.querySelectorAll('.card');
-cards.forEach(card => {
-  card.addEventListener('mouseenter',()=>{card.style.transform='scale(1.05)';});
-  card.addEventListener('mouseleave',()=>{card.style.transform='scale(1)';});
-});
-
-// Asset Card hover
-const assetCards = document.querySelectorAll('.asset-card');
-assetCards.forEach(card=>{
-  card.addEventListener('mouseenter',()=>{card.style.boxShadow='0 0 20px #22c55e'; card.style.transform='translateY(-5px)';});
-  card.addEventListener('mouseleave',()=>{card.style.boxShadow='0 0 10px rgba(34,197,94,0.2)'; card.style.transform='translateY(0)';});
-});
-
-// Bilingual toggle (mock)
-let lang = 'EN';
-function toggleLang(){
-  lang = (lang==='EN')?'AR':'EN';
-  alert('Language switched to '+lang+' (mock)');
-}
-
-// Buy/Sell simulation
-function buyAsset(){ alert("Buy order placed (mock)"); }
-function sellAsset(){ alert("Sell order placed (mock)"); }
-
-// Back to dashboard (already defined)
-function backToDashboard(){
-  document.getElementById('dashboard').style.display='grid';
-  document.getElementById('stocks-page').style.display='none';
-  document.getElementById('crypto-page').style.display='none';
-  document.getElementById('fx-page').style.display='none';
-  document.getElementById('learn-page').style.display='none';
-  document.getElementById('trade-modal').style.display='none';
-}
+setInterval(updateTicker, 5000);
 </script>
+
+</body>
+</html>
