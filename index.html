@@ -1,22 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital - Premium</title>
+<title>Global Trade Capital - Premium Dashboard</title>
 <style>
 /* ---------- Global Reset ---------- */
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-       background: linear-gradient(135deg,#0f1c3d,#0a0c11); color:#fff; -webkit-font-smoothing:antialiased;
+       background: linear-gradient(135deg, #0b1222, #0f1c3d);
+       color:#fff; -webkit-font-smoothing:antialiased;
        transition: background 0.5s ease; }
 
 /* ---------- Header ---------- */
 header {
-  padding:28px 60px; font-size:26px; font-weight:800; letter-spacing:2px;
-  border-bottom:1px solid #171a23; background:#0e1118; text-align:center; position:relative;
+  padding:28px 60px; font-size:28px; font-weight:800; letter-spacing:2px;
+  border-bottom:1px solid #171a23; background:#0e1118; text-align:center;
 }
-header img { height:40px; vertical-align:middle; margin-right:15px; }
-.lang-switch { position:absolute; top:28px; right:60px; cursor:pointer; padding:6px 12px; border-radius:6px; background:#11151f; color:#fff; font-size:14px; }
 
 /* ---------- Top Navigation (Option B) ---------- */
 nav {
@@ -33,105 +32,107 @@ nav a:hover { color:#22c55e; }
 .ticker {
   display:inline-block; white-space:nowrap; padding:12px 0;
   animation:scroll 25s linear infinite; font-size:14px; color:#9ca3af;
+  font-weight:600;
 }
 .ticker span { margin-right:80px; }
 @keyframes scroll { from{transform:translateX(100%);} to{transform:translateX(-100%);} }
 
-/* ---------- Landing Page ---------- */
+/* ---------- Landing Folders ---------- */
 .home { display:flex; justify-content:center; align-items:center; gap:60px; height:70vh; flex-wrap:wrap; }
-
 .folder {
   width:280px; height:210px; display:flex; align-items:center; justify-content:center;
-  background:#11151f; border:1px solid #1c2130; border-radius:20px;
-  font-size:26px; font-weight:700; letter-spacing:2px; cursor:pointer;
+  background:#11151f; border:2px solid #1c2130; border-radius:20px;
+  font-size:28px; font-weight:700; letter-spacing:2px; cursor:pointer;
   transition:all .35s ease; position:relative; text-align:center;
-  box-shadow:0 5px 25px rgba(0,0,0,0.5);
-  color:#fff; text-shadow:0 0 6px #22c55e;
+  box-shadow:0 5px 20px rgba(0,0,0,0.4);
 }
 .folder::after {
   content:""; position:absolute; inset:0; border-radius:20px;
   background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0));
   pointer-events:none;
 }
-.folder:hover { transform:translateY(-8px); background:#141a26; border-color:#252b3d; box-shadow:0 8px 30px rgba(34,197,94,0.5); }
+.folder:hover { transform:translateY(-8px); background:#141a26; border-color:#22c55e; box-shadow:0 8px 25px rgba(34,197,94,0.6); }
 
 /* ---------- Sections ---------- */
 .section { display:none; padding:50px 80px; animation:fade .35s ease; }
 @keyframes fade { from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
-.back { font-size:14px; color:#7f8899; cursor:pointer; margin-bottom:30px; letter-spacing:1px; display:inline-block; }
-h2 { margin:0 0 30px 0; font-weight:600; letter-spacing:1px; color:#fff; }
+.back { font-size:14px; color:#7f8899; cursor:pointer; margin-bottom:30px; letter-spacing:1px; }
+h2 { margin:0 0 30px 0; font-weight:600; letter-spacing:1px; }
 
 /* ---------- Market Cards ---------- */
 .market-grid {
-  display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px;
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(350px,1fr)); gap:20px;
 }
 .card {
-  background:#11151f; border:1px solid #1c2130; border-radius:14px;
-  padding:16px 20px; display:flex; flex-direction:column; justify-content:space-between;
-  transition:.25s ease; cursor:pointer; position:relative; box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  background:#11151f; border:2px solid #1c2130; border-radius:16px;
+  padding:20px 22px; display:flex; flex-direction:column; justify-content:space-between;
+  transition:.25s ease; cursor:pointer; position:relative; box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
-.card:hover { background:#141a26; border-color:#252b3d; transform:translateY(-4px); box-shadow:0 6px 25px rgba(34,197,94,0.4); }
-.symbol { font-weight:600; letter-spacing:1px; display:flex; align-items:center; margin-bottom:10px; }
+.card:hover { background:#141a26; border-color:#22c55e; transform:translateY(-4px); box-shadow:0 10px 25px rgba(34,197,94,0.5); }
+.symbol { font-weight:700; letter-spacing:1px; display:flex; align-items:center; margin-bottom:10px; }
 .symbol img { width:28px; height:28px; margin-right:10px; border-radius:4px; }
-.price { margin-left:12px; color:#d1d5db; }
-.change { margin-left:8px; font-weight:500; }
+.price { margin-left:12px; color:#d1d5db; font-weight:600; }
+.change { margin-left:8px; font-weight:600; }
 .green{color:#22c55e} .red{color:#ef4444}
 
 /* ---------- Mini Sparkline Chart ---------- */
-.sparkline { position:absolute; bottom:8px; left:12px; height:22px; width:calc(100% - 24px); }
+.sparkline { position:absolute; bottom:10px; left:12px; height:22px; width:calc(100% - 24px); }
 
 /* ---------- Buttons ---------- */
-.actions { margin-top:12px; display:flex; justify-content:flex-end; }
+.actions { margin-top:10px; display:flex; justify-content:flex-end; }
 .actions button {
-  background:#22c55e; border:none; padding:6px 14px; margin-left:6px;
-  border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:.2s ease; color:#fff;
+  background:#ffffff; border:none; padding:8px 16px; margin-left:8px;
+  border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:.2s ease;
 }
-.actions button.sell { background:#ef4444; }
 .actions button:hover { opacity:.85; }
 
 /* ---------- Partner Banks ---------- */
 .partner-section { display:flex; justify-content:center; align-items:center; gap:40px; margin:50px 0; flex-wrap:wrap; }
 .partner-section img { width:60px; transition:.25s ease; }
-.partner-section img:hover { transform:scale(1.1); }
+.partner-section img:hover { transform:scale(1.15); }
 
 /* ---------- Testimonials Carousel ---------- */
 .testimonials { display:flex; overflow:hidden; margin:40px 0; position:relative; }
-.testimonial { min-width:100%; padding:20px; text-align:center; background:#11151f; border-radius:12px; margin-right:20px; box-shadow:0 4px 15px rgba(0,0,0,0.3); }
+.testimonial { min-width:100%; padding:25px; text-align:center; background:#11151f; border-radius:14px; margin-right:20px; box-shadow:0 5px 20px rgba(0,0,0,0.3); }
 .testimonial p { font-style:italic; color:#d1d5db; }
-.testimonial h4 { margin-top:10px; font-weight:600; color:#22c55e; }
+.testimonial h4 { margin-top:12px; font-weight:600; color:#22c55e; }
 
 /* ---------- Portfolio Panel ---------- */
 .portfolio { display:flex; justify-content:space-around; margin:30px 0; flex-wrap:wrap; gap:20px; }
-.portfolio-card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:20px; flex:1; min-width:200px; text-align:center; box-shadow:0 4px 15px rgba(0,0,0,0.3); }
-.portfolio-card h3 { font-size:18px; margin-bottom:10px; }
-.portfolio-card p { font-size:14px; color:#d1d5db; }
-
-/* ---------- Contact Section ---------- */
-.contact { background:#11151f; padding:40px; border-radius:14px; margin:40px 0; text-align:center; }
-.contact h3 { font-size:22px; margin-bottom:20px; }
-.contact input, .contact textarea { width:80%; margin:10px 0; padding:12px; border-radius:6px; border:none; background:#0e1118; color:#fff; }
-.contact button { margin-top:15px; padding:10px 20px; }
+.portfolio-card { background:#11151f; border:2px solid #1c2130; border-radius:16px; padding:22px; flex:1; min-width:200px; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3); }
+.portfolio-card h3 { font-size:18px; margin-bottom:12px; }
+.portfolio-card p { font-size:16px; color:#d1d5db; font-weight:600; }
 
 /* ---------- Learn More Section ---------- */
-.learn { padding:50px 80px; background:#0f192e; border-radius:14px; margin:40px 0; display:none; }
-.learn h3 { font-size:22px; margin-bottom:20px; }
-.learn audio { margin-top:10px; width:100%; }
+.learn-more { background:#11151f; padding:40px; border-radius:14px; margin:50px 0; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3); }
+.learn-more h3 { font-size:20px; margin-bottom:20px; }
+.learn-more .audio-tutorial { margin:15px 0; }
+
+/* ---------- Contact Section ---------- */
+.contact { background:#11151f; padding:40px; border-radius:16px; margin:40px 0; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3); }
+.contact h3 { font-size:22px; margin-bottom:18px; }
+.contact input, .contact textarea { width:80%; margin:10px 0; padding:12px; border-radius:6px; border:none; background:#0e1118; color:#fff; }
+.contact button { margin-top:12px; }
 
 /* ---------- Footer ---------- */
 footer {
   margin-top:80px; padding:50px; text-align:center;
-  border-top:1px solid #171a23; font-size:12px; color:#6b7280; background:#0e1118;
+  border-top:1px solid #171a23; font-size:13px; color:#6b7280; background:#0e1118;
 }
 footer img { width:50px; margin:0 10px; vertical-align:middle; }
 
+/* ---------- Glow Animations ---------- */
+@keyframes glow {
+  0% { box-shadow:0 0 5px #22c55e; }
+  50% { box-shadow:0 0 20px #22c55e; }
+  100% { box-shadow:0 0 5px #22c55e; }
+}
+.glow { animation:glow 2s infinite; }
 </style>
 </head>
 <body>
 
-<header>
-  <img src="https://via.placeholder.com/40x40?text=GTC" alt="Logo"> GLOBAL TRADE CAPITAL
-  <div class="lang-switch" onclick="switchLang()">EN/AR</div>
-</header>
+<header>GLOBAL TRADE CAPITAL</header>
 
 <nav>
   <a href="#" onclick="openSection('stocks')">STOCKS</a>
@@ -147,9 +148,9 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
 
 <!-- ---------- Landing Folders ---------- -->
 <div id="home" class="home">
-  <div class="folder" onclick="openSection('stocks')">STOCKS</div>
-  <div class="folder" onclick="openSection('crypto')">CRYPTO</div>
-  <div class="folder" onclick="openSection('fx')">FX</div>
+  <div class="folder glow" onclick="openSection('stocks')">STOCKS</div>
+  <div class="folder glow" onclick="openSection('crypto')">CRYPTO</div>
+  <div class="folder glow" onclick="openSection('fx')">FX</div>
 </div>
 
 <!-- ---------- Stocks Section ---------- -->
@@ -175,15 +176,15 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
 
 <!-- ---------- Portfolio Panel ---------- -->
 <div class="portfolio" id="portfolioPanel">
-  <div class="portfolio-card">
+  <div class="portfolio-card glow">
     <h3>Total Portfolio</h3>
     <p>$12,345.67</p>
   </div>
-  <div class="portfolio-card">
+  <div class="portfolio-card glow">
     <h3>Daily Change</h3>
     <p>+2.4%</p>
   </div>
-  <div class="portfolio-card">
+  <div class="portfolio-card glow">
     <h3>Watchlist</h3>
     <p>5 Assets</p>
   </div>
@@ -212,6 +213,27 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
   </div>
 </div>
 
+<!-- ---------- Learn More Section ---------- -->
+<div id="learn" class="section learn-more">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <h3>Beginner Trading Guide (EN / AR)</h3>
+  <p>Learn the basics of trading stocks, crypto, and FX.</p>
+  <div class="audio-tutorial">
+    <audio controls>
+      <source src="audio/tutorial_en.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <p>English</p>
+  </div>
+  <div class="audio-tutorial">
+    <audio controls>
+      <source src="audio/tutorial_ar.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <p>Arabic</p>
+  </div>
+</div>
+
 <!-- ---------- Contact Section ---------- -->
 <div class="section contact" id="contact">
   <h3>Contact Us</h3>
@@ -219,20 +241,6 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
   <input type="email" placeholder="Email">
   <textarea rows="4" placeholder="Message"></textarea>
   <button>Send Message</button>
-</div>
-
-<!-- ---------- Learn More Section ---------- -->
-<div id="learn" class="learn">
-  <h3>Beginner Trading Guide</h3>
-  <p>Learn the basics of trading in English and Arabic.</p>
-  <audio controls>
-    <source src="audio/english.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
-  <audio controls>
-    <source src="audio/arabic.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
 </div>
 
 <!-- ---------- Footer ---------- -->
@@ -246,31 +254,23 @@ footer img { width:50px; margin:0 10px; vertical-align:middle; }
 // ---------- Navigation ----------
 function openSection(id){
   document.getElementById("home").style.display="none";
-  document.querySelectorAll(".section, .learn").forEach(s=>s.style.display="none");
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
   document.getElementById(id).style.display="block";
 }
 function goBack(){
-  document.querySelectorAll(".section, .learn").forEach(s=>s.style.display="none");
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
   document.getElementById("home").style.display="flex";
-}
-
-// ---------- Language Switch ----------
-let lang="EN";
-function switchLang(){
-  lang = lang==="EN"?"AR":"EN";
-  document.body.dir = lang==="AR"?"rtl":"ltr";
 }
 
 // ---------- Create Market Cards ----------
 function createCards(id,list,logos){
   const container=document.getElementById(id+"List");
-  container.innerHTML="";
   list.forEach((item,i)=>{
     const price=(Math.random()*200+20).toFixed(2);
     const change=(Math.random()*4-2).toFixed(2);
     const color=change>=0?"green":"red";
     const card=document.createElement("div");
-    card.className="card";
+    card.className="card glow";
     card.innerHTML=`
       <div class="symbol">
         <img src="${logos[i]}" alt="${item} logo">${item}
@@ -280,7 +280,7 @@ function createCards(id,list,logos){
       <canvas class="sparkline"></canvas>
       <div class="actions">
         <button>BUY</button>
-        <button class="sell">SELL</button>
+        <button>SELL</button>
       </div>
     `;
     container.appendChild(card);
@@ -288,7 +288,7 @@ function createCards(id,list,logos){
   });
 }
 
-// ---------- Mini Sparkline ----------
+// ---------- Mini Sparkline Generator ----------
 function drawSparkline(canvas){
   const ctx=canvas.getContext("2d");
   canvas.width=canvas.offsetWidth;
@@ -302,17 +302,19 @@ function drawSparkline(canvas){
   ctx.stroke();
 }
 
-// ---------- Sample Data ----------
+// ---------- Realistic Logos ----------
 createCards("stocks", ["AAPL","NVDA","TSLA","AMZN","MSFT","META"],
            ["https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com",
             "https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com",
             "https://logo.clearbit.com/microsoft.com","https://logo.clearbit.com/meta.com"]);
+
 createCards("crypto", ["BTC","ETH","SOL","XRP","ADA"],
            ["https://cryptologos.cc/logos/bitcoin-btc-logo.png",
             "https://cryptologos.cc/logos/ethereum-eth-logo.png",
             "https://cryptologos.cc/logos/solana-sol-logo.png",
             "https://cryptologos.cc/logos/xrp-xrp-logo.png",
             "https://cryptologos.cc/logos/cardano-ada-logo.png"]);
+
 createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],
            ["https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg",
             "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
@@ -321,9 +323,9 @@ createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],
 
 // ---------- Ticker ----------
 document.getElementById("ticker").innerHTML=
-"AAPL 187.42 +1.2%  |  NVDA 914.33 +2.1%  |  BTC 62,350 +2.3%  |  EUR/USD 1.0842  |  TSLA 214.55 -0.8%";
+"<span>AAPL 187.42 +1.2%</span><span>NVDA 914.33 +2.1%</span><span>BTC 62,350 +2.3%</span><span>EUR/USD 1.0842</span><span>TSLA 214.55 -0.8%</span>";
 
-// ---------- Testimonials Rotation ----------
+// ---------- Testimonials Auto-Rotate ----------
 let testIndex=0;
 const testElems=document.querySelectorAll(".testimonial");
 function rotateTestimonials(){
