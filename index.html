@@ -4,210 +4,197 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade Capital</title>
-
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ---------- Global Reset ---------- */
+* { box-sizing:border-box; margin:0; padding:0; font-family: "Inter", Arial, sans-serif; }
+body { background: linear-gradient(135deg,#0b1220,#0f172a); color:#e5e7eb; -webkit-font-smoothing:antialiased; }
 
-body {
-    font-family: "Inter", Arial, sans-serif;
-    background: #0b1220;
-    color: #e5e7eb;
-}
+/* ---------- Header ---------- */
+header { padding:18px 40px; display:flex; justify-content:space-between; align-items:center; background:#0f172a; border-bottom:1px solid #1f2937; }
+header .logo { font-size:20px; font-weight:600; letter-spacing:1px; }
+nav { display:flex; gap:25px; font-size:14px; }
+nav span { color:#94a3b8; cursor:pointer; transition:.2s ease; }
+nav span:hover { color:#3b82f6; }
 
-/* ===== HEADER ===== */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 40px;
-    background: #0f172a;
-    border-bottom: 1px solid #1f2937;
-}
+/* ---------- Landing Folders ---------- */
+.home { display:flex; justify-content:center; align-items:center; gap:40px; padding:60px; flex-wrap:wrap; }
+.folder { width:220px; height:150px; display:flex; justify-content:center; align-items:center; font-size:20px; font-weight:700; border-radius:12px; background:#141c2f; border:1px solid #1e293b; cursor:pointer; transition:.3s ease; text-align:center; box-shadow:0 3px 10px rgba(0,0,0,0.3); }
+.folder:hover { transform:translateY(-6px); border-color:#3b82f6; background:#16202f; }
 
-.logo {
-    font-size: 20px;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
+/* ---------- Sections ---------- */
+.section { display:none; padding:40px; animation:fadeIn .4s ease; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
+.back { cursor:pointer; margin-bottom:20px; color:#94a3b8; font-size:13px; }
 
-.nav {
-    display: flex;
-    gap: 25px;
-    font-size: 14px;
-    color: #94a3b8;
-}
+/* ---------- Market Grid ---------- */
+.market-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:15px; }
+.market-card { background:#141c2f; border:1px solid #1e293b; border-radius:8px; padding:15px; transition:.2s ease; cursor:pointer; }
+.market-card:hover { border-color:#3b82f6; transform:translateY(-2px); }
+.symbol { font-size:13px; color:#94a3b8; }
+.price { font-size:18px; font-weight:600; margin-top:6px; }
+.change-up { font-size:12px; color:#22c55e; margin-top:4px; }
+.change-down { font-size:12px; color:#ef4444; margin-top:4px; }
 
-.nav span:hover {
-    color: #3b82f6;
-    cursor: pointer;
-}
+/* ---------- Portfolio Panel ---------- */
+.portfolio { display:flex; justify-content:space-around; flex-wrap:wrap; gap:20px; padding:30px 40px; }
+.portfolio-card { background:#141c2f; border:1px solid #1e293b; border-radius:10px; padding:20px; flex:1; min-width:180px; text-align:center; }
+.portfolio-card h3 { font-size:16px; margin-bottom:8px; }
+.portfolio-card p { font-size:14px; color:#e5e7eb; }
 
-/* ===== DASHBOARD TOP ===== */
-.dashboard-top {
-    padding: 40px;
-}
+/* ---------- Partner Logos ---------- */
+.partner-section { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; padding:20px 0; }
+.partner-section img { width:60px; transition:.25s ease; }
+.partner-section img:hover { transform:scale(1.1); }
 
-.account-value {
-    font-size: 32px;
-    font-weight: 600;
-}
+/* ---------- Testimonials ---------- */
+.testimonials { display:flex; overflow:hidden; margin:40px 0; position:relative; }
+.testimonial { min-width:100%; padding:20px; text-align:center; background:#141c2f; border-radius:10px; margin-right:15px; }
+.testimonial p { font-style:italic; color:#d1d5eb; }
+.testimonial h4 { margin-top:10px; font-weight:600; color:#3b82f6; }
 
-.account-change {
-    margin-top: 8px;
-    color: #22c55e;
-    font-size: 14px;
-}
+/* ---------- "What We Do" Section ---------- */
+.what-we-do { padding:40px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+.wwd-card { background:#141c2f; border:1px solid #1e293b; border-radius:10px; padding:20px; text-align:center; }
+.wwd-card h3 { font-size:16px; margin-bottom:8px; }
+.wwd-card p { font-size:14px; color:#e5e7eb; }
 
-/* ===== MARKET SECTION ===== */
-.section {
-    padding: 0 40px 50px 40px;
-}
+/* ---------- Contact ---------- */
+.contact { background:#141c2f; padding:40px; border-radius:10px; text-align:center; margin:40px 0; }
+.contact h3 { font-size:20px; margin-bottom:15px; }
+.contact input, .contact textarea { width:80%; margin:8px 0; padding:10px; border-radius:6px; border:none; background:#0f172a; color:#fff; }
+.contact button { margin-top:10px; padding:8px 16px; border:none; border-radius:6px; background:#3b82f6; color:#fff; cursor:pointer; transition:.2s ease; }
+.contact button:hover { opacity:.85; }
 
-.section-title {
-    font-size: 14px;
-    letter-spacing: 1px;
-    color: #64748b;
-    margin-bottom: 20px;
-}
+/* ---------- Footer ---------- */
+footer { padding:30px 40px; text-align:center; border-top:1px solid #1e293b; font-size:12px; color:#94a3b8; background:#0f172a; }
 
-.market-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 15px;
-}
-
-/* Smaller professional cards */
-.market-card {
-    background: #141c2f;
-    padding: 15px;
-    border-radius: 6px;
-    border: 1px solid #1e293b;
-    transition: 0.2s ease;
-}
-
-.market-card:hover {
-    border-color: #3b82f6;
-    transform: translateY(-2px);
-}
-
-.symbol {
-    font-size: 13px;
-    color: #94a3b8;
-}
-
-.price {
-    font-size: 18px;
-    margin-top: 6px;
-    font-weight: 600;
-}
-
-.change-up {
-    color: #22c55e;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.change-down {
-    color: #ef4444;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    padding: 25px 40px;
-    border-top: 1px solid #1f2937;
-    font-size: 12px;
-    color: #64748b;
-}
 </style>
 </head>
-
 <body>
 
 <!-- HEADER -->
-<div class="header">
-    <div class="logo">Global Trade Capital</div>
-    <div class="nav">
-        <span>Dashboard</span>
-        <span>Markets</span>
-        <span>Portfolio</span>
-        <span>Crypto</span>
-        <span>Settings</span>
-    </div>
-</div>
+<header>
+  <div class="logo">Global Trade Capital</div>
+  <nav>
+    <span onclick="openSection('stocks')">Stocks</span>
+    <span onclick="openSection('crypto')">Crypto</span>
+    <span onclick="openSection('fx')">FX</span>
+    <span onclick="openSection('portfolioPanel')">Portfolio</span>
+    <span onclick="openSection('contact-section')">Contact</span>
+  </nav>
+</header>
 
-<!-- DASHBOARD SUMMARY -->
-<div class="dashboard-top">
-    <div class="account-value">$248,390.12</div>
-    <div class="account-change">+ $2,430.21 ( +0.98% ) Today</div>
+<!-- LANDING -->
+<div id="home" class="home">
+  <div class="folder" onclick="openSection('stocks')">STOCKS</div>
+  <div class="folder" onclick="openSection('crypto')">CRYPTO</div>
+  <div class="folder" onclick="openSection('fx')">FX</div>
+  <div class="folder" onclick="openSection('portfolioPanel')">PORTFOLIO</div>
 </div>
 
 <!-- STOCKS -->
-<div class="section">
-    <div class="section-title">US EQUITIES</div>
-    <div class="market-grid">
-
-        <div class="market-card">
-            <div class="symbol">AAPL</div>
-            <div class="price">$192.33</div>
-            <div class="change-up">+1.24%</div>
-        </div>
-
-        <div class="market-card">
-            <div class="symbol">TSLA</div>
-            <div class="price">$248.11</div>
-            <div class="change-down">-0.52%</div>
-        </div>
-
-        <div class="market-card">
-            <div class="symbol">NVDA</div>
-            <div class="price">$881.20</div>
-            <div class="change-up">+2.10%</div>
-        </div>
-
-        <div class="market-card">
-            <div class="symbol">AMZN</div>
-            <div class="price">$174.44</div>
-            <div class="change-up">+0.63%</div>
-        </div>
-
-    </div>
+<div id="stocks" class="section">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <div class="section-title">US EQUITIES</div>
+  <div class="market-grid">
+    <div class="market-card"><div class="symbol">AAPL</div><div class="price">$192.33</div><div class="change-up">+1.24%</div></div>
+    <div class="market-card"><div class="symbol">TSLA</div><div class="price">$248.11</div><div class="change-down">-0.52%</div></div>
+    <div class="market-card"><div class="symbol">NVDA</div><div class="price">$881.20</div><div class="change-up">+2.10%</div></div>
+    <div class="market-card"><div class="symbol">AMZN</div><div class="price">$174.44</div><div class="change-up">+0.63%</div></div>
+  </div>
 </div>
 
 <!-- CRYPTO -->
-<div class="section">
-    <div class="section-title">CRYPTOCURRENCY</div>
-    <div class="market-grid">
-
-        <div class="market-card">
-            <div class="symbol">BTC</div>
-            <div class="price">$62,340</div>
-            <div class="change-up">+1.88%</div>
-        </div>
-
-        <div class="market-card">
-            <div class="symbol">ETH</div>
-            <div class="price">$3,410</div>
-            <div class="change-down">-0.44%</div>
-        </div>
-
-        <div class="market-card">
-            <div class="symbol">SOL</div>
-            <div class="price">$138.22</div>
-            <div class="change-up">+3.12%</div>
-        </div>
-
-    </div>
+<div id="crypto" class="section">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <div class="section-title">CRYPTOCURRENCY</div>
+  <div class="market-grid">
+    <div class="market-card"><div class="symbol">BTC</div><div class="price">$62,340</div><div class="change-up">+1.88%</div></div>
+    <div class="market-card"><div class="symbol">ETH</div><div class="price">$3,410</div><div class="change-down">-0.44%</div></div>
+    <div class="market-card"><div class="symbol">SOL</div><div class="price">$138.22</div><div class="change-up">+3.12%</div></div>
+    <div class="market-card"><div class="symbol">ADA</div><div class="price">$0.92</div><div class="change-up">+0.75%</div></div>
+  </div>
 </div>
 
-<div class="footer">
-    © 2026 Global Trade Capital LTD. All rights reserved.
+<!-- FX -->
+<div id="fx" class="section">
+  <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
+  <div class="section-title">FOREIGN EXCHANGE</div>
+  <div class="market-grid">
+    <div class="market-card"><div class="symbol">EUR/USD</div><div class="price">1.0842</div><div class="change-up">+0.12%</div></div>
+    <div class="market-card"><div class="symbol">GBP/USD</div><div class="price">1.2421</div><div class="change-down">-0.05%</div></div>
+    <div class="market-card"><div class="symbol">USD/JPY</div><div class="price">132.14</div><div class="change-up">+0.08%</div></div>
+  </div>
 </div>
+
+<!-- PORTFOLIO PANEL -->
+<div id="portfolioPanel" class="section portfolio">
+  <div class="portfolio-card"><h3>Total Portfolio</h3><p>$12,345.67</p></div>
+  <div class="portfolio-card"><h3>Daily Change</h3><p>+2.4%</p></div>
+  <div class="portfolio-card"><h3>Watchlist</h3><p>5 Assets</p></div>
+</div>
+
+<!-- WHAT WE DO -->
+<div class="what-we-do section">
+  <div class="wwd-card"><h3>Real-time Market Data</h3><p>Access equities, crypto, and FX markets instantly.</p></div>
+  <div class="wwd-card"><h3>Portfolio Management</h3><p>Track your assets with intuitive dashboards.</p></div>
+  <div class="wwd-card"><h3>Advanced Analytics</h3><p>Charts, trends, and actionable insights for better trading.</p></div>
+</div>
+
+<!-- PARTNER BANKS -->
+<div class="partner-section section">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bank_of_Libya_logo.png" alt="Bank of Libya">
+  <img src="https://via.placeholder.com/60x60?text=B2" alt="Bank 2">
+  <img src="https://via.placeholder.com/60x60?text=B3" alt="Bank 3">
+  <img src="https://via.placeholder.com/60x60?text=B4" alt="Bank 4">
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials section">
+  <div class="testimonial"><p>"Global Trade Capital made my trading experience so smooth and professional."</p><h4>— Ahmed T.</h4></div>
+  <div class="testimonial"><p>"Excellent interface and real-time market updates, highly recommended."</p><h4>— Leila K.</h4></div>
+  <div class="testimonial"><p>"I feel confident managing my portfolio here. Very sleek and reliable."</p><h4>— Omar S.</h4></div>
+</div>
+
+<!-- CONTACT -->
+<div id="contact-section" class="section contact">
+  <h3>Contact Us</h3>
+  <input type="text" placeholder="Name">
+  <input type="email" placeholder="Email">
+  <textarea rows="4" placeholder="Message"></textarea>
+  <button>Send Message</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div>Global Trade Capital — Institutional Trading Infrastructure</div>
+  <div>Contact: info@globaltrade.ly</div>
+  <div>Disclaimer: Demo version. Not connected to live markets.</div>
+</footer>
+
+<script>
+// ---------- Navigation ----------
+function openSection(id){
+  document.getElementById("home").style.display="none";
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+function goBack(){
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  document.getElementById("home").style.display="flex";
+}
+
+// ---------- Testimonials Auto-Rotate ----------
+let tIndex = 0;
+const tElems = document.querySelectorAll(".testimonial");
+function rotateTestimonials(){
+  tElems.forEach(e => e.style.transform="translateX(100%)");
+  tElems[tIndex].style.transform="translateX(0)";
+  tIndex = (tIndex + 1) % tElems.length;
+}
+setInterval(rotateTestimonials,4000);
+rotateTestimonials();
+</script>
 
 </body>
 </html>
