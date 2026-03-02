@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital - v6+</title>
+<title>Global Trade Capital - v7</title>
 <style>
 /* General Styles */
 body, html {margin:0;padding:0;font-family:Arial,sans-serif;background:#0f1115;color:#e5e7eb;}
@@ -47,8 +47,11 @@ button{cursor:pointer;transition:0.2s;}
 .contact input,.contact textarea{width:300px;padding:10px;border-radius:6px;border:1px solid #374151;background:#0f1115;color:white;}
 .contact button{padding:10px 25px;border:none;border-radius:6px;background:#22c55e;color:#0f1115;font-weight:600;}
 
-/* Asset Grid for Stocks/Crypto/FX */
-.asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:50px;display:none;}
+/* Asset Pages */
+.asset-page{display:none;padding:50px;}
+.back-btn{margin-bottom:20px;padding:8px 20px;border:none;border-radius:6px;background:#374151;color:white;cursor:pointer;transition:0.2s;}
+.back-btn:hover{background:#22c55e;}
+.asset-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
 .asset-card{background:#161b24;border:1px solid #1f2937;border-radius:8px;padding:15px;display:flex;justify-content:space-between;align-items:center;transition:0.2s;cursor:pointer;}
 .asset-card:hover{background:#1c2230;box-shadow:0 0 10px #22c55e;transform:translateY(-2px);}
 .buy-btn{background:#22c55e;color:#0f1115;padding:6px 12px;border:none;border-radius:6px;font-weight:600;}
@@ -88,16 +91,27 @@ button{cursor:pointer;transition:0.2s;}
 </div>
 
 <!-- Main Landing Grid -->
-<div class="main-grid">
-  <div class="card" onclick="showSection('stocks')"><h2>Stocks</h2>📈</div>
-  <div class="card" onclick="showSection('crypto')"><h2>Crypto</h2>💰</div>
-  <div class="card" onclick="showSection('fx')"><h2>FX</h2>💱</div>
+<div id="dashboard" class="main-grid">
+  <div class="card" onclick="openAssetPage('stocks')"><h2>Stocks</h2>📈</div>
+  <div class="card" onclick="openAssetPage('crypto')"><h2>Crypto</h2>💰</div>
+  <div class="card" onclick="openAssetPage('fx')"><h2>FX</h2>💱</div>
 </div>
 
-<!-- Sections -->
-<div id="stocks" class="asset-grid"></div>
-<div id="crypto" class="asset-grid"></div>
-<div id="fx" class="asset-grid"></div>
+<!-- Asset Pages -->
+<div id="stocks-page" class="asset-page">
+  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+  <div class="asset-grid" id="stocks-grid"></div>
+</div>
+
+<div id="crypto-page" class="asset-page">
+  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+  <div class="asset-grid" id="crypto-grid"></div>
+</div>
+
+<div id="fx-page" class="asset-page">
+  <button class="back-btn" onclick="backToDashboard()">⬅ Back to Dashboard</button>
+  <div class="asset-grid" id="fx-grid"></div>
+</div>
 
 <!-- Modal -->
 <div class="modal" id="modal">
@@ -147,26 +161,31 @@ button{cursor:pointer;transition:0.2s;}
 <script>
 // Language Toggle
 let lang='EN';
-function toggleLang(){
-  lang=(lang==='EN')?'AR':'EN';
-  alert('Language switched to '+lang);
+function toggleLang(){lang=(lang==='EN')?'AR':'EN';alert('Language switched to '+lang);}
+
+// Back to Dashboard
+function backToDashboard(){
+  document.getElementById('dashboard').style.display='grid';
+  document.getElementById('stocks-page').style.display='none';
+  document.getElementById('crypto-page').style.display='none';
+  document.getElementById('fx-page').style.display='none';
 }
 
-// Show Section
-function showSection(section){
-  document.getElementById('stocks').style.display='none';
-  document.getElementById('crypto').style.display='none';
-  document.getElementById('fx').style.display='none';
-  document.getElementById(section).style.display='grid';
+// Open Asset Pages
+function openAssetPage(page){
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('stocks-page').style.display=(page==='stocks')?'block':'none';
+  document.getElementById('crypto-page').style.display=(page==='crypto')?'block':'none';
+  document.getElementById('fx-page').style.display=(page==='fx')?'block':'none';
 }
 
-// Expanded Asset Lists
+// Asset Lists
 const stocks=["Apple Inc.","Tesla Inc.","Microsoft Corp.","Amazon.com Inc.","Google LLC","Meta Platforms","NVIDIA","Intel","Netflix","Adobe","PayPal","AMD","Shopify","Visa","MasterCard","IBM","Oracle","Snap Inc.","Twitter","Disney"];
 const crypto=["Bitcoin","Ethereum","Cardano","Solana","Ripple","Polkadot","Litecoin","Dogecoin","Chainlink","Avalanche","Stellar","Polygon","Uniswap","VeChain","Cosmos"];
 const fx=["EUR/USD","GBP/USD","USD/JPY","AUD/USD","USD/CAD","NZD/USD","USD/CHF","EUR/GBP","EUR/JPY","GBP/JPY","AUD/JPY","CAD/JPY","CHF/JPY","NZD/JPY","EUR/AUD"];
 
-function populateGrid(id,array){
-  const grid=document.getElementById(id);
+function populateGrid(gridId,array){
+  const grid=document.getElementById(gridId);
   grid.innerHTML='';
   array.forEach(symbol=>{
     const card=document.createElement('div');
@@ -179,9 +198,10 @@ function populateGrid(id,array){
     grid.appendChild(card);
   });
 }
-populateGrid('stocks',stocks);
-populateGrid('crypto',crypto);
-populateGrid('fx',fx);
+
+populateGrid('stocks-grid',stocks);
+populateGrid('crypto-grid',crypto);
+populateGrid('fx-grid',fx);
 
 // Modal
 function openModal(symbol){
@@ -190,7 +210,7 @@ function openModal(symbol){
   document.getElementById('modalInfo').innerText='52-week High: XXX, Low: XXX, Market Cap: XXX, Volume: XXX';
 }
 function closeModal(){document.getElementById('modal').style.display='none';}
-</script>
 
+</script>
 </body>
 </html>
