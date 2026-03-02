@@ -1,70 +1,69 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital - Premium Dashboard</title>
+<title>Global Trade Capital V5</title>
 <style>
 /* ---------- Global Reset ---------- */
 * { box-sizing:border-box; margin:0; padding:0; }
 body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
        background: linear-gradient(135deg, #0f1c3d, #0a0c11);
        color:#fff; -webkit-font-smoothing:antialiased;
-       transition: background 0.5s ease; }/* ---------- Header ---------- */ header { padding:28px 60px; font-size:26px; font-weight:800; letter-spacing:2px; border-bottom:1px solid #171a23; background:#0e1118; text-align:center; position:relative; }
+       transition: background 0.5s ease; }/* ---------- Header ---------- */ header { padding:28px 60px; font-size:26px; font-weight:800; letter-spacing:2px; border-bottom:1px solid #171a23; background:#0e1118; text-align:center; }
 
-/* ---------- Language Toggle ---------- */ .lang-switch { position:absolute; top:28px; right:60px; cursor:pointer; padding:6px 12px; border-radius:8px; background:#1f2937; color:#fff; font-weight:600; transition:0.2s ease; } .lang-switch:hover { background:#22c55e; }
+/* ---------- Top Navigation / Sidebar ---------- */ nav { display:flex; justify-content:center; gap:50px; padding:15px 0; background:#111833; font-weight:600; letter-spacing:1px; border-bottom:1px solid #1c2130; } nav a { color:#9ca3af; text-decoration:none; transition:0.2s ease; } nav a:hover { color:#22c55e; }
 
-/* ---------- Top Navigation (Option B mix) ---------- */ nav { display:flex; justify-content:center; gap:50px; padding:15px 0; background:#111833; font-weight:600; letter-spacing:1px; border-bottom:1px solid #1c2130; } nav a { color:#9ca3af; text-decoration:none; transition:0.2s ease; } nav a:hover { color:#22c55e; }
+/* ---------- Dark/Light Toggle ---------- */ #themeToggle { position:absolute; right:30px; top:25px; cursor:pointer; padding:6px 12px; border-radius:6px; background:#22c55e; color:#111; font-weight:600; }
 
-/* ---------- Ticker ---------- */ .ticker-wrap { overflow:hidden; border-bottom:1px solid #171a23; background:#0e1118; position:relative; } .ticker { display:inline-block; white-space:nowrap; padding:12px 0; animation:scroll 25s linear infinite; font-size:14px; color:#9ca3af; } .ticker span { margin-right:80px; } @keyframes scroll { from{transform:translateX(100%);} to{transform:translateX(-100%);} }
+/* ---------- Ticker ---------- */ .ticker-wrap { overflow:hidden; border-bottom:1px solid #171a23; background:#0e1118; position:relative; } .ticker { display:inline-block; white-space:nowrap; padding:12px 0; animation:scroll 30s linear infinite; font-size:14px; color:#fff; text-shadow: 0 0 8px rgba(34, 197, 94,0.7); } .ticker span { margin-right:80px; font-weight:600; } .ticker .green{color:#22c55e;} .ticker .red{color:#ef4444;} @keyframes scroll { from{transform:translateX(100%);} to{transform:translateX(-100%);} }
 
-/* ---------- Landing Folders ---------- */ .home { display:flex; justify-content:center; align-items:center; gap:60px; height:70vh; flex-wrap:wrap; } .folder { width:260px; height:200px; display:flex; align-items:center; justify-content:center; background:#11151f; border:1px solid #1c2130; border-radius:20px; font-size:26px; font-weight:700; letter-spacing:2px; cursor:pointer; transition:all .35s ease; position:relative; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.4); color:#fff; } .folder::after { content:""; position:absolute; inset:0; border-radius:20px; background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0)); pointer-events:none; } .folder:hover { transform:translateY(-8px); background:#141a26; border-color:#252b3d; box-shadow:0 8px 25px rgba(0,255,150,0.2); }
+/* ---------- Landing Page Folders ---------- */ .home { display:flex; justify-content:center; align-items:center; gap:60px; height:70vh; flex-wrap:wrap; } .folder { width:260px; height:200px; display:flex; align-items:center; justify-content:center; background:#11151f; border:1px solid #1c2130; border-radius:20px; font-size:26px; font-weight:700; letter-spacing:2px; cursor:pointer; transition:all .35s ease; position:relative; text-align:center; box-shadow:0 5px 15px rgba(0,0,0,0.3); } .folder::after { content:""; position:absolute; inset:0; border-radius:20px; background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0)); pointer-events:none; } .folder:hover { transform:translateY(-8px); background:#141a26; border-color:#252b3d; box-shadow:0 0 15px rgba(34,197,94,0.7); }
 
 /* ---------- Sections ---------- */ .section { display:none; padding:50px 80px; animation:fade .35s ease; } @keyframes fade { from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} } .back { font-size:14px; color:#7f8899; cursor:pointer; margin-bottom:30px; letter-spacing:1px; } h2 { margin:0 0 30px 0; font-weight:600; letter-spacing:1px; }
 
-/* ---------- Market Cards ---------- */ .market-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px; } .card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; transition:.25s ease; cursor:pointer; position:relative; box-shadow:0 4px 15px rgba(0,255,150,0.1); } .card:hover { background:#141a26; border-color:#252b3d; transform:translateY(-4px); box-shadow:0 6px 20px rgba(0,255,150,0.3); } .symbol { font-weight:600; letter-spacing:1px; display:flex; align-items:center; } .symbol img { width:28px; height:28px; margin-right:10px; border-radius:4px; } .price { margin-left:12px; color:#d1d5db; font-weight:600; } .change { margin-left:8px; font-weight:600; } .green{color:#22c55e} .red{color:#ef4444}
+/* ---------- Market Cards ---------- */ .market-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px; } .card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; transition:.25s ease; cursor:pointer; position:relative; box-shadow:0 0 10px rgba(34,197,94,0.3); } .card:hover { background:#141a26; border-color:#252b3d; transform:translateY(-4px); box-shadow:0 0 15px rgba(34,197,94,0.7); } .symbol { font-weight:600; letter-spacing:1px; display:flex; align-items:center; } .symbol img { width:24px; height:24px; margin-right:10px; border-radius:4px; } .price { margin-left:12px; color:#d1d5db; } .change { margin-left:8px; font-weight:500; } .green{color:#22c55e} .red{color:#ef4444}
 
-/* ---------- Mini Sparkline Chart ---------- */ .sparkline { position:absolute; bottom:8px; left:12px; height:22px; width:calc(100% - 24px); }
+/* ---------- Sparkline Chart ---------- */ .sparkline { position:absolute; bottom:8px; left:12px; height:20px; width:calc(100% - 24px); }
 
-/* ---------- Buttons ---------- */ .actions button { background:#ffffff; border:none; padding:6px 14px; margin-left:6px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:.2s ease; } .actions button:hover { opacity:.85; }
+/* ---------- Buttons ---------- */ .actions button { background:#22c55e; border:none; padding:6px 14px; margin-left:6px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; transition:.2s ease; } .actions button:hover { opacity:.85; }
 
-/* ---------- Partner Banks ---------- */ .partner-section { display:flex; justify-content:center; align-items:center; gap:40px; margin:50px 0; flex-wrap:wrap; } .partner-section img { width:60px; transition:.25s ease; filter:brightness(0.9); } .partner-section img:hover { transform:scale(1.1); filter:brightness(1); }
+/* ---------- Partner Banks ---------- */ .partner-section { display:flex; justify-content:center; align-items:center; gap:40px; margin:50px 0; flex-wrap:wrap; } .partner-section img { width:60px; transition:.25s ease; } .partner-section img:hover { transform:scale(1.1); }
 
-/* ---------- Testimonials Carousel ---------- */ .testimonials { display:flex; overflow:hidden; margin:40px 0; position:relative; } .testimonial { min-width:100%; padding:20px; text-align:center; background:#11151f; border-radius:12px; margin-right:20px; box-shadow:0 4px 15px rgba(0,255,150,0.1); } .testimonial p { font-style:italic; color:#d1d5db; } .testimonial h4 { margin-top:10px; font-weight:600; color:#22c55e; }
+/* ---------- Testimonials Carousel ---------- */ .testimonials { display:flex; overflow:hidden; margin:40px 0; position:relative; } .testimonial { min-width:100%; padding:20px; text-align:center; background:#11151f; border-radius:12px; margin-right:20px; box-shadow:0 0 10px rgba(34,197,94,0.3); } .testimonial p { font-style:italic; color:#d1d5db; } .testimonial h4 { margin-top:10px; font-weight:600; color:#22c55e; }
 
-/* ---------- Portfolio Panel ---------- */ .portfolio { display:flex; justify-content:space-around; margin:30px 0; flex-wrap:wrap; gap:20px; } .portfolio-card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:20px; flex:1; min-width:200px; text-align:center; box-shadow:0 4px 12px rgba(0,255,150,0.1); } .portfolio-card h3 { font-size:18px; margin-bottom:10px; } .portfolio-card p { font-size:14px; color:#d1d5db; }
+/* ---------- Portfolio Panel ---------- */ .portfolio { display:flex; justify-content:space-around; margin:30px 0; flex-wrap:wrap; gap:20px; } .portfolio-card { background:#11151f; border:1px solid #1c2130; border-radius:14px; padding:20px; flex:1; min-width:200px; text-align:center; box-shadow:0 0 10px rgba(34,197,94,0.3); } .portfolio-card h3 { font-size:18px; margin-bottom:10px; } .portfolio-card p { font-size:14px; color:#d1d5db; }
 
-/* ---------- Contact Section ---------- */ .contact { background:#11151f; padding:40px; border-radius:14px; margin:40px 0; text-align:center; box-shadow:0 4px 20px rgba(0,255,150,0.1); } .contact h3 { font-size:22px; margin-bottom:15px; } .contact input, .contact textarea { width:80%; margin:8px 0; padding:12px; border-radius:8px; border:none; background:#0e1118; color:#fff; font-size:14px; } .contact button { margin-top:12px; font-size:14px; }
+/* ---------- Contact Section ---------- */ .contact { background:#11151f; padding:40px; border-radius:14px; margin:40px 0; text-align:center; } .contact h3 { font-size:22px; margin-bottom:15px; } .contact input, .contact textarea { width:80%; margin:8px 0; padding:10px; border-radius:6px; border:none; background:#0e1118; color:#fff; } .contact button { margin-top:10px; background:#22c55e; color:#111; font-weight:600; }
 
-/* ---------- Footer ---------- */ footer { margin-top:80px; padding:50px; text-align:center; border-top:1px solid #171a23; font-size:14px; color:#6b7280; background:#0e1118; } footer img { width:50px; margin:0 10px; vertical-align:middle; filter:brightness(0.8); transition:0.2s ease; } footer img:hover { filter:brightness(1); } </style>
+/* ---------- Footer ---------- */ footer { margin-top:80px; padding:50px; text-align:center; border-top:1px solid #171a23; font-size:12px; color:#6b7280; background:#0e1118; } footer img { width:50px; margin:0 10px; vertical-align:middle; }
+
+/* ---------- Responsive Improvements ---------- */ @media(max-width:768px){ .market-grid{ grid-template-columns:1fr; } } </style>
 
 </head>
-<body><header>GLOBAL TRADE CAPITAL
-  <div class="lang-switch" onclick="toggleLang()">EN/AR</div>
-</header><nav>
+<body><header>GLOBAL TRADE CAPITAL <span id="themeToggle" onclick="toggleTheme()">Toggle Theme</span></header><nav>
   <a href="#" onclick="openSection('stocks')">STOCKS</a>
   <a href="#" onclick="openSection('crypto')">CRYPTO</a>
   <a href="#" onclick="openSection('fx')">FX</a>
   <a href="#contact-section" onclick="openSection('contact')">CONTACT</a>
+  <a href="#" onclick="openSection('learn')">LEARN</a>
 </nav><div class="ticker-wrap">
   <div class="ticker" id="ticker"></div>
-</div><!-- Landing Folders --><div id="home" class="home">
+</div><div id="home" class="home">
   <div class="folder" onclick="openSection('stocks')">STOCKS</div>
   <div class="folder" onclick="openSection('crypto')">CRYPTO</div>
   <div class="folder" onclick="openSection('fx')">FX</div>
-</div><!-- Sections for Stocks, Crypto, FX --><div id="stocks" class="section">
+</div><div id="stocks" class="section">
   <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
   <h2>Equities</h2>
   <div class="market-grid" id="stocksList"></div>
-</div>
-<div id="crypto" class="section">
+</div><div id="crypto" class="section">
   <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
   <h2>Digital Assets</h2>
   <div class="market-grid" id="cryptoList"></div>
-</div>
-<div id="fx" class="section">
+</div><div id="fx" class="section">
   <div class="back" onclick="goBack()">← RETURN TO DASHBOARD</div>
   <h2>Foreign Exchange</h2>
   <div class="market-grid" id="fxList"></div>
-</div><!-- Portfolio Panel --><div class="portfolio" id="portfolioPanel">
+</div><div class="portfolio" id="portfolioPanel">
   <div class="portfolio-card">
     <h3>Total Portfolio</h3>
     <p>$12,345.67</p>
@@ -77,11 +76,11 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,
     <h3>Watchlist</h3>
     <p>5 Assets</p>
   </div>
-</div><!-- Partner Banks --><div class="partner-section">
+</div><div class="partner-section">
   <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Bank_of_Libya_logo.png" alt="Bank of Libya">
   <img src="https://via.placeholder.com/60x60?text=B2" alt="Bank 2">
   <img src="https://via.placeholder.com/60x60?text=B3" alt="Bank 3">
-</div><!-- Testimonials --><div class="testimonials" id="testimonials">
+</div><div class="testimonials" id="testimonials">
   <div class="testimonial">
     <p>"Global Trade Capital made my trading experience so smooth and professional."</p>
     <h4>— Ahmed T.</h4>
@@ -94,13 +93,20 @@ body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,
     <p>"I feel confident managing my portfolio here. Very sleek and reliable."</p>
     <h4>— Omar S.</h4>
   </div>
-</div><!-- Contact Section --><div class="section contact" id="contact-section">
+</div><div class="section contact" id="contact-section">
   <h3>Contact Us</h3>
   <input type="text" placeholder="Name">
   <input type="email" placeholder="Email">
   <textarea rows="4" placeholder="Message"></textarea>
   <button>Send Message</button>
-</div><!-- Footer --><footer>
+</div><div class="section" id="learn">
+  <h2>Learn Trading</h2>
+  <p>Beginner-friendly tutorials and audio guides in Arabic and English will appear here.</p>
+  <audio controls>
+    <source src="audio/learn-trading.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+</div><footer>
   <div>Global Trade Capital — Institutional Trading Infrastructure</div>
   <div>Contact Us: info@globaltrade.ly</div>
   <div>Disclaimer: This is a demo. Not connected to live markets.</div>
@@ -116,7 +122,12 @@ function goBack(){
   document.getElementById("home").style.display="flex";
 }
 
-/* ---------- Market Cards ---------- */
+/* ---------- Theme Toggle ---------- */
+function toggleTheme(){
+  document.body.classList.toggle('dark-mode');
+}
+
+/* ---------- Create Market Cards ---------- */
 function createCards(id,list,logos){
   const container=document.getElementById(id+"List");
   list.forEach((item,i)=>{
@@ -141,39 +152,48 @@ function createCards(id,list,logos){
     drawSparkline(card.querySelector(".sparkline"));
   });
 }
+
+/* ---------- Sparkline ---------- */
 function drawSparkline(canvas){
   const ctx=canvas.getContext("2d");
-  canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight;
+  canvas.width=canvas.offsetWidth;
+  canvas.height=canvas.offsetHeight;
   const points=Array.from({length:20},()=>Math.random()*canvas.height);
-  ctx.beginPath(); ctx.moveTo(0,canvas.height-points[0]);
+  ctx.beginPath();
+  ctx.moveTo(0,canvas.height-points[0]);
   points.forEach((p,i)=>ctx.lineTo(i*(canvas.width/points.length),canvas.height-p));
-  ctx.strokeStyle="#22c55e"; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.strokeStyle="#22c55e";
+  ctx.lineWidth=1.5;
+  ctx.stroke();
 }
 
-/* ---------- Mock Data ---------- */
-createCards("stocks", ["AAPL","NVDA","TSLA","AMZN","MSFT","META"],["https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com","https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com","https://logo.clearbit.com/microsoft.com","https://logo.clearbit.com/meta.com"]);
-createCards("crypto", ["BTC","ETH","SOL","XRP","ADA"],["https://cryptologos.cc/logos/bitcoin-btc-logo.png","https://cryptologos.cc/logos/ethereum-eth-logo.png","https://cryptologos.cc/logos/solana-sol-logo.png","https://cryptologos.cc/logos/xrp-xrp-logo.png","https://cryptologos.cc/logos/cardano-ada-logo.png"]);
-createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],["https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg","https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg","https://upload.wikimedia.org/wikipedia/en/2/21/Flag_of_Japan.svg","https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg"]);
+/* ---------- Realistic Logos ---------- */
+createCards("stocks", ["AAPL","NVDA","TSLA","AMZN","MSFT","META"],[
+  "https://logo.clearbit.com/apple.com","https://logo.clearbit.com/nvidia.com",
+  "https://logo.clearbit.com/tesla.com","https://logo.clearbit.com/amazon.com",
+  "https://logo.clearbit.com/microsoft.com","https://logo.clearbit.com/meta.com"]);
+
+createCards("crypto", ["BTC","ETH","SOL","XRP","ADA"],[
+  "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
+  "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  "https://cryptologos.cc/logos/solana-sol-logo.png",
+  "https://cryptologos.cc/logos/xrp-xrp-logo.png",
+  "https://cryptologos.cc/logos/cardano-ada-logo.png"]);
+
+createCards("fx", ["EUR/USD","GBP/USD","USD/JPY","USD/CHF"],[
+  "https://upload.wikimedia.org/wikipedia/commons/4/45/Flag_of_Europe.svg",
+  "https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg",
+  "https://upload.wikimedia.org/wikipedia/en/2/21/Flag_of_Japan.svg",
+  "https://upload.wikimedia.org/wikipedia/commons/f/f3/Flag_of_Switzerland.svg"]);
 
 /* ---------- Ticker ---------- */
-document.getElementById("ticker").innerHTML="AAPL 187.42 +1.2%  |  NVDA 914.33 +2.1%  |  BTC 62,350 +2.3%  |  EUR/USD 1.0842  |  TSLA 214.55 -0.8%";
+document.getElementById("ticker").innerHTML=
+  `<span class='green'>AAPL 187.42 +1.2%</span>  |  
+   <span class='green'>NVDA 914.33 +2.1%</span>  |  
+   <span class='green'>BTC 62,350 +2.3%</span>  |  
+   <span class='red'>TSLA 214.55 -0.8%</span>  |  
+   <span class='green'>EUR/USD 1.0842</span>`;
 
-/* ---------- Testimonials Rotate ---------- */
+/* ---------- Testimonials Rotation ---------- */
 let testIndex=0;
-const testElems=document.querySelectorAll(".testimonial");
-function rotateTestimonials(){
-  testElems.forEach(e=>e.style.transform="translateX(100%)");
-  testElems[testIndex].style.transform="translateX(0)";
-  testIndex=(testIndex+1)%testElems.length;
-}
-setInterval(rotateTestimonials,4000);
-rotateTestimonials();
-
-/* ---------- Language Toggle ---------- */
-let lang="EN";
-function toggleLang(){
-  lang = (lang=="EN")?"AR":"EN";
-  alert('Language switched to '+lang+' (mock labels only)');
-}
-</script></body>
-</html>
+const testElems=document.query
