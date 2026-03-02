@@ -1,63 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Global Trade Dashboard - Test</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #0f172a;
-            color: white;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Trade Capital</title>
 
-        .test-banner {
-            background: red;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            font-weight: bold;
-            font-size: 20px;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        .header {
-            padding: 20px;
-            text-align: center;
-            background: #111827;
-            font-size: 24px;
-        }
+body {
+    font-family: "Inter", Arial, sans-serif;
+    background: #0b1220;
+    color: #e5e7eb;
+}
 
-        .content {
-            padding: 40px;
-            text-align: center;
-        }
+/* ===== HEADER ===== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background: #0f172a;
+    border-bottom: 1px solid #1f2937;
+}
 
-        .box {
-            display: inline-block;
-            background: #1e293b;
-            padding: 20px;
-            margin: 15px;
-            border-radius: 8px;
-            width: 200px;
-        }
-    </style>
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+.nav span:hover {
+    color: #3b82f6;
+    cursor: pointer;
+}
+
+/* ===== DASHBOARD TOP ===== */
+.dashboard-top {
+    padding: 40px;
+}
+
+.account-value {
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.account-change {
+    margin-top: 8px;
+    color: #22c55e;
+    font-size: 14px;
+}
+
+/* ===== MARKET SECTION ===== */
+.section {
+    padding: 0 40px 50px 40px;
+}
+
+.section-title {
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #64748b;
+    margin-bottom: 20px;
+}
+
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+}
+
+/* Smaller professional cards */
+.market-card {
+    background: #141c2f;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #1e293b;
+    transition: 0.2s ease;
+}
+
+.market-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+}
+
+.symbol {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.price {
+    font-size: 18px;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+.change-up {
+    color: #22c55e;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.change-down {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    padding: 25px 40px;
+    border-top: 1px solid #1f2937;
+    font-size: 12px;
+    color: #64748b;
+}
+</style>
 </head>
+
 <body>
 
-    <div class="test-banner">
-        🚀 GLOBAL TRADE VERSION 3.1 – DEPLOYMENT TEST ACTIVE
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">Global Trade Capital</div>
+    <div class="nav">
+        <span>Dashboard</span>
+        <span>Markets</span>
+        <span>Portfolio</span>
+        <span>Crypto</span>
+        <span>Settings</span>
     </div>
+</div>
 
-    <div class="header">
-        Global Trade Dashboard
-    </div>
+<!-- DASHBOARD SUMMARY -->
+<div class="dashboard-top">
+    <div class="account-value">$248,390.12</div>
+    <div class="account-change">+ $2,430.21 ( +0.98% ) Today</div>
+</div>
 
-    <div class="content">
-        <div class="box">AAPL - $192.33</div>
-        <div class="box">TSLA - $248.11</div>
-        <div class="box">BTC - $62,340</div>
+<!-- STOCKS -->
+<div class="section">
+    <div class="section-title">US EQUITIES</div>
+    <div class="market-grid">
+
+        <div class="market-card">
+            <div class="symbol">AAPL</div>
+            <div class="price">$192.33</div>
+            <div class="change-up">+1.24%</div>
+        </div>
+
+        <div class="market-card">
+            <div class="symbol">TSLA</div>
+            <div class="price">$248.11</div>
+            <div class="change-down">-0.52%</div>
+        </div>
+
+        <div class="market-card">
+            <div class="symbol">NVDA</div>
+            <div class="price">$881.20</div>
+            <div class="change-up">+2.10%</div>
+        </div>
+
+        <div class="market-card">
+            <div class="symbol">AMZN</div>
+            <div class="price">$174.44</div>
+            <div class="change-up">+0.63%</div>
+        </div>
+
     </div>
+</div>
+
+<!-- CRYPTO -->
+<div class="section">
+    <div class="section-title">CRYPTOCURRENCY</div>
+    <div class="market-grid">
+
+        <div class="market-card">
+            <div class="symbol">BTC</div>
+            <div class="price">$62,340</div>
+            <div class="change-up">+1.88%</div>
+        </div>
+
+        <div class="market-card">
+            <div class="symbol">ETH</div>
+            <div class="price">$3,410</div>
+            <div class="change-down">-0.44%</div>
+        </div>
+
+        <div class="market-card">
+            <div class="symbol">SOL</div>
+            <div class="price">$138.22</div>
+            <div class="change-up">+3.12%</div>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer">
+    © 2026 Global Trade Capital LTD. All rights reserved.
+</div>
 
 </body>
 </html>
