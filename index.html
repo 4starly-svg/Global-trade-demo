@@ -5,7 +5,7 @@
 <title>Global Trade Capital - Phase 2</title>
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-/* --- GENERAL STYLING --- */
+/* ---------------- GENERAL STYLING ---------------- */
 body{margin:0;font-family:Arial,sans-serif;background:#0b0f19;color:#e5e7eb;}
 button{cursor:pointer;border:none;outline:none;}
 .page{display:none;padding:120px 40px 40px 40px;}
@@ -168,39 +168,32 @@ Your browser does not support the audio element.
 </div>
 
 <script>
-// -------- STATE ----------
+// ---------------- STATE ----------------
 let balance=100000;
 let portfolio={};
 let currentAsset="";
-let prices={};
-let priceHistory={};
+let language="en";
 let users={demo:"demo123"};
 let newsHeadlines=["Stock STK1 hits all-time high!","Bitcoin surges 5%","EUR/USD steady","Crypto market volatile","Tech stocks rebound"];
-let language="en";
+let demoStocks=[{symbol:"AAPL",price:178.50,change:1.2},{symbol:"GOOG",price:2850.15,change:-0.8},{symbol:"AMZN",price:3450.00,change:2.5}];
+let demoCrypto=[{coin:"Bitcoin",price:27300,change:2.1},{coin:"Ethereum",price:1875,change:-1.3},{coin:"Solana",price:22.3,change:0.5}];
+let demoFX=[{pair:"USD/EUR",bid:0.922,ask:0.923},{pair:"GBP/USD",bid:1.256,ask:1.257},{pair:"USD/LYD",bid:4.56,ask:4.57}];
 
-// -------- LABELS ----------
+// ---------------- LABELS ----------------
 const labels = {
   en:{dashboard:"Trading Dashboard",stocks:"Stocks",crypto:"Crypto",fx:"FX",learn:"Learn to Trade",portfolio:"Portfolio",login:"Login",buy:"BUY",sell:"SELL",contact:"CONTACT US",email:"Email: support@globaltrade.demo",whatsapp:"WhatsApp: +1 000 000 0000"},
   ar:{dashboard:"لوحة التداول",stocks:"الأسهم",crypto:"العملات الرقمية",fx:"سوق العملات",learn:"تعلم التداول",portfolio:"المحفظة",login:"تسجيل الدخول",buy:"شراء",sell:"بيع",contact:"اتصل بنا",email:"البريد الإلكتروني: support@globaltrade.demo",whatsapp:"واتساب: +1 000 000 0000"}
 };
 
-// -------- MOCK DATA ----------
-function createAssets(prefix,count){
-for(let i=0;i<count;i++){
-let symbol=prefix+(i+1);
-let price=parseFloat((Math.random()*200+20).toFixed(2));
-prices[symbol]=price;
-priceHistory[symbol]=[price];
-}}
-createAssets("STK",100);
-createAssets("COIN",50);
-let fxPairs=["USD/GBP","EUR/USD","USD/JPY","USD/CHF","GBP/JPY"];
-
-// -------- PAGE CONTROL ----------
-function openPage(page){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(page).style.display='block';}
+// ---------------- NAVIGATION ----------------
+function openPage(page){
+  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+  document.getElementById(page).style.display="block";
+}
 function goHome(){openPage('dashboard');}
+openPage('dashboard');
 
-// -------- LANGUAGE TOGGLE ----------
+// ---------------- LANGUAGE TOGGLE ----------------
 function toggleLanguage(){
   language = (language==="en")?"ar":"en";
   document.getElementById("langSwitch").innerText=(language==="en")?"English":"Arabic";
@@ -215,9 +208,110 @@ function toggleLanguage(){
   document.getElementById("contactHeading").innerText=labels[language].contact;
   document.getElementById("contactEmail").innerText=labels[language].email;
   document.getElementById("contactWhats").innerText=labels[language].whatsapp;
-  document.querySelectorAll(".trade").forEach(btn=>{btn.innerText=(btn.innerText.toUpperCase().includes("BUY")||btn.innerText.toUpperCase()==="BUY")?labels[language].buy:labels[language].sell;});
+  document.querySelectorAll(".trade").forEach(btn=>btn.innerText=(btn.innerText.toUpperCase().includes("BUY")?labels[language].buy:labels[language].sell));
 }
-</script>
 
+// ---------------- LOGIN ----------------
+function loginUser(){
+  let u=document.getElementById("username").value;
+  let p=document.getElementById("password").value;
+  if(users[u] && users[u]===p){alert("Login successful!");goHome();}
+  else{document.getElementById("loginMsg").innerText="Invalid credentials";}
+}
+
+// ---------------- POPULATE TABLES ----------------
+function populateStocks(){
+  let tbody=document.getElementById("stockTable");
+  tbody.innerHTML="";
+  demoStocks.forEach(s=>{
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${s.symbol}</td><td>$${s.price.toFixed(2)}</td><td class="${s.change>=0?'positive':'negative'}">${s.change}%</td>`;
+    tr.onclick=()=>openAssetDetail(s.symbol,s.price);
+    tbody.appendChild(tr);
+  });
+}
+function populateCrypto(){
+  let tbody=document.getElementById("cryptoTable");
+  tbody.innerHTML="";
+  demoCrypto.forEach(c=>{
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${c.coin}</td><td>$${c.price.toFixed(2)}</td><td class="${c.change>=0?'positive':'negative'}">${c.change}%</td>`;
+    tr.onclick=()=>openAssetDetail(c.coin,c.price);
+    tbody.appendChild(tr);
+  });
+}
+function populateFX(){
+  let tbody=document.getElementById("fxTable");
+  tbody.innerHTML="";
+  demoFX.forEach(f=>{
+    let tr=document.createElement("tr");
+    tr.innerHTML=`<td>${f.pair}</td><td>${f.bid}</td><td>${f.ask}</td>`;
+    tr.onclick=()=>openAssetDetail(f.pair,(f.bid+f.ask)/2);
+    tbody.appendChild(tr);
+  });
+}
+
+// ---------------- ASSET DETAIL ----------------
+function openAssetDetail(asset,price){
+  currentAsset=asset;
+  openPage('detail');
+  document.getElementById("assetTitle").innerText=asset;
+  // CHART MOCK
+  let chartDiv=document.getElementById("chart");
+  chartDiv.innerHTML="";
+  const chart = LightweightCharts.createChart(chartDiv,{width:chartDiv.clientWidth,height:300,rightPriceScale:{mode:1}});
+  const lineSeries = chart.addLineSeries();
+  let mockData=[];
+  for(let i=0;i<50;i++){mockData.push({time:Date.now()/1000-50*60+i*60,value:price*(0.95+Math.random()*0.1)});}
+  lineSeries.setData(mockData);
+}
+
+// ---------------- TRADE EXECUTION ----------------
+function executeTrade(type){
+  let qty=parseFloat(document.getElementById("qty").value);
+  if(!qty||qty<=0){alert("Enter valid quantity");return;}
+  let price=0;
+  demoStocks.forEach(s=>{if(s.symbol===currentAsset)price=s.price;});
+  demoCrypto.forEach(c=>{if(c.coin===currentAsset)price=c.price;});
+  demoFX.forEach(f=>{if(f.pair===currentAsset)price=(f.bid+f.ask)/2;});
+  if(type==="buy"){
+    if(!portfolio[currentAsset])portfolio[currentAsset]={qty:0,avg:0};
+    portfolio[currentAsset].avg=(portfolio[currentAsset].avg*portfolio[currentAsset].qty+price*qty)/(portfolio[currentAsset].qty+qty);
+    portfolio[currentAsset].qty+=qty;
+    balance-=price*qty;
+  } else {
+    if(portfolio[currentAsset] && portfolio[currentAsset].qty>=qty){
+      portfolio[currentAsset].qty-=qty;
+      balance+=price*qty;
+    } else {alert("Not enough quantity to sell");return;}
+  }
+  document.getElementById("balanceBox").innerText=`Balance: $${balance.toFixed(2)}`;
+  updatePortfolio();
+}
+
+// ---------------- UPDATE PORTFOLIO ----------------
+function updatePortfolio(){
+  let tbody=document.getElementById("portfolioTable");
+  tbody.innerHTML="";
+  for(let a in portfolio){
+    tbody.innerHTML+=`<tr><td>${a}</td><td>${portfolio[a].qty}</td><td>$${portfolio[a].avg.toFixed(2)}</td></tr>`;
+  }
+}
+
+// ---------------- TICKERS ----------------
+function scrollTicker(id,items){
+  const el=document.getElementById(id);
+  let idx=0;
+  setInterval(()=>{el.innerText=items[idx];idx=(idx+1)%items.length;},2500);
+}
+scrollTicker("topTicker",["AAPL $178.50 +1.2%","GOOG $2850.15 -0.8%","BTC $27300 +2.1%","ETH $1875 -1.3%","USD/EUR 0.922"]);
+scrollTicker("bottomTicker",newsHeadlines);
+
+// ---------------- INITIAL POPULATE ----------------
+populateStocks();
+populateCrypto();
+populateFX();
+
+</script>
 </body>
 </html>
