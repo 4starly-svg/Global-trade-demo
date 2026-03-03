@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital - LinkedIn Style Experiment</title>
+<title>Global Trade Capital - Full Dashboard Mock</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 /* Reset & basic */
@@ -26,7 +26,7 @@ nav a:hover{color:#0a66c2;}
 @keyframes scrollTicker{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
 
 /* Sections */
-section{padding:60px;margin:0 60px;background:#ffffff;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.03);}
+section{padding:60px;margin:20px 60px;background:#ffffff;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.03);}
 .section-title{font-size:28px;margin-bottom:40px;color:#0a66c2;border-left:4px solid #0a66c2;padding-left:15px;}
 .stocks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
 .stock-card{background:#f3f6f9;padding:20px;border-radius:10px;border:1px solid #d1d5db;transition:.3s;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,0.05);}
@@ -110,17 +110,21 @@ footer{padding:40px 60px;background:#e8f0fe;text-align:center;color:#1c1e21;bord
 <section id="learnPage" class="page">
 <h2 class="section-title">Learn to Trade</h2>
 <div class="learn-box">
-<p>Learn trading from scratch. Start small and grow your portfolio.</p>
+<p>Learn trading from scratch with professional guidance.</p>
 <div class="learn-grid">
-<div class="testimonial">"Super easy to learn, even for beginners!"</div>
-<div class="testimonial">"You don’t need much money to start trading."</div>
-<div class="testimonial">"Step-by-step guidance, simple to follow."</div>
+<div class="testimonial">“Trading is simple and intuitive.”</div>
+<div class="testimonial">“You don’t need a lot of money to start.”</div>
+<div class="testimonial">“Step by step learning is easy and effective.”</div>
 </div>
-
 <div class="payments">
-<div class="payment-item"><img src="visa.png" alt="Visa"><p>Visa</p></div>
-<div class="payment-item"><img src="mastercard.png" alt="MasterCard"><p>MasterCard</p></div>
-<div class="payment-item"><img src="paypal.png" alt="PayPal"><p>PayPal</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa"><p>Visa</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard"><p>MasterCard</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"><p>PayPal</p></div>
+<!-- Add Libyan bank logos -->
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Sahara_Bank_Logo.png" alt="Sahara Bank"><p>Sahara Bank / صحراء بنك</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/National_Commercial_Bank_Libya_logo.png" alt="National Commercial Bank"><p>National Commercial Bank / البنك التجاري الوطني</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/8/88/Jamhuriya_Bank_Logo.png" alt="Jamhuriya Bank"><p>Jamhuriya Bank / مصرف الجمهورية</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/2/28/Bank_of_Commerce_and_Development_Logo.png" alt="Bank of Commerce & Development"><p>Bank of Commerce & Development / بنك التجارة والتنمية</p></div>
 </div>
 </div>
 </section>
@@ -128,10 +132,10 @@ footer{padding:40px 60px;background:#e8f0fe;text-align:center;color:#1c1e21;bord
 <!-- Contact Page -->
 <section id="contactPage" class="page">
 <h2 class="section-title">Contact Us</h2>
-<p style="margin-bottom:20px;">Reach us via Facebook or WhatsApp for account setup and support.</p>
-<div style="display:flex;gap:20px;">
-<a href="#"><img src="facebook.png" alt="Facebook" width="50"></a>
-<a href="#"><img src="whatsapp.png" alt="WhatsApp" width="50"></a>
+<p style="margin-bottom:20px;">Reach out to us via social media or banks listed below.</p>
+<div class="payments">
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook"><p>Facebook</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"><p>WhatsApp</p></div>
 </div>
 </section>
 
@@ -139,6 +143,7 @@ footer{padding:40px 60px;background:#e8f0fe;text-align:center;color:#1c1e21;bord
 <p>&copy; 2026 Global Trade Capital. All rights reserved.</p>
 </footer>
 
+<!-- JS -->
 <script>
 // SPA navigation
 function showPage(pageId){
@@ -146,47 +151,55 @@ function showPage(pageId){
   document.getElementById(pageId).classList.add('active');
 }
 
-// Language toggle
+// Language toggle (mock)
 function setLang(lang){
-  if(lang==='en'){
-    document.querySelectorAll('.section-title').forEach(e=>e.textContent=e.getAttribute('data-en')||e.textContent);
-  } else {
-    // example Arabic translation (expand as needed)
-    document.querySelectorAll('.section-title').forEach(e=>{
-      let translations={'Stocks':'الأسهم','Cryptocurrency':'العملات الرقمية','Forex / Exchange':'الفوركس / الصرف','Learn to Trade':'تعلم التداول','Contact Us':'اتصل بنا'};
-      e.textContent=translations[e.textContent]||e.textContent;
-    });
-  }
+  // Here you can implement full English/Arabic translations
+  alert('Language set to: '+lang);
 }
 
 // Mock data population
-const mockStocks=[{symbol:'AAPL',price:'$174.23'},{symbol:'TSLA',price:'$229.50'},{symbol:'MSFT',price:'$315.11'}];
-const mockCrypto=[{symbol:'BTC',price:'$28,200'},{symbol:'ETH',price:'$1,850'},{symbol:'SOL',price:'$23.45'}];
-const mockFX=[{symbol:'USD/LYD',price:'4.81'},{symbol:'GBP/USD',price:'1.24'},{symbol:'EUR/USD',price:'1.08'}];
+const mockStocks = [
+  {name:'Apple',price:176.25,high:178.00,low:175.50,change:'+1.2%'},
+  {name:'Tesla',price:232.10,high:235.00,low:230.00,change:'-0.5%'},
+  {name:'Microsoft',price:310.50,high:315.00,low:308.00,change:'+0.7%'},
+  {name:'Amazon',price:145.80,high:147.00,low:144.50,change:'-0.3%'}
+];
+const mockCrypto = [
+  {name:'Bitcoin',price:27890,high:28000,low:27500,change:'+2.1%'},
+  {name:'Ethereum',price:1890,high:1905,low:1870,change:'-0.5%'},
+  {name:'Solana',price:25.5,high:26.0,low:25.0,change:'+1.8%'}
+];
+const mockFX = [
+  {name:'USD/LYD',price:4.60,high:4.62,low:4.58,change:'+0.2%'},
+  {name:'GBP/USD',price:1.23,high:1.24,low:1.22,change:'-0.1%'},
+  {name:'EUR/USD',price:1.08,high:1.09,low:1.07,change:'+0.3%'}
+];
 
 function populateGrid(containerId,data){
-  const container=document.getElementById(containerId);
+  const container = document.getElementById(containerId);
   container.innerHTML='';
   data.forEach(item=>{
-    const div=document.createElement('div');
+    const div = document.createElement('div');
     div.className='stock-card';
-    div.innerHTML=`<h3>${item.symbol}</h3><p class="price">${item.price}</p><button onclick="openModal('${item.symbol}','${item.price}')">Trade</button>`;
+    div.innerHTML=`<h3>${item.name}</h3>
+                   <p class="price">${item.price}</p>
+                   <p>High: ${item.high} / Low: ${item.low}</p>
+                   <p>Change: ${item.change}</p>
+                   <button onclick="openTradeModal('${item.name}')">Trade</button>`;
     container.appendChild(div);
   });
 }
-
 populateGrid('stocksContainer',mockStocks);
 populateGrid('cryptoContainer',mockCrypto);
 populateGrid('fxContainer',mockFX);
 
-// Modal
-function openModal(symbol,price){
-  let modal=document.createElement('div');
-  modal.className='modal';
-  modal.innerHTML=`<div class="modal-content"><span class="close-modal" onclick="this.parentElement.parentElement.remove()">×</span><h3>${symbol}</h3><p>Price: ${price}</p><button style="padding:10px 20px;background:#0a66c2;color:#fff;border:none;border-radius:6px;">Buy / Sell</button></div>`;
-  document.body.appendChild(modal);
-  modal.style.display='flex';
-}
+// Trade modal
+const modal = document.createElement('div');
+modal.className='modal';
+modal.innerHTML=`<div class="modal-content"><span class="close-modal" onclick="closeTradeModal()">×</span><h3 id="modalTitle"></h3><p>Buy/Sell interface coming soon.</p></div>`;
+document.body.appendChild(modal);
+function openTradeModal(name){document.getElementById('modalTitle').innerText=name;modal.style.display='flex';}
+function closeTradeModal(){modal.style.display='none';}
 </script>
 
 </body>
