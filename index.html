@@ -3,132 +3,161 @@
 <head>
 <meta charset="UTF-8">
 <title>Global Trade Capital</title>
-<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 
 <style>
-body{
+*{
 margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:radial-gradient(circle at 20% 20%,#0f2b5b,#040c1f);
-color:#fff;
+padding:0;
+box-sizing:border-box;
 }
 
-/* NAVBAR */
+body{
+font-family:Segoe UI,Arial,Helvetica,sans-serif;
+background:radial-gradient(circle at 30% 20%,#0a1f44,#020817 70%);
+color:#fff;
+overflow-x:hidden;
+}
+
+/* ===== NAVBAR ===== */
 #navbar{
 position:fixed;
 top:0;
 width:100%;
+height:70px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 30px;
-background:linear-gradient(90deg,#071a3a,#0f2b5b);
-box-shadow:0 0 20px rgba(0,255,255,.2);
+padding:0 60px;
+background:rgba(4,12,31,0.85);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(0,255,255,0.1);
 z-index:1000;
 }
 
 .logo{
 font-size:22px;
-font-weight:bold;
-background:linear-gradient(45deg,#00f5ff,#00c3ff);
+font-weight:600;
+letter-spacing:1px;
+background:linear-gradient(90deg,#00f0ff,#00aaff);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 }
 
 .nav-links{
 display:flex;
+gap:18px;
 align-items:center;
-gap:12px;
-flex-wrap:wrap;
 }
 
 .nav-links button{
-background:#0b2247;
-border:none;
+background:transparent;
+border:1px solid rgba(0,255,255,.2);
 color:#fff;
-padding:8px 14px;
-border-radius:6px;
+padding:8px 18px;
+border-radius:30px;
+cursor:pointer;
 transition:.3s;
 }
 
 .nav-links button:hover{
 background:#00e0ff;
 color:#00152d;
-box-shadow:0 0 12px #00e0ff;
+box-shadow:0 0 15px rgba(0,255,255,.6);
 }
 
 #langSwitch{
 background:#00e0ff;
 color:#00152d;
-font-weight:bold;
+font-weight:600;
 }
 
-/* PAGE */
-.page{
-display:none;
-padding:120px 40px 60px 40px;
+/* ===== CONTAINER ===== */
+.container{
+max-width:1200px;
+margin:120px auto 80px auto;
+padding:0 40px;
 }
 
+/* ===== HEADINGS ===== */
 h2{
-color:#00f5ff;
-margin-bottom:10px;
+font-size:28px;
+margin-bottom:20px;
+font-weight:500;
+letter-spacing:.5px;
+color:#00eaff;
 }
 
-/* TABLES */
+/* ===== GLASS CARD ===== */
+.card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(0,255,255,0.1);
+border-radius:16px;
+padding:30px;
+margin-bottom:40px;
+backdrop-filter:blur(12px);
+box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+/* ===== TABLE ===== */
 table{
 width:100%;
 border-collapse:collapse;
-background:rgba(0,0,0,.3);
-border-radius:8px;
-overflow:hidden;
 }
 
-th,td{
-padding:10px;
-text-align:center;
+th{
+text-align:left;
+padding:14px;
+color:#00eaff;
+font-weight:500;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+td{
+padding:14px;
 border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 tr:hover{
-background:rgba(0,255,255,.1);
-cursor:pointer;
+background:rgba(0,255,255,.05);
 }
 
-.positive{color:#00ff88;font-weight:bold;}
-.negative{color:#ff4d4d;font-weight:bold;}
+.positive{color:#00ff9c;font-weight:600;}
+.negative{color:#ff5c5c;font-weight:600;}
 
-/* LOGOS */
+/* ===== LOGO GRID ===== */
 .partner-logos{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:25px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+gap:30px;
+align-items:center;
+justify-items:center;
 margin-top:20px;
 }
 
 .partner-logos img{
-height:45px;
-filter:drop-shadow(0 0 6px rgba(0,255,255,.4));
+max-height:50px;
+filter:brightness(1.1) drop-shadow(0 0 10px rgba(0,255,255,.3));
 transition:.3s;
 }
 
 .partner-logos img:hover{
 transform:scale(1.1);
+filter:brightness(1.4) drop-shadow(0 0 20px rgba(0,255,255,.6));
 }
 
-/* TICKERS */
+/* ===== TICKERS ===== */
 #topTicker,#bottomTicker{
 position:fixed;
 width:100%;
-padding:8px 20px;
-background:#071a3a;
-color:#00f5ff;
-font-weight:bold;
+padding:10px 40px;
+font-size:14px;
+background:#031226;
+color:#00f0ff;
 white-space:nowrap;
 overflow:hidden;
 }
 
-#topTicker{top:60px;}
+#topTicker{top:70px;}
 #bottomTicker{bottom:0;}
 
 </style>
@@ -141,58 +170,51 @@ overflow:hidden;
 <div class="nav-links">
 <button onclick="openPage('dashboard')">Dashboard</button>
 <button onclick="openPage('stocks')">Stocks</button>
-<button onclick="openPage('learn')">Learn</button>
+<button onclick="openPage('learn')">Partners</button>
 <button id="langSwitch" onclick="toggleLanguage()">Language: عربي</button>
 </div>
 </div>
 
 <div id="topTicker"></div>
-<div id="bottomTicker"></div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="page">
+<div class="container">
+
+<div id="dashboard" class="card">
 <h2 id="dashTitle">Trading Dashboard</h2>
-<p id="dashText">Welcome to your AI-powered trading platform.</p>
+<p id="dashText">Welcome to your AI-powered institutional trading environment.</p>
 </div>
 
-<!-- STOCKS -->
-<div id="stocks" class="page">
+<div id="stocks" class="card" style="display:none;">
 <h2>Stocks</h2>
 <table>
-<thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Price</th>
+<th>Change</th>
+</tr>
+</thead>
 <tbody id="stockTable"></tbody>
 </table>
 </div>
 
-<!-- LEARN -->
-<div id="learn" class="page">
-<h2 id="learnTitle">Our Banking Partners</h2>
+<div id="learn" class="card" style="display:none;">
+<h2 id="learnTitle">Banking & Payment Partners</h2>
 
 <div class="partner-logos">
-<!-- National Commercial Bank -->
-<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Libya_Coat_of_Arms.svg" alt="National Commercial Bank">
-
-<!-- Sahara Bank -->
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg" alt="Sahara Bank">
-
-<!-- Al Jumhouria Bank -->
-<img src="https://static.cdnlogo.com/logos/j/32/jumhouria-bank.svg" alt="Al Jumhouria Bank">
-</div>
-
-<h2 style="margin-top:40px;">Payment Methods</h2>
-<div class="partner-logos">
+<img src="https://static.cdnlogo.com/logos/j/32/jumhouria-bank.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg">
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
-</div>
-
-<h2 style="margin-top:40px;">Contact Us</h2>
-<div class="partner-logos">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png">
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
 </div>
 
 </div>
+
+</div>
+
+<div id="bottomTicker"></div>
 
 <script>
 let language="en";
@@ -203,7 +225,9 @@ let stocks=[
 ];
 
 function openPage(p){
-document.querySelectorAll(".page").forEach(el=>el.style.display="none");
+document.getElementById("dashboard").style.display="none";
+document.getElementById("stocks").style.display="none";
+document.getElementById("learn").style.display="none";
 document.getElementById(p).style.display="block";
 }
 
@@ -224,13 +248,13 @@ function toggleLanguage(){
 language=language==="en"?"ar":"en";
 if(language==="ar"){
 document.getElementById("dashTitle").innerText="لوحة التداول";
-document.getElementById("dashText").innerText="مرحبًا بك في منصة التداول الذكية.";
-document.getElementById("learnTitle").innerText="شركاؤنا المصرفيون";
+document.getElementById("dashText").innerText="مرحبًا بك في بيئة التداول المؤسسية الذكية.";
+document.getElementById("learnTitle").innerText="الشركاء المصرفيون ووسائل الدفع";
 document.getElementById("langSwitch").innerText="Language: English";
 }else{
 document.getElementById("dashTitle").innerText="Trading Dashboard";
-document.getElementById("dashText").innerText="Welcome to your AI-powered trading platform.";
-document.getElementById("learnTitle").innerText="Our Banking Partners";
+document.getElementById("dashText").innerText="Welcome to your AI-powered institutional trading environment.";
+document.getElementById("learnTitle").innerText="Banking & Payment Partners";
 document.getElementById("langSwitch").innerText="Language: عربي";
 }
 }
@@ -240,13 +264,12 @@ let t=document.getElementById("topTicker");
 let b=document.getElementById("bottomTicker");
 let i=0;
 setInterval(()=>{
-t.innerText=stocks[i%stocks.length].symbol+" $"+stocks[i%stocks.length].price;
-b.innerText="AI Signals Active | Secure Banking | Global Access";
+t.innerText=stocks[i%stocks.length].symbol+" $"+stocks[i%stocks.length].price+" | Secure Banking | Global Liquidity";
+b.innerText="AI Signals Active | Institutional Access | Libya Ready";
 i++;
-},2000);
+},2500);
 }
 
-openPage("dashboard");
 populateStocks();
 startTickers();
 </script>
