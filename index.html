@@ -5,15 +5,21 @@
 <title>Global Trade Capital</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-font-family:Segoe UI,Arial;
-background:radial-gradient(circle at 30% 20%,#0a1f44,#020817 70%);
-color:#fff;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
 }
 
-#navbar{
+body{
+background:radial-gradient(circle at 20% 10%,#0f2d63,#020817 70%);
+color:#fff;
+overflow-x:hidden;
+}
+
+/* NAVBAR */
+nav{
 position:fixed;
 top:0;
 width:100%;
@@ -22,9 +28,9 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:0 60px;
-background:rgba(4,12,31,0.9);
-backdrop-filter:blur(10px);
-border-bottom:1px solid rgba(0,255,255,0.15);
+background:rgba(5,15,35,0.9);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(0,255,255,0.1);
 z-index:1000;
 }
 
@@ -36,53 +42,107 @@ background:linear-gradient(90deg,#00f0ff,#00aaff);
 -webkit-text-fill-color:transparent;
 }
 
+nav button{
+background:transparent;
+border:1px solid rgba(0,255,255,0.3);
+color:#fff;
+padding:8px 20px;
+border-radius:30px;
+cursor:pointer;
+transition:.3s;
+}
+
+nav button:hover{
+background:#00e0ff;
+color:#00152d;
+box-shadow:0 0 15px rgba(0,255,255,.7);
+}
+
+/* CONTAINER */
 .container{
 max-width:1200px;
-margin:120px auto 100px auto;
+margin:120px auto 80px auto;
 padding:0 40px;
 }
 
-.card{
+/* SECTION CARD */
+.section{
 background:rgba(255,255,255,0.05);
 border:1px solid rgba(0,255,255,0.1);
-border-radius:18px;
-padding:40px;
-margin-bottom:50px;
-backdrop-filter:blur(14px);
-box-shadow:0 20px 40px rgba(0,0,0,.5);
+border-radius:20px;
+padding:50px;
+margin-bottom:60px;
+backdrop-filter:blur(18px);
+box-shadow:0 25px 50px rgba(0,0,0,.6);
 }
 
+/* HEADINGS */
 h2{
+font-size:30px;
 margin-bottom:25px;
-font-weight:500;
 color:#00eaff;
-font-size:26px;
+font-weight:500;
+letter-spacing:.5px;
 }
 
-.partner-grid{
+/* PARTNER GRID */
+.grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:35px;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:40px;
 align-items:center;
 justify-items:center;
+margin-top:20px;
 }
 
-.partner-grid img{
+.grid img{
 max-height:55px;
 filter:brightness(1.2) drop-shadow(0 0 10px rgba(0,255,255,.3));
 transition:.3s;
 }
 
-.partner-grid img:hover{
-transform:scale(1.12);
-filter:brightness(1.5) drop-shadow(0 0 20px rgba(0,255,255,.7));
+.grid img:hover{
+transform:scale(1.15);
+filter:brightness(1.5) drop-shadow(0 0 25px rgba(0,255,255,.8));
+}
+
+/* LEARN CONTENT */
+.learn-content{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:40px;
+margin-top:20px;
+}
+
+.learn-text{
+line-height:1.7;
+font-size:17px;
+color:#d0eaff;
+}
+
+.testimonials{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.testimonial{
+background:rgba(0,255,255,0.07);
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(0,255,255,0.15);
+font-size:15px;
+line-height:1.6;
+}
+
+.testimonial strong{
+color:#00f0ff;
 }
 
 .open-account{
 margin-top:30px;
 text-align:center;
 font-size:18px;
-line-height:1.6;
 }
 
 .open-account a{
@@ -95,31 +155,40 @@ font-weight:600;
 text-decoration:underline;
 }
 
+footer{
+text-align:center;
+padding:30px;
+font-size:14px;
+color:#aaa;
+border-top:1px solid rgba(255,255,255,.05);
+}
 </style>
 </head>
+
 <body>
 
-<div id="navbar">
+<nav>
 <div class="logo">GLOBAL TRADE CAPITAL</div>
-</div>
+<button>Open Account</button>
+</nav>
 
 <div class="container">
 
-<div class="card">
+<!-- BANKS -->
+<div class="section">
 <h2>Libyan Banking Partners</h2>
-
-<div class="partner-grid">
-<img src="https://seeklogo.com/images/N/national-commercial-bank-libya-logo-vector-logo-630720.svg" alt="NCB">
-<img src="https://static.cdnlogo.com/logos/j/32/jumhouria-bank.svg" alt="Jumhouria Bank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg" alt="Sahara Bank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg" alt="Bank of Commerce and Development">
+<div class="grid">
+<img src="https://seeklogo.com/images/N/national-commercial-bank-libya-logo-vector-logo-630720.svg">
+<img src="https://static.cdnlogo.com/logos/j/32/jumhouria-bank.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg">
 </div>
 </div>
 
-<div class="card">
-<h2>Libyan Bank Cards & International Payment Cards Accepted</h2>
-
-<div class="partner-grid">
+<!-- PAYMENTS -->
+<div class="section">
+<h2>Accepted Payment Methods</h2>
+<div class="grid">
 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
@@ -129,20 +198,61 @@ text-decoration:underline;
 Open an account with one of our partner banks and fund your trading account securely.<br><br>
 <a href="#">Click here to Open Your Account</a>
 </div>
+</div>
+
+<!-- LEARN TO TRADE -->
+<div class="section">
+<h2>Learn to Trade</h2>
+
+<div class="learn-content">
+
+<div class="learn-text">
+Our AI-powered learning system makes trading simple and structured.
+<br><br>
+✔ Step-by-step beginner guidance  
+✔ Risk management training  
+✔ Smart portfolio building strategies  
+✔ Live market simulations  
+<br><br>
+You don’t need thousands to begin. Start small, grow smart, and build confidence with real-time tools.
+</div>
+
+<div class="testimonials">
+
+<div class="testimonial">
+<strong>Michael R.</strong><br>
+“I never traded before. The learning section made everything clear and easy. Within a week I understood the basics confidently.”
+</div>
+
+<div class="testimonial">
+<strong>Sarah L.</strong><br>
+“You don’t need a lot of money to start. I began small and grew gradually with proper guidance.”
+</div>
+
+<div class="testimonial">
+<strong>Ahmed K.</strong><br>
+“The platform feels professional but simple. It teaches risk control before profit chasing — that changed everything for me.”
+</div>
 
 </div>
 
-<div class="card">
+</div>
+</div>
+
+<!-- CONTACT -->
+<div class="section">
 <h2>Contact Us</h2>
-
-<div class="partner-grid">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+<div class="grid">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+</div>
 </div>
 
 </div>
 
-</div>
+<footer>
+© 2026 Global Trade Capital — Secure. Intelligent. Global.
+</footer>
 
 </body>
 </html>
