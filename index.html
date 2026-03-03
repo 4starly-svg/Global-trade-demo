@@ -6,41 +6,51 @@
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 /* ---------------- GENERAL STYLING ---------------- */
-body{margin:0;font-family:Arial,sans-serif;background:#0b0f19;color:#e5e7eb;}
-button{cursor:pointer;border:none;outline:none;}
-.page{display:none;padding:120px 40px 40px 40px;}
-h2{color:#3b82f6;margin-top:0;}
-#navbar{position:fixed;top:0;width:100%;background:#121826;padding:15px 30px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #3b82f6;z-index:100;}
-.logo{color:#3b82f6;font-weight:bold;font-size:20px;}
-.nav-links{display:flex;align-items:center;}
-.nav-links button{margin-left:10px;background:#121826;color:white;padding:8px 14px;border-radius:4px;}
-.nav-links button:hover{background:#3b82f6;color:#0b0f19;}
-#langSwitch{margin-left:15px;padding:6px 12px;background:#3b82f6;color:#0b0f19;border-radius:4px;}
-table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px;}
-th,td{padding:8px;border-bottom:1px solid #222;}
-tr:hover{background:#1f2230;cursor:pointer;}
-.positive{color:#22c55e;}
-.negative{color:#ef4444;}
-.trade-box{background:#121826;padding:20px;margin-top:20px;border-radius:6px;}
-input{padding:6px;background:#0b0f19;border:1px solid #333;color:white;border-radius:4px;}
-button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;border-radius:4px;}
-#balanceBox{color:#22c55e;font-weight:bold;margin-bottom:15px;}
-#contact{margin-top:40px;padding:30px;background:#121826;border-top:2px solid #3b82f6;text-align:center;}
-.contact-icons img{width:32px;margin:0 10px;cursor:pointer;}
-.partner-logos{display:flex;flex-wrap:wrap;justify-content:center;margin:10px 0;}
-.partner-logos img{width:100px;margin:10px;}
-#chart{height:300px;margin-top:20px;}
-.asset-buttons{display:flex;flex-wrap:wrap;margin-top:15px;}
-.asset-buttons button{margin:5px;padding:10px 20px;background:#121826;color:white;border-radius:4px;}
-.asset-buttons button:hover{background:#3b82f6;color:#0b0f19;}
-#topTicker,#bottomTicker{background:#121826;color:#3b82f6;padding:5px 10px;white-space:nowrap;overflow:hidden;position:fixed;width:100%;z-index:99;font-weight:bold;}
-#topTicker{top:60px;}
-#bottomTicker{bottom:0;}
-#loginBox{background:#121826;padding:30px;margin:80px auto;width:300px;text-align:center;border-radius:8px;}
-#loginBox input{width:80%;margin:10px 0;}
-#loginBox button{width:85%;margin-top:10px;border-radius:4px;}
+body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background: linear-gradient(135deg, #0b0f19, #1a1f2e);
+    color:#e5e7eb;
+}
+button {cursor:pointer;border:none;outline:none;}
+.page {display:none;padding:120px 40px 40px 40px;}
+h2 {color:#3b82f6;margin-top:0;}
+#navbar {position:fixed;top:0;width:100%;background:#121826;padding:15px 30px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #3b82f6;z-index:100;}
+.logo {color:#3b82f6;font-weight:bold;font-size:22px;text-transform:uppercase;}
+.nav-links {display:flex;align-items:center;}
+.nav-links button {margin-left:10px;background:#121826;color:white;padding:8px 14px;border-radius:4px;transition:0.3s;}
+.nav-links button:hover {background:#3b82f6;color:#0b0f19;}
+#langSwitch {margin-left:15px;padding:6px 12px;background:#3b82f6;color:#0b0f19;border-radius:4px;transition:0.3s;}
+table {width:100%;border-collapse:collapse;font-size:14px;margin-top:10px;}
+th,td {padding:8px;border-bottom:1px solid #222;text-align:center;}
+tr:hover {background:#1f2230;cursor:pointer;}
+.positive {color:#22c55e;}
+.negative {color:#ef4444;}
+.trade-box {background:#121826;padding:20px;margin-top:20px;border-radius:6px;display:flex;align-items:center;}
+input {padding:6px;background:#0b0f19;border:1px solid #333;color:white;border-radius:4px;}
+button.trade {background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;border-radius:4px;transition:0.3s;}
+button.trade:hover {background:#2563eb;color:white;}
+#balanceBox {color:#22c55e;font-weight:bold;margin-bottom:15px;}
+#contact {margin-top:40px;padding:30px;background:#121826;border-top:2px solid #3b82f6;text-align:center;}
+.contact-icons img {width:36px;margin:0 10px;cursor:pointer;transition:0.3s;}
+.contact-icons img:hover {transform:scale(1.1);}
+.partner-logos {display:flex;flex-wrap:wrap;justify-content:center;margin:10px 0;}
+.partner-logos img {width:100px;margin:10px;}
+#chart {height:300px;margin-top:20px;}
+.asset-buttons {display:flex;flex-wrap:wrap;margin-top:15px;justify-content:center;}
+.asset-buttons button {margin:5px;padding:10px 20px;background:#121826;color:white;border-radius:4px;transition:0.3s;}
+.asset-buttons button:hover {background:#3b82f6;color:#0b0f19;}
+#topTicker, #bottomTicker {background:#121826;color:#3b82f6;padding:5px 10px;white-space:nowrap;overflow:hidden;position:fixed;width:100%;z-index:99;font-weight:bold;font-size:14px;}
+#topTicker {top:60px;}
+#bottomTicker {bottom:0;}
+#loginBox {background:#121826;padding:30px;margin:80px auto;width:300px;text-align:center;border-radius:8px;}
+#loginBox input {width:80%;margin:10px 0;}
+#loginBox button {width:85%;margin-top:10px;border-radius:4px;}
 /* ---------------- RESPONSIVE ---------------- */
-@media(max-width:768px){.nav-links{flex-wrap:wrap;}.asset-buttons{flex-direction:column;}}
+@media(max-width:768px) {
+    .nav-links {flex-wrap:wrap;}
+    .asset-buttons {flex-direction:column;}
+}
 </style>
 </head>
 <body>
@@ -121,17 +131,17 @@ Your browser does not support the audio element.
 
 <!-- LIBYAN BANK PARTNERS -->
 <div class="partner-logos">
-<img src="https://seeklogo.com/images/N/national-commercial-bank-libya-logo-478725.png" alt="NCB">
-<img src="https://via.placeholder.com/100x50?text=Sahara+Bank" alt="Sahara Bank">
-<img src="https://via.placeholder.com/100x50?text=North+African+Bank" alt="North African Bank">
+<img src="./images/ncb.png" alt="NCB">
+<img src="./images/sahara.png" alt="Sahara Bank">
+<img src="./images/northafrica.png" alt="North African Bank">
 </div>
 
 <!-- PAYMENT METHODS -->
 <div class="partner-logos">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Mastercard-logo.svg" alt="MasterCard">
-<img src="https://via.placeholder.com/100x50?text=Credit+Card" alt="Credit Card">
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+<img src="./images/visa.png" alt="Visa">
+<img src="./images/mastercard.png" alt="MasterCard">
+<img src="./images/creditcard.png" alt="Credit Card">
+<img src="./images/paypal.png" alt="PayPal">
 </div>
 
 <div id="contact">
@@ -139,8 +149,8 @@ Your browser does not support the audio element.
 <p id="contactEmail">Email: support@globaltrade.demo</p>
 <p id="contactWhats">WhatsApp: +1 000 000 0000</p>
 <div class="contact-icons">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+<img src="./images/facebook.png" alt="Facebook">
+<img src="./images/whatsapp.png" alt="WhatsApp">
 </div>
 </div>
 
@@ -178,81 +188,151 @@ let language="en";
 let users={demo:"demo123"};
 let newsHeadlines=["Stock STK1 hits all-time high!","Bitcoin surges 5%","EUR/USD steady","Crypto market volatile","Tech stocks rebound"];
 let demoStocks=[{symbol:"AAPL",price:178.50,change:1.2},{symbol:"GOOG",price:2850.15,change:-0.8},{symbol:"AMZN",price:3450.00,change:2.5}];
-let demoCrypto=[{coin:"Bitcoin",price:27300,change:2.1},{coin:"Ethereum",price:1875,change:-1.3},{coin:"Solana",price:22.3,change:0.5}];
-let demoFX=[{pair:"USD/EUR",bid:0.922,ask:0.923},{pair:"GBP/USD",bid:1.256,ask:1.257},{pair:"USD/LYD",bid:4.56,ask:4.57}];
+let demoCrypto=[{coin:"Bitcoin",price:27300,change:2.1},{coin:"Ethereum",price:1875,change:-1.3},{coin:"Solana",price:23.5,change:0.5}];
+let demoFX=[{pair:"USD/EUR",bid:0.935,ask:0.937},{pair:"GBP/USD",bid:1.24,ask:1.25},{pair:"USD/LYD",bid:4.8,ask:4.82}];
 
-// ---------------- LABELS ----------------
-const labels = {
-  en:{dashboard:"Trading Dashboard",stocks:"Stocks",crypto:"Crypto",fx:"FX",learn:"Learn to Trade",portfolio:"Portfolio"},
-  ar:{dashboard:"لوحة التداول",stocks:"الأسهم",crypto:"العملات الرقمية",fx:"سوق العملات",learn:"تعلم التداول",portfolio:"المحفظة"}
-};
-
-// ---------------- NAVIGATION ----------------
-function openPage(page){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(page).style.display='block';}
-function goHome(){openPage('dashboard');}
-
-// ---------------- LANGUAGE ----------------
+// ---------------- LANGUAGE TOGGLE ----------------
 function toggleLanguage(){
-  language = (language==='en')?'ar':'en';
-  document.getElementById('langSwitch').innerText = (language==='en')?'English':'عربي';
-  document.getElementById('dashHeading').innerText = labels[language].dashboard;
-  document.getElementById('stocksHeading').innerText = labels[language].stocks;
-  document.getElementById('cryptoHeading').innerText = labels[language].crypto;
-  document.getElementById('fxHeading').innerText = labels[language].fx;
-  document.getElementById('learnHeading').innerText = labels[language].learn;
-  document.getElementById('portfolioHeading').innerText = labels[language].portfolio;
+    if(language==="en"){language="ar";document.getElementById("langSwitch").innerText="Arabic";} 
+    else{language="en";document.getElementById("langSwitch").innerText="English";}
+    updateText();
 }
 
-// ---------------- LOGIN ----------------
-function loginUser(){let u=document.getElementById('username').value,p=document.getElementById('password').value;if(users[u] && users[u]===p){alert("Login success!");openPage('dashboard');}else{document.getElementById('loginMsg').innerText="Invalid credentials";}}
+function updateText(){
+    if(language==="en"){
+        document.getElementById("dashHeading").innerText="Trading Dashboard";
+        document.getElementById("stocksHeading").innerText="Stocks";
+        document.getElementById("cryptoHeading").innerText="Crypto";
+        document.getElementById("fxHeading").innerText="FX";
+        document.getElementById("learnHeading").innerText="Learn to Trade";
+        document.getElementById("portfolioHeading").innerText="Portfolio";
+        document.getElementById("orderHistoryHeading").innerText="Order History";
+        document.getElementById("contactHeading").innerText="CONTACT US";
+    } else {
+        document.getElementById("dashHeading").innerText="لوحة التداول";
+        document.getElementById("stocksHeading").innerText="الأسهم";
+        document.getElementById("cryptoHeading").innerText="العملات الرقمية";
+        document.getElementById("fxHeading").innerText="سوق العملات";
+        document.getElementById("learnHeading").innerText="تعلم التداول";
+        document.getElementById("portfolioHeading").innerText="المحفظة";
+        document.getElementById("orderHistoryHeading").innerText="سجل الأوامر";
+        document.getElementById("contactHeading").innerText="اتصل بنا";
+    }
+}
 
-// ---------------- POPULATE TABLES ----------------
-function populateStocks(){let tbody=document.getElementById('stockTable');tbody.innerHTML="";demoStocks.forEach(s=>{let tr=document.createElement('tr');tr.innerHTML=`<td>${s.symbol}</td><td>$${s.price.toFixed(2)}</td><td class="${s.change>=0?'positive':'negative'}">${s.change>=0?'+':''}${s.change.toFixed(2)}%</td>`;tr.onclick=()=>openAssetDetail(s.symbol,'stock');tbody.appendChild(tr);});}
-function populateCrypto(){let tbody=document.getElementById('cryptoTable');tbody.innerHTML="";demoCrypto.forEach(c=>{let tr=document.createElement('tr');tr.innerHTML=`<td>${c.coin}</td><td>$${c.price.toFixed(2)}</td><td class="${c.change>=0?'positive':'negative'}">${c.change>=0?'+':''}${c.change.toFixed(2)}%</td>`;tr.onclick=()=>openAssetDetail(c.coin,'crypto');tbody.appendChild(tr);});}
-function populateFX(){let tbody=document.getElementById('fxTable');tbody.innerHTML="";demoFX.forEach(f=>{let tr=document.createElement('tr');tr.innerHTML=`<td>${f.pair}</td><td>${f.bid}</td><td>${f.ask}</td>`;tbody.appendChild(tr);});}
+// ---------------- PAGE NAV ----------------
+function openPage(page){
+    let pages=document.getElementsByClassName("page");
+    for(let p of pages){p.style.display="none";}
+    document.getElementById(page).style.display="block";
+    if(page==="stocks"){populateStocks();}
+    if(page==="crypto"){populateCrypto();}
+    if(page==="fx"){populateFX();}
+    if(page==="portfolio"){populatePortfolio();}
+}
+function goHome(){openPage("dashboard");}
 
-// ---------------- ASSET DETAIL ----------------
-function openAssetDetail(asset,type){currentAsset=asset;document.getElementById('assetTitle').innerText=asset;openPage('detail');renderChart(type);}
-
-// ---------------- CHART ----------------
-function renderChart(type){
-  let chartContainer=document.getElementById('chart');chartContainer.innerHTML="";
-  let chart=LightweightCharts.createChart(chartContainer,{width:chartContainer.clientWidth,height:300,rightPriceScale:{borderColor:'#3b82f6'},timeScale:{borderColor:'#3b82f6'}});
-  let lineSeries=chart.addLineSeries({color:'#3b82f6'});
-  let data=[];for(let i=0;i<30;i++){data.push({time:i,value:Math.random()*100+50});}lineSeries.setData(data);
+// ---------------- POPULATE DEMO DATA ----------------
+function populateStocks(){
+    let table=document.getElementById("stockTable");
+    table.innerHTML="";
+    for(let s of demoStocks){
+        let row=table.insertRow();
+        row.insertCell(0).innerText=s.symbol;
+        row.insertCell(1).innerText="$"+s.price.toFixed(2);
+        row.insertCell(2).innerText=s.change.toFixed(2)+"%";
+        row.cells[2].className=s.change>=0?"positive":"negative";
+        row.onclick=()=>{currentAsset=s.symbol;openPage("detail");renderChart();};
+    }
+}
+function populateCrypto(){
+    let table=document.getElementById("cryptoTable");
+    table.innerHTML="";
+    for(let c of demoCrypto){
+        let row=table.insertRow();
+        row.insertCell(0).innerText=c.coin;
+        row.insertCell(1).innerText="$"+c.price.toFixed(2);
+        row.insertCell(2).innerText=c.change.toFixed(2)+"%";
+        row.cells[2].className=c.change>=0?"positive":"negative";
+        row.onclick=()=>{currentAsset=c.coin;openPage("detail");renderChart();};
+    }
+}
+function populateFX(){
+    let table=document.getElementById("fxTable");
+    table.innerHTML="";
+    for(let f of demoFX){
+        let row=table.insertRow();
+        row.insertCell(0).innerText=f.pair;
+        row.insertCell(1).innerText=f.bid;
+        row.insertCell(2).innerText=f.ask;
+    }
+}
+function populatePortfolio(){
+    let table=document.getElementById("portfolioTable");
+    table.innerHTML="";
+    for(let a in portfolio){
+        let row=table.insertRow();
+        row.insertCell(0).innerText=a;
+        row.insertCell(1).innerText=portfolio[a].qty;
+        row.insertCell(2).innerText="$"+portfolio[a].avg.toFixed(2);
+    }
 }
 
 // ---------------- TRADE ----------------
 function executeTrade(type){
-  let qty=parseFloat(document.getElementById('qty').value);
-  if(isNaN(qty) || qty<=0){alert("Enter valid quantity");return;}
-  let price=100; // mock price
-  if(type==='buy'){balance-=price*qty;portfolio[currentAsset]=(portfolio[currentAsset]||0)+qty;}
-  else{balance+=price*qty;portfolio[currentAsset]=(portfolio[currentAsset]||0)-qty;}
-  document.getElementById('balanceBox').innerText=`Balance: $${balance.toFixed(2)}`;
-  populatePortfolio();
-  alert(`${type.toUpperCase()} executed for ${qty} ${currentAsset}`);
+    let qty=parseFloat(document.getElementById("qty").value);
+    if(isNaN(qty)||qty<=0){alert("Enter a valid quantity.");return;}
+    let price=demoStocks.find(s=>s.symbol===currentAsset)?.price||demoCrypto.find(c=>c.coin===currentAsset)?.price||100;
+    if(type==="buy"){
+        if(!portfolio[currentAsset]){portfolio[currentAsset]={qty:0,avg:0};}
+        let total=portfolio[currentAsset].qty*portfolio[currentAsset].avg+qty*price;
+        portfolio[currentAsset].qty+=qty;
+        portfolio[currentAsset].avg=total/portfolio[currentAsset].qty;
+        balance-=qty*price;
+    } else if(type==="sell"){
+        if(!portfolio[currentAsset]||portfolio[currentAsset].qty<qty){alert("Not enough holdings.");return;}
+        portfolio[currentAsset].qty-=qty;
+        balance+=qty*price;
+        if(portfolio[currentAsset].qty===0) delete portfolio[currentAsset];
+    }
+    document.getElementById("balanceBox").innerText="Balance: $"+balance.toFixed(2);
+    populatePortfolio();
 }
 
-// ---------------- PORTFOLIO ----------------
-function populatePortfolio(){let tbody=document.getElementById('portfolioTable');tbody.innerHTML="";for(let asset in portfolio){let tr=document.createElement('tr');tr.innerHTML=`<td>${asset}</td><td>${portfolio[asset]}</td><td>$100</td>`;tbody.appendChild(tr);}}
+// ---------------- CHART ----------------
+function renderChart(){
+    document.getElementById("assetTitle").innerText=currentAsset;
+    let chartDiv=document.getElementById("chart");
+    chartDiv.innerHTML="";
+    let chart=LightweightCharts.createChart(chartDiv,{width:chartDiv.clientWidth,height:300,rightPriceScale:{borderColor:'#555'},timeScale:{borderColor:'#555'}});
+    let lineSeries=chart.addLineSeries({color:'#3b82f6'});
+    let data=[];
+    for(let i=0;i<50;i++){data.push({time:i,value:(Math.random()*100)+50});}
+    lineSeries.setData(data);
+}
+
+// ---------------- LOGIN ----------------
+function loginUser(){
+    let user=document.getElementById("username").value;
+    let pass=document.getElementById("password").value;
+    if(users[user]&&users[user]===pass){alert("Login success!");openPage("dashboard");}
+    else{document.getElementById("loginMsg").innerText="Invalid username or password.";}
+}
 
 // ---------------- TICKERS ----------------
-function startTickers(){
-  let top=document.getElementById('topTicker'),bottom=document.getElementById('bottomTicker');let i=0;setInterval(()=>{top.innerText=newsHeadlines[i%newsHeadlines.length];bottom.innerText=newsHeadlines[(i+2)%newsHeadlines.length];i++;},2000);
+function startTicker(){
+    let topTicker=document.getElementById("topTicker");
+    let bottomTicker=document.getElementById("bottomTicker");
+    let topText=newsHeadlines.join(" | ");
+    let bottomText=demoStocks.map(s=>s.symbol+" $"+s.price.toFixed(2)).join(" | ");
+    topTicker.innerText=topText;
+    bottomTicker.innerText=bottomText;
 }
 
-// ---------------- INITIALIZATION ----------------
-window.onload=function(){openPage('dashboard');populateStocks();populateCrypto();populateFX();populatePortfolio();startTickers();}
-
-// ---------------- NEXT 5 STEPS PLACEHOLDER ----------------
-/*
-1. Integrate live API data (FinHub & Data12)
-2. Add advanced chart tools (candlestick, indicators)
-3. User accounts with database persistence
-4. Order book & trade matching engine
-5. Notifications & alerts system
-*/
+// ---------------- INIT ----------------
+openPage("dashboard");
+startTicker();
+updateText();
 </script>
 </body>
 </html>
