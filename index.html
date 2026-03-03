@@ -2,441 +2,254 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital – Phase 3</title>
+<title>Global Trade Capital</title>
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
 <style>
-/* ——— AI‑VIBRANT UI ——— */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #001529, #0b1a3a);
-  color: #e5e7eb;
+body{
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:radial-gradient(circle at 20% 20%,#0f2b5b,#040c1f);
+color:#fff;
 }
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
+
+/* NAVBAR */
+#navbar{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 30px;
+background:linear-gradient(90deg,#071a3a,#0f2b5b);
+box-shadow:0 0 20px rgba(0,255,255,.2);
+z-index:1000;
 }
-.page {
-  display: none;
-  padding: 120px 40px 40px 40px;
+
+.logo{
+font-size:22px;
+font-weight:bold;
+background:linear-gradient(45deg,#00f5ff,#00c3ff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
-h2 {
-  color: #00d8ff;
-  font-weight: 700;
+
+.nav-links{
+display:flex;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
 }
-#navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background: #051022;
-  padding: 15px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #00d8ff;
-  z-index: 100;
+
+.nav-links button{
+background:#0b2247;
+border:none;
+color:#fff;
+padding:8px 14px;
+border-radius:6px;
+transition:.3s;
 }
-.logo {
-  font-size: 22px;
-  font-weight: bold;
-  color: #00eaff;
+
+.nav-links button:hover{
+background:#00e0ff;
+color:#00152d;
+box-shadow:0 0 12px #00e0ff;
 }
-.nav-links button {
-  margin-left: 12px;
-  background: #08203d;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 6px;
-  transition: 0.3s;
+
+#langSwitch{
+background:#00e0ff;
+color:#00152d;
+font-weight:bold;
 }
-.nav-links button:hover {
-  background: #00d8ff;
-  color: #0b1a3a;
+
+/* PAGE */
+.page{
+display:none;
+padding:120px 40px 60px 40px;
 }
-#langSwitch {
-  padding: 6px 14px;
-  background: #00d8ff;
-  color: #0b1a3a;
-  border-radius: 6px;
-  font-weight: bold;
+
+h2{
+color:#00f5ff;
+margin-bottom:10px;
 }
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  margin-top: 10px;
-  background: rgba(0, 0, 0, 0.3);
+
+/* TABLES */
+table{
+width:100%;
+border-collapse:collapse;
+background:rgba(0,0,0,.3);
+border-radius:8px;
+overflow:hidden;
 }
-th, td {
-  padding: 10px;
-  text-align: center;
-  border-bottom: 1px solid #1f2950;
+
+th,td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid rgba(255,255,255,.05);
 }
-tr:hover {
-  background: #081841;
-  cursor: pointer;
+
+tr:hover{
+background:rgba(0,255,255,.1);
+cursor:pointer;
 }
-.positive {
-  color: #22c55e;
-  font-weight: bold;
+
+.positive{color:#00ff88;font-weight:bold;}
+.negative{color:#ff4d4d;font-weight:bold;}
+
+/* LOGOS */
+.partner-logos{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px;
+margin-top:20px;
 }
-.negative {
-  color: #ef4444;
-  font-weight: bold;
+
+.partner-logos img{
+height:45px;
+filter:drop-shadow(0 0 6px rgba(0,255,255,.4));
+transition:.3s;
 }
-.trade-box {
-  background: #0a1f3a;
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 8px;
-  display: flex;
-  gap: 10px;
+
+.partner-logos img:hover{
+transform:scale(1.1);
 }
-input {
-  padding: 8px;
-  background: #08203d;
-  border: 1px solid #1e305f;
-  color: white;
-  border-radius: 6px;
-  width: 80px;
+
+/* TICKERS */
+#topTicker,#bottomTicker{
+position:fixed;
+width:100%;
+padding:8px 20px;
+background:#071a3a;
+color:#00f5ff;
+font-weight:bold;
+white-space:nowrap;
+overflow:hidden;
 }
-button.trade {
-  background: #00d8ff;
-  color: #0b1a3a;
-  padding: 6px 14px;
-  border-radius: 6px;
-  transition: 0.3s;
-}
-button.trade:hover {
-  background: #00b8e6;
-  color: white;
-}
-#balanceBox {
-  color: #22c55e;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-.partner-logos {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 18px;
-  margin: 15px 0;
-}
-.partner-logos img {
-  width: 100px;
-  transition: 0.3s;
-}
-.partner-logos img:hover {
-  transform: scale(1.1);
-}
-#topTicker, #bottomTicker {
-  background: #051022;
-  color: #00eaff;
-  padding: 8px 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  font-weight: bold;
-}
-#topTicker { top: 60px; }
-#bottomTicker { bottom: 0; }
-#chart { height: 300px; margin-top: 20px; }
-@media(max-width:768px) {
-  .nav-links {
-    flex-wrap: wrap;
-  }
-}
+
+#topTicker{top:60px;}
+#bottomTicker{bottom:0;}
+
 </style>
 </head>
+
 <body>
 
-<!-- ——— NAVBAR ——— -->
 <div id="navbar">
-  <div class="logo">GLOBAL TRADE CAPITAL</div>
-  <div class="nav-links">
-    <button onclick="goHome()">Dashboard</button>
-    <button onclick="openPage('stocks')">Stocks</button>
-    <button onclick="openPage('crypto')">Crypto</button>
-    <button onclick="openPage('fx')">FX</button>
-    <button onclick="openPage('learn')">Learn to Trade</button>
-    <button onclick="openPage('portfolio')">Portfolio</button>
-    <button onclick="openPage('login')">Login</button>
-    <button id="langSwitch" onclick="toggleLanguage()">Language: عربي</button>
-  </div>
+<div class="logo">GLOBAL TRADE CAPITAL</div>
+<div class="nav-links">
+<button onclick="openPage('dashboard')">Dashboard</button>
+<button onclick="openPage('stocks')">Stocks</button>
+<button onclick="openPage('learn')">Learn</button>
+<button id="langSwitch" onclick="toggleLanguage()">Language: عربي</button>
+</div>
 </div>
 
-<!-- ——— TICKERS ——— -->
 <div id="topTicker"></div>
 <div id="bottomTicker"></div>
 
-<!-- ——— LOGIN PAGE ——— -->
-<div id="login" class="page">
-  <div style="max-width:350px;margin:100px auto;background:#08203d;padding:25px;border-radius:10px;">
-    <h2 id="loginHeading">Login</h2>
-    <input type="text" id="username" placeholder="Username"><br><br>
-    <input type="password" id="password" placeholder="Password"><br><br>
-    <button onclick="loginUser()" id="loginBtn">Login</button>
-    <p id="loginMsg" style="color:#ef4444;margin-top:10px;"></p>
-  </div>
-</div>
-
-<!-- ——— DASHBOARD ——— -->
+<!-- DASHBOARD -->
 <div id="dashboard" class="page">
-  <h2 id="dashHeading">Trading Dashboard</h2>
-  <div id="balanceBox">Balance: $100,000.00</div>
-  <p id="dashText">Welcome to your interactive trading simulation.</p>
+<h2 id="dashTitle">Trading Dashboard</h2>
+<p id="dashText">Welcome to your AI-powered trading platform.</p>
 </div>
 
-<!-- ——— STOCKS ——— -->
+<!-- STOCKS -->
 <div id="stocks" class="page">
-  <h2 id="stocksHeading">Stocks</h2>
-  <table>
-    <thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
-    <tbody id="stockTable"></tbody>
-  </table>
+<h2>Stocks</h2>
+<table>
+<thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
+<tbody id="stockTable"></tbody>
+</table>
 </div>
 
-<!-- ——— CRYPTO ——— -->
-<div id="crypto" class="page">
-  <h2 id="cryptoHeading">Crypto</h2>
-  <table>
-    <thead><tr><th>Coin</th><th>Price</th><th>Change</th></tr></thead>
-    <tbody id="cryptoTable"></tbody>
-  </table>
-</div>
-
-<!-- ——— FX ——— -->
-<div id="fx" class="page">
-  <h2 id="fxHeading">FX</h2>
-  <table>
-    <thead><tr><th>Pair</th><th>Bid</th><th>Ask</th></tr></thead>
-    <tbody id="fxTable"></tbody>
-  </table>
-</div>
-
-<!-- ——— LEARN TO TRADE ——— -->
+<!-- LEARN -->
 <div id="learn" class="page">
-  <h2 id="learnHeading">Learn to Trade</h2>
-  <audio controls>
-    <source src="learn-audio.mp3" type="audio/mpeg">
-    Your browser does not support audio.
-  </audio>
+<h2 id="learnTitle">Our Banking Partners</h2>
 
-  <!-- Bank Partner Logos (external hosted images) -->
-  <div class="partner-logos">
-    <img src="https://seeklogo.com/images/N/national-commercial-bank-libya-logo-478725.png" alt="National Commercial Bank">
-    <img src="https://seeklogo.com/images/S/sahara-bank-libya-logo-2EF47A13EF-seeklogo.com.png" alt="Sahara Bank">
-    <img src="https://seeklogo.com/images/N/north-africa-bank-logo-22A4F6F55F-seeklogo.com.png" alt="North African Bank">
-  </div>
+<div class="partner-logos">
+<!-- National Commercial Bank -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/4/4b/Libya_Coat_of_Arms.svg" alt="National Commercial Bank">
 
-  <!-- Payment Method Logos -->
-  <div class="partner-logos">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="MasterCard">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/46/Generic_credit_card_icon.svg" alt="Credit Card">
-  </div>
+<!-- Sahara Bank -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Flag_of_Libya.svg" alt="Sahara Bank">
 
-  <div id="contact">
-    <h2 id="contactHeading">CONTACT US</h2>
-    <p id="contactEmail">Email: support@globaltrade.demo</p>
-    <p id="contactWhats">WhatsApp: +1 000 000 0000</p>
-    <div class="partner-logos">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-    </div>
-  </div>
+<!-- Al Jumhouria Bank -->
+<img src="https://static.cdnlogo.com/logos/j/32/jumhouria-bank.svg" alt="Al Jumhouria Bank">
 </div>
 
-<!-- ——— PORTFOLIO ——— -->
-<div id="portfolio" class="page">
-  <h2 id="portfolioHeading">Portfolio</h2>
-  <table>
-    <thead><tr><th>Asset</th><th>Qty</th><th>Avg Price</th></tr></thead>
-    <tbody id="portfolioTable"></tbody>
-  </table>
-  <h3 id="orderHistoryHeading">Order History</h3>
-  <table>
-    <thead><tr><th>Type</th><th>Asset</th><th>Qty</th><th>Price</th></tr></thead>
-    <tbody id="orderHistory"></tbody>
-  </table>
+<h2 style="margin-top:40px;">Payment Methods</h2>
+<div class="partner-logos">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
 </div>
 
-<!-- ——— TRADE DETAIL ——— -->
-<div id="detail" class="page">
-  <h2 id="assetTitle"></h2>
-  <div id="chart"></div>
-  <div class="trade-box">
-    <input id="qty" placeholder="Qty">
-    <button class="trade" onclick="executeTrade('buy')">BUY</button>
-    <button class="trade" onclick="executeTrade('sell')">SELL</button>
-  </div>
+<h2 style="margin-top:40px;">Contact Us</h2>
+<div class="partner-logos">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+</div>
+
 </div>
 
 <script>
-// ——— STATE ———
-let balance=100000;
-let portfolio={};
-let currentAsset="";
 let language="en";
-let users={demo:"demo123"};
-let newsHeadlines=[
-  "AAPL +1.20%","BTC +2.10%","EUR/USD steady","AMZN +2.50%","ETH -1.30%"
+let stocks=[
+{symbol:"AAPL",price:178.5,change:1.2},
+{symbol:"TSLA",price:251.3,change:-0.7},
+{symbol:"AMZN",price:3450.8,change:2.4}
 ];
-let demoStocks=[{symbol:"AAPL",price:178.5,change:1.2},{symbol:"GOOG",price:2850.1,change:-0.8},{symbol:"AMZN",price:3450,change:2.5}];
-let demoCrypto=[{coin:"Bitcoin",price:27300,change:2.1},{coin:"Ethereum",price:1875,change:-1.3},{coin:"Solana",price:23.5,change:0.5}];
-let demoFX=[{pair:"USD/EUR",bid:0.935,ask:0.937},{pair:"GBP/USD",bid:1.24,ask:1.25},{pair:"USD/LYD",bid:4.82,ask:4.84}];
 
-// ——— LANGUAGE TOGGLE ———
-function toggleLanguage(){
-  language = (language==="en")?"ar":"en";
-  document.getElementById("langSwitch").innerText = language==="en" ?
-    "Language: عربي" : "Language: English";
-  updateText();
-}
-function updateText(){
-  if(language==="en"){
-    dashText="Welcome to your interactive trading simulation.";
-    document.getElementById("dashHeading").innerText="Trading Dashboard";
-    document.getElementById("stocksHeading").innerText="Stocks";
-    document.getElementById("cryptoHeading").innerText="Crypto";
-    document.getElementById("fxHeading").innerText="FX";
-    document.getElementById("learnHeading").innerText="Learn to Trade";
-    document.getElementById("portfolioHeading").innerText="Portfolio";
-    document.getElementById("orderHistoryHeading").innerText="Order History";
-    document.getElementById("contactHeading").innerText="CONTACT US";
-  } else {
-    document.getElementById("dashHeading").innerText="لوحة التداول";
-    document.getElementById("stocksHeading").innerText="الأسهم";
-    document.getElementById("cryptoHeading").innerText="العملات الرقمية";
-    document.getElementById("fxHeading").innerText="سوق العملات";
-    document.getElementById("learnHeading").innerText="تعلم التداول";
-    document.getElementById("portfolioHeading").innerText="المحفظة";
-    document.getElementById("orderHistoryHeading").innerText="سجل الأوامر";
-    document.getElementById("contactHeading").innerText="اتصل بنا";
-  }
+function openPage(p){
+document.querySelectorAll(".page").forEach(el=>el.style.display="none");
+document.getElementById(p).style.display="block";
 }
 
-// ——— NAVIGATION ———
-function openPage(page){
-  document.querySelectorAll('.page').forEach(p => p.style.display='none');
-  document.getElementById(page).style.display='block';
-}
-function goHome(){openPage('dashboard');}
-
-// ——— POPULATE DEMO TABLES ———
 function populateStocks(){
-  let tbody=document.getElementById("stockTable"); tbody.innerHTML="";
-  demoStocks.forEach(s=>{
-    let row=tbody.insertRow();
-    row.insertCell(0).innerText=s.symbol;
-    row.insertCell(1).innerText="$"+s.price.toFixed(2);
-    row.insertCell(2).innerText=(s.change>=0?"+":"")+s.change.toFixed(2)+"%";
-    row.cells[2].className=s.change>=0?"positive":"negative";
-    row.onclick=()=>openAsset(s.symbol);
-  });
-}
-function populateCrypto(){
-  let tbody=document.getElementById("cryptoTable"); tbody.innerHTML="";
-  demoCrypto.forEach(c=>{
-    let row=tbody.insertRow();
-    row.insertCell(0).innerText=c.coin;
-    row.insertCell(1).innerText="$"+c.price.toFixed(2);
-    row.insertCell(2).innerText=(c.change>=0?"+":"")+c.change.toFixed(2)+"%";
-    row.cells[2].className=c.change>=0?"positive":"negative";
-    row.onclick=()=>openAsset(c.coin);
-  });
-}
-function populateFX(){
-  let tbody=document.getElementById("fxTable"); tbody.innerHTML="";
-  demoFX.forEach(f=>{
-    let row=tbody.insertRow();
-    row.insertCell(0).innerText=f.pair;
-    row.insertCell(1).innerText=f.bid;
-    row.insertCell(2).innerText=f.ask;
-  });
-}
-function populatePortfolio(){
-  let tbody=document.getElementById("portfolioTable"); tbody.innerHTML="";
-  for(let a in portfolio){
-    let row=tbody.insertRow();
-    row.insertCell(0).innerText=a;
-    row.insertCell(1).innerText=portfolio[a].qty;
-    row.insertCell(2).innerText="$"+portfolio[a].avg.toFixed(2);
-  }
+let t=document.getElementById("stockTable");
+t.innerHTML="";
+stocks.forEach(s=>{
+let r=t.insertRow();
+r.insertCell(0).innerText=s.symbol;
+r.insertCell(1).innerText="$"+s.price;
+let c=r.insertCell(2);
+c.innerText=(s.change>=0?"+":"")+s.change+"%";
+c.className=s.change>=0?"positive":"negative";
+});
 }
 
-// ——— ASSET DETAIL ———
-function openAsset(asset){
-  currentAsset=asset;
-  openPage('detail');
-  document.getElementById("assetTitle").innerText=asset;
-  renderChart();
+function toggleLanguage(){
+language=language==="en"?"ar":"en";
+if(language==="ar"){
+document.getElementById("dashTitle").innerText="لوحة التداول";
+document.getElementById("dashText").innerText="مرحبًا بك في منصة التداول الذكية.";
+document.getElementById("learnTitle").innerText="شركاؤنا المصرفيون";
+document.getElementById("langSwitch").innerText="Language: English";
+}else{
+document.getElementById("dashTitle").innerText="Trading Dashboard";
+document.getElementById("dashText").innerText="Welcome to your AI-powered trading platform.";
+document.getElementById("learnTitle").innerText="Our Banking Partners";
+document.getElementById("langSwitch").innerText="Language: عربي";
+}
 }
 
-// ——— CHART ———
-function renderChart(){
-  let chartDiv=document.getElementById("chart");
-  chartDiv.innerHTML="";
-  let chart=LightweightCharts.createChart(chartDiv,{width:chartDiv.clientWidth,height:300});
-  let line=chart.addLineSeries({color:"#00d8ff"});
-  let data=[];
-  for(let i=0; i<30; i++){
-    data.push({time:i,value:(Math.random()*100)+50});
-  }
-  line.setData(data);
-}
-
-// ——— TRADE ———
-function executeTrade(type){
-  let qty=parseFloat(document.getElementById("qty").value);
-  if(isNaN(qty)||qty<=0){alert(language==="en"?"> Enter valid quantity":"أدخل كمية صحيحة");return;}
-  let price= demoStocks.find(s=>s.symbol===currentAsset)?.price ||
-             demoCrypto.find(c=>c.coin===currentAsset)?.price || 0;
-  if(type==="buy"){
-    if(!portfolio[currentAsset])portfolio[currentAsset]={qty:0,avg:0};
-    let total=portfolio[currentAsset].qty*portfolio[currentAsset].avg + qty*price;
-    portfolio[currentAsset].qty+=qty;
-    portfolio[currentAsset].avg= total/portfolio[currentAsset].qty;
-  } else {
-    if(!portfolio[currentAsset]||portfolio[currentAsset].qty<qty){alert(language==="en"?"Not enough holdings":"لا توجد كمية كافية");return;}
-    portfolio[currentAsset].qty-=qty;
-  }
-  document.getElementById("balanceBox").innerText="Balance: $"+balance.toFixed(2);
-  populatePortfolio();
-}
-
-// ——— LOGIN ———
-function loginUser(){
-  let u=document.getElementById("username").value;
-  let p=document.getElementById("password").value;
-  if(users[u] && users[u]===p){alert(language==="en"?"Login success!":"تم تسجيل الدخول بنجاح");goHome();}
-  else document.getElementById("loginMsg").innerText=language==="en"?"Invalid credentials":"بيانات الدخول غير صحيحة";
-}
-
-// ——— TICKERS ———
 function startTickers(){
-  let t=document.getElementById("topTicker"),b=document.getElementById("bottomTicker");
-  let i=0; setInterval(()=>{ t.innerText=newsHeadlines[i%newsHeadlines.length]; b.innerText=demoStocks.map(s=>s.symbol+" $"+s.price).join(" | "); i++;},2000);
+let t=document.getElementById("topTicker");
+let b=document.getElementById("bottomTicker");
+let i=0;
+setInterval(()=>{
+t.innerText=stocks[i%stocks.length].symbol+" $"+stocks[i%stocks.length].price;
+b.innerText="AI Signals Active | Secure Banking | Global Access";
+i++;
+},2000);
 }
 
-// ——— INIT ———
 openPage("dashboard");
-populateStocks();populateCrypto();populateFX();populatePortfolio();
+populateStocks();
 startTickers();
-updateText();
-
-// ——— NEXT 5 STEPS (placeholders) ———
-/*
-1) Integrate live API data (FinHub, Data12)
-2) Add advanced candlestick + indicators
-3) Build order book depth UI
-4) Add persistent user DB
-5) Notifications & alerts
-*/
 </script>
+
 </body>
 </html>
