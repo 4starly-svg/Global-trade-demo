@@ -2,13 +2,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital - LinkedIn Layout</title>
+<title>Global Trade Capital - Experimental Prototype</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-/* Base styling - LinkedIn inspired */
+/* Experimental LinkedIn-style layout */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body{background:#f0f2f5;color:#1c1e21;transition:all .3s;}
-header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:#0a66c2;color:#fff;box-shadow:0 4px 8px rgba(0,0,0,0.1);position:sticky;top:0;z-index:100;}
+body{background:#f0f2f5;color:#1c1e21;}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:#0a66c2;color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 8px rgba(0,0,0,0.1);}
 .logo{font-size:26px;font-weight:700;letter-spacing:1px;}
 nav a{margin:0 18px;font-size:14px;color:#e6f0ff;font-weight:600;}
 nav a:hover{color:#fff;}
@@ -32,10 +32,6 @@ section{padding:60px 50px;margin:20px 50px;background:#fff;border-radius:12px;bo
 .payment-item{text-align:center;}
 .payment-item img{width:70px;margin-bottom:6px;}
 footer{padding:40px 50px;background:#e1e9f8;text-align:center;color:#1c1e21;border-top:1px solid #cfe0fc;border-radius:0 0 12px 12px;}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(240,242,245,0.97);justify-content:center;align-items:center;z-index:999;}
-.modal-content{background:#fff;padding:30px;border-radius:14px;width:90%;max-width:500px;position:relative;animation:fadeIn .3s;}
-.close-modal{position:absolute;top:10px;right:15px;cursor:pointer;color:#0a66c2;font-weight:700;font-size:20px;}
-@keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
 </style>
 </head>
 <body>
@@ -74,30 +70,32 @@ footer{padding:40px 50px;background:#e1e9f8;text-align:center;color:#1c1e21;bord
 <div class="testimonials" id="testimonialsContainer">
 <div class="testimonial">"Trading is so easy with Global Trade!"</div>
 <div class="testimonial">"You don't need a lot of capital to start."</div>
-<div class="testimonial">"Professional interface, I trust it completely."</div>
+<div class="testimonial">"Professional and easy-to-use interface."</div>
 </div>
 </div>
-</section>
 <section id="stocks">
 <h2 class="section-title">Stocks</h2>
-<div class="stocks-grid" id="stocksContainer"></div>
+<div class="stocks-grid" id="stocksContainer">
+<!-- Mock stock cards placeholder -->
+</div>
 </section>
 <section id="crypto">
 <h2 class="section-title">Crypto</h2>
-<div class="crypto-grid" id="cryptoContainer"></div>
+<div class="crypto-grid" id="cryptoContainer">
+<!-- Mock crypto cards placeholder -->
+</div>
 </section>
 <section id="fx">
-<h2 class="section-title">Forex / FX</h2>
-<div class="fx-grid" id="fxContainer"></div>
+<h2 class="section-title">FX</h2>
+<div class="fx-grid" id="fxContainer">
+<!-- Mock FX cards placeholder -->
+</div>
 </section>
-<footer>&copy; 2026 Global Trade Capital</footer>
+<footer>
+<p>© 2026 Global Trade Capital. All rights reserved.</p>
+</footer>
 <script>
-// Language toggle placeholder
-function setLang(lang){alert('Language switched to ' + lang);}// Generate 100 mock stocks const stocksContainer = document.getElementById('stocksContainer'); for(let i=1;i<=100;i++){ const card = document.createElement('div'); card.className='stock-card'; const up = Math.random()>0.5; card.innerHTML=<h4>Stock ${i} (TCK${i})</h4><p class="price ${up?'up':'down'}">$${(Math.random()*500+20).toFixed(2)} ${up?'+':'-'}${(Math.random()*5).toFixed(2)}%</p>; stocksContainer.appendChild(card); }
-
-// Mock crypto const cryptoContainer = document.getElementById('cryptoContainer'); ['BTC','ETH','XRP','LTC','ADA','SOL','DOT','BNB','DOGE','SHIB'].forEach(c=>{ const card = document.createElement('div'); card.className='stock-card'; const up = Math.random()>0.5; card.innerHTML=<h4>${c}</h4><p class="price ${up?'up':'down'}">$${(Math.random()*60000+1000).toFixed(2)} ${up?'+':'-'}${(Math.random()*10).toFixed(2)}%</p>; cryptoContainer.appendChild(card); });
-
-// Mock FX const fxContainer = document.getElementById('fxContainer'); ['USD/LYD','EUR/USD','GBP/USD','JPY/USD','AUD/USD'].forEach(c=>{ const card = document.createElement('div'); card.className='stock-card'; const up = Math.random()>0.5; card.innerHTML=<h4>${c}</h4><p class="price ${up?'up':'down'}">${(Math.random()*5+0.5).toFixed(2)} ${up?'+':'-'}${(Math.random()*2).toFixed(2)}%</p>; fxContainer.appendChild(card); }); </script>
-
+function setLang(lang){alert('Language switched to '+lang);}
+</script>
 </body>
 </html>
