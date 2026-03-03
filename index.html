@@ -27,22 +27,15 @@ z-index:100;
 }
 
 .logo{
-display:flex;
-align-items:center;
-gap:10px;
 color:#ff6a00;
 font-weight:bold;
-}
-
-.logo svg{
-width:28px;
-fill:#ff6a00;
+font-size:18px;
 }
 
 .nav-links button{
 margin-left:10px;
 background:#222;
-color:#fff;
+color:white;
 border:none;
 padding:8px 14px;
 cursor:pointer;
@@ -50,7 +43,7 @@ cursor:pointer;
 
 .nav-links button:hover{
 background:#ff6a00;
-color:#000;
+color:black;
 }
 
 .page{
@@ -58,18 +51,16 @@ display:none;
 padding:100px 40px;
 }
 
-h2{
-color:#ff6a00;
-}
+h2{color:#ff6a00;}
 
 table{
 width:100%;
 border-collapse:collapse;
-font-size:14px;
+font-size:13px;
 }
 
-th, td{
-padding:10px;
+th,td{
+padding:8px;
 border-bottom:1px solid #222;
 }
 
@@ -81,24 +72,29 @@ cursor:pointer;
 .positive{color:#00ff88;}
 .negative{color:#ff4444;}
 
-.trade-panel{
+.trade-box{
 background:#111;
 padding:20px;
 margin-top:20px;
 }
 
 input{
-padding:8px;
+padding:6px;
 background:#000;
 border:1px solid #333;
-color:#fff;
-margin-right:10px;
+color:white;
 }
 
 button.trade{
 background:#ff6a00;
-color:#000;
-padding:8px 14px;
+color:black;
+padding:6px 12px;
+margin-left:5px;
+}
+
+#balanceBox{
+color:#00ff88;
+font-weight:bold;
 }
 
 #contact{
@@ -109,12 +105,8 @@ border-top:2px solid #ff6a00;
 text-align:center;
 }
 
-.contact-icons{
-margin-top:15px;
-font-size:24px;
-}
-
 .contact-icons span{
+font-size:24px;
 margin:0 15px;
 cursor:pointer;
 }
@@ -124,36 +116,30 @@ cursor:pointer;
 <body>
 
 <div id="navbar">
-<div class="logo">
-<svg viewBox="0 0 24 24">
-<path d="M3 17l6-6 4 4 8-8v4h2V3h-8v2h4l-6 6-4-4-8 8z"/>
-</svg>
-GLOBAL TRADE CAPITAL
-</div>
+<div class="logo">GLOBAL TRADE CAPITAL</div>
 <div class="nav-links">
 <button onclick="goHome()">Dashboard</button>
 <button onclick="openPage('stocks')">Stocks</button>
 <button onclick="openPage('crypto')">Crypto</button>
 <button onclick="openPage('fx')">FX</button>
-<button onclick="openPage('learn')">Learn</button>
+<button onclick="openPage('portfolio')">Portfolio</button>
 </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="page">
-<h2>Market Dashboard</h2>
-<p>Integrated Demo Trading Engine</p>
+<h2>Trading Dashboard</h2>
+<div id="balanceBox">Balance: $100,000.00</div>
 
 <div id="contact">
 <h2>CONTACT US</h2>
 <p>Email: support@globaltrade.demo</p>
-<p>Phone: +1 000 000 0000</p>
+<p>WhatsApp: +1 000 000 0000</p>
 <div class="contact-icons">
 <span>📘</span>
 <span>🟢</span>
 </div>
 </div>
-
 </div>
 
 <!-- STOCKS -->
@@ -162,12 +148,7 @@ GLOBAL TRADE CAPITAL
 <table>
 <thead>
 <tr>
-<th>Symbol</th>
-<th>Price</th>
-<th>Change</th>
-<th>High</th>
-<th>Low</th>
-<th>Volume</th>
+<th>Symbol</th><th>Price</th><th>Change</th>
 </tr>
 </thead>
 <tbody id="stockTable"></tbody>
@@ -180,10 +161,7 @@ GLOBAL TRADE CAPITAL
 <table>
 <thead>
 <tr>
-<th>Coin</th>
-<th>Price</th>
-<th>Change</th>
-<th>Market Cap</th>
+<th>Coin</th><th>Price</th><th>Change</th>
 </tr>
 </thead>
 <tbody id="cryptoTable"></tbody>
@@ -196,84 +174,85 @@ GLOBAL TRADE CAPITAL
 <table>
 <thead>
 <tr>
-<th>Pair</th>
-<th>Bid</th>
-<th>Ask</th>
-<th>Change</th>
+<th>Pair</th><th>Bid</th><th>Ask</th>
 </tr>
 </thead>
 <tbody id="fxTable"></tbody>
 </table>
 </div>
 
-<!-- LEARN -->
-<div id="learn" class="page">
-<h2>Learn To Trade</h2>
-<p>Education Portal</p>
+<!-- PORTFOLIO -->
+<div id="portfolio" class="page">
+<h2>Portfolio</h2>
+<table>
+<thead>
+<tr><th>Asset</th><th>Qty</th><th>Avg Price</th></tr>
+</thead>
+<tbody id="portfolioTable"></tbody>
+</table>
 
-<h3>Testimonials</h3>
-<p>Institutional demo experience.</p>
-<p>Powerful structured platform.</p>
+<h3>Order History</h3>
+<table>
+<thead>
+<tr><th>Type</th><th>Asset</th><th>Qty</th><th>Price</th></tr>
+</thead>
+<tbody id="orderHistory"></tbody>
+</table>
 </div>
 
-<!-- DETAIL PAGE -->
+<!-- DETAIL -->
 <div id="detail" class="page">
 <h2 id="assetTitle"></h2>
 <canvas id="chart"></canvas>
 
-<div class="trade-panel">
-<input placeholder="Quantity">
-<button class="trade">BUY</button>
-<button class="trade">SELL</button>
+<div class="trade-box">
+<input id="qty" placeholder="Quantity">
+<button class="trade" onclick="executeTrade('buy')">BUY</button>
+<button class="trade" onclick="executeTrade('sell')">SELL</button>
 </div>
 </div>
 
 <script>
 
-function randomPrice(){
-return (Math.random()*1000+10).toFixed(2);
+let balance=100000;
+let portfolio={};
+let currentAsset="";
+let prices={};
+
+function randomMove(price){
+return (price + (Math.random()*4-2)).toFixed(2);
 }
 
-function randomChange(){
-let val=(Math.random()*4-2).toFixed(2);
-return val>0?`+${val}%`: `${val}%`;
+function createAssets(prefix,count){
+for(let i=0;i<count;i++){
+prices[prefix+i]=parseFloat((Math.random()*200+20).toFixed(2));
 }
+}
+
+createAssets("STK",200);
+createAssets("COIN",80);
 
 function loadStocks(){
 let table=document.getElementById("stockTable");
-for(let i=0;i<120;i++){
-let symbol="STK"+i;
-let price=randomPrice();
-let change=randomChange();
+for(let key in prices){
+if(key.startsWith("STK")){
 let row=document.createElement("tr");
-row.innerHTML=`
-<td>${symbol}</td>
-<td>$${price}</td>
-<td class="${change.includes('-')?'negative':'positive'}">${change}</td>
-<td>$${randomPrice()}</td>
-<td>$${randomPrice()}</td>
-<td>${Math.floor(Math.random()*100)}M</td>
-`;
-row.onclick=()=>openDetail(symbol);
+row.innerHTML=`<td>${key}</td><td id="${key}">$${prices[key]}</td><td class="positive">0%</td>`;
+row.onclick=()=>openDetail(key);
 table.appendChild(row);
+}
 }
 }
 
 function loadCrypto(){
 let table=document.getElementById("cryptoTable");
-for(let i=0;i<50;i++){
-let symbol="COIN"+i;
-let price=randomPrice();
-let change=randomChange();
+for(let key in prices){
+if(key.startsWith("COIN")){
 let row=document.createElement("tr");
-row.innerHTML=`
-<td>${symbol}</td>
-<td>$${price}</td>
-<td class="${change.includes('-')?'negative':'positive'}">${change}</td>
-<td>$${Math.floor(Math.random()*100)}B</td>
-`;
-row.onclick=()=>openDetail(symbol);
+row.innerHTML=`<td>${key}</td><td id="${key}">$${prices[key]}</td><td class="positive">0%</td>`;
+row.onclick=()=>openDetail(key);
 table.appendChild(row);
+}
 }
 }
 
@@ -281,23 +260,33 @@ function loadFX(){
 let pairs=["USD/GBP","EUR/USD","USD/JPY","USD/CHF","GBP/JPY"];
 let table=document.getElementById("fxTable");
 pairs.forEach(pair=>{
-let change=randomChange();
+let bid=(Math.random()*1.5+1).toFixed(4);
+let ask=(parseFloat(bid)+0.002).toFixed(4);
 let row=document.createElement("tr");
-row.innerHTML=`
-<td>${pair}</td>
-<td>${randomPrice()}</td>
-<td>${randomPrice()}</td>
-<td class="${change.includes('-')?'negative':'positive'}">${change}</td>
-`;
-row.onclick=()=>openDetail(pair);
+row.innerHTML=`<td>${pair}</td><td>${bid}</td><td>${ask}</td>`;
 table.appendChild(row);
 });
 }
 
-let chart;
-function openDetail(name){
+function updatePrices(){
+for(let key in prices){
+prices[key]=parseFloat(randomMove(prices[key]));
+let el=document.getElementById(key);
+if(el) el.innerText="$"+prices[key];
+}
+}
+
+setInterval(updatePrices,1000);
+
+function openDetail(asset){
+currentAsset=asset;
 openPage('detail');
-document.getElementById("assetTitle").innerText=name+" Overview";
+document.getElementById("assetTitle").innerText=asset;
+renderChart();
+}
+
+let chart;
+function renderChart(){
 const ctx=document.getElementById("chart").getContext("2d");
 if(chart) chart.destroy();
 chart=new Chart(ctx,{
@@ -305,13 +294,60 @@ type:'line',
 data:{
 labels:["1","2","3","4","5","6","7"],
 datasets:[{
-data:[10,12,8,15,13,17,16],
+data:[10,12,11,14,13,16,15],
 borderColor:"#ff6a00",
 fill:false
 }]
 },
 options:{plugins:{legend:{display:false}}}
 });
+}
+
+function executeTrade(type){
+let qty=parseFloat(document.getElementById("qty").value);
+if(!qty || qty<=0) return;
+
+let price=prices[currentAsset];
+let total=qty*price;
+
+if(type==="buy"){
+if(balance<total) return alert("Insufficient balance");
+balance-=total;
+if(!portfolio[currentAsset]){
+portfolio[currentAsset]={qty:0,avg:0};
+}
+let p=portfolio[currentAsset];
+p.avg=((p.avg*p.qty)+(price*qty))/(p.qty+qty);
+p.qty+=qty;
+}
+
+if(type==="sell"){
+if(!portfolio[currentAsset] || portfolio[currentAsset].qty<qty)
+return alert("Not enough shares");
+portfolio[currentAsset].qty-=qty;
+balance+=total;
+}
+
+document.getElementById("balanceBox").innerText="Balance: $"+balance.toFixed(2);
+updatePortfolio();
+updateHistory(type,currentAsset,qty,price);
+}
+
+function updatePortfolio(){
+let table=document.getElementById("portfolioTable");
+table.innerHTML="";
+for(let asset in portfolio){
+let row=document.createElement("tr");
+row.innerHTML=`<td>${asset}</td><td>${portfolio[asset].qty}</td><td>$${portfolio[asset].avg.toFixed(2)}</td>`;
+table.appendChild(row);
+}
+}
+
+function updateHistory(type,asset,qty,price){
+let table=document.getElementById("orderHistory");
+let row=document.createElement("tr");
+row.innerHTML=`<td>${type}</td><td>${asset}</td><td>${qty}</td><td>$${price}</td>`;
+table.appendChild(row);
 }
 
 function openPage(id){
