@@ -5,7 +5,7 @@
 <title>Global Trade Capital - Experimental Prototype</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-/* Experimental LinkedIn-style layout */
+/* Experimental LinkedIn-style layout with hero section */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{background:#f0f2f5;color:#1c1e21;}
 header{display:flex;justify-content:space-between;align-items:center;padding:20px 50px;background:#0a66c2;color:#fff;position:sticky;top:0;z-index:100;box-shadow:0 4px 8px rgba(0,0,0,0.1);}
@@ -32,6 +32,11 @@ section{padding:60px 50px;margin:20px 50px;background:#fff;border-radius:12px;bo
 .payment-item{text-align:center;}
 .payment-item img{width:70px;margin-bottom:6px;}
 footer{padding:40px 50px;background:#e1e9f8;text-align:center;color:#1c1e21;border-top:1px solid #cfe0fc;border-radius:0 0 12px 12px;}
+.hero-section{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:100px 20px;background:#0a66c2;color:#fff;border-radius:12px;margin:20px 50px;}
+.hero-section h1{font-size:42px;font-weight:700;margin-bottom:20px;}
+.hero-section p{font-size:20px;margin-bottom:25px;max-width:700px;line-height:1.4;}
+.hero-section button{background:#fff;color:#0a66c2;padding:12px 30px;font-size:16px;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:.3s;}
+.hero-section button:hover{opacity:.85;}
 </style>
 </head>
 <body>
@@ -52,8 +57,13 @@ footer{padding:40px 50px;background:#e1e9f8;text-align:center;color:#1c1e21;bord
 <div class="ticker">
 <span id="topTicker">AAPL $145.32 +1.2% 🔼 TSLA $872.10 -0.5% 🔽 BTC $27,120 +2.1% 🔼 ETH $1,860 -0.5% 🔽 USD/LYD 4.52 +0.2% 🔼 GBP/USD 1.25 -0.1% 🔽 EUR/USD 1.09 +0.3% 🔼 ...</span>
 </div>
-<section id="hero">
-<h2 class="section-title">Trade global markets with confidence</h2>
+<section class="hero-section">
+<h1>Trade the Globe markets with confidence</h1>
+<p>Institutional grade trading access for serious investors</p>
+<button>Open Account</button>
+</section>
+<section id="learn">
+<h2 class="section-title">Learn to Trade</h2>
 <div class="learn-box">
 <h3>Contact Us</h3>
 <div class="learn-grid" id="banksContainer">
@@ -72,7 +82,7 @@ footer{padding:40px 50px;background:#e1e9f8;text-align:center;color:#1c1e21;bord
 <div class="testimonial">"You don't need a lot of capital to start."</div>
 <div class="testimonial">"Professional and easy-to-use interface."</div>
 </div>
-</div>
+</section>
 <section id="stocks">
 <h2 class="section-title">Stocks</h2>
 <div class="stocks-grid" id="stocksContainer">
@@ -92,7 +102,7 @@ footer{padding:40px 50px;background:#e1e9f8;text-align:center;color:#1c1e21;bord
 </div>
 </section>
 <footer>
-<p>© 2026 Global Trade Capital. All rights reserved.</p>
+<p>&copy; 2026 Global Trade Capital. All rights reserved.</p>
 </footer>
 <script>
 function setLang(lang){alert('Language switched to '+lang);}
