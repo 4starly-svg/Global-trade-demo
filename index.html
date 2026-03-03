@@ -141,7 +141,6 @@ Your browser does not support the audio element.
 <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
 </div>
 </div>
-</div>
 
 <!-- PORTFOLIO -->
 <div id="portfolio" class="page">
@@ -177,7 +176,13 @@ let prices={};
 let priceHistory={};
 let users={demo:"demo123"};
 let newsHeadlines=["Stock STK1 hits all-time high!","Bitcoin surges 5%","EUR/USD steady","Crypto market volatile","Tech stocks rebound"];
-let language="en"; // default
+let language="en";
+
+// -------- LABELS ----------
+const labels = {
+  en:{dashboard:"Trading Dashboard",stocks:"Stocks",crypto:"Crypto",fx:"FX",learn:"Learn to Trade",portfolio:"Portfolio",login:"Login",buy:"BUY",sell:"SELL",contact:"CONTACT US",email:"Email: support@globaltrade.demo",whatsapp:"WhatsApp: +1 000 000 0000"},
+  ar:{dashboard:"لوحة التداول",stocks:"الأسهم",crypto:"العملات الرقمية",fx:"سوق العملات",learn:"تعلم التداول",portfolio:"المحفظة",login:"تسجيل الدخول",buy:"شراء",sell:"بيع",contact:"اتصل بنا",email:"البريد الإلكتروني: support@globaltrade.demo",whatsapp:"واتساب: +1 000 000 0000"}
+};
 
 // -------- MOCK DATA ----------
 function createAssets(prefix,count){
@@ -192,86 +197,27 @@ createAssets("COIN",50);
 let fxPairs=["USD/GBP","EUR/USD","USD/JPY","USD/CHF","GBP/JPY"];
 
 // -------- PAGE CONTROL ----------
-function openPage(page){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(page).style.display='block';
-if(page=="stocks")loadStocks();else if(page=="crypto")loadCrypto();else if(page=="fx")loadFX();}
+function openPage(page){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(page).style.display='block';}
 function goHome(){openPage('dashboard');}
 
 // -------- LANGUAGE TOGGLE ----------
 function toggleLanguage(){
-language=(language==="en")?"ar":"en";
-document.getElementById("langSwitch").innerText=(language==="en")?"English":"AutoB";
-// Here you would add dynamic translation for headings and content
+  language = (language==="en")?"ar":"en";
+  document.getElementById("langSwitch").innerText=(language==="en")?"English":"Arabic";
+  document.getElementById("dashHeading").innerText=labels[language].dashboard;
+  document.getElementById("stocksHeading").innerText=labels[language].stocks;
+  document.getElementById("cryptoHeading").innerText=labels[language].crypto;
+  document.getElementById("fxHeading").innerText=labels[language].fx;
+  document.getElementById("learnHeading").innerText=labels[language].learn;
+  document.getElementById("portfolioHeading").innerText=labels[language].portfolio;
+  document.getElementById("loginHeading").innerText=labels[language].login;
+  document.getElementById("loginBtn").innerText=labels[language].login;
+  document.getElementById("contactHeading").innerText=labels[language].contact;
+  document.getElementById("contactEmail").innerText=labels[language].email;
+  document.getElementById("contactWhats").innerText=labels[language].whatsapp;
+  document.querySelectorAll(".trade").forEach(btn=>{btn.innerText=(btn.innerText.toUpperCase().includes("BUY")||btn.innerText.toUpperCase()==="BUY")?labels[language].buy:labels[language].sell;});
 }
-
-// -------- STOCKS & CRYPTO TABLES ----------
-function loadStocks(){
-let tbody=document.getElementById("stockTable");tbody.innerHTML="";
-for(let sym in prices){if(sym.startsWith("STK")){
-let change=((Math.random()-0.5)*10).toFixed(2);
-tbody.innerHTML+=`<tr onclick="showDetail('${sym}')"><td>${sym}</td><td>$${prices[sym]}</td><td class="${change>=0?'positive':'negative'}">${change}%</td></tr>`;
-}}}
-function loadCrypto(){
-let tbody=document.getElementById("cryptoTable");tbody.innerHTML="";
-for(let sym in prices){if(sym.startsWith("COIN")){
-let change=((Math.random()-0.5)*10).toFixed(2);
-tbody.innerHTML+=`<tr onclick="showDetail('${sym}')"><td>${sym}</td><td>$${prices[sym]}</td><td class="${change>=0?'positive':'negative'}">${change}%</td></tr>`;
-}}}
-function loadFX(){
-let tbody=document.getElementById("fxTable");tbody.innerHTML="";
-fxPairs.forEach(pair=>{
-let bid=(Math.random()*2+0.5).toFixed(4);
-let ask=(parseFloat(bid)+0.0005).toFixed(4);
-tbody.innerHTML+=`<tr><td>${pair}</td><td>${bid}</td><td>${ask}</td></tr>`;
-});
-}
-
-// -------- SHOW TRADE DETAIL ----------
-function showDetail(symbol){
-currentAsset=symbol;
-openPage("detail");
-document.getElementById("assetTitle").innerText=`${symbol} Detail`;
-// Here you would generate chart using lightweight-charts
-}
-
-// -------- TRADE SIMULATION ----------
-function executeTrade(type){
-let qty=parseFloat(document.getElementById("qty").value);
-if(isNaN(qty)||qty<=0){alert("Enter a valid quantity");return;}
-let price=prices[currentAsset];
-if(type==="buy"){balance-=qty*price;portfolio[currentAsset]=(portfolio[currentAsset]||0)+qty;}
-else{balance+=qty*price;portfolio[currentAsset]=(portfolio[currentAsset]||0)-qty;if(portfolio[currentAsset]<=0)delete portfolio[currentAsset];}
-document.getElementById("balanceBox").innerText=`Balance: $${balance.toFixed(2)}`;
-loadPortfolio();
-}
-
-// -------- PORTFOLIO TABLE ----------
-function loadPortfolio(){
-let tbody=document.getElementById("portfolioTable");
-tbody.innerHTML="";
-for(let asset in portfolio){
-tbody.innerHTML+=`<tr><td>${asset}</td><td>${portfolio[asset]}</td><td>$${prices[asset].toFixed(2)}</td></tr>`;
-}
-}
-
-// -------- LOGIN SIMULATION ----------
-function loginUser(){
-let user=document.getElementById("username").value;
-let pass=document.getElementById("password").value;
-if(users[user] && users[user]===pass){alert("Login successful");goHome();}
-else{document.getElementById("loginMsg").innerText="Invalid credentials";}
-}
-
-// -------- TICKERS ----------
-function startTickers(){
-let topTicker=document.getElementById("topTicker");
-let bottomTicker=document.getElementById("bottomTicker");
-let topIndex=0;let bottomIndex=0;
-setInterval(()=>{topTicker.innerText=newsHeadlines[topIndex];topIndex=(topIndex+1)%newsHeadlines.length;},3000);
-setInterval(()=>{bottomTicker.innerText=newsHeadlines[bottomIndex];bottomIndex=(bottomIndex+1)%newsHeadlines.length;},4000);
-}
-
-// --- INIT ---
-openPage('dashboard');startTickers();
 </script>
+
 </body>
 </html>
