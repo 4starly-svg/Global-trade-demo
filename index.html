@@ -1,212 +1,331 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Global Trade Capital</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-/* ---- General Styles ---- */
-body{margin:0;font-family:'Segoe UI',sans-serif;background:#0e1e3d;color:#f1f5f9;overflow-x:hidden;}
-h1,h2{color:#22d3ee;text-shadow:0 0 8px #22d3ee;}
-button{cursor:pointer;font-weight:bold;border:none;border-radius:6px;}
-a{text-decoration:none;color:#22d3ee;}
-.page{display:none;padding:60px 40px;}
-input{padding:10px;margin:10px 0;border-radius:6px;border:none;width:100%;background:#1f2937;color:white;}
-/* ---- Navbar ---- */
-#navbar{position:fixed;top:0;left:0;width:100%;background:#111827;padding:15px 30px;display:flex;justify-content:space-between;align-items:center;z-index:100;box-shadow:0 0 20px rgba(0,0,0,0.6);}
-#logo{font-size:24px;font-weight:bold;color:#22d3ee;}
-.nav-btn{background:#1e40af;color:white;padding:10px 20px;margin-left:5px;transition:0.3s;}
-.nav-btn:hover{background:#22d3ee;color:#0e1e3d;box-shadow:0 0 15px #22d3ee;}
-/* ---- Top Ticker ---- */
-#top-ticker{position:fixed;top:60px;width:100%;background:#1f2937;padding:5px 0;color:#22d3ee;overflow:hidden;white-space:nowrap;z-index:99;font-weight:bold;}
-#top-ticker span{display:inline-block;padding:0 40px;animation:scroll-left 20s linear infinite;}
-@keyframes scroll-left{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
-/* ---- Dashboard ---- */
-#dashboard{padding-top:140px;padding-bottom:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;}
-.card{background:linear-gradient(145deg,#0e1e3d,#1e3a8a);padding:60px;text-align:center;border-radius:20px;font-size:20px;transition:0.3s;box-shadow:0 0 15px rgba(34,197,94,0.3);}
-.card:hover{transform:scale(1.05);box-shadow:0 0 30px #22d3ee;}
-/* ---- Items ---- */
-.item{background:#111827;padding:18px;margin:12px 0;border-radius:12px;transition:0.3s;cursor:pointer;}
-.item:hover{transform:translateX(10px);box-shadow:0 0 15px #22d3ee;}
-.detail-box{background:#111827;padding:30px;border-radius:15px;box-shadow:0 0 20px rgba(34,197,94,0.4);}
-.action-btn{padding:10px 20px;margin-right:10px;font-weight:bold;border-radius:6px;transition:0.3s;}
-.buy{background:#22d3ee;color:white;}
-.sell{background:#ef4444;color:white;}
-.save{background:#6366f1;color:white;}
-.action-btn:hover{box-shadow:0 0 15px #22d3ee;transform:scale(1.05);}
-.portfolio-item{background:#111827;padding:18px;margin:12px 0;border-radius:12px;transition:0.3s;}
-.profit{color:#22d3ee;}
-.loss{color:#ef4444;}
-/* ---- Footer / News Ticker ---- */
-#footer{margin-top:60px;padding:30px;background:#111827;text-align:center;font-size:16px;color:#f1f5f9;}
-#footer h3{font-size:22px;margin-bottom:12px;}
-#bottom-ticker{background:#1f2937;color:#22d3ee;overflow:hidden;white-space:nowrap;padding:5px 0;margin-top:20px;font-weight:bold;}
-#bottom-ticker span{display:inline-block;padding:0 40px;animation:scroll-left 25s linear infinite;}
-/* ---- Testimonials ---- */
-.testimonial{background:#111827;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 15px #6366f1;transition:0.3s;}
-.testimonial:hover{transform:scale(1.02);}
-/* ---- Contact Us ---- */
-#contact-us{margin-top:40px;padding:20px;background:#1f2937;border-radius:15px;font-size:18px;text-align:center;}
-#contact-us a{margin:0 15px;color:#22d3ee;font-size:24px;}
+
+body{
+margin:0;
+background:#000;
+color:#fff;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+#navbar{
+position:fixed;
+top:0;
+width:100%;
+background:#111;
+padding:15px 30px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom:2px solid #ff6a00;
+z-index:100;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+color:#ff6a00;
+font-weight:bold;
+}
+
+.logo svg{
+width:28px;
+fill:#ff6a00;
+}
+
+.nav-links button{
+margin-left:10px;
+background:#222;
+color:#fff;
+border:none;
+padding:8px 14px;
+cursor:pointer;
+}
+
+.nav-links button:hover{
+background:#ff6a00;
+color:#000;
+}
+
+.page{
+display:none;
+padding:100px 40px;
+}
+
+h2{
+color:#ff6a00;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:14px;
+}
+
+th, td{
+padding:10px;
+border-bottom:1px solid #222;
+}
+
+tr:hover{
+background:#111;
+cursor:pointer;
+}
+
+.positive{color:#00ff88;}
+.negative{color:#ff4444;}
+
+.trade-panel{
+background:#111;
+padding:20px;
+margin-top:20px;
+}
+
+input{
+padding:8px;
+background:#000;
+border:1px solid #333;
+color:#fff;
+margin-right:10px;
+}
+
+button.trade{
+background:#ff6a00;
+color:#000;
+padding:8px 14px;
+}
+
+#contact{
+margin-top:40px;
+padding:30px;
+background:#111;
+border-top:2px solid #ff6a00;
+text-align:center;
+}
+
+.contact-icons{
+margin-top:15px;
+font-size:24px;
+}
+
+.contact-icons span{
+margin:0 15px;
+cursor:pointer;
+}
+
 </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <div id="navbar">
-<div id="logo">Global Trade Capital</div>
-<div>
-<button class="nav-btn" onclick="goHome()">Dashboard</button>
-<button class="nav-btn" onclick="toggleLang()">EN/AR</button>
+<div class="logo">
+<svg viewBox="0 0 24 24">
+<path d="M3 17l6-6 4 4 8-8v4h2V3h-8v2h4l-6 6-4-4-8 8z"/>
+</svg>
+GLOBAL TRADE CAPITAL
+</div>
+<div class="nav-links">
+<button onclick="goHome()">Dashboard</button>
+<button onclick="openPage('stocks')">Stocks</button>
+<button onclick="openPage('crypto')">Crypto</button>
+<button onclick="openPage('fx')">FX</button>
+<button onclick="openPage('learn')">Learn</button>
 </div>
 </div>
 
-<!-- Top Stock Ticker -->
-<div id="top-ticker">
-<span>Apple 145.23 ▲0.5% &nbsp;&nbsp; Tesla 764.12 ▼1.2% &nbsp;&nbsp; Amazon 3450.22 ▲0.8% &nbsp;&nbsp; Google 2820.55 ▲0.4%</span>
-</div>
-
-<!-- Dashboard -->
+<!-- DASHBOARD -->
 <div id="dashboard" class="page">
-<div class="card" onclick="openPage('stocks-main')">Stocks</div>
-<div class="card" onclick="openPage('crypto-page')">Crypto</div>
-<div class="card" onclick="openPage('fx-page')">FX</div>
-<div class="card" onclick="openPage('learn-page')">Learn How To Trade</div>
-<div class="card" onclick="openPage('portfolio-page')">Portfolio</div>
-</div>
+<h2>Market Dashboard</h2>
+<p>Integrated Demo Trading Engine</p>
 
-<!-- Stocks Main -->
-<div id="stocks-main" class="page">
-<h2>Stocks Categories</h2>
-<div class="item" onclick="openPage('top-movers')">Top Market Movers</div>
-<div class="item" onclick="openPage('this-weeks-lows')">This Week's Lows</div>
-<div class="item" onclick="openPage('most-volume')">Most Volume</div>
-<div class="item" onclick="openPage('analyst-picks')">Analyst Picks</div>
-</div>
-
-<!-- Stock List Example -->
-<div id="top-movers" class="page">
-<h2>Top Market Movers</h2>
-<div class="item" onclick="openStock('Apple')">Apple</div>
-<div class="item" onclick="openStock('Tesla')">Tesla</div>
-<div class="item" onclick="openStock('Amazon')">Amazon</div>
-<div class="item" onclick="openStock('Microsoft')">Microsoft</div>
-<div class="item" onclick="openStock('Nvidia')">Nvidia</div>
-</div>
-
-<!-- Stock Detail -->
-<div id="stock-detail" class="page">
-<h2 id="stock-name"></h2>
-<div class="detail-box">
-<p>Market Cap: $<span id="marketcap"></span></p>
-<p>52 Week High: $<span id="high"></span></p>
-<p>52 Week Low: $<span id="low"></span></p>
-<p>Volume: <span id="volume"></span></p>
-<p>Analyst Rating: <span id="rating"></span></p>
-<br>
-<button class="action-btn buy">Buy</button>
-<button class="action-btn sell">Sell</button>
-<button class="action-btn save" onclick="confetti()">Save Trade</button>
+<div id="contact">
+<h2>CONTACT US</h2>
+<p>Email: support@globaltrade.demo</p>
+<p>Phone: +1 000 000 0000</p>
+<div class="contact-icons">
+<span>📘</span>
+<span>🟢</span>
 </div>
 </div>
 
-<!-- Portfolio -->
-<div id="portfolio-page" class="page">
-<h2>Your Portfolio</h2>
-<input type="text" id="symbol" placeholder="Stock Symbol (AAPL)">
-<input type="number" id="shares" placeholder="Shares">
-<input type="number" id="buyprice" placeholder="Buy Price">
-<button class="nav-btn" onclick="addStock()">Add To Portfolio</button>
-<div id="portfolio-list"></div>
 </div>
 
-<!-- Crypto Page -->
-<div id="crypto-page" class="page">
+<!-- STOCKS -->
+<div id="stocks" class="page">
+<h2>Stocks Exchange</h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Price</th>
+<th>Change</th>
+<th>High</th>
+<th>Low</th>
+<th>Volume</th>
+</tr>
+</thead>
+<tbody id="stockTable"></tbody>
+</table>
+</div>
+
+<!-- CRYPTO -->
+<div id="crypto" class="page">
 <h2>Crypto Market</h2>
-<div class="item">Bitcoin</div>
-<div class="item">Ethereum</div>
-<div class="item">Solana</div>
+<table>
+<thead>
+<tr>
+<th>Coin</th>
+<th>Price</th>
+<th>Change</th>
+<th>Market Cap</th>
+</tr>
+</thead>
+<tbody id="cryptoTable"></tbody>
+</table>
 </div>
 
-<!-- FX Page -->
-<div id="fx-page" class="page">
+<!-- FX -->
+<div id="fx" class="page">
 <h2>Foreign Exchange</h2>
-<div class="item">EUR/USD</div>
-<div class="item">GBP/USD</div>
-<div class="item">USD/JPY</div>
+<table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Bid</th>
+<th>Ask</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody id="fxTable"></tbody>
+</table>
 </div>
 
-<!-- Learn How To Trade -->
-<div id="learn-page" class="page">
-<h2>Learn How To Trade</h2>
-<div class="audio-video">
-<video width="320" controls>
-  <source src="LearnTrading/video.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
-</div>
-<div class="audio-video">
-<audio controls>
-  <source src="LearnTrading/audio.mp3" type="audio/mpeg">
-Your browser does not support the audio element.
-</audio>
-</div>
+<!-- LEARN -->
+<div id="learn" class="page">
+<h2>Learn To Trade</h2>
+<p>Education Portal</p>
+
+<h3>Testimonials</h3>
+<p>Institutional demo experience.</p>
+<p>Powerful structured platform.</p>
 </div>
 
-<!-- Contact Us -->
-<div id="contact-us" class="page">
-<h3>Contact Us</h3>
-<a href="#"><img src="logos/facebook.png" alt="Facebook" width="30"></a>
-<a href="#"><img src="logos/whatsapp.png" alt="WhatsApp" width="30"></a>
-<a href="#"><img src="logos/visa.png" alt="Visa" width="30"></a>
-<a href="#"><img src="logos/mastercard.png" alt="MasterCard" width="30"></a>
-<a href="#"><img src="logos/libyanbank1.png" alt="Bank" width="30"></a>
-<a href="#"><img src="logos/libyanbank2.png" alt="Bank" width="30"></a>
-</div>
+<!-- DETAIL PAGE -->
+<div id="detail" class="page">
+<h2 id="assetTitle"></h2>
+<canvas id="chart"></canvas>
 
-<!-- Footer -->
-<div id="footer">
-<p>Testimonials:</p>
-<div class="testimonial">"Best trading platform!" – Jane D.</div>
-<div class="testimonial">"Super sleek interface!" – John S.</div>
-<div id="bottom-ticker"><span>Breaking News: Global markets rally &nbsp;&nbsp; BTC surges 5% &nbsp;&nbsp; Tesla hits record high &nbsp;&nbsp; EUR/USD stabilizes</span></div>
+<div class="trade-panel">
+<input placeholder="Quantity">
+<button class="trade">BUY</button>
+<button class="trade">SELL</button>
+</div>
 </div>
 
 <script>
-/* --- Page Navigation --- */
+
+function randomPrice(){
+return (Math.random()*1000+10).toFixed(2);
+}
+
+function randomChange(){
+let val=(Math.random()*4-2).toFixed(2);
+return val>0?`+${val}%`: `${val}%`;
+}
+
+function loadStocks(){
+let table=document.getElementById("stockTable");
+for(let i=0;i<120;i++){
+let symbol="STK"+i;
+let price=randomPrice();
+let change=randomChange();
+let row=document.createElement("tr");
+row.innerHTML=`
+<td>${symbol}</td>
+<td>$${price}</td>
+<td class="${change.includes('-')?'negative':'positive'}">${change}</td>
+<td>$${randomPrice()}</td>
+<td>$${randomPrice()}</td>
+<td>${Math.floor(Math.random()*100)}M</td>
+`;
+row.onclick=()=>openDetail(symbol);
+table.appendChild(row);
+}
+}
+
+function loadCrypto(){
+let table=document.getElementById("cryptoTable");
+for(let i=0;i<50;i++){
+let symbol="COIN"+i;
+let price=randomPrice();
+let change=randomChange();
+let row=document.createElement("tr");
+row.innerHTML=`
+<td>${symbol}</td>
+<td>$${price}</td>
+<td class="${change.includes('-')?'negative':'positive'}">${change}</td>
+<td>$${Math.floor(Math.random()*100)}B</td>
+`;
+row.onclick=()=>openDetail(symbol);
+table.appendChild(row);
+}
+}
+
+function loadFX(){
+let pairs=["USD/GBP","EUR/USD","USD/JPY","USD/CHF","GBP/JPY"];
+let table=document.getElementById("fxTable");
+pairs.forEach(pair=>{
+let change=randomChange();
+let row=document.createElement("tr");
+row.innerHTML=`
+<td>${pair}</td>
+<td>${randomPrice()}</td>
+<td>${randomPrice()}</td>
+<td class="${change.includes('-')?'negative':'positive'}">${change}</td>
+`;
+row.onclick=()=>openDetail(pair);
+table.appendChild(row);
+});
+}
+
+let chart;
+function openDetail(name){
+openPage('detail');
+document.getElementById("assetTitle").innerText=name+" Overview";
+const ctx=document.getElementById("chart").getContext("2d");
+if(chart) chart.destroy();
+chart=new Chart(ctx,{
+type:'line',
+data:{
+labels:["1","2","3","4","5","6","7"],
+datasets:[{
+data:[10,12,8,15,13,17,16],
+borderColor:"#ff6a00",
+fill:false
+}]
+},
+options:{plugins:{legend:{display:false}}}
+});
+}
+
 function openPage(id){
 document.querySelectorAll('.page').forEach(p=>p.style.display='none');
 document.getElementById(id).style.display='block';
 }
+
 function goHome(){openPage('dashboard');}
-function toggleLang(){alert('Language toggle EN/AR');}
 
-/* --- Mock Stock Detail --- */
-function openStock(name){
-openPage('stock-detail');
-document.getElementById('stock-name').innerText=name;
-document.getElementById('marketcap').innerText='1.2T';
-document.getElementById('high').innerText='150';
-document.getElementById('low').innerText='130';
-document.getElementById('volume').innerText='5M';
-document.getElementById('rating').innerText='Buy';
-}
+loadStocks();
+loadCrypto();
+loadFX();
+goHome();
 
-/* --- Portfolio --- */
-function addStock(){
-let symbol=document.getElementById('symbol').value;
-let shares=document.getElementById('shares').value;
-let buyprice=document.getElementById('buyprice').value;
-if(!symbol||!shares||!buyprice){alert('Fill all fields');return;}
-let list=document.getElementById('portfolio-list');
-let div=document.createElement('div');
-div.className='portfolio-item';
-div.innerHTML=`${symbol} - ${shares} shares @ $${buyprice}`;
-list.appendChild(div);
-document.getElementById('symbol').value='';document.getElementById('shares').value='';document.getElementById('buyprice').value='';
-}
-
-/* --- Confetti --- */
-function confetti(){alert('Trade saved! 🎉');}
 </script>
 
 </body>
