@@ -14,6 +14,7 @@ h2{color:#3b82f6;margin-top:0;}
 .logo{color:#3b82f6;font-weight:bold;font-size:18px;}
 .nav-links button{margin-left:10px;background:#121826;color:white;padding:8px 14px;}
 .nav-links button:hover{background:#3b82f6;color:#0b0f19;}
+#langSwitch{margin-left:15px;padding:6px 12px;background:#3b82f6;color:#0b0f19;}
 table{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px;}
 th,td{padding:8px;border-bottom:1px solid #222;}
 tr:hover{background:#121826;cursor:pointer;}
@@ -24,7 +25,8 @@ input{padding:6px;background:#0b0f19;border:1px solid #333;color:white;}
 button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 #balanceBox{color:#22c55e;font-weight:bold;margin-bottom:15px;}
 #contact{margin-top:40px;padding:30px;background:#121826;border-top:2px solid #3b82f6;text-align:center;}
-.contact-icons span{font-size:24px;margin:0 15px;cursor:pointer;}
+.contact-icons img{width:32px;margin:0 10px;cursor:pointer;}
+.partner-logos img{width:80px;margin:10px;}
 #chart{height:300px;margin-top:20px;}
 .asset-buttons{display:flex;flex-wrap:wrap;margin-top:15px;}
 .asset-buttons button{margin:5px;padding:10px 20px;background:#121826;color:white;}
@@ -32,7 +34,6 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 #topTicker,#bottomTicker{background:#121826;color:#3b82f6;padding:5px 10px;white-space:nowrap;overflow:hidden;position:fixed;width:100%;z-index:99;}
 #topTicker{top:60px;}
 #bottomTicker{bottom:0;}
-.ticker-item{display:inline-block;margin-right:50px;}
 #loginBox{background:#121826;padding:30px;margin:80px auto;width:300px;text-align:center;border-radius:8px;}
 #loginBox input{width:80%;margin:10px 0;}
 #loginBox button{width:85%;margin-top:10px;}
@@ -51,6 +52,7 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 <button onclick="openPage('learn')">Learn to Trade</button>
 <button onclick="openPage('portfolio')">Portfolio</button>
 <button onclick="openPage('login')">Login</button>
+<button id="langSwitch" onclick="toggleLanguage()">English</button>
 </div>
 </div>
 
@@ -63,24 +65,24 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 <!-- LOGIN PAGE -->
 <div id="login" class="page">
 <div id="loginBox">
-<h2>Login</h2>
+<h2 id="loginHeading">Login</h2>
 <input type="text" id="username" placeholder="Username"><br>
 <input type="password" id="password" placeholder="Password"><br>
-<button onclick="loginUser()">Login</button>
+<button onclick="loginUser()" id="loginBtn">Login</button>
 <p id="loginMsg" style="color:#ef4444;margin-top:10px;"></p>
 </div>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="page">
-<h2>Trading Dashboard</h2>
+<h2 id="dashHeading">Trading Dashboard</h2>
 <div id="balanceBox">Balance: $100,000.00</div>
-<p>Welcome to your interactive trading simulation.</p>
+<p id="dashText">Welcome to your interactive trading simulation.</p>
 </div>
 
 <!-- STOCKS -->
 <div id="stocks" class="page">
-<h2>Stocks</h2>
+<h2 id="stocksHeading">Stocks</h2>
 <div class="asset-buttons" id="stockButtons"></div>
 <table>
 <thead><tr><th>Symbol</th><th>Price</th><th>Change</th></tr></thead>
@@ -90,7 +92,7 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 
 <!-- CRYPTO -->
 <div id="crypto" class="page">
-<h2>Crypto</h2>
+<h2 id="cryptoHeading">Crypto</h2>
 <div class="asset-buttons" id="cryptoButtons"></div>
 <table>
 <thead><tr><th>Coin</th><th>Price</th><th>Change</th></tr></thead>
@@ -100,7 +102,7 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 
 <!-- FX -->
 <div id="fx" class="page">
-<h2>FX</h2>
+<h2 id="fxHeading">FX</h2>
 <table>
 <thead><tr><th>Pair</th><th>Bid</th><th>Ask</th></tr></thead>
 <tbody id="fxTable"></tbody>
@@ -109,34 +111,46 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 
 <!-- LEARN TO TRADE -->
 <div id="learn" class="page">
-<h2>Learn to Trade</h2>
-<video width="100%" controls>
-<source src="learn-video.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+<h2 id="learnHeading">Learn to Trade</h2>
 <audio controls style="margin-top:10px;">
 <source src="learn-audio.mp3" type="audio/mpeg">
 Your browser does not support the audio element.
 </audio>
+
+<!-- LIBYAN BANK PARTNERS -->
+<div class="partner-logos">
+<img src="https://seeklogo.com/images/N/national-commercial-bank-libya-logo-478725.png" alt="NCB">
+<img src="https://via.placeholder.com/80x40?text=Sahara+Bank" alt="Sahara Bank">
+<img src="https://via.placeholder.com/80x40?text=North+African+Bank" alt="North African Bank">
+</div>
+
+<!-- PAYMENT METHODS -->
+<div class="partner-logos">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Mastercard-logo.svg" alt="MasterCard">
+<img src="https://via.placeholder.com/80x40?text=Credit+Card" alt="Credit Card">
+<img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal">
+</div>
+
 <div id="contact">
-<h2>CONTACT US</h2>
-<p>Email: support@globaltrade.demo</p>
-<p>WhatsApp: +1 000 000 0000</p>
+<h2 id="contactHeading">CONTACT US</h2>
+<p id="contactEmail">Email: support@globaltrade.demo</p>
+<p id="contactWhats">WhatsApp: +1 000 000 0000</p>
 <div class="contact-icons">
-<span>📘</span>
-<span>🟢</span>
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="Facebook">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
 </div>
 </div>
 </div>
 
 <!-- PORTFOLIO -->
 <div id="portfolio" class="page">
-<h2>Portfolio</h2>
+<h2 id="portfolioHeading">Portfolio</h2>
 <table>
 <thead><tr><th>Asset</th><th>Qty</th><th>Avg Price</th></tr></thead>
 <tbody id="portfolioTable"></tbody>
 </table>
-<h3>Order History</h3>
+<h3 id="orderHistoryHeading">Order History</h3>
 <table>
 <thead><tr><th>Type</th><th>Asset</th><th>Qty</th><th>Price</th></tr></thead>
 <tbody id="orderHistory"></tbody>
@@ -162,7 +176,8 @@ let currentAsset="";
 let prices={};
 let priceHistory={};
 let users={demo:"demo123"};
-let newsHeadlines=["Stock STK1 hits all-time high!","Bitcoin surges 5%","EUR/USD remains steady","Crypto market volatile today","Tech stocks rebound"];
+let newsHeadlines=["Stock STK1 hits all-time high!","Bitcoin surges 5%","EUR/USD steady","Crypto market volatile","Tech stocks rebound"];
+let language="en"; // default
 
 // -------- MOCK DATA ----------
 function createAssets(prefix,count){
@@ -181,94 +196,82 @@ function openPage(page){document.querySelectorAll('.page').forEach(p=>p.style.di
 if(page=="stocks")loadStocks();else if(page=="crypto")loadCrypto();else if(page=="fx")loadFX();}
 function goHome(){openPage('dashboard');}
 
-// -------- LOGIN ----------
-function loginUser(){
-let u=document.getElementById("username").value;
-let p=document.getElementById("password").value;
-if(users[u] && users[u]===p){document.getElementById("loginMsg").innerText="Login successful";openPage('dashboard');} 
-else{document.getElementById("loginMsg").innerText="Invalid username/password";}
+// -------- LANGUAGE TOGGLE ----------
+function toggleLanguage(){
+language=(language==="en")?"ar":"en";
+document.getElementById("langSwitch").innerText=(language==="en")?"English":"AutoB";
+// Here you would add dynamic translation for headings and content
 }
 
-// -------- LOAD TABLES ----------
+// -------- STOCKS & CRYPTO TABLES ----------
 function loadStocks(){
-let table=document.getElementById("stockTable");
-let btnDiv=document.getElementById("stockButtons");
-table.innerHTML=""; btnDiv.innerHTML="";
-Object.keys(prices).filter(k=>k.startsWith("STK")).forEach(key=>{
-let row=document.createElement("tr");
-row.innerHTML=`<td>${key}</td><td id="${key}">$${prices[key]}</td><td class="positive">0%</td>`;
-row.onclick=()=>openDetail(key); table.appendChild(row);
-let btn=document.createElement("button"); btn.innerText=key; btn.onclick=()=>openDetail(key); btnDiv.appendChild(btn);
-});}
+let tbody=document.getElementById("stockTable");tbody.innerHTML="";
+for(let sym in prices){if(sym.startsWith("STK")){
+let change=((Math.random()-0.5)*10).toFixed(2);
+tbody.innerHTML+=`<tr onclick="showDetail('${sym}')"><td>${sym}</td><td>$${prices[sym]}</td><td class="${change>=0?'positive':'negative'}">${change}%</td></tr>`;
+}}}
 function loadCrypto(){
-let table=document.getElementById("cryptoTable"); let btnDiv=document.getElementById("cryptoButtons");
-table.innerHTML=""; btnDiv.innerHTML="";
-Object.keys(prices).filter(k=>k.startsWith("COIN")).forEach(key=>{
-let row=document.createElement("tr");
-row.innerHTML=`<td>${key}</td><td id="${key}">$${prices[key]}</td><td class="positive">0%</td>`;
-row.onclick=()=>openDetail(key); table.appendChild(row);
-let btn=document.createElement("button"); btn.innerText=key; btn.onclick=()=>openDetail(key); btnDiv.appendChild(btn);
-});}
+let tbody=document.getElementById("cryptoTable");tbody.innerHTML="";
+for(let sym in prices){if(sym.startsWith("COIN")){
+let change=((Math.random()-0.5)*10).toFixed(2);
+tbody.innerHTML+=`<tr onclick="showDetail('${sym}')"><td>${sym}</td><td>$${prices[sym]}</td><td class="${change>=0?'positive':'negative'}">${change}%</td></tr>`;
+}}}
 function loadFX(){
-let table=document.getElementById("fxTable"); table.innerHTML="";
+let tbody=document.getElementById("fxTable");tbody.innerHTML="";
 fxPairs.forEach(pair=>{
-let bid=(Math.random()*1.5+1).toFixed(4); let ask=(parseFloat(bid)+0.002).toFixed(4);
-let row=document.createElement("tr"); row.innerHTML=`<td>${pair}</td><td>${bid}</td><td>${ask}</td>`; table.appendChild(row);
-});}
+let bid=(Math.random()*2+0.5).toFixed(4);
+let ask=(parseFloat(bid)+0.0005).toFixed(4);
+tbody.innerHTML+=`<tr><td>${pair}</td><td>${bid}</td><td>${ask}</td></tr>`;
+});
+}
 
-// -------- PRICE UPDATES ----------
-function randomMove(price){return Math.max(0.01,(price+(Math.random()*4-2))).toFixed(2);}
-function updatePrices(){
-for(let key in prices){
-prices[key]=parseFloat(randomMove(prices[key]));
-let el=document.getElementById(key); if(el) el.innerText="$"+prices[key];
-priceHistory[key].push(prices[key]);
-if(priceHistory[key].length>20) priceHistory[key].shift();
-}} setInterval(updatePrices,1000);
+// -------- SHOW TRADE DETAIL ----------
+function showDetail(symbol){
+currentAsset=symbol;
+openPage("detail");
+document.getElementById("assetTitle").innerText=`${symbol} Detail`;
+// Here you would generate chart using lightweight-charts
+}
 
-// -------- PORTFOLIO / TRADE ----------
-function openDetail(asset){currentAsset=asset; openPage('detail'); document.getElementById("assetTitle").innerText=asset; renderChart(asset);}
+// -------- TRADE SIMULATION ----------
 function executeTrade(type){
-let qty=parseFloat(document.getElementById("qty").value); if(isNaN(qty)||qty<=0){alert("Enter quantity"); return;}
-let price=prices[currentAsset]; 
-if(type=="buy" && balance<price*qty){alert("Insufficient balance"); return;}
-if(!portfolio[currentAsset]) portfolio[currentAsset]={qty:0,avg:0};
-let holding=portfolio[currentAsset];
-if(type=="buy"){let total=holding.avg*holding.qty + price*qty; holding.qty+=qty; holding.avg=total/holding.qty; balance-=price*qty;}
-else if(type=="sell"){if(holding.qty<qty){alert("Not enough holdings"); return;} holding.qty-=qty; balance+=price*qty;}
-updatePortfolio();}
+let qty=parseFloat(document.getElementById("qty").value);
+if(isNaN(qty)||qty<=0){alert("Enter a valid quantity");return;}
+let price=prices[currentAsset];
+if(type==="buy"){balance-=qty*price;portfolio[currentAsset]=(portfolio[currentAsset]||0)+qty;}
+else{balance+=qty*price;portfolio[currentAsset]=(portfolio[currentAsset]||0)-qty;if(portfolio[currentAsset]<=0)delete portfolio[currentAsset];}
+document.getElementById("balanceBox").innerText=`Balance: $${balance.toFixed(2)}`;
+loadPortfolio();
+}
 
 // -------- PORTFOLIO TABLE ----------
-function updatePortfolio(){
-let table=document.getElementById("portfolioTable");
-table.innerHTML="";
-for(let asset in portfolio){let h=portfolio[asset]; if(h.qty>0){let row=document.createElement("tr"); row.innerHTML=`<td>${asset}</td><td>${h.qty}</td><td>$${h.avg.toFixed(2)}</td>`; table.appendChild(row);}}
-document.getElementById("balanceBox").innerText="Balance: $"+balance.toFixed(2);
+function loadPortfolio(){
+let tbody=document.getElementById("portfolioTable");
+tbody.innerHTML="";
+for(let asset in portfolio){
+tbody.innerHTML+=`<tr><td>${asset}</td><td>${portfolio[asset]}</td><td>$${prices[asset].toFixed(2)}</td></tr>`;
+}
 }
 
-// -------- ORDER HISTORY ----------
-function addOrder(type,asset,qty,price){
-let table=document.getElementById("orderHistory");
-let row=document.createElement("tr"); row.innerHTML=`<td>${type}</td><td>${asset}</td><td>${qty}</td><td>$${price.toFixed(2)}</td>`; table.appendChild(row);}
-
-// -------- CHART ----------
-function renderChart(asset){
-let chartDiv=document.getElementById("chart"); chartDiv.innerHTML="";
-let chart=LightweightCharts.createChart(chartDiv,{width:chartDiv.clientWidth,height:300,rightPriceScale:{borderColor:'#3b82f6'},timeScale:{borderColor:'#3b82f6'}});
-let candleSeries=chart.addCandlestickSeries();
-let data=priceHistory[asset].map((p,i)=>({time:i,value:p,open:p-1,high:p+1,low:p-1.5,close:p}));
-candleSeries.setData(data);
+// -------- LOGIN SIMULATION ----------
+function loginUser(){
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
+if(users[user] && users[user]===pass){alert("Login successful");goHome();}
+else{document.getElementById("loginMsg").innerText="Invalid credentials";}
 }
 
 // -------- TICKERS ----------
-function updateTickers(){
-let top=document.getElementById("topTicker"); top.innerHTML=""; let bottom=document.getElementById("bottomTicker"); bottom.innerHTML="";
-Object.keys(prices).slice(0,20).forEach(k=>{let div=document.createElement("span"); div.className="ticker-item"; div.innerText=`${k}: $${prices[k]}`; top.appendChild(div);});
-newsHeadlines.forEach(n=>{let div=document.createElement("span"); div.className="ticker-item"; div.innerText=n; bottom.appendChild(div);});}
-setInterval(updateTickers,2000);
+function startTickers(){
+let topTicker=document.getElementById("topTicker");
+let bottomTicker=document.getElementById("bottomTicker");
+let topIndex=0;let bottomIndex=0;
+setInterval(()=>{topTicker.innerText=newsHeadlines[topIndex];topIndex=(topIndex+1)%newsHeadlines.length;},3000);
+setInterval(()=>{bottomTicker.innerText=newsHeadlines[bottomIndex];bottomIndex=(bottomIndex+1)%newsHeadlines.length;},4000);
+}
 
-// INITIAL LOAD
-openPage('login');
+// --- INIT ---
+openPage('dashboard');startTickers();
 </script>
 </body>
 </html>
