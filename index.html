@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital - Full Demo</title>
+<title>Global Trade Capital Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
@@ -40,7 +40,7 @@ section{padding:60px;margin:20px 40px;background:#ffffff;border-radius:12px;box-
 footer{padding:40px 40px;background:#e8f0fe;text-align:center;color:#1c1e21;border-top:1px solid #cfe0fc;border-radius:0 0 12px 12px;}
 .page{display:none;}
 .page.active{display:block;}
-.activate-btn{background:#0a66c2;color:#fff;padding:12px 24px;border:none;border-radius:8px;font-weight:600;margin-top:20px;}
+.back-btn{background:#0a66c2;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-weight:600;margin-bottom:20px;}
 @keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
 </style>
 </head>
@@ -62,90 +62,59 @@ footer{padding:40px 40px;background:#e8f0fe;text-align:center;color:#1c1e21;bord
 <div class="ticker">
 <span id="topTicker">AAPL $145.32 +1.2% 🔼 TSLA $872.10 -0.5% 🔽 BTC $27,120 +2.1% 🔼 ETH $1,860 -0.5% 🔽 USD/LYD 4.52 +0.2% 🔼 GBP/USD 1.25 -0.1% 🔽 EUR/USD 1.09 +0.3% 🔼 ...</span>
 </div>
-<section id="heroPage" class="page active">
-<h1 style="font-size:48px;text-align:center;margin-bottom:20px;color:#0a66c2;">Trade Global Markets with Confidence</h1>
-<p style="text-align:center;color:#555;font-size:18px;margin-bottom:30px;">Institutional-grade trading access for serious investors.</p>
-<div style="text-align:center;"><button class="activate-btn">Activate Main-Dashboard.com</button></div>
-</section>
-<section id="stocksPage" class="page">
+<section id="stocksPage" class="page active">
+<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Stocks</h2>
 <div class="stocks-grid" id="stocksContainer"></div>
 </section>
 <section id="cryptoPage" class="page">
+<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Cryptocurrency</h2>
 <div class="stocks-grid" id="cryptoContainer"></div>
 </section>
 <section id="fxPage" class="page">
+<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Forex / Exchange</h2>
 <div class="stocks-grid" id="fxContainer"></div>
 </section>
 <section id="learnPage" class="page">
+<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Learn to Trade</h2>
 <div class="learn-box">
-<p>Learn trading easily with our platform. Start small, grow fast!</p>
-<div class="learn-grid" id="learnBanks">
-<!-- Bank logos populated by JS -->
+<div class="learn-grid" id="banksContainer"></div>
+<h3>Testimonials</h3>
+<div class="learn-grid">
+<div class="testimonial">"Learning to trade is simple and intuitive."</div>
+<div class="testimonial">"Start trading with minimal capital."</div>
+<div class="testimonial">"Professional tools without complexity."</div>
 </div>
-<div class="testimonials-grid" style="margin-top:30px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;">
-<div class="testimonial">"Learning to trade has never been this simple!"</div>
-<div class="testimonial">"You don't need much capital to start trading here."</div>
-<div class="testimonial">"Easy, intuitive, and fun experience."</div>
-</div>
-<div class="payments" id="paymentsSection">
-<!-- Payment logos populated by JS -->
+<h3>Payments Accepted</h3>
+<div class="payments">
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa"><div>Visa</div></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/MasterCard_Logo.svg" alt="MasterCard"><div>MasterCard</div></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"><div>PayPal</div></div>
 </div>
 </div>
 </section>
 <section id="contactPage" class="page">
+<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Contact Us</h2>
-<p style="margin-bottom:20px;">Reach out to open your demo account or ask questions.</p>
-<div style="display:flex;gap:20px;flex-wrap:wrap;align-items:center;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Facebook_f_logo_%282021%29.svg/800px-Facebook_f_logo_%282021%29.svg.png" width="50">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="50">
-</div>
+<p>Email: support@globaltrade.com</p>
+<p>WhatsApp: +218 XXX XXX XXX</p>
+<p>Facebook: <a href="#">Global Trade Capital</a></p>
 </section>
-<div class="modal" id="tradeModal">
-<div class="modal-content">
-<span class="close-modal" onclick="closeModal()">&times;</span>
-<h3>Trade Asset</h3>
-<p id="modalAsset"></p>
-<button onclick="buyAsset()">Buy (Demo)</button>
-<button onclick="sellAsset()">Sell (Demo)</button>
-</div>
-</div>
+<section id="heroPage" class="page active">
+<h1 style="font-size:48px;text-align:center;margin-bottom:20px;color:#0a66c2;">Trade Global Markets with Confidence</h1>
+<p style="text-align:center;color:#555;font-size:18px;margin-bottom:30px;">Institutional-grade trading access for serious investors.</p>
+</section>
+<script>
+function setLang(lang){alert('Language switched to: '+lang+' (Arabic/English toggle simulated)');}
+function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');}const mockStocks=[ {name:'Apple',price:145.32,high:147.00,low:144.00,change:'+1.2%',up:true}, {name:'Tesla',price:872.10,high:880.00,low:860.00,change:'-0.5%',up:false}, {name:'Amazon',price:3345.50,high:3370.00,low:3300.00,change:'+0.8%',up:true} ]; const mockCrypto=[ {name:'Bitcoin',price:27120,high:27300,low:26800,change:'+2.1%',up:true}, {name:'Ethereum',price:1860,high:1880,low:1840,change:'-0.5%',up:false} ]; const mockFX=[ {name:'USD/LYD',price:4.52,high:4.55,low:4.50,change:'+0.2%',up:true}, {name:'EUR/USD',price:1.09,high:1.10,low:1.08,change:'+0.3%',up:true}, {name:'GBP/USD',price:1.25,high:1.26,low:1.24,change:'-0.1%',up:false} ]; function populateCards(containerId,data){const container=document.getElementById(containerId);data.forEach(item=>{const card=document.createElement('div');card.className='stock-card';card.innerHTML=<h3>${item.name}</h3><div class="price ${item.up?'up':'down'}">$${item.price} (${item.change})</div>;container.appendChild(card);});} populateCards('stocksContainer',mockStocks); populateCards('cryptoContainer',mockCrypto); populateCards('fxContainer',mockFX);
+
+// Banks const banks=[ {name:'National Commercial Bank',arabic:'البنك التجاري الوطني',logo:'https://upload.wikimedia.org/wikipedia/commons/5/5e/National_Commercial_Bank_Logo.png'}, {name:'Sahara Bank',arabic:'بنك الصحراء',logo:'https://upload.wikimedia.org/wikipedia/commons/2/21/Sahara_Bank_Logo.png'}, {name:'Aljamhooria Bank',arabic:'بنك الجمهورية',logo:'https://upload.wikimedia.org/wikipedia/commons/1/1f/Aljamhooria_Bank_Logo.png'}, {name:'Bank of Commerce and Development',arabic:'بنك التجارة والتنمية',logo:'https://upload.wikimedia.org/wikipedia/commons/0/0b/Bank_of_Commerce_Development_Logo.png'} ]; const banksContainer=document.getElementById('banksContainer'); banks.forEach(b=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=<img src='${b.logo}' alt='${b.name}' style='width:100px;display:block;margin-bottom:8px;'/><div>${b.name}</div><div>${b.arabic}</div>;banksContainer.appendChild(div);}); </script>
+
 <footer>
 <p>&copy; 2026 Global Trade Capital. All rights reserved.</p>
 </footer>
-<script>
-let currentLang='en';
-function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');}
-function setLang(lang){currentLang=lang;updateText();}
-function updateText(){
-// Minimal demo translation
-document.querySelectorAll('.section-title').forEach(st=>{st.textContent=currentLang==='en'?st.getAttribute('data-en')||st.textContent:st.getAttribute('data-ar')||st.textContent;});
-}
-function openModal(asset){document.getElementById('modalAsset').textContent='Trading: '+asset;document.getElementById('tradeModal').style.display='flex';}
-function closeModal(){document.getElementById('tradeModal').style.display='none';}
-function buyAsset(){alert('Demo Buy executed');}
-function sellAsset(){alert('Demo Sell executed');}
-// Mock data
-const stocks=[{name:'Apple',price:145.32,high:147.00,low:144.00},{name:'Tesla',price:872.10,high:885.00,low:860.00},{name:'Microsoft',price:310.25,high:315.00,low:308.00}];
-const crypto=[{name:'BTC',price:27120,high:27400,low:26950},{name:'ETH',price:1860,high:1900,low:1850}];
-const fx=[{name:'USD/LYD',price:4.52},{name:'GBP/USD',price:1.25},{name:'EUR/USD',price:1.09}];
-function populateAssets(){
-const sContainer=document.getElementById('stocksContainer');stocks.forEach(s=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=`<h4>${s.name}</h4><p class="price">$${s.price} (${((s.price-s.low)/(s.high-s.low)*100).toFixed(1)}%)</p><button onclick="openModal('${s.name}')">Trade</button>`;sContainer.appendChild(div);});
-const cContainer=document.getElementById('cryptoContainer');crypto.forEach(c=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=`<h4>${c.name}</h4><p class="price">$${c.price}</p><button onclick="openModal('${c.name}')">Trade</button>`;cContainer.appendChild(div);});
-const fxContainer=document.getElementById('fxContainer');fx.forEach(f=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=`<h4>${f.name}</h4><p class="price">${f.price}</p><button onclick="openModal('${f.name}')">Trade</button>`;fxContainer.appendChild(div);});
-}
-// Learn to Trade banks
-const banks=[{name:'National Commercial Bank',logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/National_Commercial_Bank_Logo.png/200px-National_Commercial_Bank_Logo.png',arabic:'البنك التجاري الوطني'},{name:'Sahara Bank',logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Sahara_Bank_Logo.png/200px-Sahara_Bank_Logo.png',arabic:'بنك الصحراء'},{name:'Aljamhooria Bank',logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Aljamhooria_Bank_Logo.png/200px-Aljamhooria_Bank_Logo.png',arabic:'بنك الجمهورية'},{name:'Bank of Commerce and Development',logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/BCDB_Logo.png/200px-BCDB_Logo.png',arabic:'بنك التجارة والتنمية'}];
-const learnBanks=document.getElementById('learnBanks');
-banks.forEach(b=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=`<img src='${b.logo}' style='width:100px;display:block;margin-bottom:8px;'><p>${b.name}<br>${b.arabic}</p>`;learnBanks.appendChild(div);});
-// Payments
-const payments=[{logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Visa_Logo.png/200px-Visa_Logo.png',name:'Visa'},{logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Mastercard-logo.png/200px-Mastercard-logo.png',name:'MasterCard'},{logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/200px-PayPal.svg.png',name:'PayPal'}];
-const paymentsSection=document.getElementById('paymentsSection');
-payments.forEach(p=>{const div=document.createElement('div');div.className='payment-item';div.innerHTML=`<img src='${p.logo}'><p>${p.name}</p>`;paymentsSection.appendChild(div);});
-populateAssets();
-</script>
 </body>
 </html>
