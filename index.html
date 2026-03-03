@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital - Phase 1</title>
+<title>Global Trade Capital - Phase 2</title>
 <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
 <style>
-/* --- GENERAL --- */
+/* --- GENERAL STYLING --- */
 body{margin:0;font-family:Arial,sans-serif;background:#0b0f19;color:#e5e7eb;}
 button{cursor:pointer;border:none;outline:none;}
 .page{display:none;padding:120px 40px 40px 40px;}
@@ -33,6 +33,9 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 #topTicker{top:60px;}
 #bottomTicker{bottom:0;}
 .ticker-item{display:inline-block;margin-right:50px;}
+#loginBox{background:#121826;padding:30px;margin:80px auto;width:300px;text-align:center;border-radius:8px;}
+#loginBox input{width:80%;margin:10px 0;}
+#loginBox button{width:85%;margin-top:10px;}
 </style>
 </head>
 <body>
@@ -47,6 +50,7 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 <button onclick="openPage('fx')">FX</button>
 <button onclick="openPage('learn')">Learn to Trade</button>
 <button onclick="openPage('portfolio')">Portfolio</button>
+<button onclick="openPage('login')">Login</button>
 </div>
 </div>
 
@@ -55,6 +59,17 @@ button.trade{background:#3b82f6;color:#0b0f19;padding:6px 12px;margin-left:5px;}
 
 <!-- BOTTOM NEWS TICKER -->
 <div id="bottomTicker"></div>
+
+<!-- LOGIN PAGE -->
+<div id="login" class="page">
+<div id="loginBox">
+<h2>Login</h2>
+<input type="text" id="username" placeholder="Username"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="loginUser()">Login</button>
+<p id="loginMsg" style="color:#ef4444;margin-top:10px;"></p>
+</div>
+</div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="page">
@@ -146,6 +161,7 @@ let portfolio={};
 let currentAsset="";
 let prices={};
 let priceHistory={};
+let users={demo:"demo123"};
 let newsHeadlines=["Stock STK1 hits all-time high!","Bitcoin surges 5%","EUR/USD remains steady","Crypto market volatile today","Tech stocks rebound"];
 
 // -------- MOCK DATA ----------
@@ -159,6 +175,19 @@ priceHistory[symbol]=[price];
 createAssets("STK",100);
 createAssets("COIN",50);
 let fxPairs=["USD/GBP","EUR/USD","USD/JPY","USD/CHF","GBP/JPY"];
+
+// -------- PAGE CONTROL ----------
+function openPage(page){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(page).style.display='block';
+if(page=="stocks")loadStocks();else if(page=="crypto")loadCrypto();else if(page=="fx")loadFX();}
+function goHome(){openPage('dashboard');}
+
+// -------- LOGIN ----------
+function loginUser(){
+let u=document.getElementById("username").value;
+let p=document.getElementById("password").value;
+if(users[u] && users[u]===p){document.getElementById("loginMsg").innerText="Login successful";openPage('dashboard');} 
+else{document.getElementById("loginMsg").innerText="Invalid username/password";}
+}
 
 // -------- LOAD TABLES ----------
 function loadStocks(){
@@ -201,46 +230,45 @@ if(priceHistory[key].length>20) priceHistory[key].shift();
 function openDetail(asset){currentAsset=asset; openPage('detail'); document.getElementById("assetTitle").innerText=asset; renderChart(asset);}
 function executeTrade(type){
 let qty=parseFloat(document.getElementById("qty").value); if(isNaN(qty)||qty<=0){alert("Enter quantity"); return;}
-let price=prices[currentAsset]; if(type=="buy"&&balance<price*qty){alert("Insufficient balance"); return;}
+let price=prices[currentAsset]; 
+if(type=="buy" && balance<price*qty){alert("Insufficient balance"); return;}
 if(!portfolio[currentAsset]) portfolio[currentAsset]={qty:0,avg:0};
-if(type=="buy"){let total=portfolio[currentAsset].qty*portfolio[currentAsset].avg + price*qty;
-portfolio[currentAsset].qty+=qty; portfolio[currentAsset].avg=total/portfolio[currentAsset].qty; balance-=price*qty;}
-else{if(qty>portfolio[currentAsset].qty){alert("Not enough holdings"); return;} balance+=price*qty; portfolio[currentAsset].qty-=qty;}
-renderPortfolio(); document.getElementById("qty").value="";
+let holding=portfolio[currentAsset];
+if(type=="buy"){let total=holding.avg*holding.qty + price*qty; holding.qty+=qty; holding.avg=total/holding.qty; balance-=price*qty;}
+else if(type=="sell"){if(holding.qty<qty){alert("Not enough holdings"); return;} holding.qty-=qty; balance+=price*qty;}
+updatePortfolio();}
+
+// -------- PORTFOLIO TABLE ----------
+function updatePortfolio(){
+let table=document.getElementById("portfolioTable");
+table.innerHTML="";
+for(let asset in portfolio){let h=portfolio[asset]; if(h.qty>0){let row=document.createElement("tr"); row.innerHTML=`<td>${asset}</td><td>${h.qty}</td><td>$${h.avg.toFixed(2)}</td>`; table.appendChild(row);}}
+document.getElementById("balanceBox").innerText="Balance: $"+balance.toFixed(2);
 }
 
-// --------- PORTFOLIO DISPLAY ----------
-function renderPortfolio(){let table=document.getElementById("portfolioTable"); table.innerHTML=""; for(let a in portfolio){if(portfolio[a].qty>0){let row=document.createElement("tr"); row.innerHTML=`<td>${a}</td><td>${portfolio[a].qty}</td><td>$${portfolio[a].avg.toFixed(2)}</td>`; table.appendChild(row);}}}
+// -------- ORDER HISTORY ----------
+function addOrder(type,asset,qty,price){
+let table=document.getElementById("orderHistory");
+let row=document.createElement("tr"); row.innerHTML=`<td>${type}</td><td>${asset}</td><td>${qty}</td><td>$${price.toFixed(2)}</td>`; table.appendChild(row);}
 
-// --------- PAGE NAVIGATION ----------
-function openPage(id){
-document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-document.getElementById(id).style.display="block";
-}
-function goHome(){openPage("dashboard");}
-
-// --------- CHART ----------
-let chart,series;
-function renderChart(symbol){
-const chartDiv=document.getElementById("chart"); chartDiv.innerHTML="";
-chart=LightweightCharts.createChart(chartDiv,{width:chartDiv.clientWidth,height:300,rightPriceScale:{borderVisible:false},timeScale:{borderVisible:false}});
-series=chart.addLineSeries({color:'#3b82f6'});
-let data=priceHistory[symbol].map((p,i)=>({time:i,value:p})); series.setData(data);
+// -------- CHART ----------
+function renderChart(asset){
+let chartDiv=document.getElementById("chart"); chartDiv.innerHTML="";
+let chart=LightweightCharts.createChart(chartDiv,{width:chartDiv.clientWidth,height:300,rightPriceScale:{borderColor:'#3b82f6'},timeScale:{borderColor:'#3b82f6'}});
+let candleSeries=chart.addCandlestickSeries();
+let data=priceHistory[asset].map((p,i)=>({time:i,value:p,open:p-1,high:p+1,low:p-1.5,close:p}));
+candleSeries.setData(data);
 }
 
-// --------- TOP TICKER ----------
-function updateTopTicker(){
-let div=document.getElementById("topTicker"); div.innerHTML="";
-Object.keys(prices).slice(0,20).forEach(k=>{
-let item=document.createElement("span"); item.className="ticker-item"; item.innerText=`${k}: $${prices[k]}`; div.appendChild(item);
-});} setInterval(updateTopTicker,1000);
+// -------- TICKERS ----------
+function updateTickers(){
+let top=document.getElementById("topTicker"); top.innerHTML=""; let bottom=document.getElementById("bottomTicker"); bottom.innerHTML="";
+Object.keys(prices).slice(0,20).forEach(k=>{let div=document.createElement("span"); div.className="ticker-item"; div.innerText=`${k}: $${prices[k]}`; top.appendChild(div);});
+newsHeadlines.forEach(n=>{let div=document.createElement("span"); div.className="ticker-item"; div.innerText=n; bottom.appendChild(div);});}
+setInterval(updateTickers,2000);
 
-// --------- BOTTOM NEWS TICKER ----------
-let newsIndex=0; function updateBottomTicker(){let div=document.getElementById("bottomTicker"); div.innerHTML=newsHeadlines[newsIndex]; newsIndex=(newsIndex+1)%newsHeadlines.length;} setInterval(updateBottomTicker,3000);
-
-// --------- INIT ----------
-loadStocks(); loadCrypto(); loadFX(); openPage("dashboard"); updateTopTicker(); updateBottomTicker();
-
+// INITIAL LOAD
+openPage('login');
 </script>
 </body>
 </html>
