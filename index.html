@@ -2,10 +2,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Ultra Premium Dashboard</title>
+<title>Global Trade Capital Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-/* Base */
+/* Base styling */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{background:#f5f7fa;color:#1c1e21;transition:all .3s;}
 a{text-decoration:none;color:inherit;}
@@ -41,7 +41,6 @@ section{padding:60px;margin:20px 40px;background:#ffffff;border-radius:12px;box-
 footer{padding:40px 40px;background:#e8f0fe;text-align:center;color:#1c1e21;border-top:1px solid #cfe0fc;border-radius:0 0 12px 12px;}
 .page{display:none;}
 .page.active{display:block;}
-.back-btn{background:#0a66c2;color:#fff;padding:10px 20px;border:none;border-radius:8px;font-weight:600;margin-bottom:20px;}
 @keyframes fadeIn{0%{opacity:0;}100%{opacity:1;}}
 </style>
 </head>
@@ -63,88 +62,65 @@ footer{padding:40px 40px;background:#e8f0fe;text-align:center;color:#1c1e21;bord
 <div class="ticker">
 <span id="topTicker">AAPL $145.32 +1.2% 🔼 TSLA $872.10 -0.5% 🔽 BTC $27,120 +2.1% 🔼 ETH $1,860 -0.5% 🔽 USD/LYD 4.52 +0.2% 🔼 GBP/USD 1.25 -0.1% 🔽 EUR/USD 1.09 +0.3% 🔼 ...</span>
 </div>
-<section id="stocksPage" class="page active">
-<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
+<section id="heroPage" class="page active">
+<h2 class="section-title">Trade global markets with confidence</h2>
+</section>
+<section id="stocksPage" class="page">
 <h2 class="section-title">Stocks</h2>
 <div class="stocks-grid" id="stocksContainer"></div>
 </section>
 <section id="cryptoPage" class="page">
-<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Cryptocurrency</h2>
 <div class="stocks-grid" id="cryptoContainer"></div>
 </section>
 <section id="fxPage" class="page">
-<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Forex / Exchange</h2>
 <div class="stocks-grid" id="fxContainer"></div>
 </section>
 <section id="learnPage" class="page">
-<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Learn to Trade</h2>
 <div class="learn-box">
-<h3>Banks (English + Arabic)</h3>
-<div class="learn-grid">
-<div><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/National_Commercial_Bank_Libya_logo.png" alt="National Commercial Bank"/><p>National Commercial Bank<br>البنك التجاري الوطني</p></div>
-<div><img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Sahara_Bank_Libya_logo.png" alt="Sahara Bank"/><p>Sahara Bank<br>بنك صحارى</p></div>
-<div><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Aljamhooria_Bank_Libya_logo.png" alt="Aljamhooria Bank"/><p>Aljamhooria Bank<br>البنك الجمهوري</p></div>
-<div><img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Bank_of_Commerce_and_Development_Libya_logo.png" alt="Bank of Commerce and Development"/><p>Bank of Commerce & Development<br>بنك التجارة والتنمية</p></div>
-</div>
+<div class="learn-grid" id="banksContainer"></div>
 <h3>Payment Methods</h3>
-<div class="payments">
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa"/><p>Visa</p></div>
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard"/><p>MasterCard</p></div>
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"/><p>PayPal</p></div>
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Libya_Credit_Card_example.png" alt="Libyan Local Card"/><p>Local Card</p></div>
-</div>
-<h3>Testimonials</h3>
-<div class="learn-grid">
-<div class="testimonial">"Learning to trade has never been easier!"</div>
-<div class="testimonial">"Start trading with minimal capital."</div>
-<div class="testimonial">"Intuitive platform for beginners and pros alike."</div>
-</div>
+<div class="payments" id="paymentsContainer"></div>
+<div class="testimonials" id="testimonialsContainer"></div>
 </div>
 </section>
 <section id="contactPage" class="page">
-<button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Contact Us</h2>
-<p>Email: support@globaltradecapital.com</p>
-<p>WhatsApp: +218 9xx xxx xxx</p>
-<div style="margin-top:20px;"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Facebook_icon.png" alt="Facebook" style="width:40px;margin-right:10px;"/></div>
+<p>Reach us at: contact@globaltradecapital.com</p>
 </section>
 <footer>
-<p>&copy; 2026 Global Trade Capital. All rights reserved.</p>
+<p>&copy; 2026 Global Trade Capital. All Rights Reserved.</p>
 </footer>
 <script>
-function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');}
-function setLang(lang){alert('Language switched to '+lang);}
-// Mock data population
-const stocks=[
-{name:'AAPL',price:145.32,change:'+1.2%'},{name:'TSLA',price:872.10,change:'-0.5%'},{name:'AMZN',price:3405.2,change:'+0.8%'},{name:'MSFT',price:299.1,change:'+0.6%'},
-{name:'GOOGL',price:2730.5,change:'+0.4%'},{name:'FB',price:355.2,change:'-0.2%'}
-];
-stocks.forEach(s=>{
-let div=document.createElement('div');div.className='stock-card';
-div.innerHTML=`<h4>${s.name}</h4><p class='price ${s.change.startsWith('+')?'up':'down'}'>\$${s.price} ${s.change}</p><button onclick="alert('Demo Trade for ${s.name}')">Trade</button>`;
-document.getElementById('stocksContainer').appendChild(div);
-});
-// Crypto Mock
-const crypto=[
-{name:'BTC',price:27120,change:'+2.1%'},{name:'ETH',price:1860,change:'-0.5%'},{name:'XRP',price:0.75,change:'+1.5%'}
-];
-crypto.forEach(c=>{
-let div=document.createElement('div');div.className='stock-card';
-div.innerHTML=`<h4>${c.name}</h4><p class='price ${c.change.startsWith('+')?'up':'down'}'>\$${c.price} ${c.change}</p><button onclick="alert('Demo Trade for ${c.name}')">Trade</button>`;
-document.getElementById('cryptoContainer').appendChild(div);
-});
-// FX Mock
-const fx=[
-{name:'USD/LYD',price:4.52,change:'+0.2%'},{name:'GBP/USD',price:1.25,change:'-0.1%'},{name:'EUR/USD',price:1.09,change:'+0.3%'}
-];
-fx.forEach(f=>{
-let div=document.createElement('div');div.className='stock-card';
-div.innerHTML=`<h4>${f.name}</h4><p class='price ${f.change.startsWith('+')?'up':'down'}'>\$${f.price} ${f.change}</p><button onclick="alert('Demo Trade for ${f.name}')">Trade</button>`;
-document.getElementById('fxContainer').appendChild(div);
-});
+const pages = ['heroPage','stocksPage','cryptoPage','fxPage','learnPage','contactPage'];
+function showPage(id){pages.forEach(p=>document.getElementById(p).classList.remove('active'));document.getElementById(id).classList.add('active');}
+function setLang(lang){console.log('Language switched to',lang);}
+// Mock stock data
+const stocksData=[{symbol:'AAPL',price:145.32,change:'+1.2%'},{symbol:'TSLA',price:872.10,change:'-0.5%'},{symbol:'AMZN',price:3240.55,change:'+0.9%'},{symbol:'GOOGL',price:2820.77,change:'+0.5%'}];
+const stocksContainer=document.getElementById('stocksContainer');
+stocksData.forEach(s=>{const card=document.createElement('div');card.className='stock-card';card.innerHTML=`<h3>${s.symbol}</h3><div class='price ${s.change.includes('+')?'up':'down'}'>${s.price.toFixed(2)} $ (${s.change})</div><button onclick="alert('Demo Trade for ${s.symbol}')">Trade</button>`;stocksContainer.appendChild(card);});
+// Crypto mock data
+const cryptoData=[{symbol:'BTC',price:27120,change:'+2.1%'},{symbol:'ETH',price:1860,change:'-0.5%'}];
+const cryptoContainer=document.getElementById('cryptoContainer');
+cryptoData.forEach(c=>{const card=document.createElement('div');card.className='stock-card';card.innerHTML=`<h3>${c.symbol}</h3><div class='price ${c.change.includes('+')?'up':'down'}'>${c.price.toLocaleString()} $ (${c.change})</div><button onclick="alert('Demo Trade for ${c.symbol}')">Trade</button>`;cryptoContainer.appendChild(card);});
+// FX mock data
+const fxData=[{symbol:'USD/LYD',price:4.52,change:'+0.2%'},{symbol:'GBP/USD',price:1.25,change:'-0.1%'},{symbol:'EUR/USD',price:1.09,change:'+0.3%'}];
+const fxContainer=document.getElementById('fxContainer');
+fxData.forEach(f=>{const card=document.createElement('div');card.className='stock-card';card.innerHTML=`<h3>${f.symbol}</h3><div class='price ${f.change.includes('+')?'up':'down'}'>${f.price} (${f.change})</div><button onclick="alert('Demo Trade for ${f.symbol}')">Trade</button>`;fxContainer.appendChild(card);});
+// Learn section banks
+const banks=[{name:'Sahara Bank',arabic:'بنك الصحراء',logo:'https://upload.wikimedia.org/wikipedia/commons/1/1c/Sahara_Bank_Logo.png'},{name:'Aljamhooria Bank',arabic:'البنك الجمهوري',logo:'https://upload.wikimedia.org/wikipedia/commons/a/a7/Aljamhooria_Bank_Logo.png'},{name:'Bank of Commerce and Development',arabic:'بنك التجارة والتنمية',logo:'https://upload.wikimedia.org/wikipedia/commons/0/0f/Bank_of_Commerce_and_Development_Logo.png'}];
+const banksContainer=document.getElementById('banksContainer');
+banks.forEach(b=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=`<img src='${b.logo}' alt='${b.name}' style='width:100%;height:60px;object-fit:contain;'/><h4>${b.name}</h4><h5>${b.arabic}</h5>`;banksContainer.appendChild(div);});
+// Payments
+const payments=['https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png','https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png','https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg'];
+const paymentsContainer=document.getElementById('paymentsContainer');
+payments.forEach(p=>{const div=document.createElement('div');div.className='payment-item';div.innerHTML=`<img src='${p}' alt='Payment'/>`;paymentsContainer.appendChild(div);});
+// Testimonials
+const testimonials=['"Global Trade makes learning easy!"','"I started with just $100, and the platform is incredible."','"Fast, smooth, and intuitive trading experience."'];
+const testimonialsContainer=document.getElementById('testimonialsContainer');
+testimonials.forEach(t=>{const div=document.createElement('div');div.className='testimonial';div.innerText=t;testimonialsContainer.appendChild(div);});
 </script>
 </body>
 </html>
