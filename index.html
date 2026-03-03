@@ -5,43 +5,48 @@
 <title>Global Trade Capital</title>
 <style>
 /* ---- General Styles ---- */
-body{margin:0;font-family:Arial, sans-serif;background:#0f172a;color:white;overflow-x:hidden;}
-h1,h2{color:#22c55e;}
-button{cursor:pointer;}
-a{text-decoration:none;color:#22c55e;}
-.page{display:none;padding:50px;}
-input{padding:10px;margin:10px 0;border-radius:6px;border:none;width:100%;}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#0e1e3d;color:#f1f5f9;overflow-x:hidden;}
+h1,h2{color:#22d3ee;text-shadow:0 0 8px #22d3ee;}
+button{cursor:pointer;font-weight:bold;border:none;border-radius:6px;}
+a{text-decoration:none;color:#22d3ee;}
+.page{display:none;padding:60px 40px;}
+input{padding:10px;margin:10px 0;border-radius:6px;border:none;width:100%;background:#1f2937;color:white;}
 /* ---- Navbar ---- */
-#navbar{position:fixed;top:0;left:0;width:100%;background:#111827;padding:10px 30px;display:flex;justify-content:space-between;align-items:center;z-index:100;box-shadow:0 0 15px rgba(0,0,0,0.5);}
-#logo{font-size:22px;font-weight:bold;color:#22c55e;}
-.nav-btn{background:#22c55e;color:black;padding:8px 15px;border:none;border-radius:6px;font-weight:bold;margin-left:5px;}
+#navbar{position:fixed;top:0;left:0;width:100%;background:#111827;padding:15px 30px;display:flex;justify-content:space-between;align-items:center;z-index:100;box-shadow:0 0 20px rgba(0,0,0,0.6);}
+#logo{font-size:24px;font-weight:bold;color:#22d3ee;}
+.nav-btn{background:#1e40af;color:white;padding:10px 20px;margin-left:5px;transition:0.3s;}
+.nav-btn:hover{background:#22d3ee;color:#0e1e3d;box-shadow:0 0 15px #22d3ee;}
 /* ---- Top Ticker ---- */
-#top-ticker{position:fixed;top:50px;width:100%;background:#1f2937;padding:5px 0;color:#22c55e;overflow:hidden;white-space:nowrap;z-index:99;font-weight:bold;}
+#top-ticker{position:fixed;top:60px;width:100%;background:#1f2937;padding:5px 0;color:#22d3ee;overflow:hidden;white-space:nowrap;z-index:99;font-weight:bold;}
 #top-ticker span{display:inline-block;padding:0 40px;animation:scroll-left 20s linear infinite;}
 @keyframes scroll-left{0%{transform:translateX(100%);}100%{transform:translateX(-100%);}}
 /* ---- Dashboard ---- */
-#dashboard{padding-top:120px;padding-bottom:50px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:30px;}
-.card{background:linear-gradient(145deg,#22c55e,#3b82f6);padding:50px;text-align:center;border-radius:20px;font-size:20px;font-weight:bold;transition:0.3s;box-shadow:0 0 15px rgba(34,197,94,0.3);}
-.card:hover{transform:scale(1.05);box-shadow:0 0 30px #22c55e;}
-/* ---- Stock & Crypto Items ---- */
-.item{background:#111827;padding:20px;margin:15px 0;border-radius:12px;transition:0.3s;}
-.item:hover{transform:translateX(10px);box-shadow:0 0 15px #22c55e;}
+#dashboard{padding-top:140px;padding-bottom:60px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;}
+.card{background:linear-gradient(145deg,#0e1e3d,#1e3a8a);padding:60px;text-align:center;border-radius:20px;font-size:20px;transition:0.3s;box-shadow:0 0 15px rgba(34,197,94,0.3);}
+.card:hover{transform:scale(1.05);box-shadow:0 0 30px #22d3ee;}
+/* ---- Items ---- */
+.item{background:#111827;padding:18px;margin:12px 0;border-radius:12px;transition:0.3s;cursor:pointer;}
+.item:hover{transform:translateX(10px);box-shadow:0 0 15px #22d3ee;}
 .detail-box{background:#111827;padding:30px;border-radius:15px;box-shadow:0 0 20px rgba(34,197,94,0.4);}
-.action-btn{padding:10px 20px;border:none;border-radius:6px;margin-right:10px;font-weight:bold;}
-.buy{background:#22c55e;color:black;}
+.action-btn{padding:10px 20px;margin-right:10px;font-weight:bold;border-radius:6px;transition:0.3s;}
+.buy{background:#22d3ee;color:white;}
 .sell{background:#ef4444;color:white;}
-.save{background:#3b82f6;color:white;}
-/* ---- Portfolio ---- */
-.portfolio-item{background:#111827;padding:20px;margin:15px 0;border-radius:12px;transition:0.3s;}
-.profit{color:#22c55e;}
+.save{background:#6366f1;color:white;}
+.action-btn:hover{box-shadow:0 0 15px #22d3ee;transform:scale(1.05);}
+.portfolio-item{background:#111827;padding:18px;margin:12px 0;border-radius:12px;transition:0.3s;}
+.profit{color:#22d3ee;}
 .loss{color:#ef4444;}
 /* ---- Footer / News Ticker ---- */
-#footer{margin-top:60px;padding:30px;background:#111827;text-align:center;font-size:14px;color:#aaa;position:relative;}
-#bottom-ticker{background:#1f2937;color:#22c55e;overflow:hidden;white-space:nowrap;padding:5px 0;margin-top:20px;font-weight:bold;}
+#footer{margin-top:60px;padding:30px;background:#111827;text-align:center;font-size:16px;color:#f1f5f9;}
+#footer h3{font-size:22px;margin-bottom:12px;}
+#bottom-ticker{background:#1f2937;color:#22d3ee;overflow:hidden;white-space:nowrap;padding:5px 0;margin-top:20px;font-weight:bold;}
 #bottom-ticker span{display:inline-block;padding:0 40px;animation:scroll-left 25s linear infinite;}
 /* ---- Testimonials ---- */
-.testimonial{background:#111827;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 15px #22c55e;transition:0.3s;}
+.testimonial{background:#111827;padding:20px;margin:15px 0;border-radius:15px;box-shadow:0 0 15px #6366f1;transition:0.3s;}
 .testimonial:hover{transform:scale(1.02);}
+/* ---- Contact Us ---- */
+#contact-us{margin-top:40px;padding:20px;background:#1f2937;border-radius:15px;font-size:18px;text-align:center;}
+#contact-us a{margin:0 15px;color:#22d3ee;font-size:24px;}
 </style>
 </head>
 <body>
@@ -58,14 +63,6 @@ input{padding:10px;margin:10px 0;border-radius:6px;border:none;width:100%;}
 <!-- Top Stock Ticker -->
 <div id="top-ticker">
 <span>Apple 145.23 ▲0.5% &nbsp;&nbsp; Tesla 764.12 ▼1.2% &nbsp;&nbsp; Amazon 3450.22 ▲0.8% &nbsp;&nbsp; Google 2820.55 ▲0.4%</span>
-</div>
-
-<!-- Login Page -->
-<div id="login-page" class="page" style="display:block">
-<h2>Login</h2>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-<button class="nav-btn" onclick="login()">Login</button>
 </div>
 
 <!-- Dashboard -->
@@ -86,7 +83,7 @@ input{padding:10px;margin:10px 0;border-radius:6px;border:none;width:100%;}
 <div class="item" onclick="openPage('analyst-picks')">Analyst Picks</div>
 </div>
 
-<!-- Example Stock List -->
+<!-- Stock List Example -->
 <div id="top-movers" class="page">
 <h2>Top Market Movers</h2>
 <div class="item" onclick="openStock('Apple')">Apple</div>
@@ -112,7 +109,7 @@ input{padding:10px;margin:10px 0;border-radius:6px;border:none;width:100%;}
 </div>
 </div>
 
-<!-- Portfolio Page -->
+<!-- Portfolio -->
 <div id="portfolio-page" class="page">
 <h2>Your Portfolio</h2>
 <input type="text" id="symbol" placeholder="Stock Symbol (AAPL)">
@@ -155,86 +152,62 @@ Your browser does not support the audio element.
 </div>
 </div>
 
-<!-- Footer / News Ticker / Logos -->
+<!-- Contact Us -->
+<div id="contact-us" class="page">
+<h3>Contact Us</h3>
+<a href="#"><img src="logos/facebook.png" alt="Facebook" width="30"></a>
+<a href="#"><img src="logos/whatsapp.png" alt="WhatsApp" width="30"></a>
+<a href="#"><img src="logos/visa.png" alt="Visa" width="30"></a>
+<a href="#"><img src="logos/mastercard.png" alt="MasterCard" width="30"></a>
+<a href="#"><img src="logos/libyanbank1.png" alt="Bank" width="30"></a>
+<a href="#"><img src="logos/libyanbank2.png" alt="Bank" width="30"></a>
+</div>
+
+<!-- Footer -->
 <div id="footer">
-<div style="margin-bottom:10px;">
 <p>Testimonials:</p>
 <div class="testimonial">"Best trading platform!" – Jane D.</div>
-<div class="testimonial">"Clean and professional dashboard!" – Ahmed L.</div>
-<div class="testimonial">"Love the Learn How To Trade section." – Sara K.</div>
-</div>
-<div style="margin-bottom:10px;">
-<p>Partner Banks & Cards:</p>
-<img src="logos/bank1.png" width="50" alt="Bank of Libya">
-<img src="logos/bank2.png" width="50" alt="Libyan Bank 2">
-<img src="logos/visa.png" width="50" alt="Visa">
-<img src="logos/mastercard.png" width="50" alt="MasterCard">
-</div>
-<div id="bottom-ticker"><span>Breaking: Global Markets Rally &nbsp;&nbsp; Oil Prices Up &nbsp;&nbsp; Crypto Volatility Rises &nbsp;&nbsp; New Trading Tips Released</span></div>
-<p>Contact Us: Facebook, WhatsApp</p>
-<p>© 2026 Global Trade Capital. Institutional Trading Platform.</p>
+<div class="testimonial">"Super sleek interface!" – John S.</div>
+<div id="bottom-ticker"><span>Breaking News: Global markets rally &nbsp;&nbsp; BTC surges 5% &nbsp;&nbsp; Tesla hits record high &nbsp;&nbsp; EUR/USD stabilizes</span></div>
 </div>
 
 <script>
-// ---- Login ----
-function login(){
-let email=document.getElementById('email').value;
-let password=document.getElementById('password').value;
-if(email && password){
-localStorage.setItem("user",email);
-document.getElementById('login-page').style.display="none";
-document.getElementById('dashboard').style.display='grid';
-}
-}
-
-// ---- Navigation ----
-function goHome(){
-document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-document.getElementById('dashboard').style.display='grid';
-}
+/* --- Page Navigation --- */
 function openPage(id){
 document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-document.getElementById('dashboard').style.display='none';
 document.getElementById(id).style.display='block';
 }
+function goHome(){openPage('dashboard');}
+function toggleLang(){alert('Language toggle EN/AR');}
 
-// ---- Stock Details ----
+/* --- Mock Stock Detail --- */
 function openStock(name){
 openPage('stock-detail');
 document.getElementById('stock-name').innerText=name;
-document.getElementById('marketcap').innerText=(Math.random()*1000000).toFixed(0);
-document.getElementById('high').innerText=(Math.random()*1000).toFixed(2);
-document.getElementById('low').innerText=(Math.random()*500).toFixed(2);
-document.getElementById('volume').innerText=(Math.random()*1000000).toFixed(0);
-document.getElementById('rating').innerText=['Buy','Hold','Sell'][Math.floor(Math.random()*3)];
+document.getElementById('marketcap').innerText='1.2T';
+document.getElementById('high').innerText='150';
+document.getElementById('low').innerText='130';
+document.getElementById('volume').innerText='5M';
+document.getElementById('rating').innerText='Buy';
 }
 
-// ---- Portfolio ----
-let portfolio=[];
+/* --- Portfolio --- */
 function addStock(){
-let symbol=document.getElementById('symbol').value.toUpperCase();
-let shares=parseFloat(document.getElementById('shares').value);
-let buyprice=parseFloat(document.getElementById('buyprice').value);
-if(symbol && shares && buyprice){
-let pnl=(Math.random()*20-10).toFixed(2);
+let symbol=document.getElementById('symbol').value;
+let shares=document.getElementById('shares').value;
+let buyprice=document.getElementById('buyprice').value;
+if(!symbol||!shares||!buyprice){alert('Fill all fields');return;}
+let list=document.getElementById('portfolio-list');
 let div=document.createElement('div');
 div.className='portfolio-item';
-div.innerHTML=`${symbol} - Shares: ${shares} - Buy Price: $${buyprice} - P/L: <span class="${pnl>=0?'profit':'loss'}">${pnl}%</span>`;
-document.getElementById('portfolio-list').appendChild(div);
-}
-}
-
-// ---- Confetti for Save Trade ----
-function confetti(){
-alert("Trade saved! 🎉"); // placeholder for confetti animation
+div.innerHTML=`${symbol} - ${shares} shares @ $${buyprice}`;
+list.appendChild(div);
+document.getElementById('symbol').value='';document.getElementById('shares').value='';document.getElementById('buyprice').value='';
 }
 
-// ---- Language Toggle ----
-let lang='EN';
-function toggleLang(){
-lang = lang==='EN'?'AR':'EN';
-alert("Language switched to "+lang); // placeholder for full Arabic support
-}
+/* --- Confetti --- */
+function confetti(){alert('Trade saved! 🎉');}
 </script>
+
 </body>
 </html>
