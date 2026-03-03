@@ -2,9 +2,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard</title>
+<title>Global Trade Capital Ultra Premium Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
+/* Base */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{background:#f5f7fa;color:#1c1e21;transition:all .3s;}
 a{text-decoration:none;color:inherit;}
@@ -81,40 +82,69 @@ footer{padding:40px 40px;background:#e8f0fe;text-align:center;color:#1c1e21;bord
 <button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Learn to Trade</h2>
 <div class="learn-box">
-<div class="learn-grid" id="banksContainer"></div>
+<h3>Banks (English + Arabic)</h3>
+<div class="learn-grid">
+<div><img src="https://upload.wikimedia.org/wikipedia/commons/0/09/National_Commercial_Bank_Libya_logo.png" alt="National Commercial Bank"/><p>National Commercial Bank<br>البنك التجاري الوطني</p></div>
+<div><img src="https://upload.wikimedia.org/wikipedia/commons/f/f6/Sahara_Bank_Libya_logo.png" alt="Sahara Bank"/><p>Sahara Bank<br>بنك صحارى</p></div>
+<div><img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/Aljamhooria_Bank_Libya_logo.png" alt="Aljamhooria Bank"/><p>Aljamhooria Bank<br>البنك الجمهوري</p></div>
+<div><img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Bank_of_Commerce_and_Development_Libya_logo.png" alt="Bank of Commerce and Development"/><p>Bank of Commerce & Development<br>بنك التجارة والتنمية</p></div>
+</div>
+<h3>Payment Methods</h3>
+<div class="payments">
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa"/><p>Visa</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Mastercard-logo.png" alt="MasterCard"/><p>MasterCard</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"/><p>PayPal</p></div>
+<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Libya_Credit_Card_example.png" alt="Libyan Local Card"/><p>Local Card</p></div>
+</div>
 <h3>Testimonials</h3>
 <div class="learn-grid">
-<div class="testimonial">"Learning to trade is simple and intuitive."</div>
+<div class="testimonial">"Learning to trade has never been easier!"</div>
 <div class="testimonial">"Start trading with minimal capital."</div>
-<div class="testimonial">"Professional tools without complexity."</div>
-</div>
-<h3>Payments Accepted</h3>
-<div class="payments">
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/0/04/Visa.svg" alt="Visa"><div>Visa</div></div>
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/MasterCard_Logo.svg" alt="MasterCard"><div>MasterCard</div></div>
-<div class="payment-item"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"><div>PayPal</div></div>
+<div class="testimonial">"Intuitive platform for beginners and pros alike."</div>
 </div>
 </div>
 </section>
 <section id="contactPage" class="page">
 <button class="back-btn" onclick="showPage('heroPage')">Back to Main Dashboard</button>
 <h2 class="section-title">Contact Us</h2>
-<p>Email: support@globaltrade.com</p>
-<p>WhatsApp: +218 XXX XXX XXX</p>
-<p>Facebook: <a href="#">Global Trade Capital</a></p>
+<p>Email: support@globaltradecapital.com</p>
+<p>WhatsApp: +218 9xx xxx xxx</p>
+<div style="margin-top:20px;"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Facebook_icon.png" alt="Facebook" style="width:40px;margin-right:10px;"/></div>
 </section>
-<section id="heroPage" class="page active">
-<h1 style="font-size:48px;text-align:center;margin-bottom:20px;color:#0a66c2;">Trade Global Markets with Confidence</h1>
-<p style="text-align:center;color:#555;font-size:18px;margin-bottom:30px;">Institutional-grade trading access for serious investors.</p>
-</section>
-<script>
-function setLang(lang){alert('Language switched to: '+lang+' (Arabic/English toggle simulated)');}
-function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');}const mockStocks=[ {name:'Apple',price:145.32,high:147.00,low:144.00,change:'+1.2%',up:true}, {name:'Tesla',price:872.10,high:880.00,low:860.00,change:'-0.5%',up:false}, {name:'Amazon',price:3345.50,high:3370.00,low:3300.00,change:'+0.8%',up:true} ]; const mockCrypto=[ {name:'Bitcoin',price:27120,high:27300,low:26800,change:'+2.1%',up:true}, {name:'Ethereum',price:1860,high:1880,low:1840,change:'-0.5%',up:false} ]; const mockFX=[ {name:'USD/LYD',price:4.52,high:4.55,low:4.50,change:'+0.2%',up:true}, {name:'EUR/USD',price:1.09,high:1.10,low:1.08,change:'+0.3%',up:true}, {name:'GBP/USD',price:1.25,high:1.26,low:1.24,change:'-0.1%',up:false} ]; function populateCards(containerId,data){const container=document.getElementById(containerId);data.forEach(item=>{const card=document.createElement('div');card.className='stock-card';card.innerHTML=<h3>${item.name}</h3><div class="price ${item.up?'up':'down'}">$${item.price} (${item.change})</div>;container.appendChild(card);});} populateCards('stocksContainer',mockStocks); populateCards('cryptoContainer',mockCrypto); populateCards('fxContainer',mockFX);
-
-// Banks const banks=[ {name:'National Commercial Bank',arabic:'البنك التجاري الوطني',logo:'https://upload.wikimedia.org/wikipedia/commons/5/5e/National_Commercial_Bank_Logo.png'}, {name:'Sahara Bank',arabic:'بنك الصحراء',logo:'https://upload.wikimedia.org/wikipedia/commons/2/21/Sahara_Bank_Logo.png'}, {name:'Aljamhooria Bank',arabic:'بنك الجمهورية',logo:'https://upload.wikimedia.org/wikipedia/commons/1/1f/Aljamhooria_Bank_Logo.png'}, {name:'Bank of Commerce and Development',arabic:'بنك التجارة والتنمية',logo:'https://upload.wikimedia.org/wikipedia/commons/0/0b/Bank_of_Commerce_Development_Logo.png'} ]; const banksContainer=document.getElementById('banksContainer'); banks.forEach(b=>{const div=document.createElement('div');div.className='stock-card';div.innerHTML=<img src='${b.logo}' alt='${b.name}' style='width:100px;display:block;margin-bottom:8px;'/><div>${b.name}</div><div>${b.arabic}</div>;banksContainer.appendChild(div);}); </script>
-
 <footer>
 <p>&copy; 2026 Global Trade Capital. All rights reserved.</p>
 </footer>
+<script>
+function showPage(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pageId).classList.add('active');}
+function setLang(lang){alert('Language switched to '+lang);}
+// Mock data population
+const stocks=[
+{name:'AAPL',price:145.32,change:'+1.2%'},{name:'TSLA',price:872.10,change:'-0.5%'},{name:'AMZN',price:3405.2,change:'+0.8%'},{name:'MSFT',price:299.1,change:'+0.6%'},
+{name:'GOOGL',price:2730.5,change:'+0.4%'},{name:'FB',price:355.2,change:'-0.2%'}
+];
+stocks.forEach(s=>{
+let div=document.createElement('div');div.className='stock-card';
+div.innerHTML=`<h4>${s.name}</h4><p class='price ${s.change.startsWith('+')?'up':'down'}'>\$${s.price} ${s.change}</p><button onclick="alert('Demo Trade for ${s.name}')">Trade</button>`;
+document.getElementById('stocksContainer').appendChild(div);
+});
+// Crypto Mock
+const crypto=[
+{name:'BTC',price:27120,change:'+2.1%'},{name:'ETH',price:1860,change:'-0.5%'},{name:'XRP',price:0.75,change:'+1.5%'}
+];
+crypto.forEach(c=>{
+let div=document.createElement('div');div.className='stock-card';
+div.innerHTML=`<h4>${c.name}</h4><p class='price ${c.change.startsWith('+')?'up':'down'}'>\$${c.price} ${c.change}</p><button onclick="alert('Demo Trade for ${c.name}')">Trade</button>`;
+document.getElementById('cryptoContainer').appendChild(div);
+});
+// FX Mock
+const fx=[
+{name:'USD/LYD',price:4.52,change:'+0.2%'},{name:'GBP/USD',price:1.25,change:'-0.1%'},{name:'EUR/USD',price:1.09,change:'+0.3%'}
+];
+fx.forEach(f=>{
+let div=document.createElement('div');div.className='stock-card';
+div.innerHTML=`<h4>${f.name}</h4><p class='price ${f.change.startsWith('+')?'up':'down'}'>\$${f.price} ${f.change}</p><button onclick="alert('Demo Trade for ${f.name}')">Trade</button>`;
+document.getElementById('fxContainer').appendChild(div);
+});
+</script>
 </body>
 </html>
