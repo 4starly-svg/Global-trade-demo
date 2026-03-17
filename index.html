@@ -3,65 +3,31 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade</title>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background:linear-gradient(135deg,#020617,#0f172a);
-  color:white;
-  text-align:center;
-}
+body{margin:0;font-family:Arial;background:#0f172a;color:white;text-align:center;}
 .page{display:none;padding:20px;}
 .active{display:block;}
 h1{margin-top:40px;}
-.btn{
-  display:block;
-  width:250px;
-  margin:10px auto;
-  padding:15px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-  color:white;
-  cursor:pointer;
-}
-input{
-  padding:12px;
-  margin:8px;
-  width:200px;
-  border-radius:8px;
-  border:none;
-}
-.card{
-  margin:20px;
-  padding:20px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.05);
-}
-select{
-  padding:10px;
-  margin:10px;
-  border-radius:8px;
-  border:none;
-}
+.btn{display:block;width:250px;margin:10px auto;padding:15px;border-radius:12px;background:#1e293b;color:white;cursor:pointer;border:none;font-size:16px;transition:0.2s;}
+.btn:hover{transform:scale(1.05);background:#334155;}
+input{padding:12px;margin:8px;width:200px;border-radius:8px;border:none;}
+select{padding:10px;margin:10px;border-radius:8px;}
+.card{margin:20px;padding:20px;border-radius:16px;background:#1e293b;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+.header{display:flex;justify-content:space-between;align-items:center;padding:10px;}
 </style>
 </head>
+<body>
 
-<body onload="loadMarket()">
+<!-- HEADER WITH LANGUAGE SELECTOR -->
+<div class="header">
+  <div id="userStatus">Not Logged In</div>
+  <select id="languageSelect" onchange="updateLanguage()">
+    <option value="en">English</option>
+    <option value="ar">Arabic</option>
+  </select>
+</div>
 
-<!-- LANGUAGE SELECTOR -->
-<select id="languageSelect" onchange="updateLanguage()">
-  <option value="en">English</option>
-  <option value="ar">Arabic</option>
-</select>
-
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 <div id="loginPage" class="page active">
 <h1 id="loginTitle">Global Trade Login</h1>
 <input id="email" placeholder="Email"><br>
@@ -71,71 +37,75 @@ select{
 <button class="btn" id="guestBtn" onclick="guestLogin()">Continue as Guest</button>
 </div>
 
-<!-- HOME -->
+<!-- HOME PAGE -->
 <div id="homePage" class="page">
-<h1 id="homeTitle">Global Trade</h1>
-<div id="balanceBox"></div>
+<h1 id="homeTitle">Global Trade Dashboard</h1>
+<div id="balanceBox">Balance: $0</div>
 
-<button class="btn" onclick="showPage('stocks')" id="stocksBtn">Stocks</button>
-<button class="btn" onclick="showPage('crypto')" id="cryptoBtn">Crypto</button>
-<button class="btn" onclick="showPage('gold')" id="goldBtn">Gold & Oil</button>
-<button class="btn" onclick="showPage('learn')" id="learnBtn">Learn</button>
-<button class="btn" onclick="showPage('send')" id="sendBtn">Send Money</button>
-<button class="btn" onclick="logout()" id="logoutBtn">Logout</button>
+<div class="card">
+  <h2>Stocks 📈</h2>
+  <button class="btn" onclick="showPage('stocks')">View Stocks</button>
+</div>
+<div class="card">
+  <h2>Crypto ₿</h2>
+  <button class="btn" onclick="showPage('crypto')">View Crypto</button>
+</div>
+<div class="card">
+  <h2>Gold & Oil 🪙</h2>
+  <button class="btn" onclick="showPage('gold')">View Gold & Oil</button>
+</div>
+<div class="card">
+  <h2>Learn 🎓</h2>
+  <button class="btn" onclick="showPage('learn')">Learn to Trade</button>
+</div>
+<div class="card">
+  <h2>Send Money 💸</h2>
+  <button class="btn" onclick="showPage('send')">Send Money</button>
 </div>
 
-<!-- STOCKS -->
+<button class="btn" onclick="logout()">Logout</button>
+</div>
+
+<!-- STOCKS PAGE -->
 <div id="stocks" class="page">
 <h1>Stocks Market</h1>
-<div class="card">
-<h2 id="aapl">AAPL Loading...</h2>
-</div>
-<div class="card">
-<h2 id="tsla">TSLA Loading...</h2>
-</div>
+<div class="card" id="aapl">AAPL Loading...</div>
+<div class="card" id="tsla">TSLA Loading...</div>
 <button class="btn" onclick="showPage('homePage')">Back</button>
 </div>
 
-<!-- CRYPTO -->
+<!-- CRYPTO PAGE -->
 <div id="crypto" class="page">
 <h1>Crypto Market</h1>
-<div class="card">
-<h2 id="btc">BTC Loading...</h2>
-</div>
-<div class="card">
-<h2 id="eth">ETH Loading...</h2>
-</div>
+<div class="card" id="btc">BTC Loading...</div>
+<div class="card" id="eth">ETH Loading...</div>
 <button class="btn" onclick="showPage('homePage')">Back</button>
 </div>
 
-<!-- GOLD & OIL -->
+<!-- GOLD & OIL PAGE -->
 <div id="gold" class="page">
 <h1>Gold & Oil</h1>
-<div class="card">
-<h2 id="goldPrice">Gold Loading...</h2>
-</div>
-<div class="card">
-<h2 id="oilPrice">Oil Loading...</h2>
-</div>
+<div class="card" id="goldPrice">Gold Loading...</div>
+<div class="card" id="oilPrice">Oil Loading...</div>
 <button class="btn" onclick="showPage('homePage')">Back</button>
 </div>
 
-<!-- LEARN -->
+<!-- LEARN PAGE -->
 <div id="learn" class="page">
 <h1>Learn Trading</h1>
 <video controls width="90%">
-  <source src="trading.mp4">
+  <source src="trading.mp4" type="video/mp4">
 </video>
 <audio controls>
-  <source src="trading-en.mp3">
+  <source src="trading-en.mp3" type="audio/mpeg">
 </audio>
 <audio controls>
-  <source src="trading-ar.mp3">
+  <source src="trading-ar.mp3" type="audio/mpeg">
 </audio>
 <button class="btn" onclick="showPage('homePage')">Back</button>
 </div>
 
-<!-- SEND MONEY -->
+<!-- SEND MONEY PAGE -->
 <div id="send" class="page">
 <h1>Send Money Worldwide</h1>
 <input id="amount" placeholder="Amount"><br>
@@ -144,16 +114,7 @@ select{
 </div>
 
 <script>
-// 🔥 FIREBASE CONFIG (replace with your keys if needed)
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID",
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-let currentUser;
+let currentUser = null;
 
 // PAGE SWITCH
 function showPage(page){
@@ -161,126 +122,80 @@ function showPage(page){
   document.getElementById(page).classList.add('active');
 }
 
-// GUEST LOGIN (fixed)
+// GUEST LOGIN FIXED
 function guestLogin(){
-  currentUser = { uid: "guest" };
-  document.getElementById("balanceBox").innerHTML = "Balance: $1000 (Guest)";
-  setTimeout(()=>{showPage('homePage');}, 50);
+  currentUser = { uid:"guest" };
+  document.getElementById("balanceBox").innerText = "Balance: $1000 (Guest)";
+  document.getElementById("userStatus").innerText = "Guest Mode";
+  showPage('homePage');
 }
 
-// REGISTER
-function register(){
-  let email = document.getElementById('email').value;
-  let password = document.getElementById('password').value;
-  auth.createUserWithEmailAndPassword(email,password)
-    .then(user=>{
-      db.collection("users").doc(user.user.uid).set({balance:1000});
-      alert("Account Created");
-    })
-    .catch(err=>alert(err.message));
-}
-
-// LOGIN
+// LOGIN / REGISTER (demo, no backend)
 function login(){
-  let email = document.getElementById('email').value;
-  let password = document.getElementById('password').value;
-  auth.signInWithEmailAndPassword(email,password)
-    .then(user=>{
-      currentUser = user.user;
-      loadBalance();
-      showPage('homePage');
-    })
-    .catch(err=>alert(err.message));
+  currentUser = { uid:"user" };
+  document.getElementById("balanceBox").innerText = "Balance: $5000";
+  document.getElementById("userStatus").innerText = "Logged In";
+  showPage('homePage');
+}
+function register(){
+  alert("Register demo mode only.");
 }
 
 // LOGOUT
 function logout(){
   currentUser = null;
+  document.getElementById("userStatus").innerText = "Not Logged In";
   showPage('loginPage');
 }
 
-// LOAD BALANCE
-function loadBalance(){
-  if(currentUser.uid === "guest"){
-    document.getElementById("balanceBox").innerHTML = "Balance: $1000 (Guest)";
-  } else {
-    db.collection("users").doc(currentUser.uid).get()
-      .then(doc=>{
-        document.getElementById("balanceBox").innerHTML = "Balance: $" + doc.data().balance;
-      });
-  }
-}
-
-// SEND MONEY
+// SEND MONEY DEMO
 function sendMoney(){
-  let amt = parseFloat(document.getElementById('amount').value);
-  if(currentUser.uid === "guest"){
-    alert("Guest cannot send money. Demo mode only.");
-    return;
-  }
-  let ref = db.collection("users").doc(currentUser.uid);
-  db.runTransaction(async (t)=>{
-    let doc = await t.get(ref);
-    let bal = doc.data().balance;
-    if(bal >= amt){
-      t.update(ref,{balance:bal - amt});
-      alert("Sent!");
-      loadBalance();
-    }else{
-      alert("Not enough balance");
-    }
-  });
+  alert("Send Money demo mode only.");
 }
 
-// 🔥 LIVE MARKET DATA
-const API_KEY = "YOUR_TOKEN"; // Finnhub or other API
-
-async function getStock(symbol, elementId){
-  let res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`);
-  let data = await res.json();
-  document.getElementById(elementId).innerHTML = symbol + " : $" + data.c;
-}
-
+// LIVE MARKET DATA DEMO
 function loadMarket(){
-  getStock("AAPL","aapl");
-  getStock("TSLA","tsla");
-  getStock("BINANCE:BTCUSDT","btc");
-  getStock("BINANCE:ETHUSDT","eth");
-  getStock("COMEX:GC1!","goldPrice");
-  getStock("NYMEX:CL1!","oilPrice");
+  document.getElementById("aapl").innerText = "AAPL: $145.32";
+  document.getElementById("tsla").innerText = "TSLA: $720.12";
+  document.getElementById("btc").innerText = "BTC: $28,900";
+  document.getElementById("eth").innerText = "ETH: $1,800";
+  document.getElementById("goldPrice").innerText = "Gold: $1,980";
+  document.getElementById("oilPrice").innerText = "Oil: $73.50";
 }
 setInterval(loadMarket,5000);
+loadMarket();
 
 // LANGUAGE SWITCH
 function updateLanguage(){
-  let lang = document.getElementById('languageSelect').value;
-  if(lang === 'ar'){
-    document.getElementById('loginTitle').innerText = "تسجيل الدخول إلى جلوبال تريد";
-    document.getElementById('loginBtn').innerText = "تسجيل الدخول";
-    document.getElementById('registerBtn').innerText = "تسجيل";
-    document.getElementById('guestBtn').innerText = "الدخول كزائر";
-    document.getElementById('homeTitle').innerText = "جلوبال تريد";
-    document.getElementById('stocksBtn').innerText = "الأسهم";
-    document.getElementById('cryptoBtn').innerText = "العملات المشفرة";
-    document.getElementById('goldBtn').innerText = "الذهب والنفط";
-    document.getElementById('learnBtn').innerText = "تعلم التداول";
-    document.getElementById('sendBtn').innerText = "إرسال الأموال";
-    document.getElementById('logoutBtn').innerText = "تسجيل الخروج";
+  let lang = document.getElementById("languageSelect").value;
+  if(lang==="ar"){
+    document.getElementById("loginTitle").innerText="تسجيل الدخول إلى جلوبال تريد";
+    document.getElementById("loginBtn").innerText="تسجيل الدخول";
+    document.getElementById("registerBtn").innerText="تسجيل";
+    document.getElementById("guestBtn").innerText="الدخول كزائر";
+    document.getElementById("homeTitle").innerText="لوحة التحكم جلوبال تريد";
+    document.getElementById("stocksBtn").innerText="الأسهم";
+    document.getElementById("cryptoBtn").innerText="العملات المشفرة";
+    document.getElementById("goldBtn").innerText="الذهب والنفط";
+    document.getElementById("learnBtn").innerText="تعلم التداول";
+    document.getElementById("sendBtn").innerText="إرسال الأموال";
+    document.getElementById("logoutBtn").innerText="تسجيل الخروج";
+    document.getElementById("userStatus").innerText=currentUser? (currentUser.uid==="guest"?"وضع الزائر":"مسجل دخول") : "غير مسجل";
   } else {
-    document.getElementById('loginTitle').innerText = "Global Trade Login";
-    document.getElementById('loginBtn').innerText = "Login";
-    document.getElementById('registerBtn').innerText = "Register";
-    document.getElementById('guestBtn').innerText = "Continue as Guest";
-    document.getElementById('homeTitle').innerText = "Global Trade";
-    document.getElementById('stocksBtn').innerText = "Stocks";
-    document.getElementById('cryptoBtn').innerText = "Crypto";
-    document.getElementById('goldBtn').innerText = "Gold & Oil";
-    document.getElementById('learnBtn').innerText = "Learn";
-    document.getElementById('sendBtn').innerText = "Send Money";
-    document.getElementById('logoutBtn').innerText = "Logout";
+    document.getElementById("loginTitle").innerText="Global Trade Login";
+    document.getElementById("loginBtn").innerText="Login";
+    document.getElementById("registerBtn").innerText="Register";
+    document.getElementById("guestBtn").innerText="Continue as Guest";
+    document.getElementById("homeTitle").innerText="Global Trade Dashboard";
+    document.getElementById("stocksBtn").innerText="Stocks";
+    document.getElementById("cryptoBtn").innerText="Crypto";
+    document.getElementById("goldBtn").innerText="Gold & Oil";
+    document.getElementById("learnBtn").innerText="Learn";
+    document.getElementById("sendBtn").innerText="Send Money";
+    document.getElementById("logoutBtn").innerText="Logout";
+    document.getElementById("userStatus").innerText=currentUser? (currentUser.uid==="guest"?"Guest Mode":"Logged In") : "Not Logged In";
   }
 }
 </script>
-
 </body>
 </html>
