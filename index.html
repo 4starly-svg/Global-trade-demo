@@ -56,6 +56,7 @@ input{
 <input id="password" type="password" placeholder="Password"><br>
 <button class="btn" onclick="login()">Login</button>
 <button class="btn" onclick="register()">Register</button>
+<button class="btn" onclick="guestLogin()">Continue as Guest</button>
 </div>
 
 <!-- HOME -->
@@ -131,7 +132,7 @@ input{
 </div>
 
 <script>
-// 🔥 FIREBASE CONFIG - REPLACE WITH YOURS
+// 🔥 FIREBASE CONFIG - replace with your real config if needed
 const firebaseConfig = {
   apiKey: "YOUR_KEY",
   authDomain: "YOUR_DOMAIN",
@@ -148,7 +149,14 @@ function showPage(page){
   document.getElementById(page).classList.add('active');
 }
 
-// REGISTER
+// GUEST LOGIN
+function guestLogin(){
+  currentUser = { uid: "guest" };
+  document.getElementById("balanceBox").innerHTML = "Balance: $1000 (Guest)";
+  showPage('homePage');
+}
+
+// REGISTER (only works if Firebase connected)
 function register(){
   let email = document.getElementById('email').value;
   let password = document.getElementById('password').value;
@@ -160,7 +168,7 @@ function register(){
     .catch(err=>alert(err.message));
 }
 
-// LOGIN
+// LOGIN (Firebase)
 function login(){
   let email = document.getElementById('email').value;
   let password = document.getElementById('password').value;
@@ -175,21 +183,29 @@ function login(){
 
 // LOGOUT
 function logout(){
-  auth.signOut();
+  currentUser = null;
   showPage('loginPage');
 }
 
 // LOAD BALANCE
 function loadBalance(){
-  db.collection("users").doc(currentUser.uid).get()
-    .then(doc=>{
-      document.getElementById("balanceBox").innerHTML = "Balance: $" + doc.data().balance;
-    });
+  if(currentUser.uid === "guest"){
+    document.getElementById("balanceBox").innerHTML = "Balance: $1000 (Guest)";
+  } else {
+    db.collection("users").doc(currentUser.uid).get()
+      .then(doc=>{
+        document.getElementById("balanceBox").innerHTML = "Balance: $" + doc.data().balance;
+      });
+  }
 }
 
 // SEND MONEY
 function sendMoney(){
   let amt = parseFloat(document.getElementById('amount').value);
+  if(currentUser.uid === "guest"){
+    alert("Guest cannot send money. Demo mode only.");
+    return;
+  }
   let ref = db.collection("users").doc(currentUser.uid);
   db.runTransaction(async (t)=>{
     let doc = await t.get(ref);
@@ -204,7 +220,7 @@ function sendMoney(){
   });
 }
 
-// 🔥 LIVE MARKET DATA (TOKEN MODE)
+// 🔥 LIVE MARKET DATA
 const API_KEY = "YOUR_TOKEN"; // Finnhub or other API
 
 async function getStock(symbol, elementId){
