@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade</title>
@@ -44,32 +44,44 @@ input{
   border-radius:14px;
   background:rgba(255,255,255,0.05);
 }
+select{
+  padding:10px;
+  margin:10px;
+  border-radius:8px;
+  border:none;
+}
 </style>
 </head>
 
 <body onload="loadMarket()">
 
+<!-- LANGUAGE SELECTOR -->
+<select id="languageSelect" onchange="updateLanguage()">
+  <option value="en">English</option>
+  <option value="ar">Arabic</option>
+</select>
+
 <!-- LOGIN -->
 <div id="loginPage" class="page active">
-<h1>Global Trade Login</h1>
+<h1 id="loginTitle">Global Trade Login</h1>
 <input id="email" placeholder="Email"><br>
 <input id="password" type="password" placeholder="Password"><br>
-<button class="btn" onclick="login()">Login</button>
-<button class="btn" onclick="register()">Register</button>
-<button class="btn" onclick="guestLogin()">Continue as Guest</button>
+<button class="btn" id="loginBtn" onclick="login()">Login</button>
+<button class="btn" id="registerBtn" onclick="register()">Register</button>
+<button class="btn" id="guestBtn" onclick="guestLogin()">Continue as Guest</button>
 </div>
 
 <!-- HOME -->
 <div id="homePage" class="page">
-<h1>Global Trade</h1>
+<h1 id="homeTitle">Global Trade</h1>
 <div id="balanceBox"></div>
 
-<button class="btn" onclick="showPage('stocks')">Stocks</button>
-<button class="btn" onclick="showPage('crypto')">Crypto</button>
-<button class="btn" onclick="showPage('gold')">Gold & Oil</button>
-<button class="btn" onclick="showPage('learn')">Learn</button>
-<button class="btn" onclick="showPage('send')">Send Money</button>
-<button class="btn" onclick="logout()">Logout</button>
+<button class="btn" onclick="showPage('stocks')" id="stocksBtn">Stocks</button>
+<button class="btn" onclick="showPage('crypto')" id="cryptoBtn">Crypto</button>
+<button class="btn" onclick="showPage('gold')" id="goldBtn">Gold & Oil</button>
+<button class="btn" onclick="showPage('learn')" id="learnBtn">Learn</button>
+<button class="btn" onclick="showPage('send')" id="sendBtn">Send Money</button>
+<button class="btn" onclick="logout()" id="logoutBtn">Logout</button>
 </div>
 
 <!-- STOCKS -->
@@ -132,7 +144,7 @@ input{
 </div>
 
 <script>
-// 🔥 FIREBASE CONFIG - replace with your real config if needed
+// 🔥 FIREBASE CONFIG (replace with your keys if needed)
 const firebaseConfig = {
   apiKey: "YOUR_KEY",
   authDomain: "YOUR_DOMAIN",
@@ -149,14 +161,14 @@ function showPage(page){
   document.getElementById(page).classList.add('active');
 }
 
-// GUEST LOGIN
+// GUEST LOGIN (fixed)
 function guestLogin(){
   currentUser = { uid: "guest" };
   document.getElementById("balanceBox").innerHTML = "Balance: $1000 (Guest)";
-  showPage('homePage');
+  setTimeout(()=>{showPage('homePage');}, 50);
 }
 
-// REGISTER (only works if Firebase connected)
+// REGISTER
 function register(){
   let email = document.getElementById('email').value;
   let password = document.getElementById('password').value;
@@ -168,7 +180,7 @@ function register(){
     .catch(err=>alert(err.message));
 }
 
-// LOGIN (Firebase)
+// LOGIN
 function login(){
   let email = document.getElementById('email').value;
   let password = document.getElementById('password').value;
@@ -237,8 +249,37 @@ function loadMarket(){
   getStock("COMEX:GC1!","goldPrice");
   getStock("NYMEX:CL1!","oilPrice");
 }
-
 setInterval(loadMarket,5000);
+
+// LANGUAGE SWITCH
+function updateLanguage(){
+  let lang = document.getElementById('languageSelect').value;
+  if(lang === 'ar'){
+    document.getElementById('loginTitle').innerText = "تسجيل الدخول إلى جلوبال تريد";
+    document.getElementById('loginBtn').innerText = "تسجيل الدخول";
+    document.getElementById('registerBtn').innerText = "تسجيل";
+    document.getElementById('guestBtn').innerText = "الدخول كزائر";
+    document.getElementById('homeTitle').innerText = "جلوبال تريد";
+    document.getElementById('stocksBtn').innerText = "الأسهم";
+    document.getElementById('cryptoBtn').innerText = "العملات المشفرة";
+    document.getElementById('goldBtn').innerText = "الذهب والنفط";
+    document.getElementById('learnBtn').innerText = "تعلم التداول";
+    document.getElementById('sendBtn').innerText = "إرسال الأموال";
+    document.getElementById('logoutBtn').innerText = "تسجيل الخروج";
+  } else {
+    document.getElementById('loginTitle').innerText = "Global Trade Login";
+    document.getElementById('loginBtn').innerText = "Login";
+    document.getElementById('registerBtn').innerText = "Register";
+    document.getElementById('guestBtn').innerText = "Continue as Guest";
+    document.getElementById('homeTitle').innerText = "Global Trade";
+    document.getElementById('stocksBtn').innerText = "Stocks";
+    document.getElementById('cryptoBtn').innerText = "Crypto";
+    document.getElementById('goldBtn').innerText = "Gold & Oil";
+    document.getElementById('learnBtn').innerText = "Learn";
+    document.getElementById('sendBtn').innerText = "Send Money";
+    document.getElementById('logoutBtn').innerText = "Logout";
+  }
+}
 </script>
 
 </body>
