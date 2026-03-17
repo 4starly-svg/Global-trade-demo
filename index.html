@@ -8,12 +8,10 @@
 <script src="https://s3.tradingview.com/tv.js"></script>
 
 <style>
-
-/* ===== BASE ===== */
 body{
   margin:0;
   font-family:Arial;
-  background:#05070d;
+  background:#04060c;
   color:#e5e7eb;
 }
 
@@ -27,85 +25,68 @@ body{
 }
 
 .logo{
+  color:#d4af37;
   font-weight:bold;
-  color:#d4af37; /* GOLD */
 }
-
-/* LANGUAGE */
-select{
-  padding:8px;
-  background:#111827;
-  color:white;
-  border:1px solid #1f2937;
-  border-radius:8px;
-}
-
-/* PAGES */
-.page{
-  display:none;
-  padding:30px;
-}
-.active{display:block}
 
 /* BUTTONS */
 .btn{
-  padding:14px 20px;
+  padding:12px 18px;
   margin:10px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  background:#111827;
-  color:#e5e7eb;
+  border-radius:8px;
   border:1px solid #1f2937;
-  transition:0.2s;
+  background:#0f172a;
+  color:#e5e7eb;
+  cursor:pointer;
 }
-
 .btn:hover{
-  background:#1f2937;
   border-color:#d4af37;
 }
 
-/* GRID SIDE BY SIDE */
+/* PAGES */
+.page{display:none;padding:30px;}
+.active{display:block}
+
+/* GRID */
 .grid{
   display:flex;
   gap:20px;
   flex-wrap:wrap;
 }
 
+/* CARD */
 .card{
   flex:1;
-  min-width:300px;
+  min-width:280px;
   background:#0b0f1a;
   padding:20px;
-  border-radius:12px;
+  border-radius:10px;
   border:1px solid #1f2937;
 }
 
-/* TITLES */
-h1,h2{
-  margin-bottom:15px;
+/* STOCK LIST */
+.stock-item{
+  padding:10px;
+  border-bottom:1px solid #1f2937;
+  cursor:pointer;
+}
+.stock-item:hover{
+  background:#111827;
 }
 
-/* BACK BUTTON */
-.back{
-  margin-bottom:20px;
+/* LIVE DATA */
+.data{
+  margin-top:10px;
+  padding:10px;
+  background:#020617;
+  border-radius:6px;
 }
 
 /* MEDIA */
 video,audio{
   width:100%;
   margin-top:10px;
-  border-radius:10px;
 }
-
-/* LIVE */
-.live{
-  background:#020617;
-  padding:10px;
-  border-radius:8px;
-  margin-top:10px;
-}
-
 </style>
 </head>
 
@@ -120,99 +101,78 @@ video,audio{
 </select>
 </div>
 
-<!-- ===== LANDING PAGE (CLEAN) ===== -->
+<!-- HOME -->
 <div id="home" class="page active">
-
 <h1 id="title">Dashboard</h1>
-
-<div style="display:flex;flex-wrap:wrap;gap:20px;">
 
 <button class="btn" onclick="go('stocks')">Stocks</button>
 <button class="btn" onclick="go('crypto')">Crypto</button>
-<button class="btn" onclick="go('gold')">Gold & Oil</button>
-<button class="btn" onclick="go('learn')">Learn Trading</button>
-<button class="btn" onclick="go('send')">Send Money</button>
+<button class="btn" onclick="go('learn')">Learn</button>
 
 </div>
 
-</div>
-
-<!-- ===== STOCKS PAGE ===== -->
+<!-- STOCK LIST -->
 <div id="stocks" class="page">
-<button class="btn back" onclick="go('home')">← Back</button>
+<button class="btn" onclick="go('home')">← Back</button>
 
-<h2>Stocks</h2>
-
-<div class="grid">
+<h2 id="stocksTitle">Stocks List</h2>
 
 <div class="card">
-<div id="stockChart" style="height:400px;"></div>
+<div class="stock-item" onclick="openStock('AAPL')">Apple (AAPL)</div>
+<div class="stock-item" onclick="openStock('TSLA')">Tesla (TSLA)</div>
+<div class="stock-item" onclick="openStock('NVDA')">NVIDIA (NVDA)</div>
 </div>
+
+</div>
+
+<!-- STOCK DETAILS -->
+<div id="stockDetails" class="page">
+<button class="btn" onclick="go('stocks')">← Back</button>
+
+<h2 id="stockName"></h2>
 
 <div class="card">
-<h3>Actions</h3>
-<button class="btn">Buy</button>
-<button class="btn">Sell</button>
+<div id="price" class="data"></div>
+<div id="high" class="data"></div>
+<div id="low" class="data"></div>
 </div>
+
+<button class="btn" onclick="toggleGraph()">Show Graph</button>
+
+<div id="chartBox" style="display:none;height:400px;"></div>
 
 </div>
 
-</div>
-
-<!-- ===== CRYPTO PAGE ===== -->
+<!-- CRYPTO -->
 <div id="crypto" class="page">
-<button class="btn back" onclick="go('home')">← Back</button>
+<button class="btn" onclick="go('home')">← Back</button>
 
-<h2>Crypto</h2>
-
-<div class="grid">
+<h2>Crypto List</h2>
 
 <div class="card">
-<div id="cryptoChart" style="height:400px;"></div>
-</div>
-
-<div class="card">
-<h3>Actions</h3>
-<button class="btn">Buy</button>
-<button class="btn">Sell</button>
+<div class="stock-item" onclick="openStock('BTCUSDT')">Bitcoin</div>
+<div class="stock-item" onclick="openStock('ETHUSDT')">Ethereum</div>
 </div>
 
 </div>
 
-</div>
-
-<!-- ===== GOLD / OIL ===== -->
-<div id="gold" class="page">
-<button class="btn back" onclick="go('home')">← Back</button>
-
-<h2>Gold & Oil</h2>
-
-<div class="grid">
-
-<div class="card">
-<div id="goldPrice" class="live"></div>
-<div id="oilPrice" class="live"></div>
-</div>
-
-</div>
-
-</div>
-
-<!-- ===== LEARN ===== -->
+<!-- LEARN -->
 <div id="learn" class="page">
-<button class="btn back" onclick="go('home')">← Back</button>
+<button class="btn" onclick="go('home')">← Back</button>
 
-<h2>Learn Trading</h2>
+<h2 id="learnTitle">Learn Trading</h2>
 
 <div class="grid">
 
 <div class="card">
+<h3>Video</h3>
 <video controls>
 <source src="https://www.w3schools.com/html/mov_bbb.mp4">
 </video>
 </div>
 
 <div class="card">
+<h3>Audio</h3>
 <audio controls>
 <source src="https://www.w3schools.com/html/horse.mp3">
 </audio>
@@ -222,66 +182,66 @@ video,audio{
 
 </div>
 
-<!-- ===== SEND MONEY ===== -->
-<div id="send" class="page">
-<button class="btn back" onclick="go('home')">← Back</button>
-
-<h2>Send Money</h2>
-
-<div class="grid">
-
-<div class="card">
-<input placeholder="Amount"><br>
-<button class="btn">Send</button>
-</div>
-
-</div>
-
-</div>
-
 <script>
 
-/* NAVIGATION */
+/* NAV */
 function go(page){
 document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
 document.getElementById(page).classList.add('active')
-
-if(page==="stocks"){loadStocks()}
-if(page==="crypto"){loadCrypto()}
 }
 
-/* CHARTS */
-function loadStocks(){
+/* STOCK OPEN */
+function openStock(symbol){
+go('stockDetails')
+
+document.getElementById("stockName").innerText=symbol
+
+let price=(100+Math.random()*200).toFixed(2)
+let high=(price*1.05).toFixed(2)
+let low=(price*0.95).toFixed(2)
+
+document.getElementById("price").innerText="Price: "+price
+document.getElementById("high").innerText="High: "+high
+document.getElementById("low").innerText="Low: "+low
+
+}
+
+/* GRAPH TOGGLE */
+let graphLoaded=false
+function toggleGraph(){
+let box=document.getElementById("chartBox")
+
+if(box.style.display==="none"){
+box.style.display="block"
+
+if(!graphLoaded){
 new TradingView.widget({
-container_id:"stockChart",
+container_id:"chartBox",
 autosize:true,
 symbol:"NASDAQ:AAPL",
 theme:"dark"
 })
+graphLoaded=true
 }
 
-function loadCrypto(){
-new TradingView.widget({
-container_id:"cryptoChart",
-autosize:true,
-symbol:"BINANCE:BTCUSDT",
-theme:"dark"
-})
+}else{
+box.style.display="none"
+}
 }
 
-/* LIVE GOLD/OIL */
-setInterval(()=>{
-document.getElementById("goldPrice").innerText="Gold: $"+(1900+Math.random()*20).toFixed(2)
-document.getElementById("oilPrice").innerText="Oil: $"+(70+Math.random()*5).toFixed(2)
-},2000)
-
-/* LANGUAGE (STRUCTURE READY) */
+/* LANGUAGE FULL SWITCH */
 function changeLang(lang){
+
 if(lang==="ar"){
 document.getElementById("title").innerText="لوحة التحكم"
+document.getElementById("stocksTitle").innerText="قائمة الأسهم"
+document.getElementById("learnTitle").innerText="تعلم التداول"
 }else{
 document.getElementById("title").innerText="Dashboard"
+document.getElementById("stocksTitle").innerText="Stocks List"
+document.getElementById("learnTitle").innerText="Learn Trading"
 }
+
 }
 
 </script>
