@@ -2,248 +2,147 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade</title>
-
-<script src="https://s3.tradingview.com/tv.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
+body {
   margin:0;
-  font-family:Arial;
-  background:#04060c;
-  color:#e5e7eb;
+  font-family:'Segoe UI',sans-serif;
+  background:#0a0f1c;
+  color:white;
 }
-
-/* HEADER */
-.header{
+nav {
   display:flex;
   justify-content:space-between;
-  padding:15px 25px;
-  background:#0b0f1a;
-  border-bottom:1px solid #1f2937;
+  padding:20px 40px;
+  border-bottom:1px solid #1c2333;
 }
-
-.logo{
-  color:#d4af37;
-  font-weight:bold;
-}
-
-/* BUTTONS */
-.btn{
-  padding:12px 18px;
-  margin:10px;
-  border-radius:8px;
-  border:1px solid #1f2937;
-  background:#0f172a;
-  color:#e5e7eb;
-  cursor:pointer;
-}
-.btn:hover{
-  border-color:#d4af37;
-}
-
-/* PAGES */
-.page{display:none;padding:30px;}
-.active{display:block}
-
-/* GRID */
-.grid{
-  display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-}
-
-/* CARD */
-.card{
-  flex:1;
-  min-width:280px;
-  background:#0b0f1a;
-  padding:20px;
-  border-radius:10px;
-  border:1px solid #1f2937;
-}
-
-/* STOCK LIST */
-.stock-item{
-  padding:10px;
-  border-bottom:1px solid #1f2937;
-  cursor:pointer;
-}
-.stock-item:hover{
-  background:#111827;
-}
-
-/* LIVE DATA */
-.data{
-  margin-top:10px;
-  padding:10px;
-  background:#020617;
-  border-radius:6px;
-}
-
-/* MEDIA */
-video,audio{
-  width:100%;
-  margin-top:10px;
-}
+.logo {color:#d4af37; font-size:20px; font-weight:bold;}
+.lang {border:1px solid #d4af37; padding:6px 12px; cursor:pointer;}
+.center{text-align:center; margin-top:80px;}
+input {padding:12px; margin:8px; width:240px; background:#111827; border:1px solid #333; color:white;}
+button {padding:12px 20px; margin:5px; background:#d4af37; border:none; cursor:pointer; font-weight:bold;}
+.grid {display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:40px;}
+.card {background:#111827; padding:40px; border-radius:12px; text-align:center; transition:0.3s; cursor:pointer;}
+.card:hover{background:#1c2333;}
+.page {display:none;}
+.active {display:block;}
+video,audio {width:100%; margin-top:20px;}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-<div class="logo">Global Trade</div>
+<nav>
+  <div class="logo">Global Trade</div>
+  <div class="lang" onclick="toggleLang()">العربية</div>
+</nav>
 
-<select onchange="changeLang(this.value)">
-<option value="en">English</option>
-<option value="ar">العربية</option>
-</select>
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="center active">
+  <h2 id="title">Login / Register</h2>
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <button onclick="register()">Register</button>
+  <button onclick="guestLogin()">Guest</button>
 </div>
 
-<!-- HOME -->
-<div id="home" class="page active">
-<h1 id="title">Dashboard</h1>
-
-<button class="btn" onclick="go('stocks')">Stocks</button>
-<button class="btn" onclick="go('crypto')">Crypto</button>
-<button class="btn" onclick="go('learn')">Learn</button>
-
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
+  <div class="center">
+    <h2 id="dashTitle">Dashboard</h2>
+    <h3>$<span id="balance">0</span></h3>
+  </div>
+  <div class="grid">
+    <div class="card" onclick="openPage('stocks')">Stocks</div>
+    <div class="card" onclick="openPage('crypto')">Crypto</div>
+    <div class="card" onclick="openPage('learn')">Learn</div>
+    <div class="card">Gold / Oil</div>
+    <div class="card">Send Money</div>
+    <div class="card">Contact</div>
+  </div>
 </div>
 
-<!-- STOCK LIST -->
-<div id="stocks" class="page">
-<button class="btn" onclick="go('home')">← Back</button>
-
-<h2 id="stocksTitle">Stocks List</h2>
-
-<div class="card">
-<div class="stock-item" onclick="openStock('AAPL')">Apple (AAPL)</div>
-<div class="stock-item" onclick="openStock('TSLA')">Tesla (TSLA)</div>
-<div class="stock-item" onclick="openStock('NVDA')">NVIDIA (NVDA)</div>
+<!-- STOCKS PAGE -->
+<div id="stocks" class="page center">
+<h2>Stocks</h2>
+<p>Tesla</p>
+<p>Apple</p>
+<p>Amazon</p>
+<button onclick="back()">Back</button>
 </div>
 
+<!-- CRYPTO PAGE -->
+<div id="crypto" class="page center">
+<h2>Crypto</h2>
+<p>Bitcoin</p>
+<p>Ethereum</p>
+<button onclick="back()">Back</button>
 </div>
 
-<!-- STOCK DETAILS -->
-<div id="stockDetails" class="page">
-<button class="btn" onclick="go('stocks')">← Back</button>
-
-<h2 id="stockName"></h2>
-
-<div class="card">
-<div id="price" class="data"></div>
-<div id="high" class="data"></div>
-<div id="low" class="data"></div>
-</div>
-
-<button class="btn" onclick="toggleGraph()">Show Graph</button>
-
-<div id="chartBox" style="display:none;height:400px;"></div>
-
-</div>
-
-<!-- CRYPTO -->
-<div id="crypto" class="page">
-<button class="btn" onclick="go('home')">← Back</button>
-
-<h2>Crypto List</h2>
-
-<div class="card">
-<div class="stock-item" onclick="openStock('BTCUSDT')">Bitcoin</div>
-<div class="stock-item" onclick="openStock('ETHUSDT')">Ethereum</div>
-</div>
-
-</div>
-
-<!-- LEARN -->
-<div id="learn" class="page">
-<button class="btn" onclick="go('home')">← Back</button>
-
-<h2 id="learnTitle">Learn Trading</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>Video</h3>
+<!-- LEARN PAGE -->
+<div id="learn" class="page center">
+<h2>Learn Trading</h2>
 <video controls>
-<source src="https://www.w3schools.com/html/mov_bbb.mp4">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
 </video>
-</div>
-
-<div class="card">
-<h3>Audio</h3>
 <audio controls>
-<source src="https://www.w3schools.com/html/horse.mp3">
+<source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
 </audio>
-</div>
-
-</div>
-
+<button onclick="back()">Back</button>
 </div>
 
 <script>
+let user = null;
+let currentLang = "en";
 
-/* NAV */
-function go(page){
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
-document.getElementById(page).classList.add('active')
+/* LOGIN SYSTEM */
+function login(){
+  if(!user) user = {email:email.value || "guest@globaltrade.com", balance:0};
+  showDashboard();
+}
+function guestLogin(){
+  user = {email:"guest@globaltrade.com", balance:0};
+  showDashboard();
+}
+function register(){
+  alert("Registered (demo)");
+}
+function showDashboard(){
+  document.getElementById("loginPage").classList.remove("active");
+  document.getElementById("dashboard").classList.add("active");
+  updateBalance();
+}
+function updateBalance(){
+  document.getElementById("balance").innerText = user.balance;
 }
 
-/* STOCK OPEN */
-function openStock(symbol){
-go('stockDetails')
-
-document.getElementById("stockName").innerText=symbol
-
-let price=(100+Math.random()*200).toFixed(2)
-let high=(price*1.05).toFixed(2)
-let low=(price*0.95).toFixed(2)
-
-document.getElementById("price").innerText="Price: "+price
-document.getElementById("high").innerText="High: "+high
-document.getElementById("low").innerText="Low: "+low
-
+/* NAVIGATION */
+function openPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+}
+function back(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById("dashboard").classList.add('active');
 }
 
-/* GRAPH TOGGLE */
-let graphLoaded=false
-function toggleGraph(){
-let box=document.getElementById("chartBox")
-
-if(box.style.display==="none"){
-box.style.display="block"
-
-if(!graphLoaded){
-new TradingView.widget({
-container_id:"chartBox",
-autosize:true,
-symbol:"NASDAQ:AAPL",
-theme:"dark"
-})
-graphLoaded=true
+/* LANGUAGE SWITCH */
+function toggleLang(){
+  if(currentLang==="en"){
+    currentLang="ar";
+    document.body.style.direction="rtl";
+    document.getElementById("title").innerText="تسجيل الدخول / إنشاء حساب";
+    document.getElementById("dashTitle").innerText="لوحة التحكم";
+  }else{
+    currentLang="en";
+    document.body.style.direction="ltr";
+    document.getElementById("title").innerText="Login / Register";
+    document.getElementById("dashTitle").innerText="Dashboard";
+  }
 }
-
-}else{
-box.style.display="none"
-}
-}
-
-/* LANGUAGE FULL SWITCH */
-function changeLang(lang){
-
-if(lang==="ar"){
-document.getElementById("title").innerText="لوحة التحكم"
-document.getElementById("stocksTitle").innerText="قائمة الأسهم"
-document.getElementById("learnTitle").innerText="تعلم التداول"
-}else{
-document.getElementById("title").innerText="Dashboard"
-document.getElementById("stocksTitle").innerText="Stocks List"
-document.getElementById("learnTitle").innerText="Learn Trading"
-}
-
-}
-
 </script>
 
 </body>
