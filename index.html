@@ -1,182 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade - Dashboard</title>
+<title>Global Trade</title>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+
 <style>
-body{margin:0;font-family:Arial;background:#0f172a;color:white;}
-.header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#111827;position:sticky;top:0;z-index:10;}
-.header select{padding:8px;border-radius:8px;}
-.page{display:none;padding:20px;animation:fadeIn 0.3s;}
-.active{display:block;}
-h1,h2{margin:10px;}
-.btn{padding:12px 20px;margin:8px;cursor:pointer;border:none;border-radius:12px;transition:0.2s;color:white;}
-.btn:hover{transform:scale(1.05);}
-input{padding:10px;margin:8px;border-radius:8px;border:none;width:200px;}
-.dashboard{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;}
-.card{flex:1 1 200px;background:#1e293b;border-radius:16px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.5);text-align:center;min-width:200px;}
-.disclaimer{margin-top:20px;font-size:14px;color:#f3f4f6;}
-video,audio{width:90%;margin:10px 0;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ===== BASE ===== */
+body{
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background:linear-gradient(180deg,#0a0f1c,#05070d);
+  color:#e5e7eb;
+}
+
+/* HEADER */
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 25px;
+  background:#0b1220;
+  border-bottom:1px solid #1f2937;
+}
+
+#status{
+  font-weight:500;
+  color:#9ca3af;
+}
+
+/* LANGUAGE */
+select{
+  padding:8px 12px;
+  background:#111827;
+  color:#e5e7eb;
+  border:1px solid #1f2937;
+  border-radius:8px;
+}
+
+/* PAGES */
+.page{
+  display:none;
+  padding:25px;
+}
+.active{
+  display:block;
+}
+
+/* BUTTONS */
+.btn{
+  padding:12px 16px;
+  margin:10px 5px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:500;
+  background:linear-gradient(135deg,#1d4ed8,#2563eb);
+  color:white;
+  transition:0.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 15px rgba(37,99,235,0.3);
+}
+
+/* GRID */
+.grid{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+/* CARDS */
+.card{
+  flex:1;
+  min-width:280px;
+  background:#0f172a;
+  padding:20px;
+  border-radius:14px;
+  border:1px solid #1f2937;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* TITLES */
+h1,h2,h3{
+  margin:0 0 10px 0;
+  font-weight:500;
+}
+
+/* INPUTS */
+input{
+  padding:10px;
+  width:220px;
+  margin:8px 0;
+  background:#111827;
+  border:1px solid #1f2937;
+  color:white;
+  border-radius:8px;
+}
+
+/* LIVE DATA */
+.live{
+  font-size:16px;
+  margin-top:10px;
+  padding:10px;
+  border-radius:8px;
+  background:#020617;
+  border:1px solid #1f2937;
+}
+
+/* MEDIA */
+video,audio{
+  width:100%;
+  border-radius:10px;
+  margin-top:10px;
+}
+
+/* DISCLAIMER */
+.disclaimer{
+  margin-top:20px;
+  font-size:12px;
+  color:#6b7280;
+}
+
 </style>
 </head>
+
 <body>
 
-<!-- HEADER -->
 <div class="header">
-  <div id="userStatus">غير مسجل</div>
-  <select id="languageSelect" onchange="updateLanguage()">
+  <div id="status">Not Logged In</div>
+
+  <select onchange="changeLang(this.value)">
     <option value="en">English</option>
     <option value="ar">العربية</option>
   </select>
 </div>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="page active">
-<h1 id="loginTitle">تسجيل الدخول إلى جلوبال تريد</h1>
-<input id="email" placeholder="البريد الإلكتروني"><br>
-<input id="password" type="password" placeholder="كلمة المرور"><br>
-<button class="btn" style="background:#3b82f6;" onclick="login()">تسجيل الدخول</button>
-<button class="btn" style="background:#8b5cf6;" onclick="register()">تسجيل</button>
-<button class="btn" style="background:#14b8a6;" onclick="guestLogin()">الدخول كزائر</button>
+<!-- LOGIN -->
+<div id="login" class="page active">
+<h2 id="loginTitle">Login</h2>
+
+<input placeholder="Email"><br>
+<input type="password" placeholder="Password"><br>
+
+<button class="btn" onclick="enter()">Login</button>
+<button class="btn" onclick="enter()">Guest</button>
 </div>
 
-<!-- DASHBOARD HOME -->
-<div id="homePage" class="page">
-<h1 id="homeTitle">لوحة التحكم جلوبال تريد</h1>
-<div id="balanceBox" style="margin-bottom:10px;">الرصيد: $0</div>
-<div class="dashboard">
-  <div class="card" style="background:#3b82f6;">
-    <h2>الأسهم 📈</h2>
-    <button class="btn" style="background:#2563eb;" onclick="showPage('stocks')">عرض الأسهم</button>
-  </div>
-  <div class="card" style="background:#8b5cf6;">
-    <h2>العملات المشفرة ₿</h2>
-    <button class="btn" style="background:#7c3aed;" onclick="showPage('crypto')">عرض العملات</button>
-  </div>
-  <div class="card" style="background:#facc15;color:#111;">
-    <h2>الذهب والنفط 🪙</h2>
-    <button class="btn" style="background:#fbbf24;color:#111;" onclick="showPage('gold')">عرض الذهب والنفط</button>
-  </div>
-  <div class="card" style="background:#14b8a6;">
-    <h2>تعلم التداول 🎓</h2>
-    <button class="btn" style="background:#0d9488;" onclick="showPage('learn')">تعلم التداول</button>
-  </div>
-  <div class="card" style="background:#f97316;">
-    <h2>إرسال الأموال 💸</h2>
-    <button class="btn" style="background:#ea580c;" onclick="showPage('send')">إرسال الأموال</button>
-  </div>
-</div>
-<button class="btn" style="background:#ef4444;margin-top:10px;" onclick="logout()">تسجيل الخروج</button>
+<!-- DASHBOARD -->
+<div id="home" class="page">
 
-<div class="disclaimer" id="disclaimer">
-English: “Trading involves risk. Past performance is not indicative of future results.”<br>
-Arabic: “التداول ينطوي على مخاطر. الأداء السابق لا يشير إلى النتائج المستقبلية.”
-</div>
+<h1 id="homeTitle">Global Trade Dashboard</h1>
+
+<div class="grid">
+
+<!-- STOCK -->
+<div class="card">
+<h3>Stocks</h3>
+<div id="stockChart" style="height:300px;"></div>
 </div>
 
-<!-- STOCKS PAGE -->
-<div id="stocks" class="page">
-<h1>سوق الأسهم</h1>
-<div class="card" id="aapl" style="background:#3b82f6;">AAPL جاري التحميل...</div>
-<div class="card" id="tsla" style="background:#3b82f6;">TSLA جاري التحميل...</div>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
+<!-- CRYPTO -->
+<div class="card">
+<h3>Crypto</h3>
+<div id="cryptoChart" style="height:300px;"></div>
 </div>
 
-<!-- CRYPTO PAGE -->
-<div id="crypto" class="page">
-<h1>سوق العملات المشفرة</h1>
-<div class="card" id="btc" style="background:#8b5cf6;">BTC جاري التحميل...</div>
-<div class="card" id="eth" style="background:#8b5cf6;">ETH جاري التحميل...</div>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
+<!-- GOLD / OIL -->
+<div class="card">
+<h3>Gold & Oil</h3>
+<div id="gold" class="live"></div>
+<div id="oil" class="live"></div>
 </div>
 
-<!-- GOLD & OIL PAGE -->
-<div id="gold" class="page">
-<h1>الذهب والنفط</h1>
-<div class="card" id="goldPrice" style="background:#facc15;color:#111;">الذهب جاري التحميل...</div>
-<div class="card" id="oilPrice" style="background:#facc15;color:#111;">النفط جاري التحميل...</div>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
-</div>
+<!-- LEARN -->
+<div class="card">
+<h3>Learn Trading</h3>
 
-<!-- LEARN PAGE WITH REAL VIDEO -->
-<div id="learn" class="page">
-<h1>تعلم التداول</h1>
 <video controls>
-  <source src="YOUR_REAL_STOCK_MARKET_VIDEO.mp4" type="video/mp4">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4">
 </video>
+
 <audio controls>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<source src="https://www.w3schools.com/html/horse.mp3">
 </audio>
-<audio controls>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-</audio>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
+
 </div>
 
-<!-- SEND MONEY PAGE -->
-<div id="send" class="page">
-<h1>إرسال الأموال حول العالم</h1>
-<input id="amount" placeholder="المبلغ"><br>
-<button class="btn" style="background:#14b8a6;" onclick="sendMoney()">إرسال</button>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
+</div>
+
+<button class="btn" onclick="logout()">Logout</button>
+
+<div class="disclaimer">
+Trading involves risk. التداول ينطوي على مخاطر
+</div>
+
 </div>
 
 <script>
-// PAGE SWITCH
-function showPage(page){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(page).classList.add('active');
+
+/* LOGIN */
+function enter(){
+document.getElementById("login").classList.remove("active")
+document.getElementById("home").classList.add("active")
+document.getElementById("status").innerText="Logged In"
+loadCharts()
 }
 
-// USER STATUS
-let currentUser=null;
-function guestLogin(){
-  currentUser={uid:"guest"};
-  document.getElementById("balanceBox").innerText="الرصيد: $1000 (وضع الزائر)";
-  document.getElementById("userStatus").innerText="وضع الزائر";
-  showPage('homePage');
+function logout(){
+location.reload()
 }
-function login(){
-  currentUser={uid:"user"};
-  document.getElementById("balanceBox").innerText="الرصيد: $5000";
-  document.getElementById("userStatus").innerText="مسجل دخول";
-  showPage('homePage');
-}
-function register(){alert("نسخة تجريبية للتسجيل.");}
-function logout(){currentUser=null;document.getElementById("userStatus").innerText="غير مسجل";showPage('loginPage');}
 
-// DEMO MARKET DATA
-function loadMarket(){
-  const data={AAPL:145.32,TSLA:720.12,BTC:28900,ETH:1800,GOLD:1980,OIL:73.5};
-  document.getElementById("aapl").innerText="AAPL: $"+data.AAPL;
-  document.getElementById("tsla").innerText="TSLA: $"+data.TSLA;
-  document.getElementById("btc").innerText="BTC: $"+data.BTC;
-  document.getElementById("eth").innerText="ETH: $"+data.ETH;
-  document.getElementById("goldPrice").innerText="الذهب: $"+data.GOLD;
-  document.getElementById("oilPrice").innerText="النفط: $"+data.OIL;
+/* LANGUAGE */
+function changeLang(lang){
+if(lang=="ar"){
+document.getElementById("loginTitle").innerText="تسجيل الدخول"
+document.getElementById("homeTitle").innerText="لوحة التحكم"
+}else{
+document.getElementById("loginTitle").innerText="Login"
+document.getElementById("homeTitle").innerText="Global Trade Dashboard"
 }
-setInterval(loadMarket,5000);
-loadMarket();
-
-// SEND MONEY DEMO
-function sendMoney(){alert("نسخة تجريبية: إرسال الأموال.");}
-
-// LANGUAGE SWITCH
-function updateLanguage(){
-  let lang=document.getElementById("languageSelect").value;
-  if(lang==="ar"){
-    document.getElementById("loginTitle").innerText="تسجيل الدخول إلى جلوبال تريد";
-    document.getElementById("homeTitle").innerText="لوحة التحكم جلوبال تريد";
-    document.getElementById("userStatus").innerText=currentUser?(currentUser.uid==="guest"?"وضع الزائر":"مسجل دخول"):"غير مسجل";
-    document.getElementById("disclaimer").innerHTML="English: “Trading involves risk. Past performance is not indicative of future results.”<br>Arabic: “التداول ينطوي على مخاطر. الأداء السابق لا يشير إلى النتائج المستقبلية.”";
-  } else {
-    document.getElementById("loginTitle").innerText="Global Trade Login";
-    document.getElementById("homeTitle").innerText="Global Trade Dashboard";
-    document.getElementById("userStatus").innerText=currentUser?(currentUser.uid==="guest"?"Guest Mode":"Logged In"):"Not Logged In";
-    document.getElementById("disclaimer").innerHTML="English: “Trading involves risk. Past performance is not indicative of future results.”<br>Arabic: “التداول ينطوي على مخاطر. الأداء السابق لا يشير إلى النتائج المستقبلية.”";
-  }
 }
+
+/* LIVE GOLD/OIL */
+setInterval(()=>{
+document.getElementById("gold").innerText="Gold: $"+(1900+Math.random()*20).toFixed(2)
+document.getElementById("oil").innerText="Oil: $"+(70+Math.random()*5).toFixed(2)
+},2000)
+
+/* CHARTS */
+function loadCharts(){
+
+new TradingView.widget({
+container_id:"stockChart",
+autosize:true,
+symbol:"NASDAQ:AAPL",
+theme:"dark",
+style:"1"
+})
+
+new TradingView.widget({
+container_id:"cryptoChart",
+autosize:true,
+symbol:"BINANCE:BTCUSDT",
+theme:"dark",
+style:"1"
+})
+
+}
+
 </script>
 
 </body>
