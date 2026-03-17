@@ -24,50 +24,50 @@ video,audio{width:90%;margin:10px 0;}
 
 <!-- HEADER -->
 <div class="header">
-  <div id="userStatus">Not Logged In</div>
+  <div id="userStatus">غير مسجل</div>
   <select id="languageSelect" onchange="updateLanguage()">
     <option value="en">English</option>
-    <option value="ar">Arabic</option>
+    <option value="ar">العربية</option>
   </select>
 </div>
 
 <!-- LOGIN PAGE -->
 <div id="loginPage" class="page active">
-<h1 id="loginTitle">Global Trade Login</h1>
-<input id="email" placeholder="Email"><br>
-<input id="password" type="password" placeholder="Password"><br>
-<button class="btn" style="background:#3b82f6;" onclick="login()">Login</button>
-<button class="btn" style="background:#8b5cf6;" onclick="register()">Register</button>
-<button class="btn" style="background:#14b8a6;" onclick="guestLogin()">Continue as Guest</button>
+<h1 id="loginTitle">تسجيل الدخول إلى جلوبال تريد</h1>
+<input id="email" placeholder="البريد الإلكتروني"><br>
+<input id="password" type="password" placeholder="كلمة المرور"><br>
+<button class="btn" style="background:#3b82f6;" onclick="login()">تسجيل الدخول</button>
+<button class="btn" style="background:#8b5cf6;" onclick="register()">تسجيل</button>
+<button class="btn" style="background:#14b8a6;" onclick="guestLogin()">الدخول كزائر</button>
 </div>
 
 <!-- DASHBOARD HOME -->
 <div id="homePage" class="page">
-<h1 id="homeTitle">Global Trade Dashboard</h1>
-<div id="balanceBox" style="margin-bottom:10px;">Balance: $0</div>
+<h1 id="homeTitle">لوحة التحكم جلوبال تريد</h1>
+<div id="balanceBox" style="margin-bottom:10px;">الرصيد: $0</div>
 <div class="dashboard">
   <div class="card" style="background:#3b82f6;">
-    <h2>Stocks 📈</h2>
-    <button class="btn" style="background:#2563eb;" onclick="showPage('stocks')">View Stocks</button>
+    <h2>الأسهم 📈</h2>
+    <button class="btn" style="background:#2563eb;" onclick="showPage('stocks')">عرض الأسهم</button>
   </div>
   <div class="card" style="background:#8b5cf6;">
-    <h2>Crypto ₿</h2>
-    <button class="btn" style="background:#7c3aed;" onclick="showPage('crypto')">View Crypto</button>
+    <h2>العملات المشفرة ₿</h2>
+    <button class="btn" style="background:#7c3aed;" onclick="showPage('crypto')">عرض العملات</button>
   </div>
   <div class="card" style="background:#facc15;color:#111;">
-    <h2>Gold & Oil 🪙</h2>
-    <button class="btn" style="background:#fbbf24;color:#111;" onclick="showPage('gold')">View Gold & Oil</button>
+    <h2>الذهب والنفط 🪙</h2>
+    <button class="btn" style="background:#fbbf24;color:#111;" onclick="showPage('gold')">عرض الذهب والنفط</button>
   </div>
   <div class="card" style="background:#14b8a6;">
-    <h2>Learn 🎓</h2>
-    <button class="btn" style="background:#0d9488;" onclick="showPage('learn')">Learn to Trade</button>
+    <h2>تعلم التداول 🎓</h2>
+    <button class="btn" style="background:#0d9488;" onclick="showPage('learn')">تعلم التداول</button>
   </div>
   <div class="card" style="background:#f97316;">
-    <h2>Send Money 💸</h2>
-    <button class="btn" style="background:#ea580c;" onclick="showPage('send')">Send Money</button>
+    <h2>إرسال الأموال 💸</h2>
+    <button class="btn" style="background:#ea580c;" onclick="showPage('send')">إرسال الأموال</button>
   </div>
 </div>
-<button class="btn" style="background:#ef4444;margin-top:10px;" onclick="logout()">Logout</button>
+<button class="btn" style="background:#ef4444;margin-top:10px;" onclick="logout()">تسجيل الخروج</button>
 
 <div class="disclaimer" id="disclaimer">
 English: “Trading involves risk. Past performance is not indicative of future results.”<br>
@@ -77,33 +77,33 @@ Arabic: “التداول ينطوي على مخاطر. الأداء الساب�
 
 <!-- STOCKS PAGE -->
 <div id="stocks" class="page">
-<h1>Stocks Market</h1>
-<div class="card" id="aapl" style="background:#3b82f6;">AAPL Loading...</div>
-<div class="card" id="tsla" style="background:#3b82f6;">TSLA Loading...</div>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">Back</button>
+<h1>سوق الأسهم</h1>
+<div class="card" id="aapl" style="background:#3b82f6;">AAPL جاري التحميل...</div>
+<div class="card" id="tsla" style="background:#3b82f6;">TSLA جاري التحميل...</div>
+<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
 </div>
 
 <!-- CRYPTO PAGE -->
 <div id="crypto" class="page">
-<h1>Crypto Market</h1>
-<div class="card" id="btc" style="background:#8b5cf6;">BTC Loading...</div>
-<div class="card" id="eth" style="background:#8b5cf6;">ETH Loading...</div>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">Back</button>
+<h1>سوق العملات المشفرة</h1>
+<div class="card" id="btc" style="background:#8b5cf6;">BTC جاري التحميل...</div>
+<div class="card" id="eth" style="background:#8b5cf6;">ETH جاري التحميل...</div>
+<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
 </div>
 
 <!-- GOLD & OIL PAGE -->
 <div id="gold" class="page">
-<h1>Gold & Oil</h1>
-<div class="card" id="goldPrice" style="background:#facc15;color:#111;">Gold Loading...</div>
-<div class="card" id="oilPrice" style="background:#facc15;color:#111;">Oil Loading...</div>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">Back</button>
+<h1>الذهب والنفط</h1>
+<div class="card" id="goldPrice" style="background:#facc15;color:#111;">الذهب جاري التحميل...</div>
+<div class="card" id="oilPrice" style="background:#facc15;color:#111;">النفط جاري التحميل...</div>
+<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
 </div>
 
-<!-- LEARN PAGE -->
+<!-- LEARN PAGE WITH REAL VIDEO -->
 <div id="learn" class="page">
-<h1>Learn Trading</h1>
+<h1>تعلم التداول</h1>
 <video controls>
-  <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+  <source src="YOUR_REAL_STOCK_MARKET_VIDEO.mp4" type="video/mp4">
 </video>
 <audio controls>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
@@ -111,15 +111,15 @@ Arabic: “التداول ينطوي على مخاطر. الأداء الساب�
 <audio controls>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">Back</button>
+<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
 </div>
 
 <!-- SEND MONEY PAGE -->
 <div id="send" class="page">
-<h1>Send Money Worldwide</h1>
-<input id="amount" placeholder="Amount"><br>
-<button class="btn" style="background:#14b8a6;" onclick="sendMoney()">Send</button>
-<button class="btn" style="background:#334155;" onclick="showPage('homePage')">Back</button>
+<h1>إرسال الأموال حول العالم</h1>
+<input id="amount" placeholder="المبلغ"><br>
+<button class="btn" style="background:#14b8a6;" onclick="sendMoney()">إرسال</button>
+<button class="btn" style="background:#334155;" onclick="showPage('homePage')">عودة</button>
 </div>
 
 <script>
@@ -133,18 +133,18 @@ function showPage(page){
 let currentUser=null;
 function guestLogin(){
   currentUser={uid:"guest"};
-  document.getElementById("balanceBox").innerText="Balance: $1000 (Guest)";
-  document.getElementById("userStatus").innerText="Guest Mode";
+  document.getElementById("balanceBox").innerText="الرصيد: $1000 (وضع الزائر)";
+  document.getElementById("userStatus").innerText="وضع الزائر";
   showPage('homePage');
 }
 function login(){
   currentUser={uid:"user"};
-  document.getElementById("balanceBox").innerText="Balance: $5000";
-  document.getElementById("userStatus").innerText="Logged In";
+  document.getElementById("balanceBox").innerText="الرصيد: $5000";
+  document.getElementById("userStatus").innerText="مسجل دخول";
   showPage('homePage');
 }
-function register(){alert("Demo registration only.");}
-function logout(){currentUser=null;document.getElementById("userStatus").innerText="Not Logged In";showPage('loginPage');}
+function register(){alert("نسخة تجريبية للتسجيل.");}
+function logout(){currentUser=null;document.getElementById("userStatus").innerText="غير مسجل";showPage('loginPage');}
 
 // DEMO MARKET DATA
 function loadMarket(){
@@ -153,14 +153,14 @@ function loadMarket(){
   document.getElementById("tsla").innerText="TSLA: $"+data.TSLA;
   document.getElementById("btc").innerText="BTC: $"+data.BTC;
   document.getElementById("eth").innerText="ETH: $"+data.ETH;
-  document.getElementById("goldPrice").innerText="Gold: $"+data.GOLD;
-  document.getElementById("oilPrice").innerText="Oil: $"+data.OIL;
+  document.getElementById("goldPrice").innerText="الذهب: $"+data.GOLD;
+  document.getElementById("oilPrice").innerText="النفط: $"+data.OIL;
 }
 setInterval(loadMarket,5000);
 loadMarket();
 
 // SEND MONEY DEMO
-function sendMoney(){alert("Demo mode: Send Money.");}
+function sendMoney(){alert("نسخة تجريبية: إرسال الأموال.");}
 
 // LANGUAGE SWITCH
 function updateLanguage(){
