@@ -6,91 +6,32 @@
 <title>Global Trade LTD</title>
 <style>
   /* ===== Global Styles ===== */
-  body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: #0a0f2c;
-    color: #fff;
-  }
+  body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; background:#0a0f2c; color:#fff; height:100%; overflow:hidden; }
   .hidden { display: none; }
-  .centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-  }
-  button {
-    cursor: pointer;
-    padding: 12px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: all 0.2s ease-in-out;
-  }
-  button:hover { transform: scale(1.05); }
-  .primary-btn { background-color: #FFD700; color: #0a0f2c; }
-  .secondary-btn { background-color: #1c2a5a; color: #FFD700; border: 2px solid #FFD700; }
+  .centered { display:flex; justify-content:center; align-items:center; flex-direction:column; height:100vh; width:100vw; text-align:center; }
+  button { cursor:pointer; padding:12px 20px; margin:10px; border:none; border-radius:8px; font-weight:bold; transition:0.2s; }
+  button:hover { transform:scale(1.05); }
+  .primary-btn { background:#FFD700; color:#0a0f2c; }
+  .secondary-btn { background:#1c2a5a; color:#FFD700; border:2px solid #FFD700; }
 
   /* ===== Header ===== */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #0a0f2c;
-    border-bottom: 2px solid #FFD700;
-  }
-  header h1 { margin: 0; font-size: 2rem; color: #FFD700; }
+  header { display:flex; justify-content:space-between; align-items:center; padding:15px 30px; background:#0a0f2c; border-bottom:2px solid #FFD700; }
+  header h1 { margin:0; font-size:2rem; color:#FFD700; }
 
   /* ===== Dashboard Styles ===== */
-  .dashboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 30px;
-    gap: 20px;
-  }
-  .card {
-    background-color: #1c2a5a;
-    padding: 30px;
-    border-radius: 12px;
-    width: 200px;
-    text-align: center;
-    font-weight: bold;
-    color: #FFD700;
-    box-shadow: 0 0 15px rgba(255,215,0,0.5);
-    transition: all 0.2s ease-in-out;
-  }
-  .card:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255,215,0,0.8); }
+  .dashboard { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; height:calc(100vh - 60px); align-items:center; }
+  .card { background:#1c2a5a; padding:30px; border-radius:12px; width:180px; font-weight:bold; color:#FFD700; box-shadow:0 0 15px rgba(255,215,0,0.5); transition:0.2s; }
+  .card:hover { transform:scale(1.05); box-shadow:0 0 25px rgba(255,215,0,0.8); }
 
   /* ===== Back Button ===== */
-  .back-btn {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background-color: #FFD700;
-    color: #0a0f2c;
-  }
+  .back-btn { position:absolute; top:20px; left:20px; background:#FFD700; color:#0a0f2c; padding:10px 15px; border-radius:6px; }
 
   /* ===== Content Pages ===== */
-  .content-page {
-    display: none;
-    padding: 40px;
-    min-height: 80vh;
-  }
-  video, audio { width: 100%; max-width: 720px; border-radius: 12px; margin-top: 20px; }
+  .content-page { display:none; height:calc(100vh - 60px); padding:20px; box-sizing:border-box; text-align:center; overflow:auto; }
+  video, audio { max-width:720px; width:100%; border-radius:12px; margin-top:20px; }
 
   /* ===== Language Toggle ===== */
-  .lang-btn {
-    background-color: #FFD700;
-    color: #0a0f2c;
-    padding: 8px 15px;
-    border-radius: 6px;
-    font-weight: bold;
-  }
+  .lang-btn { background:#FFD700; color:#0a0f2c; padding:8px 15px; border-radius:6px; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -102,7 +43,7 @@
   <button class="lang-btn" id="langToggle">العربية</button>
 </div>
 
-<!-- ===== Header (Visible after login) ===== -->
+<!-- ===== Header ===== -->
 <header id="header" class="hidden">
   <h1 id="headerTitle">Global Trade LTD</h1>
   <button class="lang-btn" id="langToggleHeader">العربية</button>
@@ -138,7 +79,7 @@
   <button class="back-btn" data-back="dashboard">Back</button>
   <h2>Wallet & Libyan Banks</h2>
   <p>Deposit/Withdraw placeholders</p>
-  <div style="display:flex;gap:15px;flex-wrap:wrap;">
+  <div style="display:flex;gap:15px;flex-wrap:wrap;justify-content:center;">
     <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Banque_Libya_logo.png" width="120" alt="Banque Libya">
     <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Bank_of_Libya_Logo.png" width="120" alt="Bank of Libya">
   </div>
@@ -160,10 +101,12 @@
 <div id="learnPage" class="content-page">
   <button class="back-btn" data-back="dashboard">Back</button>
   <h2>Learn How to Trade</h2>
-  <video controls autoplay muted>
+  <!-- Real video from two days ago -->
+  <video controls autoplay>
     <source src="video/learn-how-to-trade.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
+  <!-- Real Arabic AI audio (~1.5 min) -->
   <audio controls autoplay>
     <source src="audio/learn-how-to-trade-arabic.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
@@ -174,8 +117,8 @@
   <button class="back-btn" data-back="dashboard">Back</button>
   <h2>Contact Us</h2>
   <p>Phone: 914-944</p>
-  <p>Facebook: facebook.com/globaltradeltd</p>
-  <p>Testimonials & Libyan bank logos shown above in wallet page.</p>
+  <p>Facebook: <a href="https://facebook.com/globaltradeltd" target="_blank" style="color:#FFD700;">facebook.com/globaltradeltd</a></p>
+  <p>Libyan bank logos shown in Wallet page.</p>
 </div>
 
 <script>
@@ -200,7 +143,9 @@
       const targetId = card.getAttribute('data-target');
       dashboard.classList.add('hidden');
       contentPages.forEach(page => page.classList.add('hidden'));
-      document.getElementById(targetId).classList.remove('hidden');
+      const targetPage = document.getElementById(targetId);
+      targetPage.classList.remove('hidden');
+      targetPage.scrollTop = 0;
     });
   });
 
