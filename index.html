@@ -1,231 +1,352 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Pro</title>
-
+<title>Global Trade Pro - Live USD/USDT + Arabic AI</title>
 <style>
-body {margin:0;font-family:Arial;background:#0b0f14;color:#fff;}
+/* ===== GLOBAL STYLES ===== */
+body {margin:0; font-family: Arial; background:#0b0f1a; color:#fff;}
 .hidden{display:none;}
-.center{display:flex;justify-content:center;align-items:center;height:100vh;flex-direction:column;}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:20px;}
-.card{background:#121821;padding:20px;border-radius:10px;text-align:center;border:1px solid #1f2a36;}
+.center{display:flex; justify-content:center; align-items:center; height:100vh; flex-direction:column;}
+.topbar{padding:15px; border-bottom:1px solid #222; text-align:center; background:#0c1220;}
+.grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:15px; padding:20px;}
+.card{background:#121821; padding:20px; border-radius:10px; text-align:center; border:1px solid #1f2a36; transition:0.3s;}
 .card:hover{border-color:#d4af37;}
-button{background:#d4af37;border:none;padding:10px;margin:5px;border-radius:5px;cursor:pointer;}
-.topbar{padding:15px;border-bottom:1px solid #222;text-align:center;}
+button{background:#d4af37; border:none; padding:10px; margin:5px; border-radius:5px; cursor:pointer;}
+audio, video{width:100%; border-radius:10px; margin-top:10px;}
+.lang-switch{position:absolute; top:10px; right:20px; padding:5px 10px; cursor:pointer; border-radius:5px; background:#d4af37; color:#000;}
+.bank-logos img{max-height:50px; margin:5px;}
+.contact-info p, .testimonials p{margin:5px 0;}
 </style>
 </head>
-
 <body>
+
+<!-- LANGUAGE SWITCH -->
+<div class="lang-switch" onclick="toggleLang()">العربية</div>
 
 <!-- LOGIN -->
 <div id="login" class="center">
-<h1>Global Trade</h1>
-<button onclick="enter()">Enter Platform</button>
+<h1 id="title">Global Trade</h1>
+<button onclick="enter()" id="guestBtn">Guest دخول كزائر</button>
 </div>
 
 <!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
-<div class="topbar">Dashboard</div>
+<div class="topbar" id="dashboardTitle">Dashboard</div>
 <div class="grid">
-<div class="card" onclick="openPage('stocks')">Stocks</div>
-<div class="card" onclick="openPage('crypto')">Crypto</div>
-<div class="card" onclick="openPage('wallet')">Wallet</div>
-<div class="card" onclick="openPage('profile')">Profile</div>
-<div class="card" onclick="openPage('admin')">Admin</div>
+<div class="card" onclick="openPage('stocks')" id="stocksTile">Stocks الأسهم</div>
+<div class="card" onclick="openPage('crypto')" id="cryptoTile">Crypto العملات الرقمية</div>
+<div class="card" onclick="openPage('wallet')" id="walletTile">Wallet المحفظة</div>
+<div class="card" onclick="openPage('profile')" id="profileTile">Profile الملف الشخصي</div>
+<div class="card" onclick="openPage('admin')" id="adminTile">Admin الإدارة</div>
+<div class="card" onclick="openPage('learn')" id="learnTile">Learn التعلم</div>
+<div class="card" onclick="openPage('contact')" id="contactTile">Contact الاتصال</div>
 </div>
 </div>
 
 <!-- STOCKS -->
 <div id="stocks" class="hidden">
-<div class="topbar"><button onclick="back()">⬅</button>Stocks</div>
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="stocksTitle">Stocks الأسهم</span>
+</div>
 <div id="stocksList" class="grid"></div>
 </div>
 
 <!-- CRYPTO -->
 <div id="crypto" class="hidden">
-<div class="topbar"><button onclick="back()">⬅</button>Crypto</div>
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="cryptoTitle">Crypto العملات الرقمية</span>
+</div>
 <div id="cryptoList" class="grid"></div>
 </div>
 
 <!-- WALLET -->
 <div id="wallet" class="hidden">
-<div class="topbar"><button onclick="back()">⬅</button>Wallet</div>
-<div class="card">
-<h3>Balance: $<span id="balance"></span></h3>
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="walletTitle">Wallet المحفظة</span>
 </div>
 <div class="card">
-<p>Deposit USDT / USD</p>
+<h3 id="balanceTitle">Balance الرصيد: $<span id="balance"></span></h3>
+</div>
+<div class="card">
+<p id="depositTitle">Deposit USD / USDT إيداع</p>
 <h4 id="address"></h4>
-<button onclick="createDeposit()">I Sent Funds</button>
-<button onclick="requestWithdraw()">Withdraw</button>
+<button onclick="createDeposit()" id="depositBtn">Create Deposit إنشاء الإيداع</button>
+<button onclick="requestWithdraw()" id="withdrawBtn">Request Withdraw طلب سحب</button>
 </div>
+<div class="card bank-logos" id="bankLogos"></div>
 </div>
 
 <!-- PROFILE -->
 <div id="profile" class="hidden">
-<div class="topbar"><button onclick="back()">⬅</button>Profile</div>
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="profileTitle">Profile الملف الشخصي</span>
+</div>
 <div class="card">
-<h3>Your Portfolio</h3>
+<h3 id="portfolioTitle">Your Portfolio محفظتك</h3>
 <div id="portfolio"></div>
 </div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin" class="hidden">
-<div class="topbar"><button onclick="back()">⬅</button>Admin Panel</div>
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="adminTitle">Admin Panel لوحة الإدارة</span>
+</div>
 <div class="card">
-<h3>Pending Deposits</h3>
+<h3>Pending Deposits الإيداعات المعلقة</h3>
 <div id="deposits"></div>
 </div>
 </div>
 
+<!-- LEARN -->
+<div id="learn" class="hidden">
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="learnTitle">Learn to Trade تعلم التداول</span>
+</div>
+<div class="card">
+<h3>Arabic AI Video الفيديو التعليمي</h3>
+<video controls>
+  <source src="learn_trading_ar.mp4" type="video/mp4">
+  Your browser does not support HTML5 video.
+</video>
+<audio controls>
+  <source src="learn_trading_ar_audio.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+<p>شرح كيفية التداول لمدة دقيقة ونصف</p>
+</div>
+</div>
+
+<!-- CONTACT / TESTIMONIALS -->
+<div id="contact" class="hidden">
+<div class="topbar">
+<button onclick="back()">⬅ Back رجوع</button>
+<span id="contactTitle">Contact Us الاتصال</span>
+</div>
+<div class="card contact-info">
+<h3>Contact Information معلومات التواصل</h3>
+<p>Phone الهاتف: 914-944</p>
+<p>Facebook فيسبوك: <a href="https://www.facebook.com/YourPage" target="_blank">YourPage</a></p>
+</div>
+<div class="card testimonials">
+<h3>Testimonials التوصيات</h3>
+<p>"Excellent platform for trading!"</p>
+<p>"Professional, easy-to-use interface."</p>
+<p>"Fast and reliable deposits and withdrawals."</p>
+</div>
+<div class="card bank-logos" id="contactBankLogos"></div>
+</div>
+
 <script>
+// ===== LANGUAGE =====
+let isArabic = false;
+function toggleLang(){
+  isArabic = !isArabic;
+  if(isArabic){
+    document.querySelector(".lang-switch").innerText = "English";
+    document.getElementById("title").innerText = "التجارة العالمية";
+    document.getElementById("guestBtn").innerText = "تسجيل دخول كزائر";
+    document.getElementById("dashboardTitle").innerText = "لوحة التحكم";
+    document.getElementById("stocksTile").innerText = "الأسهم";
+    document.getElementById("cryptoTile").innerText = "العملات الرقمية";
+    document.getElementById("walletTile").innerText = "المحفظة";
+    document.getElementById("profileTile").innerText = "الملف الشخصي";
+    document.getElementById("adminTile").innerText = "الإدارة";
+    document.getElementById("learnTile").innerText = "التعلم";
+    document.getElementById("contactTile").innerText = "الاتصال";
+    document.getElementById("stocksTitle").innerText = "الأسهم";
+    document.getElementById("cryptoTitle").innerText = "العملات الرقمية";
+    document.getElementById("walletTitle").innerText = "المحفظة";
+    document.getElementById("balanceTitle").innerText = "الرصيد: $"+balance;
+    document.getElementById("depositTitle").innerText = "إيداع USD / USDT";
+    document.getElementById("profileTitle").innerText = "الملف الشخصي";
+    document.getElementById("portfolioTitle").innerText = "محفظتك";
+    document.getElementById("adminTitle").innerText = "لوحة الإدارة";
+    document.getElementById("learnTitle").innerText = "تعلم التداول";
+    document.getElementById("contactTitle").innerText = "الاتصال";
+  } else {
+    document.querySelector(".lang-switch").innerText = "العربية";
+    document.getElementById("title").innerText = "Global Trade";
+    document.getElementById("guestBtn").innerText = "Guest دخول كزائر";
+    document.getElementById("dashboardTitle").innerText = "Dashboard";
+    document.getElementById("stocksTile").innerText = "Stocks الأسهم";
+    document.getElementById("cryptoTile").innerText = "Crypto العملات الرقمية";
+    document.getElementById("walletTile").innerText = "Wallet المحفظة";
+    document.getElementById("profileTile").innerText = "Profile الملف الشخصي";
+    document.getElementById("adminTile").innerText = "Admin الإدارة";
+    document.getElementById("learnTile").innerText = "Learn التعلم";
+    document.getElementById("contactTile").innerText = "Contact الاتصال";
+    document.getElementById("stocksTitle").innerText = "Stocks الأسهم";
+    document.getElementById("cryptoTitle").innerText = "Crypto العملات الرقمية";
+    document.getElementById("walletTitle").innerText = "Wallet المحفظة";
+    document.getElementById("balanceTitle").innerText = "Balance الرصيد: $"+balance;
+    document.getElementById("depositTitle").innerText = "Deposit USD / USDT إيداع";
+    document.getElementById("profileTitle").innerText = "Your Portfolio محفظتك";
+    document.getElementById("portfolioTitle").innerText = "Your Portfolio محفظتك";
+    document.getElementById("adminTitle").innerText = "Admin Panel لوحة الإدارة";
+    document.getElementById("learnTitle").innerText = "Learn to Trade تعلم التداول";
+    document.getElementById("contactTitle").innerText = "Contact Us الاتصال";
+  }
+}
+
 // ===== DATA =====
 let balance = parseFloat(localStorage.getItem("balance")) || 10000;
 let portfolio = JSON.parse(localStorage.getItem("portfolio")||"{}");
 let deposits = JSON.parse(localStorage.getItem("deposits")||"[]");
-
 const walletAddress = "T" + Math.random().toString(36).substring(2,12).toUpperCase();
-const API_KEY = "7815da7ac2ab43ca8f4a4b73e10e";
+const FINNHUB_API_KEY = "7815da7ac2ab43ca8f4a4b73e10e";
 
-// ===== SAVE STATE =====
+// ===== SAVE =====
 function save(){
-localStorage.setItem("balance",balance);
-localStorage.setItem("portfolio",JSON.stringify(portfolio));
-localStorage.setItem("deposits",JSON.stringify(deposits));
+  localStorage.setItem("balance",balance);
+  localStorage.setItem("portfolio",JSON.stringify(portfolio));
+  localStorage.setItem("deposits",JSON.stringify(deposits));
 }
 
-// ===== NAVIGATION =====
+// ===== NAV =====
 function enter(){
-document.getElementById("login").classList.add("hidden");
-document.getElementById("dashboard").classList.remove("hidden");
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
 }
 function openPage(p){
-document.getElementById("dashboard").classList.add("hidden");
-document.getElementById(p).classList.remove("hidden");
-if(p==="stocks") loadStocks();
-if(p==="crypto") loadCrypto();
-if(p==="profile") loadProfile();
-if(p==="admin") loadAdmin();
+  document.querySelectorAll("body > div").forEach(d=>d.classList.add("hidden"));
+  document.getElementById(p).classList.remove("hidden");
+  if(p==="stocks") loadStocks();
+  if(p==="crypto") loadCrypto();
+  if(p==="profile") loadProfile();
+  if(p==="admin") loadAdmin();
+  if(p==="wallet") loadBanks();
 }
 function back(){
-document.querySelectorAll("body > div").forEach(d=>d.classList.add("hidden"));
-document.getElementById("dashboard").classList.remove("hidden");
+  document.querySelectorAll("body > div").forEach(d=>d.classList.add("hidden"));
+  document.getElementById("dashboard").classList.remove("hidden");
 }
 
-// ===== MARKET =====
+// ===== STOCKS =====
 async function loadStocks(){
-let list=document.getElementById("stocksList");
-list.innerHTML="";
-let arr=["AAPL","TSLA","MSFT"];
-for(let s of arr){
-let r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${API_KEY}`);
-let d=await r.json();
-let div=document.createElement("div");
-div.className="card";
-div.innerHTML=`<h3>${s}</h3><p>$${d.c}</p>
-<button onclick="buy('${s}',${d.c})">Buy</button>
-<button onclick="sell('${s}',${d.c})">Sell</button>`;
-list.appendChild(div);
-}
+  let list=document.getElementById("stocksList");
+  list.innerHTML="";
+  let arr=["AAPL","TSLA","MSFT"];
+  for(let s of arr){
+    let r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${FINNHUB_API_KEY}`);
+    let d=await r.json();
+    let div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`<h3>${s}</h3><p>$${d.c}</p>
+    <button onclick="buy('${s}',${d.c})">Buy شراء</button>
+    <button onclick="sell('${s}',${d.c})">Sell بيع</button>`;
+    list.appendChild(div);
+  }
 }
 
+// ===== CRYPTO =====
 async function loadCrypto(){
-let list=document.getElementById("cryptoList");
-list.innerHTML="";
-let arr=["BINANCE:BTCUSDT","BINANCE:ETHUSDT"];
-for(let s of arr){
-let r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${API_KEY}`);
-let d=await r.json();
-let div=document.createElement("div");
-div.className="card";
-div.innerHTML=`<h3>${s}</h3><p>$${d.c}</p>
-<button onclick="buy('${s}',${d.c})">Buy</button>
-<button onclick="sell('${s}',${d.c})">Sell</button>`;
-list.appendChild(div);
-}
+  let list=document.getElementById("cryptoList");
+  list.innerHTML="";
+  let arr=["BINANCE:BTCUSDT","BINANCE:ETHUSDT"];
+  for(let s of arr){
+    let r=await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${FINNHUB_API_KEY}`);
+    let d=await r.json();
+    let div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`<h3>${s}</h3><p>$${d.c}</p>
+    <button onclick="buy('${s}',${d.c})">Buy شراء</button>
+    <button onclick="sell('${s}',${d.c})">Sell بيع</button>`;
+    list.appendChild(div);
+  }
 }
 
 // ===== TRADING =====
 function buy(asset,price){
-let amt=parseFloat(prompt("Amount $"));
-if(!amt || amt>balance) return;
-let real=price*1.01;
-let qty=amt/real;
-balance-=amt;
-portfolio[asset]=(portfolio[asset]||0)+qty;
-save();
-alert("Bought");
+  let amt=parseFloat(prompt("Amount $ المبلغ"));
+  if(!amt || amt>balance) return;
+  let qty=amt/price;
+  balance-=amt;
+  portfolio[asset]=(portfolio[asset]||0)+qty;
+  save();
+  alert("Bought تم الشراء");
+  document.getElementById("balance").innerText = balance.toFixed(2);
 }
 function sell(asset,price){
-if(!portfolio[asset]) return;
-let qty=parseFloat(prompt("Qty"));
-if(!qty || qty>portfolio[asset]) return;
-let real=price*0.99;
-let total=qty*real;
-portfolio[asset]-=qty;
-balance+=total;
-save();
-alert("Sold");
+  if(!portfolio[asset]) return;
+  let qty=parseFloat(prompt("Qty الكمية"));
+  if(!qty || qty>portfolio[asset]) return;
+  let total=qty*price;
+  portfolio[asset]-=qty;
+  balance+=total;
+  save();
+  alert("Sold تم البيع");
+  document.getElementById("balance").innerText = balance.toFixed(2);
 }
 
-// ===== WALLET =====
+// ===== WALLET / BANK LOGOS =====
+function loadBanks(){
+  document.getElementById("balance").innerText = balance.toFixed(2);
+  document.getElementById("address").innerText = walletAddress;
+  const logosDiv = document.getElementById("bankLogos");
+  logosDiv.innerHTML = `
+    <h4>Libyan Banks المصارف الليبية</h4>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/14/Bank_of_Libya_logo.png" alt="Bank of Libya">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Waha_Bank_logo.png" alt="Waha Bank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/Al-Watani_Bank_logo.png" alt="Al Watani Bank">
+  `;
+}
+
+// ===== WALLET PAYMENT HOOKS =====
 async function createDeposit(){
-let amt=prompt("Enter deposit amount USD / USDT");
-if(!amt) return;
-
-// === SIMULATION OF BACKEND ===
-deposits.push({amount:amt,status:"pending"});
-save();
-alert("Deposit created, waiting admin approval");
+  let amt=prompt("Enter deposit amount USD / USDT أدخل المبلغ");
+  if(!amt) return;
+  alert("Deposit system ready. Send payment to backend (placeholder)");
 }
-
 async function requestWithdraw(){
-let amt=prompt("Amount to withdraw");
-if(!amt) return;
-
-// === SIMULATION OF BACKEND ===
-alert("Withdrawal request sent, admin approval required");
+  let amt=prompt("Amount to withdraw المبلغ");
+  if(!amt) return;
+  alert("Withdrawal request sent طلب السحب تم إرساله");
 }
 
 // ===== ADMIN =====
 function loadAdmin(){
-let box=document.getElementById("deposits");
-box.innerHTML="";
-deposits.forEach((d,i)=>{
-if(d.status==="pending"){
-let div=document.createElement("div");
-div.className="card";
-div.innerHTML=`<p>$${d.amount}</p>
-<button onclick="approve(${i})">Approve</button>`;
-box.appendChild(div);
-}
-});
+  let box=document.getElementById("deposits");
+  box.innerHTML="";
+  deposits.forEach((d,i)=>{
+    if(d.status==="pending"){
+      let div=document.createElement("div");
+      div.className="card";
+      div.innerHTML=`<p>$${d.amount}</p>
+      <button onclick="approve(${i})">Approve الموافقة</button>`;
+      box.appendChild(div);
+    }
+  });
 }
 function approve(i){
-balance+=parseFloat(deposits[i].amount);
-deposits[i].status="done";
-save();
-loadAdmin();
-alert("Approved");
+  balance+=parseFloat(deposits[i].amount);
+  deposits[i].status="done";
+  save();
+  loadAdmin();
+  alert("Approved تم الموافقة");
 }
 
 // ===== PROFILE =====
 function loadProfile(){
-let box=document.getElementById("portfolio");
-box.innerHTML="";
-for(let a in portfolio){
-box.innerHTML+=`${a}: ${portfolio[a].toFixed(4)}<br>`;
-}
+  let box=document.getElementById("portfolio");
+  box.innerHTML="";
+  for(let a in portfolio){
+    box.innerHTML+=`${a}: ${portfolio[a].toFixed(4)}<br>`;
+  }
 }
 
 // ===== INIT =====
 window.onload=()=>{
-document.getElementById("balance").innerText=balance;
-document.getElementById("address").innerText=walletAddress;
+  document.getElementById("balance").innerText=balance.toFixed(2);
 };
 </script>
-
 </body>
 </html>
