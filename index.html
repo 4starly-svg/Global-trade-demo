@@ -2,147 +2,267 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Trade Pro</title>
 
 <style>
-body {
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:#0a0f1c;
-  color:white;
+body { margin:0; font-family:Arial; background:#0b0f14; color:#fff; }
+.hidden { display:none; }
+
+.topbar {
+  padding:15px;
+  border-bottom:1px solid #222;
+  text-align:center;
 }
-nav {
+
+.grid {
+  display:grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:20px;
+  padding:20px;
+}
+
+.card {
+  background:#121821;
+  padding:25px;
+  border-radius:10px;
+  text-align:center;
+  cursor:pointer;
+  transition:0.2s;
+  border:1px solid #1f2a36;
+}
+
+.card:hover {
+  border-color:#d4af37;
+  transform:scale(1.03);
+}
+
+.center {
   display:flex;
-  justify-content:space-between;
-  padding:20px 40px;
-  border-bottom:1px solid #1c2333;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  flex-direction:column;
 }
-.logo {color:#d4af37; font-size:20px; font-weight:bold;}
-.lang {border:1px solid #d4af37; padding:6px 12px; cursor:pointer;}
-.center{text-align:center; margin-top:80px;}
-input {padding:12px; margin:8px; width:240px; background:#111827; border:1px solid #333; color:white;}
-button {padding:12px 20px; margin:5px; background:#d4af37; border:none; cursor:pointer; font-weight:bold;}
-.grid {display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:40px;}
-.card {background:#111827; padding:40px; border-radius:12px; text-align:center; transition:0.3s; cursor:pointer;}
-.card:hover{background:#1c2333;}
-.page {display:none;}
-.active {display:block;}
-video,audio {width:100%; margin-top:20px;}
+
+button {
+  background:#d4af37;
+  border:none;
+  padding:10px 20px;
+  margin-top:10px;
+  cursor:pointer;
+  border-radius:5px;
+}
+
+video, audio {
+  width:100%;
+  max-width:500px;
+  margin-top:15px;
+}
 </style>
 </head>
 
 <body>
 
-<nav>
-  <div class="logo">Global Trade</div>
-  <div class="lang" onclick="toggleLang()">العربية</div>
-</nav>
-
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="center active">
-  <h2 id="title">Login / Register</h2>
-  <input id="email" placeholder="Email"><br>
-  <input id="password" type="password" placeholder="Password"><br>
-  <button onclick="login()">Login</button>
-  <button onclick="register()">Register</button>
-  <button onclick="guestLogin()">Guest</button>
+<!-- LOGIN -->
+<div id="login" class="center">
+  <h1>Global Trade</h1>
+  <button onclick="login()">Login / Register</button>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="page">
-  <div class="center">
-    <h2 id="dashTitle">Dashboard</h2>
-    <h3>$<span id="balance">0</span></h3>
-  </div>
+<div id="dashboard" class="hidden">
+  <div class="topbar"><h2>Dashboard</h2></div>
+
   <div class="grid">
-    <div class="card" onclick="openPage('stocks')">Stocks</div>
-    <div class="card" onclick="openPage('crypto')">Crypto</div>
-    <div class="card" onclick="openPage('learn')">Learn</div>
-    <div class="card">Gold / Oil</div>
-    <div class="card">Send Money</div>
-    <div class="card">Contact</div>
+    <div class="card" onclick="openPage('market')">Market</div>
+    <div class="card" onclick="openPage('wallet')">Wallet</div>
+    <div class="card" onclick="openPage('learn')">Learn Trading</div>
+    <div class="card" onclick="logout()">Logout</div>
   </div>
 </div>
 
-<!-- STOCKS PAGE -->
-<div id="stocks" class="page center">
-<h2>Stocks</h2>
-<p>Tesla</p>
-<p>Apple</p>
-<p>Amazon</p>
-<button onclick="back()">Back</button>
+<!-- MARKET -->
+<div id="market" class="hidden">
+  <div class="topbar">
+    <button onclick="back()">⬅ Back</button>
+    <h2>Live Market</h2>
+  </div>
+
+  <div id="marketList" class="grid"></div>
 </div>
 
-<!-- CRYPTO PAGE -->
-<div id="crypto" class="page center">
-<h2>Crypto</h2>
-<p>Bitcoin</p>
-<p>Ethereum</p>
-<button onclick="back()">Back</button>
+<!-- ASSET -->
+<div id="asset" class="hidden">
+  <div class="topbar">
+    <button onclick="back()">⬅ Back</button>
+    <h2 id="assetName"></h2>
+  </div>
+
+  <div id="assetData" style="padding:20px;"></div>
+  <button onclick="showGraph()">Show Graph</button>
+  <canvas id="graph" style="display:none;"></canvas>
 </div>
 
-<!-- LEARN PAGE -->
-<div id="learn" class="page center">
-<h2>Learn Trading</h2>
-<video controls>
-<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-</video>
-<audio controls>
-<source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
-</audio>
-<button onclick="back()">Back</button>
+<!-- WALLET -->
+<div id="wallet" class="hidden">
+  <div class="topbar">
+    <button onclick="back()">⬅ Back</button>
+    <h2>Wallet</h2>
+  </div>
+
+  <div class="card">
+    <h3 id="balance">$10,000</h3>
+  </div>
+
+  <div class="card">
+    <p>Deposit USDT (TRC20)</p>
+    <h4 id="address"></h4>
+  </div>
+
+  <div class="grid">
+    <div class="card" onclick="deposit()">Deposit</div>
+    <div class="card" onclick="withdraw()">Withdraw</div>
+  </div>
 </div>
+
+<!-- LEARN -->
+<div id="learn" class="hidden">
+  <div class="topbar">
+    <button onclick="back()">⬅ Back</button>
+    <h2>Learn Trading</h2>
+  </div>
+
+  <div style="padding:20px;">
+    <video controls>
+      <source src="media/learn-video.mp4">
+    </video>
+
+    <audio controls autoplay>
+      <source src="media/learn-audio-ar.mp3">
+    </audio>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
-let user = null;
-let currentLang = "en";
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+</script>
 
-/* LOGIN SYSTEM */
+<script>
+// LOGIN
 function login(){
-  if(!user) user = {email:email.value || "guest@globaltrade.com", balance:0};
-  showDashboard();
+  const email = prompt("Email:");
+  const pass = prompt("Password:");
+
+  auth.signInWithEmailAndPassword(email, pass)
+  .then(showDashboard)
+  .catch(()=>{
+    auth.createUserWithEmailAndPassword(email, pass)
+    .then(showDashboard);
+  });
 }
-function guestLogin(){
-  user = {email:"guest@globaltrade.com", balance:0};
-  showDashboard();
+
+function logout(){
+  location.reload();
 }
-function register(){
-  alert("Registered (demo)");
-}
+
 function showDashboard(){
-  document.getElementById("loginPage").classList.remove("active");
-  document.getElementById("dashboard").classList.add("active");
-  updateBalance();
-}
-function updateBalance(){
-  document.getElementById("balance").innerText = user.balance;
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("dashboard").classList.remove("hidden");
 }
 
-/* NAVIGATION */
+// NAVIGATION
 function openPage(page){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(page).classList.add('active');
-}
-function back(){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById("dashboard").classList.add('active');
+  document.getElementById("dashboard").classList.add("hidden");
+  document.getElementById(page).classList.remove("hidden");
+
+  if(page==="market") loadMarket();
 }
 
-/* LANGUAGE SWITCH */
-function toggleLang(){
-  if(currentLang==="en"){
-    currentLang="ar";
-    document.body.style.direction="rtl";
-    document.getElementById("title").innerText="تسجيل الدخول / إنشاء حساب";
-    document.getElementById("dashTitle").innerText="لوحة التحكم";
-  }else{
-    currentLang="en";
-    document.body.style.direction="ltr";
-    document.getElementById("title").innerText="Login / Register";
-    document.getElementById("dashTitle").innerText="Dashboard";
+function back(){
+  document.querySelectorAll("body > div").forEach(d=>d.classList.add("hidden"));
+  document.getElementById("dashboard").classList.remove("hidden");
+}
+
+// MARKET API (REAL)
+const API_KEY = "7815da7ac2ab43ca8f4a4b73e10e";
+const symbols = ["AAPL","TSLA","MSFT","GOOG","BTCUSDT","ETHUSDT"];
+
+async function loadMarket(){
+  const container = document.getElementById("marketList");
+  container.innerHTML = "";
+
+  for(let sym of symbols){
+    let res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${API_KEY}`);
+    let data = await res.json();
+
+    let div = document.createElement("div");
+    div.className="card";
+
+    div.innerHTML = `
+      <h3>${sym}</h3>
+      <p>$${data.c}</p>
+    `;
+
+    div.onclick = ()=> openAsset(sym, data);
+
+    container.appendChild(div);
   }
 }
+
+setInterval(loadMarket, 5000);
+
+// ASSET PAGE
+function openAsset(name, data){
+  document.getElementById("market").classList.add("hidden");
+  document.getElementById("asset").classList.remove("hidden");
+
+  document.getElementById("assetName").innerText = name;
+  document.getElementById("assetData").innerHTML = `
+    Current: $${data.c}<br>
+    High: $${data.h}<br>
+    Low: $${data.l}
+  `;
+}
+
+function showGraph(){
+  document.getElementById("graph").style.display="block";
+}
+
+// WALLET
+let balance = 10000;
+const walletAddress = "T" + Math.random().toString(36).substring(2,12).toUpperCase();
+
+document.getElementById("address").innerText = walletAddress;
+
+function updateBalance(){
+  document.getElementById("balance").innerText = "$" + balance.toFixed(2);
+}
+
+function deposit(){
+  alert("Send USDT to:\n" + walletAddress);
+}
+
+function withdraw(){
+  let amt = prompt("Amount:");
+  if(amt && amt <= balance){
+    balance -= amt;
+    updateBalance();
+    alert("Withdrawal requested");
+  }
+}
+
+updateBalance();
 </script>
 
 </body>
