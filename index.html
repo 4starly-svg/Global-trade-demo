@@ -81,11 +81,15 @@
 <div class="page" id="learnPage">
   <button class="back">Back to Dashboard</button>
   <h2>Learn How to Trade</h2>
+  <!-- Real Arabic video -->
   <video controls>
-    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAAC..." type="video/mp4">
+    <source src="video_stock_market_arabic.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
   </video>
+  <!-- Real Arabic audio -->
   <audio controls>
-    <source src="data:audio/mp3;base64,//uQxAAA..." type="audio/mp3">
+    <source src="audio_trade_guide_arabic.mp3" type="audio/mp3">
+    Your browser does not support HTML5 audio.
   </audio>
 </div>
 
@@ -109,7 +113,6 @@
   <p>Testimonials: Excellent service, very professional.</p>
 </div>
 
-<!-- JavaScript for Navigation and Ticker -->
 <script>
   const pages = ['stocksPage','cryptoPage','oilPage','fxPage','learnPage','walletPage','contactPage'];
   function showPage(pageId) {
@@ -117,7 +120,6 @@
     pages.forEach(p => document.getElementById(p).style.display = 'none');
     document.getElementById(pageId).style.display = 'flex';
   }
-
   document.querySelectorAll('.back').forEach(btn => {
     btn.addEventListener('click', () => {
       pages.forEach(p => document.getElementById(p).style.display = 'none');
@@ -125,14 +127,11 @@
     });
   });
 
-  // Placeholder ticker data
+  // Placeholder Ticker
   const tickerContent = document.getElementById('tickerContent');
-  const sampleAssets = [
-    'AAPL 172.45 ↑0.5','GOOGL 138.32 ↓0.2','TSLA 251.65 ↑1.1',
-    'BTC 28,000 ↑1.2','ETH 1,850 ↑0.8','XAU/USD 1,950 ↑0.1'
-  ];
+  const sampleAssets = ['AAPL 172.45 ↑0.5','GOOGL 138.32 ↓0.2','TSLA 251.65 ↑1.1','BTC 28,000 ↑1.2','ETH 1,850 ↑0.8','XAU/USD 1,950 ↑0.1'];
   setInterval(() => {
-    tickerContent.textContent = sampleAssets.map(a => a + '   ').join('   ');
+    tickerContent.textContent = sampleAssets.join('   ');
   }, 2000);
 
   // Placeholder assets for each page
@@ -151,12 +150,10 @@
       container.appendChild(div);
     });
   }
-
   populateAssets('stocksList', sampleStocks);
   populateAssets('cryptoList', sampleCrypto);
   populateAssets('oilList', sampleOilGold);
   populateAssets('fxList', sampleFX);
 </script>
-
 </body>
 </html>
