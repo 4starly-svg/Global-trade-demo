@@ -47,7 +47,7 @@
 
 <!-- Stocks Page -->
 <div class="page" id="stocksPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>Stocks</h2>
   <div class="asset-list" id="stocksList"></div>
   <div id="stockDetail"></div>
@@ -55,7 +55,7 @@
 
 <!-- Crypto Page -->
 <div class="page" id="cryptoPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>Crypto</h2>
   <div class="asset-list" id="cryptoList"></div>
   <div id="cryptoDetail"></div>
@@ -63,7 +63,7 @@
 
 <!-- Oil & Gold Page -->
 <div class="page" id="oilPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>Oil & Gold</h2>
   <div class="asset-list" id="oilList"></div>
   <div id="oilDetail"></div>
@@ -71,7 +71,7 @@
 
 <!-- FX Page -->
 <div class="page" id="fxPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>FX</h2>
   <div class="asset-list" id="fxList"></div>
   <div id="fxDetail"></div>
@@ -79,19 +79,19 @@
 
 <!-- Learn Page -->
 <div class="page" id="learnPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>Learn How to Trade</h2>
   <video controls>
-    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAu1tZGF0AAACrQYF//+p3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE1NSByMjkwMSA3ZDBmZjIyIC0gSC4yNjQvTVBFRy00IEFWQyBjb2RlYyAtIENvcHlsZWZ0IDIwMDMtMjAxOCAtIGh0dHA6Ly93d3cudmlkZW9sYW4ub3JnL3gyNjQuaHRtbCAtIG9wdGlvbnM6IGNhYmFjPTEgcmVmPTMgZGVibG9jaz0xOjA6MCBhbmFseXNlPTB4MzoweDExMyBtZT1oZXggc3VibWU9NyBwc3k9MSBwc3lfcmQ9MS4wMDowLjAwIG1peGVkX3JlZj0xIG1lX3JhbmdlPTE2IGNocm9tYV9tZT0xIHRyZWxsaXM9MSA4eDhkY3Q9MSBjcW09MCBkZWFkem9uZT0yMSwxMSBmYXN0X3Bza2lwPTEgY2hyb21hX3FwX29mZnNldD0tMiB0aHJlYWRzPTMgbG9va2FoZWFkX3RocmVhZHM9MSBzbGljZWRfdGhyZWFkcz0wIG5yPTAgZGVjaW1hdGU9MSBpbnRlcmxhY2VkPTAgYmx1cmF5X2NvbXBhdD0wIGNvbnN0cmFpbmVkX2ludHJhPTAgYmZyYW1lcz0zIGJfcHlyYW1pZD0yIGJfYWRhcHQ9MSBiX2JpYXM9MCBkaXJlY3Q9MSB3ZWlnaHRiPTEgb3Blbl9nb3A9MCB3ZWlnaHRwPTIga2V5aW50PTI1MCBrZXlpbnRfbWluPTEgc2NlbmVjdXQ9NDAgaW50cmFfcmVmcmVzaD0wIHJjX2xvb2thaGVhZD00MCByYz1jcmYgbWJ0cmVlPTEgY3JmPTI4LjAgcWNvbXA9MC42MCBxcG1pbj0wIHFwbWF4PTY5IHFwc3RlcD00IGlwX3JhdGlvPTEuNDAgYXE9MToxLjAw" type="video/mp4">
+    <source src="data:video/mp4;base64,AAAAIGZ0eXBpc29tAAAC..." type="video/mp4">
   </video>
   <audio controls>
-    <source src="data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAA... (shortened for brevity)..." type="audio/mp3">
+    <source src="data:audio/mp3;base64,//uQxAAA..." type="audio/mp3">
   </audio>
 </div>
 
 <!-- Wallet Page -->
 <div class="page" id="walletPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>Wallet / Profile</h2>
   <p>Balance: $10,000 (simulation)</p>
   <div>Deposit / Withdraw placeholders</div>
@@ -102,14 +102,61 @@
 
 <!-- Contact Page -->
 <div class="page" id="contactPage">
-  <button class="back" onclick="showPage('dashboard')">Back to Dashboard</button>
+  <button class="back">Back to Dashboard</button>
   <h2>Contact Us</h2>
   <p>Phone: +218 914-944</p>
   <p>Facebook: <a href="#" style="color:#ffc107;">Global Trade LTD</a></p>
   <p>Testimonials: Excellent service, very professional.</p>
 </div>
 
-<!-- (JavaScript for live prices & navigation remains unchanged) -->
+<!-- JavaScript for Navigation and Ticker -->
+<script>
+  const pages = ['stocksPage','cryptoPage','oilPage','fxPage','learnPage','walletPage','contactPage'];
+  function showPage(pageId) {
+    document.getElementById('dashboard').style.display = 'none';
+    pages.forEach(p => document.getElementById(p).style.display = 'none');
+    document.getElementById(pageId).style.display = 'flex';
+  }
+
+  document.querySelectorAll('.back').forEach(btn => {
+    btn.addEventListener('click', () => {
+      pages.forEach(p => document.getElementById(p).style.display = 'none');
+      document.getElementById('dashboard').style.display = 'flex';
+    });
+  });
+
+  // Placeholder ticker data
+  const tickerContent = document.getElementById('tickerContent');
+  const sampleAssets = [
+    'AAPL 172.45 ↑0.5','GOOGL 138.32 ↓0.2','TSLA 251.65 ↑1.1',
+    'BTC 28,000 ↑1.2','ETH 1,850 ↑0.8','XAU/USD 1,950 ↑0.1'
+  ];
+  setInterval(() => {
+    tickerContent.textContent = sampleAssets.map(a => a + '   ').join('   ');
+  }, 2000);
+
+  // Placeholder assets for each page
+  const sampleStocks = ['AAPL','GOOGL','TSLA','AMZN','MSFT','NVDA','FB','NFLX','BABA','INTC'];
+  const sampleCrypto = ['BTC','ETH','BNB','SOL','ADA','XRP','DOGE','LTC','DOT','AVAX'];
+  const sampleOilGold = ['Oil WTI','Brent Oil','Gold','Silver','Platinum','Palladium','Copper','Natural Gas','Crude','Nickel'];
+  const sampleFX = ['USD/EUR','USD/GBP','USD/JPY','USD/AUD','USD/CAD','USD/CHF','EUR/GBP','EUR/JPY','GBP/JPY','AUD/USD'];
+
+  function populateAssets(listId, assets) {
+    const container = document.getElementById(listId);
+    assets.forEach(a => {
+      const div = document.createElement('div');
+      div.className = 'asset';
+      div.textContent = a;
+      div.onclick = () => alert(a + ' details placeholder');
+      container.appendChild(div);
+    });
+  }
+
+  populateAssets('stocksList', sampleStocks);
+  populateAssets('cryptoList', sampleCrypto);
+  populateAssets('oilList', sampleOilGold);
+  populateAssets('fxList', sampleFX);
+</script>
 
 </body>
 </html>
