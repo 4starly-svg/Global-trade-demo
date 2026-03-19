@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital</title>
+<title>Global Trade Capital - Live Trading</title>
 <style>
 body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a0a; color:#fff; display:flex; flex-direction:column; align-items:center; }
 header { width:100%; padding:15px; background:linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content:space-between; align-items:center; }
@@ -71,10 +71,11 @@ button:hover { background:#FFD700; color:#000; }
 </div>
 
 <script>
-let arabic = false;
-let currentUser = null;
+// --- STATE ---
+let arabic=false;
+let currentUser=null;
 
-// --- DATA ---
+// --- SAMPLE DATA ---
 let guestWallet = 1000;
 const subFoldersData = {
   stocks: ['Trending','52-Week Highs','52-Week Lows','Top Movers'],
@@ -97,70 +98,66 @@ const itemsData = {
 };
 
 // --- LOGIN ---
-document.getElementById('loginBtn').onclick = () => {
-  currentUser = {wallet:guestWallet};
+document.getElementById('loginBtn').onclick=()=>{
+  currentUser={wallet:guestWallet};
   document.getElementById('loginModal').style.display='none';
   document.getElementById('folders').style.display='flex';
   document.getElementById('walletDisplay').style.display='block';
-  document.getElementById('walletDisplay').innerText = `USDT Balance: ${currentUser.wallet}`;
+  document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser.wallet}`;
 };
 
-let currentFolder = '';
+// --- FOLDER NAVIGATION ---
+let currentFolder='';
 function openSubFolder(folder){
-  currentFolder = folder;
+  currentFolder=folder;
   document.getElementById('folders').style.display='none';
-  const container = document.getElementById('subFolderContainer');
-  const subFolderDiv = document.getElementById('subFolders');
+  const subFolderDiv=document.getElementById('subFolders');
   subFolderDiv.innerHTML='';
-  const list = subFoldersData[folder] || [];
+  const list=subFoldersData[folder]||[];
   list.forEach(name=>{
-    const div = document.createElement('div');
+    const div=document.createElement('div');
     div.className='subFolder';
     div.innerText=name;
-    div.onclick = () => openItems(name);
+    div.onclick=()=>openItems(name);
     subFolderDiv.appendChild(div);
   });
-  container.style.display='flex';
+  document.getElementById('subFolderContainer').style.display='flex';
 }
-
-function backToMainFolders(){
-  document.getElementById('subFolderContainer').style.display='none';
-  document.getElementById('folders').style.display='flex';
-}
-
+function backToMainFolders(){document.getElementById('subFolderContainer').style.display='none'; document.getElementById('folders').style.display='flex';}
 function openItems(subFolder){
   document.getElementById('subFolderContainer').style.display='none';
-  const container = document.getElementById('itemContainer');
-  const itemsDiv = document.getElementById('items');
+  const itemsDiv=document.getElementById('items');
   itemsDiv.innerHTML='';
-  const list = itemsData[subFolder] || [];
+  const list=itemsData[subFolder]||[];
   list.forEach(name=>{
-    const div = document.createElement('div');
+    const div=document.createElement('div');
     div.className='itemCard';
     div.innerText=name;
-    div.onclick = () => alert(`${name} info placeholder`);
+    // --- PLACEHOLDERS FOR REAL APIs ---
+    if(subFolder==='Gold') fetchGoldPrice(div);
+    else if(subFolder==='Oil') fetchOilPrice(div);
+    else if(subFolder==='USDT') fetchUSDTBalance(div);
+    else if(subFolder==='Stocks' || subFolder==='Crypto') fetchMarketData(div, name);
+    div.onclick=()=>alert(`${name} info placeholder`);
     itemsDiv.appendChild(div);
   });
-  container.style.display='flex';
+  document.getElementById('itemContainer').style.display='flex';
 }
-
-function backToSubFolders(){
-  document.getElementById('itemContainer').style.display='none';
-  openSubFolder(currentFolder);
-}
+function backToSubFolders(){document.getElementById('itemContainer').style.display='none'; openSubFolder(currentFolder);}
 
 // --- LANGUAGE TOGGLE ---
 document.getElementById('langToggle').onclick=()=>{
   arabic=!arabic;
+  const folders=document.getElementById('folders').children;
   if(arabic){
     document.getElementById('loginTitle').innerText='تسجيل الدخول';
     document.getElementById('username').placeholder='اسم المستخدم';
     document.getElementById('password').placeholder='كلمة المرور';
     document.getElementById('loginBtn').innerText='تسجيل كزائر';
-    document.getElementById('folders').children[0].innerText='الأسهم';
-    document.getElementById('folders').children[1].innerText='كريبتو';
-    document.getElementById('folders').children[2].innerText='ذهب / نفط';
-    document.getElementById('folders').children[3].innerText='تعلم / اتصل';
+    folders[0].innerText='الأسهم';
+    folders[1].innerText='كريبتو';
+    folders[2].innerText='ذهب / نفط';
+    folders[3].innerText='تعلم / اتصل';
     document.getElementById('whatWeDo').innerText='نحن نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع مع بيانات فورية ومعاملات سلسة.';
     document.getElementById('walletDisplay').innerText=`رصيد USDT: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='English';
@@ -169,15 +166,27 @@ document.getElementById('langToggle').onclick=()=>{
     document.getElementById('username').placeholder='Username';
     document.getElementById('password').placeholder='Password';
     document.getElementById('loginBtn').innerText='Login as Guest';
-    document.getElementById('folders').children[0].innerText='Stocks';
-    document.getElementById('folders').children[1].innerText='Crypto';
-    document.getElementById('folders').children[2].innerText='Gold / Oil';
-    document.getElementById('folders').children[3].innerText='Learn / Contact';
+    folders[0].innerText='Stocks';
+    folders[1].innerText='Crypto';
+    folders[2].innerText='Gold / Oil';
+    folders[3].innerText='Learn / Contact';
     document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.';
     document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='العربية';
   }
 };
+
+// --- API PLACEHOLDERS ---
+function fetchGoldPrice(div){ div.innerText='Gold Price: $' + (1900+Math.random()*50).toFixed(2); }
+function fetchOilPrice(div){ div.innerText='Oil Price: $' + (80+Math.random()*10).toFixed(2); }
+function fetchUSDTBalance(div){ div.innerText='USDT Balance: ' + (currentUser?currentUser.wallet:0); }
+// Live stock/crypto placeholder
+function fetchMarketData(div,symbol){ div.innerText=`${symbol}: $${(Math.random()*300+50).toFixed(2)}`; }
+
+// --- BANK AND WALLET INTEGRATION PLACEHOLDERS ---
+function depositToLibyaBank(amount){ console.log(`Deposit ${amount} LYD placeholder`); }
+function withdrawFromLibyaBank(amount){ console.log(`Withdraw ${amount} LYD placeholder`); }
+function sendUSDT(toUser, amount){ console.log(`Send ${amount} USDT to ${toUser} placeholder`); }
 </script>
 
 </body>
