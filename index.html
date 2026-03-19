@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital — Full Platform</title>
+<title>Global Trade Capital</title>
 <style>
 body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a0a; color:#fff; display:flex; flex-direction:column; align-items:center; }
 header { width:100%; padding:15px; background:linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content:space-between; align-items:center; }
 header h1 { color:#FFD700; text-shadow:0 0 8px #FFD700; display:flex; align-items:center; gap:10px; }
-header h1 img { width:40px; }
+header h1 img { width:50px; }
 .lang-toggle { cursor:pointer; padding:5px 10px; border:1px solid #fff; border-radius:5px; }
-.what-we-do { width:90%; max-width:900px; text-align:center; margin-top:20px; font-size:18px; color:#00ffcc; }
-.dashboard, #stockContainer { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:20px; width:90%; }
-.folder, .stockCard { background:linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
-.folder:hover, .stockCard:hover { transform:translateY(-5px); box-shadow:0 0 25px #FFD700; }
+.what-we-do { width:90%; max-width:900px; text-align:center; margin-top:10px; font-size:18px; color:#00ffcc; }
+.dashboard, #subFolderContainer, #itemContainer { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:20px; width:90%; }
+.folder, .subFolder, .itemCard { background:linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+.folder:hover, .subFolder:hover, .itemCard:hover { transform:translateY(-5px); box-shadow:0 0 25px #FFD700; }
 .backBtn { margin-top:15px; background:#FFD700; color:#000; cursor:pointer; padding:10px 15px; border-radius:8px; border:none; }
 .wallet { margin-top:15px; color:#FFD700; font-weight:bold; font-size:18px; }
 #loginModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:100; }
@@ -24,6 +24,7 @@ button:hover { background:#FFD700; color:#000; }
 .contact { margin-top:40px; text-align:center; color:#00ffcc; }
 .contact img { width:80px; margin-bottom:10px; }
 .contact a { display:block; color:#FFD700; margin:5px 0; text-decoration:none; }
+.price-card { background:#111; padding:15px; border-radius:10px; margin:10px; box-shadow:0 0 15px #00ffcc; }
 </style>
 </head>
 <body>
@@ -49,44 +50,53 @@ button:hover { background:#FFD700; color:#000; }
   </div>
 </div>
 
-<!-- DASHBOARD FOLDERS -->
+<!-- MAIN DASHBOARD FOLDERS -->
 <div class="dashboard" id="folders" style="display:none;">
-  <div class="folder" onclick="openFolder('highs')">52-Week Highs</div>
-  <div class="folder" onclick="openFolder('top10')">Top 10 Movers</div>
-  <div class="folder" onclick="openFolder('trending')">Trending Stocks</div>
-  <div class="folder" onclick="openFolder('crypto')">Crypto</div>
+  <div class="folder" onclick="openSubFolder('stocks')">Stocks</div>
+  <div class="folder" onclick="openSubFolder('crypto')">Crypto</div>
+  <div class="folder" onclick="openSubFolder('commodities')">Gold / Oil</div>
+  <div class="folder" onclick="openSubFolder('learn')">Learn / Contact</div>
 </div>
 
-<!-- STOCKS LIST -->
-<div id="stockContainer" style="display:none; flex-direction:column;">
-  <button class="backBtn" onclick="backToFolders()">Back</button>
-  <div id="stocks" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px;"></div>
+<!-- SUBFOLDERS -->
+<div id="subFolderContainer" style="display:none; flex-direction:column;">
+  <button class="backBtn" onclick="backToMainFolders()">Back</button>
+  <div id="subFolders" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px;"></div>
 </div>
 
-<!-- CONTACT US -->
-<div class="contact">
-  <img src="https://i.imgur.com/YOUR_LOGO.png" alt="Logo">
-  <h2>Contact Us</h2>
-  <a href="tel:+218XXXXXXXX">Libya Phone: +218XXXXXXXX</a>
-  <a href="mailto:support@globaltrade.com">Email: support@globaltrade.com</a>
-  <a href="https://twitter.com/globaltrade" target="_blank">Twitter</a>
-  <a href="https://facebook.com/globaltrade" target="_blank">Facebook</a>
+<!-- ITEMS -->
+<div id="itemContainer" style="display:none; flex-direction:column;">
+  <button class="backBtn" onclick="backToSubFolders()">Back</button>
+  <div id="items" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px;"></div>
 </div>
 
 <script>
 let arabic = false;
 let currentUser = null;
 
-// --- SIMULATED DATA ---
+// --- DATA ---
 let guestWallet = 1000;
-const stocksData = {
-  highs: ['AAPL','MSFT','GOOG','AMZN'],
-  top10: ['TSLA','NVDA','META','AMD','NFLX','SHOP','BABA','DIS','ORCL','INTC'],
-  trending: ['TSLA','AMZN','NVDA','BTC','ETH'],
-  crypto: ['BTC','ETH','BNB','USDT']
+const subFoldersData = {
+  stocks: ['Trending','52-Week Highs','52-Week Lows','Top Movers'],
+  crypto: ['Trending','Top Coins','Stable Coins'],
+  commodities: ['Gold','Oil'],
+  learn: ['Contact','FAQ','Tutorials']
+};
+const itemsData = {
+  'Trending':['AAPL','TSLA','BTC'],
+  '52-Week Highs':['AAPL','MSFT','GOOG'],
+  '52-Week Lows':['AMD','BABA','INTC'],
+  'Top Movers':['TSLA','NVDA','META'],
+  'Top Coins':['ETH','BNB','ADA'],
+  'Stable Coins':['USDT','USDC'],
+  'Gold':['Gold Price'],
+  'Oil':['Oil Price'],
+  'Contact':['Phone: +218XXXXXXXX','Email: support@globaltrade.com','Twitter: @globaltrade'],
+  'FAQ':['How to trade','Fees','Support'],
+  'Tutorials':['Video 1','Video 2']
 };
 
-// ---- LOGIN ----
+// --- LOGIN ---
 document.getElementById('loginBtn').onclick = () => {
   currentUser = {wallet:guestWallet};
   document.getElementById('loginModal').style.display='none';
@@ -95,31 +105,51 @@ document.getElementById('loginBtn').onclick = () => {
   document.getElementById('walletDisplay').innerText = `USDT Balance: ${currentUser.wallet}`;
 };
 
-function openFolder(folder){
+let currentFolder = '';
+function openSubFolder(folder){
+  currentFolder = folder;
   document.getElementById('folders').style.display='none';
-  const container = document.getElementById('stockContainer');
-  const stocksDiv = document.getElementById('stocks');
-  stocksDiv.innerHTML='';
-  const list = stocksData[folder] || [];
-  list.forEach(symbol=>{
+  const container = document.getElementById('subFolderContainer');
+  const subFolderDiv = document.getElementById('subFolders');
+  subFolderDiv.innerHTML='';
+  const list = subFoldersData[folder] || [];
+  list.forEach(name=>{
     const div = document.createElement('div');
-    div.className='stockCard';
-    div.innerText=symbol;
-    div.onclick = () => {
-      // Replace below with real API call for stock/crypto price
-      alert(`${symbol} price: $${(Math.random()*1000).toFixed(2)}`);
-    };
-    stocksDiv.appendChild(div);
+    div.className='subFolder';
+    div.innerText=name;
+    div.onclick = () => openItems(name);
+    subFolderDiv.appendChild(div);
   });
   container.style.display='flex';
 }
 
-function backToFolders(){
-  document.getElementById('stockContainer').style.display='none';
+function backToMainFolders(){
+  document.getElementById('subFolderContainer').style.display='none';
   document.getElementById('folders').style.display='flex';
 }
 
-// ---- LANGUAGE TOGGLE ----
+function openItems(subFolder){
+  document.getElementById('subFolderContainer').style.display='none';
+  const container = document.getElementById('itemContainer');
+  const itemsDiv = document.getElementById('items');
+  itemsDiv.innerHTML='';
+  const list = itemsData[subFolder] || [];
+  list.forEach(name=>{
+    const div = document.createElement('div');
+    div.className='itemCard';
+    div.innerText=name;
+    div.onclick = () => alert(`${name} info placeholder`);
+    itemsDiv.appendChild(div);
+  });
+  container.style.display='flex';
+}
+
+function backToSubFolders(){
+  document.getElementById('itemContainer').style.display='none';
+  openSubFolder(currentFolder);
+}
+
+// --- LANGUAGE TOGGLE ---
 document.getElementById('langToggle').onclick=()=>{
   arabic=!arabic;
   if(arabic){
@@ -127,10 +157,10 @@ document.getElementById('langToggle').onclick=()=>{
     document.getElementById('username').placeholder='اسم المستخدم';
     document.getElementById('password').placeholder='كلمة المرور';
     document.getElementById('loginBtn').innerText='تسجيل كزائر';
-    document.getElementById('folders').children[0].innerText='أعلى 52 أسبوع';
-    document.getElementById('folders').children[1].innerText='أفضل 10 تحركات';
-    document.getElementById('folders').children[2].innerText='الأسهم الرائجة';
-    document.getElementById('folders').children[3].innerText='كريبتو';
+    document.getElementById('folders').children[0].innerText='الأسهم';
+    document.getElementById('folders').children[1].innerText='كريبتو';
+    document.getElementById('folders').children[2].innerText='ذهب / نفط';
+    document.getElementById('folders').children[3].innerText='تعلم / اتصل';
     document.getElementById('whatWeDo').innerText='نحن نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع مع بيانات فورية ومعاملات سلسة.';
     document.getElementById('walletDisplay').innerText=`رصيد USDT: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='English';
@@ -139,10 +169,10 @@ document.getElementById('langToggle').onclick=()=>{
     document.getElementById('username').placeholder='Username';
     document.getElementById('password').placeholder='Password';
     document.getElementById('loginBtn').innerText='Login as Guest';
-    document.getElementById('folders').children[0].innerText='52-Week Highs';
-    document.getElementById('folders').children[1].innerText='Top 10 Movers';
-    document.getElementById('folders').children[2].innerText='Trending Stocks';
-    document.getElementById('folders').children[3].innerText='Crypto';
+    document.getElementById('folders').children[0].innerText='Stocks';
+    document.getElementById('folders').children[1].innerText='Crypto';
+    document.getElementById('folders').children[2].innerText='Gold / Oil';
+    document.getElementById('folders').children[3].innerText='Learn / Contact';
     document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.';
     document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='العربية';
