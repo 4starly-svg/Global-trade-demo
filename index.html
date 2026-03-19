@@ -3,44 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard</title>
+<title>Global Trade Capital</title>
 <style>
-  /* --- GENERAL STYLES --- */
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-  body { background-color: #0a0a0a; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; }
-
-  /* --- HEADER / TICKER --- */
-  header { width: 100%; padding: 15px; background: linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content: space-between; align-items:center; }
-  header h1 { font-size: 2rem; color: #FFD700; text-shadow:0 0 8px #FFD700; }
-  .ticker { font-size:1rem; color:#00ffcc; }
-  .lang-toggle { cursor:pointer; padding:5px 10px; border:1px solid #fff; border-radius:5px; }
-
-  /* --- DASHBOARD / SECTIONS --- */
-  .dashboard { display:flex; flex-wrap: wrap; justify-content:center; align-items:flex-start; margin-top:20px; gap:20px; width:90%; }
-  .card { background: linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; transition: transform 0.3s, box-shadow 0.3s; cursor:pointer; }
-  .card:hover { transform: translateY(-5px); box-shadow: 0 0 25px #FFD700; }
-
-  /* --- BUTTONS --- */
-  button { background:#00ffcc; border:none; padding:10px 20px; margin:5px; border-radius:8px; font-weight:bold; color:#000; cursor:pointer; transition:0.3s; }
-  button:hover { background:#FFD700; color:#000; }
-
-  /* --- LOGIN MODAL --- */
-  #loginModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:100; }
-  #loginContent { background:#111; padding:30px; border-radius:15px; text-align:center; width:300px; box-shadow:0 0 20px #00ffcc; }
-  #loginContent input { width:80%; padding:10px; margin:10px 0; border-radius:5px; border:none; }
-
-  /* --- CONTACT --- */
-  #contact { margin-top:30px; text-align:center; }
-  #contact a { color:#FFD700; display:block; margin:5px 0; text-decoration:none; }
+body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a0a; color:#fff; display:flex; flex-direction:column; align-items:center; }
+header { width:100%; padding:15px; background:linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content:space-between; align-items:center; }
+header h1 { color:#FFD700; text-shadow:0 0 8px #FFD700; display:flex; align-items:center; gap:10px; }
+header h1 img { width:40px; }
+.lang-toggle { cursor:pointer; padding:5px 10px; border:1px solid #fff; border-radius:5px; }
+.what-we-do { width:90%; max-width:900px; text-align:center; margin-top:20px; font-size:18px; color:#00ffcc; }
+.dashboard, #stockContainer { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:20px; width:90%; }
+.folder, .stockCard { background:linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+.folder:hover, .stockCard:hover { transform:translateY(-5px); box-shadow:0 0 25px #FFD700; }
+.backBtn { margin-top:15px; background:#FFD700; color:#000; cursor:pointer; padding:10px 15px; border-radius:8px; border:none; }
+#loginModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:100; }
+#loginContent { background:#111; padding:30px; border-radius:15px; text-align:center; width:300px; box-shadow:0 0 20px #00ffcc; }
+#loginContent input { width:80%; padding:10px; margin:10px 0; border-radius:5px; border:none; }
+button { background:#00ffcc; border:none; padding:10px 20px; margin:5px; border-radius:8px; font-weight:bold; color:#000; cursor:pointer; transition:0.3s; }
+button:hover { background:#FFD700; color:#000; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1 id="logo">Global Trade Capital</h1>
-  <div class="ticker" id="ticker">Gold: $0 | Oil: $0 | USD: 1.00 | TSLA: $0 | AAPL: $0</div>
+  <h1><img src="https://i.imgur.com/YOUR_LOGO.png" alt="Logo">Global Trade Capital</h1>
   <div class="lang-toggle" id="langToggle">العربية</div>
 </header>
+
+<div class="what-we-do" id="whatWeDo">
+  We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.
+</div>
 
 <!-- LOGIN MODAL -->
 <div id="loginModal">
@@ -52,126 +43,85 @@
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-  <div class="card">
-    <h3>Gold</h3>
-    <div id="goldPrice">Price: $0</div>
-    <button onclick="buy('gold')">Buy</button>
-    <button onclick="sell('gold')">Sell</button>
-  </div>
-  <div class="card">
-    <h3>Oil</h3>
-    <div id="oilPrice">Price: $0</div>
-    <button onclick="buy('oil')">Buy</button>
-    <button onclick="sell('oil')">Sell</button>
-  </div>
-  <div class="card">
-    <h3>USD</h3>
-    <button onclick="buy('usd')">Buy</button>
-    <button onclick="sell('usd')">Sell</button>
-  </div>
-  <div class="card">
-    <h3>TSLA</h3>
-    <div id="tslaPrice">$0</div>
-    <button onclick="buy('TSLA')">Buy</button>
-    <button onclick="sell('TSLA')">Sell</button>
-  </div>
-  <div class="card">
-    <h3>AAPL</h3>
-    <div id="aaplPrice">$0</div>
-    <button onclick="buy('AAPL')">Buy</button>
-    <button onclick="sell('AAPL')">Sell</button>
-  </div>
+<!-- DASHBOARD FOLDERS -->
+<div class="dashboard" id="folders" style="display:none;">
+  <div class="folder" onclick="openFolder('highs')">52-Week Highs</div>
+  <div class="folder" onclick="openFolder('top10')">Top 10 Movers</div>
+  <div class="folder" onclick="openFolder('trending')">Trending Stocks</div>
+  <div class="folder" onclick="openFolder('crypto')">Crypto</div>
 </div>
 
-<!-- CONTACT -->
-<div id="contact">
-  <h2>Contact Us</h2>
-  <a href="tel:+218912345678">Phone: +218 91 234 5678</a>
-  <a href="https://facebook.com/globaltrade" target="_blank">Facebook</a>
-  <a href="mailto:info@globaltrade.com">Email: info@globaltrade.com</a>
+<!-- STOCKS CONTAINER -->
+<div id="stockContainer" style="display:none; flex-direction:column;">
+  <button class="backBtn" onclick="backToFolders()">Back</button>
+  <div id="stocks" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px;"></div>
 </div>
 
 <script>
-let userId = null;
-const langToggle = document.getElementById('langToggle');
 let arabic = false;
-
-// LOGIN MODAL
-document.getElementById('loginBtn').onclick = async () => {
-  const res = await fetch('/api/guest-login', { method:'POST' });
-  const data = await res.json();
-  if(data.success){
-    userId = data.userId;
-    document.getElementById('loginModal').style.display='none';
-    createWallet();
-  }
+let stockData = {
+  highs:['AAPL','MSFT','GOOG','TSLA','AMZN'],
+  top10:['NVDA','AMD','META','INTC','NFLX'],
+  trending:['TSLA','AMZN','NFLX','GOOG','AAPL'],
+  crypto:['BTC','ETH','BNB','USDT','SOL']
 };
 
-// CREATE USDT WALLET
-async function createWallet(){
-  try{
-    const res = await fetch('/api/create-wallet', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ userId }) });
-    const data = await res.json();
-    if(data.success) console.log('Wallet created:', data.walletAddress);
-  }catch(e){ console.error(e); }
+// GUEST LOGIN FIX
+document.getElementById('loginBtn').onclick = () => {
+  userId = 'guest123';
+  document.getElementById('loginModal').style.display='none';
+  document.getElementById('folders').style.display='flex';
+  console.log('Logged in as guest');
+};
+
+function openFolder(folder){
+  document.getElementById('folders').style.display='none';
+  const container = document.getElementById('stockContainer');
+  const stocksDiv = document.getElementById('stocks');
+  stocksDiv.innerHTML='';
+  stockData[folder].forEach(stock=>{
+    const div=document.createElement('div');
+    div.className='stockCard';
+    div.innerText=stock;
+    div.onclick=()=>alert('Open '+stock+' details page');
+    stocksDiv.appendChild(div);
+  });
+  container.style.display='flex';
+}
+function backToFolders(){
+  document.getElementById('stockContainer').style.display='none';
+  document.getElementById('folders').style.display='flex';
 }
 
-// BUY/SELL FUNCTIONS
-function buy(asset){ alert('Buying '+asset); sendTransaction(asset,'buy'); }
-function sell(asset){ alert('Selling '+asset); sendTransaction(asset,'sell'); }
-
-async function sendTransaction(asset,type){
-  if(!userId) { alert('Login first'); return; }
-  try{
-    await fetch('/api/send-usdt', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ userId, to:'receiver-address', amount:100 }) });
-    console.log(type+' '+asset+' transaction sent');
-  }catch(e){ console.error(e); }
-}
-
-// LANGUAGE TOGGLE
-langToggle.onclick = () => {
-  arabic = !arabic;
+// ARABIC TOGGLE
+document.getElementById('langToggle').onclick=()=>{
+  arabic=!arabic;
   if(arabic){
     document.getElementById('loginTitle').innerText='تسجيل الدخول';
     document.getElementById('username').placeholder='اسم المستخدم';
     document.getElementById('password').placeholder='كلمة المرور';
     document.getElementById('loginBtn').innerText='تسجيل كزائر';
     document.getElementById('logo').innerText='رأس مال التداول العالمي';
-    document.getElementById('contact').querySelector('h2').innerText='اتصل بنا';
+    document.getElementById('folders').children[0].innerText='أعلى 52 أسبوع';
+    document.getElementById('folders').children[1].innerText='أفضل 10 تحركات';
+    document.getElementById('folders').children[2].innerText='الأسهم الرائجة';
+    document.getElementById('folders').children[3].innerText='كريبتو';
+    document.getElementById('whatWeDo').innerText='نحن نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع مع بيانات فورية ومعاملات سلسة.';
     document.getElementById('langToggle').innerText='English';
-  }else{
+  } else {
     document.getElementById('loginTitle').innerText='Login';
     document.getElementById('username').placeholder='Username';
     document.getElementById('password').placeholder='Password';
     document.getElementById('loginBtn').innerText='Login as Guest';
     document.getElementById('logo').innerText='Global Trade Capital';
-    document.getElementById('contact').querySelector('h2').innerText='Contact Us';
+    document.getElementById('folders').children[0].innerText='52-Week Highs';
+    document.getElementById('folders').children[1].innerText='Top 10 Movers';
+    document.getElementById('folders').children[2].innerText='Trending Stocks';
+    document.getElementById('folders').children[3].innerText='Crypto';
+    document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.';
     document.getElementById('langToggle').innerText='العربية';
   }
 };
-
-// LIVE GOLD/OIL + STOCK PRICES (EXAMPLE API)
-async function updatePrices(){
-  try{
-    // GOLD & OIL: Example API (replace with your real API keys)
-    const goldRes = await fetch('https://api.metals.live/v1/spot/gold');
-    const oilRes = await fetch('https://api.oilpriceapi.com/v1/prices/latest?key=YOUR_API_KEY');
-
-    const goldData = await goldRes.json();
-    const oilData = await oilRes.json();
-
-    document.getElementById('goldPrice').innerText = 'Price: $' + (goldData[0].price || 0);
-    document.getElementById('oilPrice').innerText = 'Price: $' + (oilData.data[0].price || 0);
-
-    // Stocks example (replace with real API)
-    document.getElementById('tslaPrice').innerText = '$' + (Math.floor(Math.random()*900)+700); // placeholder
-    document.getElementById('aaplPrice').innerText = '$' + (Math.floor(Math.random()*150)+100);
-  }catch(e){ console.error(e); }
-}
-setInterval(updatePrices,5000);
-updatePrices();
 </script>
 
 </body>
