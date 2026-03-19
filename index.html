@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital</title>
+<title>Global Trade Capital — Full Platform</title>
 <style>
 body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a0a; color:#fff; display:flex; flex-direction:column; align-items:center; }
 header { width:100%; padding:15px; background:linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content:space-between; align-items:center; }
@@ -15,11 +15,15 @@ header h1 img { width:40px; }
 .folder, .stockCard { background:linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
 .folder:hover, .stockCard:hover { transform:translateY(-5px); box-shadow:0 0 25px #FFD700; }
 .backBtn { margin-top:15px; background:#FFD700; color:#000; cursor:pointer; padding:10px 15px; border-radius:8px; border:none; }
+.wallet { margin-top:15px; color:#FFD700; font-weight:bold; font-size:18px; }
 #loginModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:100; }
-#loginContent { background:#111; padding:30px; border-radius:15px; text-align:center; width:300px; box-shadow:0 0 20px #00ffcc; }
-#loginContent input { width:80%; padding:10px; margin:10px 0; border-radius:5px; border:none; }
+#loginContent { background:#111; padding:30px; border-radius:15px; text-align:center; width:320px; box-shadow:0 0 20px #00ffcc; }
+#loginContent input { width:85%; padding:10px; margin:10px 0; border-radius:5px; border:none; }
 button { background:#00ffcc; border:none; padding:10px 20px; margin:5px; border-radius:8px; font-weight:bold; color:#000; cursor:pointer; transition:0.3s; }
 button:hover { background:#FFD700; color:#000; }
+.contact { margin-top:40px; text-align:center; color:#00ffcc; }
+.contact img { width:80px; margin-bottom:10px; }
+.contact a { display:block; color:#FFD700; margin:5px 0; text-decoration:none; }
 </style>
 </head>
 <body>
@@ -33,12 +37,14 @@ button:hover { background:#FFD700; color:#000; }
   We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.
 </div>
 
-<!-- LOGIN MODAL -->
+<div class="wallet" id="walletDisplay" style="display:none;"></div>
+
+<!-- LOGIN -->
 <div id="loginModal">
   <div id="loginContent">
     <h2 id="loginTitle">Login</h2>
-    <input type="text" id="username" placeholder="Username"><br>
-    <input type="password" id="password" placeholder="Password"><br>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
     <button id="loginBtn">Login as Guest</button>
   </div>
 </div>
@@ -51,27 +57,42 @@ button:hover { background:#FFD700; color:#000; }
   <div class="folder" onclick="openFolder('crypto')">Crypto</div>
 </div>
 
-<!-- STOCKS CONTAINER -->
+<!-- STOCKS LIST -->
 <div id="stockContainer" style="display:none; flex-direction:column;">
   <button class="backBtn" onclick="backToFolders()">Back</button>
   <div id="stocks" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px;"></div>
 </div>
 
+<!-- CONTACT US -->
+<div class="contact">
+  <img src="https://i.imgur.com/YOUR_LOGO.png" alt="Logo">
+  <h2>Contact Us</h2>
+  <a href="tel:+218XXXXXXXX">Libya Phone: +218XXXXXXXX</a>
+  <a href="mailto:support@globaltrade.com">Email: support@globaltrade.com</a>
+  <a href="https://twitter.com/globaltrade" target="_blank">Twitter</a>
+  <a href="https://facebook.com/globaltrade" target="_blank">Facebook</a>
+</div>
+
 <script>
 let arabic = false;
-let stockData = {
-  highs:['AAPL','MSFT','GOOG','TSLA','AMZN'],
-  top10:['NVDA','AMD','META','INTC','NFLX'],
-  trending:['TSLA','AMZN','NFLX','GOOG','AAPL'],
-  crypto:['BTC','ETH','BNB','USDT','SOL']
+let currentUser = null;
+
+// --- SIMULATED DATA ---
+let guestWallet = 1000;
+const stocksData = {
+  highs: ['AAPL','MSFT','GOOG','AMZN'],
+  top10: ['TSLA','NVDA','META','AMD','NFLX','SHOP','BABA','DIS','ORCL','INTC'],
+  trending: ['TSLA','AMZN','NVDA','BTC','ETH'],
+  crypto: ['BTC','ETH','BNB','USDT']
 };
 
-// GUEST LOGIN FIX
+// ---- LOGIN ----
 document.getElementById('loginBtn').onclick = () => {
-  userId = 'guest123';
+  currentUser = {wallet:guestWallet};
   document.getElementById('loginModal').style.display='none';
   document.getElementById('folders').style.display='flex';
-  console.log('Logged in as guest');
+  document.getElementById('walletDisplay').style.display='block';
+  document.getElementById('walletDisplay').innerText = `USDT Balance: ${currentUser.wallet}`;
 };
 
 function openFolder(folder){
@@ -79,21 +100,26 @@ function openFolder(folder){
   const container = document.getElementById('stockContainer');
   const stocksDiv = document.getElementById('stocks');
   stocksDiv.innerHTML='';
-  stockData[folder].forEach(stock=>{
-    const div=document.createElement('div');
+  const list = stocksData[folder] || [];
+  list.forEach(symbol=>{
+    const div = document.createElement('div');
     div.className='stockCard';
-    div.innerText=stock;
-    div.onclick=()=>alert('Open '+stock+' details page');
+    div.innerText=symbol;
+    div.onclick = () => {
+      // Replace below with real API call for stock/crypto price
+      alert(`${symbol} price: $${(Math.random()*1000).toFixed(2)}`);
+    };
     stocksDiv.appendChild(div);
   });
   container.style.display='flex';
 }
+
 function backToFolders(){
   document.getElementById('stockContainer').style.display='none';
   document.getElementById('folders').style.display='flex';
 }
 
-// ARABIC TOGGLE
+// ---- LANGUAGE TOGGLE ----
 document.getElementById('langToggle').onclick=()=>{
   arabic=!arabic;
   if(arabic){
@@ -101,24 +127,24 @@ document.getElementById('langToggle').onclick=()=>{
     document.getElementById('username').placeholder='اسم المستخدم';
     document.getElementById('password').placeholder='كلمة المرور';
     document.getElementById('loginBtn').innerText='تسجيل كزائر';
-    document.getElementById('logo').innerText='رأس مال التداول العالمي';
     document.getElementById('folders').children[0].innerText='أعلى 52 أسبوع';
     document.getElementById('folders').children[1].innerText='أفضل 10 تحركات';
     document.getElementById('folders').children[2].innerText='الأسهم الرائجة';
     document.getElementById('folders').children[3].innerText='كريبتو';
     document.getElementById('whatWeDo').innerText='نحن نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع مع بيانات فورية ومعاملات سلسة.';
+    document.getElementById('walletDisplay').innerText=`رصيد USDT: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='English';
   } else {
     document.getElementById('loginTitle').innerText='Login';
     document.getElementById('username').placeholder='Username';
     document.getElementById('password').placeholder='Password';
     document.getElementById('loginBtn').innerText='Login as Guest';
-    document.getElementById('logo').innerText='Global Trade Capital';
     document.getElementById('folders').children[0].innerText='52-Week Highs';
     document.getElementById('folders').children[1].innerText='Top 10 Movers';
     document.getElementById('folders').children[2].innerText='Trending Stocks';
     document.getElementById('folders').children[3].innerText='Crypto';
     document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.';
+    document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='العربية';
   }
 };
