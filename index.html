@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital - Live Trading & Soccer Predictions</title>
+<title>Global Trade Capital - Trading & Soccer Predictions</title>
 <style>
 body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a0a; color:#fff; display:flex; flex-direction:column; align-items:center; }
 header { width:100%; padding:15px; background:linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content:space-between; align-items:center; }
@@ -12,8 +12,8 @@ header h1 img { width:50px; }
 .lang-toggle { cursor:pointer; padding:5px 10px; border:1px solid #fff; border-radius:5px; }
 .what-we-do { width:90%; max-width:900px; text-align:center; margin-top:10px; font-size:18px; color:#00ffcc; }
 .dashboard, #subFolderContainer, #itemContainer { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; margin-top:20px; width:90%; }
-.folder, .subFolder, .itemCard { background:linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
-.folder:hover, .subFolder:hover, .itemCard:hover { transform:translateY(-5px); box-shadow:0 0 25px #FFD700; }
+.folder, .subFolder, .itemCard { background:linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:260px; text-align:center; box-shadow:0 0 20px #00ffcc; cursor:pointer; transition: transform 0.3s, box-shadow 0.3s; }
+.folder:hover, .subFolder:hover, .itemCard:hover { transform:translateY(-5px); box-shadow:0 0 30px #FFD700; }
 .backBtn { margin-top:15px; background:#FFD700; color:#000; cursor:pointer; padding:10px 15px; border-radius:8px; border:none; }
 .wallet { margin-top:15px; color:#FFD700; font-weight:bold; font-size:18px; }
 #loginModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:100; }
@@ -25,6 +25,7 @@ button:hover { background:#FFD700; color:#000; }
 .contact img { width:80px; margin-bottom:10px; }
 .contact a { display:block; color:#FFD700; margin:5px 0; text-decoration:none; }
 .price-card { background:#111; padding:15px; border-radius:10px; margin:10px; box-shadow:0 0 15px #00ffcc; }
+.itemCard img { width:40px; height:40px; margin-bottom:5px; }
 </style>
 </head>
 <body>
@@ -73,44 +74,38 @@ button:hover { background:#FFD700; color:#000; }
 </div>
 
 <script>
-// --- STATE ---
 let arabic=false;
 let currentUser=null;
+let guestWallet=1000;
 
-// --- SAMPLE DATA ---
-let guestWallet = 1000;
-const subFoldersData = {
-  stocks: ['Trending','52-Week Highs','52-Week Lows','Top Movers'],
-  crypto: ['Trending','Top Coins','Stable Coins'],
-  commodities: ['Gold','Oil'],
-  learn: ['Contact','FAQ','Tutorials'],
-  sendMoney: ['Stocks','Crypto','Learn/Contact'],
-  soccer: ['Premier League','La Liga','Serie A','Bundesliga']
+// --- FOLDERS & SUBFOLDERS DATA ---
+const subFoldersData={
+  stocks:['Trending','52-Week Highs','52-Week Lows','Top Movers'],
+  crypto:['Trending','Top Coins','Stable Coins'],
+  commodities:['Gold','Oil'],
+  learn:['Contact','FAQ','Tutorials'],
+  sendMoney:['Stocks','Crypto','Learn/Contact'],
+  soccer:['Premier League','La Liga','Serie A','Bundesliga']
 };
 
-const itemsData = {
-  'Trending':['AAPL','TSLA','BTC'],
-  '52-Week Highs':['AAPL','MSFT','GOOG'],
-  '52-Week Lows':['AMD','BABA','INTC'],
-  'Top Movers':['TSLA','NVDA','META'],
-  'Top Coins':['ETH','BNB','ADA'],
-  'Stable Coins':['USDT','USDC'],
-  'Gold':['Gold Price'],
-  'Oil':['Oil Price'],
-  'Contact':['Phone: +218XXXXXXXX','Email: support@globaltrade.com','Twitter: @globaltrade'],
-  'FAQ':['How to trade','Fees','Support'],
-  'Tutorials':['Video 1','Video 2'],
-  'Stocks':['AAPL','TSLA','MSFT'], 
-  'Crypto':['BTC','ETH','USDT'],
-  'Learn/Contact':['Contact','FAQ','Tutorials'],
-  'Premier League':[ {match:'Manchester United vs Chelsea', date:'2026-03-25 18:00', price:10},
-                     {match:'Liverpool vs Arsenal', date:'2026-03-26 20:00', price:12}],
-  'La Liga':[ {match:'Real Madrid vs Barcelona', date:'2026-03-25 19:00', price:10},
-              {match:'Atletico Madrid vs Sevilla', date:'2026-03-26 21:00', price:11}],
-  'Serie A':[ {match:'Juventus vs Inter', date:'2026-03-25 17:00', price:10},
-              {match:'AC Milan vs Napoli', date:'2026-03-26 19:00', price:12}],
-  'Bundesliga':[ {match:'Bayern vs Dortmund', date:'2026-03-25 18:00', price:10},
-                 {match:'Leipzig vs Gladbach', date:'2026-03-26 20:00', price:11}]
+// --- SOCCER MATCHES WITH LOGOS & ARABIC ---
+const itemsData={
+  'Premier League':[
+    {match:'Manchester United vs Chelsea', match_ar:'مانشستر يونايتد ضد تشيلسي', date:'2026-03-25 18:00', price:10, logo1:'https://i.imgur.com/Vn5o2nC.png', logo2:'https://i.imgur.com/Cv2wR9Z.png'},
+    {match:'Liverpool vs Arsenal', match_ar:'ليفربول ضد أرسنال', date:'2026-03-26 20:00', price:12, logo1:'https://i.imgur.com/xXv1Bq3.png', logo2:'https://i.imgur.com/7b5xgQH.png'}
+  ],
+  'La Liga':[
+    {match:'Real Madrid vs Barcelona', match_ar:'ريال مدريد ضد برشلونة', date:'2026-03-25 19:00', price:10, logo1:'https://i.imgur.com/sm9tOTr.png', logo2:'https://i.imgur.com/ql7pZlQ.png'},
+    {match:'Atletico Madrid vs Sevilla', match_ar:'أتلتيكو مدريد ضد إشبيلية', date:'2026-03-26 21:00', price:11, logo1:'https://i.imgur.com/4YNMZyx.png', logo2:'https://i.imgur.com/oaQyKXK.png'}
+  ],
+  'Serie A':[
+    {match:'Juventus vs Inter', match_ar:'يوفنتوس ضد إنتر', date:'2026-03-25 17:00', price:10, logo1:'https://i.imgur.com/Yo3V8aK.png', logo2:'https://i.imgur.com/h4m9hIh.png'},
+    {match:'AC Milan vs Napoli', match_ar:'إيه سي ميلان ضد نابولي', date:'2026-03-26 19:00', price:12, logo1:'https://i.imgur.com/0z6kRQF.png', logo2:'https://i.imgur.com/7yON7Uv.png'}
+  ],
+  'Bundesliga':[
+    {match:'Bayern vs Dortmund', match_ar:'بايرن ميونيخ ضد دورتموند', date:'2026-03-25 18:00', price:10, logo1:'https://i.imgur.com/0GvGciV.png', logo2:'https://i.imgur.com/Q9y5t7N.png'},
+    {match:'Leipzig vs Gladbach', match_ar:'لايبزيغ ضد غلادباخ', date:'2026-03-26 20:00', price:11, logo1:'https://i.imgur.com/6u0pRX5.png', logo2:'https://i.imgur.com/Y6HBcOp.png'}
+  ]
 };
 
 // --- LOGIN ---
@@ -122,7 +117,7 @@ document.getElementById('loginBtn').onclick=()=>{
   document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser.wallet}`;
 };
 
-// --- FOLDER NAVIGATION ---
+// --- NAVIGATION ---
 let currentFolder='';
 function openSubFolder(folder){
   currentFolder=folder;
@@ -133,7 +128,7 @@ function openSubFolder(folder){
   list.forEach(name=>{
     const div=document.createElement('div');
     div.className='subFolder';
-    div.innerText=typeof name==='string'?name:name.name;
+    div.innerText=name;
     div.onclick=()=>openItems(name);
     subFolderDiv.appendChild(div);
   });
@@ -149,7 +144,12 @@ function openItems(subFolder){
     const div=document.createElement('div');
     div.className='itemCard';
     if(subFolder==='Premier League' || subFolder==='La Liga' || subFolder==='Serie A' || subFolder==='Bundesliga'){
-      div.innerHTML=`${item.match}<br>${item.date}<br>Bet: ${item.price} USDT<br><button onclick="placeBet('${item.match}',${item.price})">Place Bet</button>`;
+      div.innerHTML=`
+        <img src="${item.logo1}" alt="team1"><img src="${item.logo2}" alt="team2"><br>
+        <span class="matchName">${arabic?item.match_ar:item.match}</span><br>
+        ${item.date}<br>
+        Bet: ${item.price} USDT<br>
+        <button onclick="placeBet('${item.match}',${item.price})">Place Bet</button>`;
     } else {
       div.innerText=typeof item==='string'?item:item.match;
     }
@@ -159,13 +159,12 @@ function openItems(subFolder){
 }
 function backToSubFolders(){document.getElementById('itemContainer').style.display='none'; openSubFolder(currentFolder);}
 
-// --- PLACE BET FUNCTION ---
+// --- BETTING ---
 function placeBet(match, amount){
   if(currentUser.wallet>=amount){
     currentUser.wallet-=amount;
     document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser.wallet}`;
     alert(`Bet placed on ${match} for ${amount} USDT!`);
-    // Here we can add API call to log bet for real-money backend
   } else { alert('Insufficient USDT balance!'); }
 }
 
@@ -174,47 +173,35 @@ document.getElementById('langToggle').onclick=()=>{
   arabic=!arabic;
   const folders=document.getElementById('folders').children;
   if(arabic){
-    document.getElementById('loginTitle').innerText='تسجيل الدخول';
-    document.getElementById('username').placeholder='اسم المستخدم';
-    document.getElementById('password').placeholder='كلمة المرور';
-    document.getElementById('loginBtn').innerText='تسجيل كزائر';
     folders[0].innerText='الأسهم';
     folders[1].innerText='كريبتو';
     folders[2].innerText='ذهب / نفط';
     folders[3].innerText='تعلم / اتصل';
     folders[4].innerText='أرسل الأموال عالمياً';
     folders[5].innerText='كرة القدم';
+    document.getElementById('loginTitle').innerText='تسجيل الدخول';
+    document.getElementById('username').placeholder='اسم المستخدم';
+    document.getElementById('password').placeholder='كلمة المرور';
+    document.getElementById('loginBtn').innerText='تسجيل كزائر';
     document.getElementById('whatWeDo').innerText='نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع والآن توقعات كرة القدم مع رهان USDT.';
     document.getElementById('walletDisplay').innerText=`رصيد USDT: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='English';
   } else {
-    document.getElementById('loginTitle').innerText='Login';
-    document.getElementById('username').placeholder='Username';
-    document.getElementById('password').placeholder='Password';
-    document.getElementById('loginBtn').innerText='Login as Guest';
     folders[0].innerText='Stocks';
     folders[1].innerText='Crypto';
     folders[2].innerText='Gold / Oil';
     folders[3].innerText='Learn / Contact';
     folders[4].innerText='Send Money Worldwide';
     folders[5].innerText='Soccer';
+    document.getElementById('loginTitle').innerText='Login';
+    document.getElementById('username').placeholder='Username';
+    document.getElementById('password').placeholder='Password';
+    document.getElementById('loginBtn').innerText='Login as Guest';
     document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, commodities, and now live soccer predictions with USDT betting.';
     document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='العربية';
   }
 };
-
-// --- API PLACEHOLDERS ---
-function fetchGoldPrice(div){ div.innerText='Gold Price: $' + (1900+Math.random()*50).toFixed(2); }
-function fetchOilPrice(div){ div.innerText='Oil Price: $' + (80+Math.random()*10).toFixed(2); }
-function fetchUSDTBalance(div){ div.innerText='USDT Balance: ' + (currentUser?currentUser.wallet:0); }
-function fetchMarketData(div,symbol){ div.innerText=`${symbol}: $${(Math.random()*300+50).toFixed(2)}`; }
-
-// --- BANK AND WALLET PLACEHOLDERS ---
-function depositToLibyaBank(amount){ console.log(`Deposit ${amount} LYD placeholder`); }
-function withdrawFromLibyaBank(amount){ console.log(`Withdraw ${amount} LYD placeholder`); }
-function sendUSDT(toUser, amount){ console.log(`Send ${amount} USDT to ${toUser} placeholder`); }
-
 </script>
 </body>
 </html>
