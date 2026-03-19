@@ -2,184 +2,119 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade LTD</title>
 <style>
-body { margin:0; font-family:Arial,sans-serif; background:#0b0f1a; color:white; display:flex; justify-content:center; align-items:center; height:100vh; }
-.screen { display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; width:100%; height:100%; }
-.screen.active { display:flex; }
-.login-box, .box, .tile-container, .wallet-box { background:#1a1f36; padding:25px; border-radius:12px; width:80%; max-width:700px; margin:10px; box-shadow:0 0 15px rgba(0,0,0,0.5); transition:0.3s; }
-.login-box:hover, .box:hover, .tile:hover, .wallet-box:hover { box-shadow:0 0 25px #ffc107; transform:scale(1.02); }
-button { padding:12px 20px; margin:10px; background:#ffc107; border:none; border-radius:6px; cursor:pointer; font-weight:bold; transition:0.2s; }
-button:hover { background:#e0b000; }
-.tile-container { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; }
-.tile { background:#2a3360; padding:20px 35px; border-radius:10px; cursor:pointer; transition:0.3s; }
-.tile:hover { background:#3b4590; box-shadow:0 0 20px #ffc107; transform:scale(1.05); }
-.top-bar { position:absolute; top:0; left:0; width:100%; display:flex; justify-content:flex-end; padding:10px 20px; background:#0b0f1a; z-index:10; }
-.ticker { width:100%; background:#111; color:#ffc107; padding:5px 0; overflow:hidden; white-space:nowrap; box-sizing:border-box; margin-bottom:10px; }
-.ticker span { display:inline-block; padding-right:50px; animation: scroll 20s linear infinite; }
-@keyframes scroll { 0% { transform:translateX(100%);} 100% { transform:translateX(-100%);} }
+body { margin:0; background:#121212; font-family: Arial, sans-serif; color:#fff; }
+.centered { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.hidden { display:none; }
+input, button { margin:10px; padding:10px; font-size:1rem; border-radius:8px; border:none; }
+button { cursor:pointer; background-color:#0d6efd; color:#fff; transition:0.3s; }
+button:hover { background-color:#0056b3; }
+#ticker span { margin:0 10px; font-weight:bold; }
+#slideshow img { border-radius:12px; box-shadow:0 0 20px #0d6efd; width:640px; height:360px; object-fit:cover; }
+video { border-radius:12px; box-shadow:0 0 20px #0d6efd; cursor:pointer; }
 </style>
 </head>
 <body>
 
-<!-- Top Bar -->
-<div class="top-bar">
-  <button id="langBtn">Arabi</button>
+<div id="loginPage" class="centered">
+  <h1 id="loginTitle">Login</h1>
+  <input id="username" placeholder="Username">
+  <input id="password" placeholder="Password" type="password">
+  <button id="guestLogin">Login as Guest</button>
+  <button id="toggleLang">عربي / EN</button>
 </div>
 
-<!-- Ticker -->
-<div class="ticker"><span>SPY 430.12 ▲1.5 | BTC 29,120 ▲2% | ETH 1,850 ▲1.2% | GOLD 1,980 ▼0.3% | OIL 85.2 ▲0.5%</span></div>
-
-<!-- LOGIN -->
-<div id="login" class="screen active">
-  <div class="login-box">
-    <h1>GLOBAL TRADE LTD</h1>
-    <button onclick="enter()">Login as Guest</button>
+<div id="dashboard" class="hidden">
+  <div id="ticker" class="centered">
+    <span>Gold: $1985</span> | <span>Oil: $88</span> | <span>USD: 1.00</span> | <span>Stock A: $15</span> | <span>Stock B: $23</span>
   </div>
-</div>
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="screen">
-  <h1>GLOBAL TRADE LTD</h1>
-  <div class="tile-container">
-    <div class="tile" onclick="openPage('learn')">Learn</div>
-    <div class="tile" onclick="openPage('stocks')">Stocks</div>
-    <div class="tile" onclick="openPage('crypto')">Crypto</div>
-    <div class="tile" onclick="openPage('fx')">FX</div>
-    <div class="tile" onclick="openPage('wallet')">Wallet</div>
-  </div>
-</div>
-
-<!-- LEARN -->
-<div id="learn" class="screen">
-  <button onclick="back()">Back to Dashboard</button>
-  <div class="box">
-    <h2>Learn How to Trade (Arabic Libyan Dialect)</h2>
-    <!-- Embedded Video -->
-    <video controls width="100%" style="margin-top:15px;">
-      <source src="data:video/mp4;base64,INSERT_BASE64_VIDEO_HERE" type="video/mp4">
+  <div id="videoContainer" class="centered">
+    <video id="marketVideo" width="640" height="360" controls>
+      <!-- Arabic trading video embedded via online link -->
+      <source src="https://example.com/arabic-trading-video.mp4" type="video/mp4">
     </video>
-    <!-- Embedded Audio -->
-    <audio controls style="width:100%; margin-top:15px;">
-      <source src="data:audio/mpeg;base64,INSERT_BASE64_AUDIO_HERE" type="audio/mpeg">
-    </audio>
   </div>
-</div>
 
-<!-- STOCKS -->
-<div id="stocks" class="screen">
-  <button onclick="back()">Back to Dashboard</button>
-  <div class="box">
-    <h2>Stocks</h2>
-    <ul style="list-style:none; padding:0;">
-      <li>SPY</li>
-      <li>AAPL</li>
-      <li>TSLA</li>
-      <li>AMZN</li>
-      <li>GOOGL</li>
-      <li>MSFT</li>
-      <li>NFLX</li>
-      <li>NVDA</li>
-      <li>FB</li>
-      <li>BABA</li>
-    </ul>
+  <div id="slideshow" class="centered">
+    <!-- Using previous AI-generated images online links -->
+    <img id="slideImg" src="https://example.com/ai-image1.png" alt="Slide">
   </div>
-</div>
 
-<!-- CRYPTO -->
-<div id="crypto" class="screen">
-  <button onclick="back()">Back to Dashboard</button>
-  <div class="box">
-    <h2>Crypto</h2>
-    <ul style="list-style:none; padding:0;">
-      <li>BTC</li>
-      <li>ETH</li>
-      <li>BNB</li>
-      <li>USDT</li>
-      <li>ADA</li>
-      <li>XRP</li>
-      <li>SOL</li>
-      <li>DOGE</li>
-      <li>DOT</li>
-      <li>AVAX</li>
-    </ul>
+  <div id="walletSection" class="centered">
+    <h2>USDT Wallet</h2>
+    <p id="walletAddr">No wallet created</p>
+    <button id="createWalletBtn">Create Wallet</button>
+    <input id="sendAddress" placeholder="Recipient Address">
+    <input id="sendAmount" placeholder="Amount">
+    <button id="sendUSDTBtn">Send USDT</button>
   </div>
-</div>
 
-<!-- FX -->
-<div id="fx" class="screen">
-  <button onclick="back()">Back to Dashboard</button>
-  <div class="box">
-    <h2>Forex (FX)</h2>
-    <ul style="list-style:none; padding:0;">
-      <li>USD/EUR</li>
-      <li>USD/JPY</li>
-      <li>GBP/USD</li>
-      <li>AUD/USD</li>
-      <li>USD/CAD</li>
-      <li>USD/CHF</li>
-      <li>NZD/USD</li>
-      <li>EUR/GBP</li>
-      <li>EUR/JPY</li>
-      <li>GBP/JPY</li>
-    </ul>
-  </div>
-</div>
-
-<!-- WALLET -->
-<div id="wallet" class="screen">
-  <button onclick="back()">Back to Dashboard</button>
-  <div class="wallet-box">
-    <h2>Wallet / Deposit & Withdrawal</h2>
-    <p>Libyan Banks:</p>
-    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Libyan_Bank_logo.png/200px-Libyan_Bank_logo.png" width="100" alt="Bank Logo">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Jamahiriya_Bank_logo.png/200px-Jamahiriya_Bank_logo.png" width="100" alt="Bank Logo">
-    </div>
-    <p>Simulated USD / USDT deposits and withdrawals coming soon.</p>
-  </div>
+  <button id="toggleLangDash">عربي / EN</button>
 </div>
 
 <script>
-// Navigation
-function enter(){ document.getElementById("login").classList.remove("active"); document.getElementById("dashboard").classList.add("active"); }
-function openPage(id){ document.querySelectorAll(".screen").forEach(p=>p.classList.remove("active")); document.getElementById(id).classList.add("active"); }
-function back(){ document.querySelectorAll(".screen").forEach(p=>p.classList.remove("active")); document.getElementById("dashboard").classList.add("active"); }
+let currentUser = {};
+let isArabic = false;
 
-// Arabic/English toggle
-let arabic = false;
-document.getElementById("langBtn").onclick = function(){
-  arabic = !arabic;
-  document.getElementById("langBtn").innerText = arabic ? "English" : "Arabi";
-  document.querySelectorAll("h1, h2, p, li, button").forEach(el=>{
-    if(el.tagName=="LI") return; // keep stock/crypto symbols
-    if(el.tagName=="BUTTON" && el.innerText.includes("Back")) el.innerText = arabic ? "العودة للوحة القيادة" : "Back to Dashboard";
-    else if(el.tagName=="BUTTON" && el.innerText.includes("Login")) el.innerText = arabic ? "تسجيل دخول كضيف" : "Login as Guest";
-    else el.innerText = arabic ? translate(el.innerText) : revert(el.innerText);
-  });
+// Login
+document.getElementById('guestLogin').addEventListener('click', ()=>{
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
+});
+
+// Toggle Arabic / English
+document.getElementById('toggleLang').addEventListener('click', toggleLang);
+document.getElementById('toggleLangDash').addEventListener('click', toggleLang);
+
+function toggleLang(){
+  isArabic=!isArabic;
+  if(isArabic){
+    document.getElementById('loginTitle').innerText="تسجيل الدخول";
+    document.getElementById('username').placeholder="اسم المستخدم";
+    document.getElementById('password').placeholder="كلمة المرور";
+    document.getElementById('guestLogin').innerText="تسجيل كزائر";
+    document.getElementById('walletSection').querySelector('h2').innerText="محفظة USDT";
+    document.getElementById('createWalletBtn').innerText="إنشاء المحفظة";
+    document.getElementById('sendUSDTBtn').innerText="أرسل USDT";
+  }else{
+    document.getElementById('loginTitle').innerText="Login";
+    document.getElementById('username').placeholder="Username";
+    document.getElementById('password').placeholder="Password";
+    document.getElementById('guestLogin').innerText="Login as Guest";
+    document.getElementById('walletSection').querySelector('h2').innerText="USDT Wallet";
+    document.getElementById('createWalletBtn').innerText="Create Wallet";
+    document.getElementById('sendUSDTBtn').innerText="Send USDT";
+  }
 }
-function translate(text){
-  if(text.includes("GLOBAL TRADE LTD")) return "جلوبال تريد المحدودة";
-  if(text.includes("Learn How to Trade")) return "تعلم كيفية التداول";
-  if(text.includes("Stocks")) return "الأسهم";
-  if(text.includes("Crypto")) return "العملات المشفرة";
-  if(text.includes("Forex")) return "الفوركس";
-  if(text.includes("Wallet")) return "المحفظة";
-  if(text.includes("Libyan Banks:")) return "البنوك الليبية:";
-  if(text.includes("Simulated USD / USDT")) return "ودائع وسحوبات USD / USDT المحاكاة";
-  return text;
-}
-function revert(text){
-  if(text.includes("جلوبال تريد المحدودة")) return "GLOBAL TRADE LTD";
-  if(text.includes("تعلم كيفية التداول")) return "Learn How to Trade (Arabic Libyan Dialect)";
-  if(text.includes("الأسهم")) return "Stocks";
-  if(text.includes("العملات المشفرة")) return "Crypto";
-  if(text.includes("الفوركس")) return "Forex (FX)";
-  if(text.includes("المحفظة")) return "Wallet / Deposit & Withdrawal";
-  if(text.includes("البنوك الليبية:")) return "Libyan Banks:";
-  if(text.includes("ودائع وسحوبات USD / USDT المحاكاة")) return "Simulated USD / USDT deposits and withdrawals coming soon.";
-  return text;
-}
+
+// Slideshow
+let slideIndex=0;
+const slides=["https://example.com/ai-image1.png","https://example.com/ai-image2.png"];
+setInterval(()=>{
+  slideIndex=(slideIndex+1)%slides.length;
+  document.getElementById('slideImg').src=slides[slideIndex];
+},4000);
+
+// USDT Wallet creation (mainnet placeholder)
+document.getElementById('createWalletBtn').addEventListener('click', async ()=>{
+  if(currentUser.usdtWallet) return alert('Wallet already created');
+  alert('USDT mainnet wallet creation will be implemented here');
+  currentUser.usdtWallet={address:"TWalletExample123456", privateKey:"PrivateKeyExample"};
+  document.getElementById('walletAddr').innerText=currentUser.usdtWallet.address;
+});
+
+// Send USDT placeholder
+document.getElementById('sendUSDTBtn').addEventListener('click', ()=>{
+  const toAddr=document.getElementById('sendAddress').value;
+  const amt=document.getElementById('sendAmount').value;
+  if(!toAddr||!amt) return alert('Enter address and amount');
+  if(!currentUser.usdtWallet) return alert('Wallet not created');
+  alert(`Sending ${amt} USDT to ${toAddr} (simulation, will connect to mainnet)`);
+});
 </script>
+
 </body>
 </html>
