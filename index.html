@@ -2,158 +2,184 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade LTD</title>
 <style>
-  body { margin:0; font-family: Arial, sans-serif; background:#0b0f1a; color:#f5f5f5; overflow:hidden; }
-  .navbar { background:#1a1f36; padding:10px; display:flex; justify-content:space-between; align-items:center; }
-  .navbar button { background:#ffc107; border:none; padding:8px 15px; cursor:pointer; font-weight:bold; border-radius:5px; }
-  .ticker { background:#10131f; overflow:hidden; white-space:nowrap; padding:5px 0; border-top:1px solid #333; border-bottom:1px solid #333; font-family:monospace; }
-  .ticker span { display:inline-block; padding:0 50px; animation:scroll 30s linear infinite; }
-  @keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-  .dashboard { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:40px; height:calc(100vh - 120px); align-items:center; }
-  .tile { background:#1a1f36; padding:30px 50px; border-radius:10px; text-align:center; font-size:20px; font-weight:bold; cursor:pointer; transition:0.3s; min-width:150px; }
-  .tile:hover { background:#2a3360; }
-  .page { display:none; padding:20px; text-align:center; height:calc(100vh - 120px); display:flex; flex-direction:column; justify-content:center; align-items:center; }
-  .back { background:#ffc107; border:none; padding:8px 15px; cursor:pointer; font-weight:bold; border-radius:5px; margin-bottom:15px; align-self:flex-start; margin-left:20px; }
-  .asset-list { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px; }
-  .asset { background:#1a1f36; padding:15px 25px; border-radius:8px; cursor:pointer; min-width:120px; }
-  .asset:hover { background:#2a3360; }
-  .asset-detail { background:#1a1f36; padding:20px; border-radius:10px; margin-top:15px; }
-  video, audio { width:80%; max-width:600px; margin:15px auto; border-radius:10px; }
+body { margin:0; font-family:Arial,sans-serif; background:#0b0f1a; color:white; display:flex; justify-content:center; align-items:center; height:100vh; }
+.screen { display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; width:100%; height:100%; }
+.screen.active { display:flex; }
+.login-box, .box, .tile-container, .wallet-box { background:#1a1f36; padding:25px; border-radius:12px; width:80%; max-width:700px; margin:10px; box-shadow:0 0 15px rgba(0,0,0,0.5); transition:0.3s; }
+.login-box:hover, .box:hover, .tile:hover, .wallet-box:hover { box-shadow:0 0 25px #ffc107; transform:scale(1.02); }
+button { padding:12px 20px; margin:10px; background:#ffc107; border:none; border-radius:6px; cursor:pointer; font-weight:bold; transition:0.2s; }
+button:hover { background:#e0b000; }
+.tile-container { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; }
+.tile { background:#2a3360; padding:20px 35px; border-radius:10px; cursor:pointer; transition:0.3s; }
+.tile:hover { background:#3b4590; box-shadow:0 0 20px #ffc107; transform:scale(1.05); }
+.top-bar { position:absolute; top:0; left:0; width:100%; display:flex; justify-content:flex-end; padding:10px 20px; background:#0b0f1a; z-index:10; }
+.ticker { width:100%; background:#111; color:#ffc107; padding:5px 0; overflow:hidden; white-space:nowrap; box-sizing:border-box; margin-bottom:10px; }
+.ticker span { display:inline-block; padding-right:50px; animation: scroll 20s linear infinite; }
+@keyframes scroll { 0% { transform:translateX(100%);} 100% { transform:translateX(-100%);} }
 </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<div class="navbar">
-  <div style="font-size:24px; font-weight:bold;">Global Trade LTD</div>
-  <button id="langBtn">العربية</button>
+<!-- Top Bar -->
+<div class="top-bar">
+  <button id="langBtn">Arabi</button>
 </div>
 
 <!-- Ticker -->
-<div class="ticker" id="ticker"><span id="tickerContent">Loading prices...</span></div>
+<div class="ticker"><span>SPY 430.12 ▲1.5 | BTC 29,120 ▲2% | ETH 1,850 ▲1.2% | GOLD 1,980 ▼0.3% | OIL 85.2 ▲0.5%</span></div>
 
-<!-- Dashboard -->
-<div class="dashboard" id="dashboard">
-  <div class="tile" onclick="showPage('stocksPage')">Stocks</div>
-  <div class="tile" onclick="showPage('cryptoPage')">Crypto</div>
-  <div class="tile" onclick="showPage('oilPage')">Oil & Gold</div>
-  <div class="tile" onclick="showPage('fxPage')">FX</div>
-  <div class="tile" onclick="showPage('learnPage')">Learn</div>
-  <div class="tile" onclick="showPage('walletPage')">Wallet/Profile</div>
-  <div class="tile" onclick="showPage('contactPage')">Contact</div>
-</div>
-
-<!-- Stocks Page -->
-<div class="page" id="stocksPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>Stocks</h2>
-  <div class="asset-list" id="stocksList"></div>
-  <div id="stockDetail"></div>
-</div>
-
-<!-- Crypto Page -->
-<div class="page" id="cryptoPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>Crypto</h2>
-  <div class="asset-list" id="cryptoList"></div>
-  <div id="cryptoDetail"></div>
-</div>
-
-<!-- Oil & Gold Page -->
-<div class="page" id="oilPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>Oil & Gold</h2>
-  <div class="asset-list" id="oilList"></div>
-  <div id="oilDetail"></div>
-</div>
-
-<!-- FX Page -->
-<div class="page" id="fxPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>FX</h2>
-  <div class="asset-list" id="fxList"></div>
-  <div id="fxDetail"></div>
-</div>
-
-<!-- Learn Page -->
-<div class="page" id="learnPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>Learn How to Trade</h2>
-  <!-- Real Arabic video -->
-  <video controls>
-    <source src="video_stock_market_arabic.mp4" type="video/mp4">
-    Your browser does not support HTML5 video.
-  </video>
-  <!-- Real Arabic audio -->
-  <audio controls>
-    <source src="audio_trade_guide_arabic.mp3" type="audio/mp3">
-    Your browser does not support HTML5 audio.
-  </audio>
-</div>
-
-<!-- Wallet Page -->
-<div class="page" id="walletPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>Wallet / Profile</h2>
-  <p>Balance: $10,000 (simulation)</p>
-  <div>Deposit / Withdraw placeholders</div>
-  <div style="margin-top:10px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Bank_of_Libya_logo.png" alt="Libyan Bank" width="100">
+<!-- LOGIN -->
+<div id="login" class="screen active">
+  <div class="login-box">
+    <h1>GLOBAL TRADE LTD</h1>
+    <button onclick="enter()">Login as Guest</button>
   </div>
 </div>
 
-<!-- Contact Page -->
-<div class="page" id="contactPage">
-  <button class="back">Back to Dashboard</button>
-  <h2>Contact Us</h2>
-  <p>Phone: +218 914-944</p>
-  <p>Facebook: <a href="#" style="color:#ffc107;">Global Trade LTD</a></p>
-  <p>Testimonials: Excellent service, very professional.</p>
+<!-- DASHBOARD -->
+<div id="dashboard" class="screen">
+  <h1>GLOBAL TRADE LTD</h1>
+  <div class="tile-container">
+    <div class="tile" onclick="openPage('learn')">Learn</div>
+    <div class="tile" onclick="openPage('stocks')">Stocks</div>
+    <div class="tile" onclick="openPage('crypto')">Crypto</div>
+    <div class="tile" onclick="openPage('fx')">FX</div>
+    <div class="tile" onclick="openPage('wallet')">Wallet</div>
+  </div>
+</div>
+
+<!-- LEARN -->
+<div id="learn" class="screen">
+  <button onclick="back()">Back to Dashboard</button>
+  <div class="box">
+    <h2>Learn How to Trade (Arabic Libyan Dialect)</h2>
+    <!-- Embedded Video -->
+    <video controls width="100%" style="margin-top:15px;">
+      <source src="data:video/mp4;base64,INSERT_BASE64_VIDEO_HERE" type="video/mp4">
+    </video>
+    <!-- Embedded Audio -->
+    <audio controls style="width:100%; margin-top:15px;">
+      <source src="data:audio/mpeg;base64,INSERT_BASE64_AUDIO_HERE" type="audio/mpeg">
+    </audio>
+  </div>
+</div>
+
+<!-- STOCKS -->
+<div id="stocks" class="screen">
+  <button onclick="back()">Back to Dashboard</button>
+  <div class="box">
+    <h2>Stocks</h2>
+    <ul style="list-style:none; padding:0;">
+      <li>SPY</li>
+      <li>AAPL</li>
+      <li>TSLA</li>
+      <li>AMZN</li>
+      <li>GOOGL</li>
+      <li>MSFT</li>
+      <li>NFLX</li>
+      <li>NVDA</li>
+      <li>FB</li>
+      <li>BABA</li>
+    </ul>
+  </div>
+</div>
+
+<!-- CRYPTO -->
+<div id="crypto" class="screen">
+  <button onclick="back()">Back to Dashboard</button>
+  <div class="box">
+    <h2>Crypto</h2>
+    <ul style="list-style:none; padding:0;">
+      <li>BTC</li>
+      <li>ETH</li>
+      <li>BNB</li>
+      <li>USDT</li>
+      <li>ADA</li>
+      <li>XRP</li>
+      <li>SOL</li>
+      <li>DOGE</li>
+      <li>DOT</li>
+      <li>AVAX</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FX -->
+<div id="fx" class="screen">
+  <button onclick="back()">Back to Dashboard</button>
+  <div class="box">
+    <h2>Forex (FX)</h2>
+    <ul style="list-style:none; padding:0;">
+      <li>USD/EUR</li>
+      <li>USD/JPY</li>
+      <li>GBP/USD</li>
+      <li>AUD/USD</li>
+      <li>USD/CAD</li>
+      <li>USD/CHF</li>
+      <li>NZD/USD</li>
+      <li>EUR/GBP</li>
+      <li>EUR/JPY</li>
+      <li>GBP/JPY</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WALLET -->
+<div id="wallet" class="screen">
+  <button onclick="back()">Back to Dashboard</button>
+  <div class="wallet-box">
+    <h2>Wallet / Deposit & Withdrawal</h2>
+    <p>Libyan Banks:</p>
+    <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Libyan_Bank_logo.png/200px-Libyan_Bank_logo.png" width="100" alt="Bank Logo">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Jamahiriya_Bank_logo.png/200px-Jamahiriya_Bank_logo.png" width="100" alt="Bank Logo">
+    </div>
+    <p>Simulated USD / USDT deposits and withdrawals coming soon.</p>
+  </div>
 </div>
 
 <script>
-  const pages = ['stocksPage','cryptoPage','oilPage','fxPage','learnPage','walletPage','contactPage'];
-  function showPage(pageId) {
-    document.getElementById('dashboard').style.display = 'none';
-    pages.forEach(p => document.getElementById(p).style.display = 'none');
-    document.getElementById(pageId).style.display = 'flex';
-  }
-  document.querySelectorAll('.back').forEach(btn => {
-    btn.addEventListener('click', () => {
-      pages.forEach(p => document.getElementById(p).style.display = 'none');
-      document.getElementById('dashboard').style.display = 'flex';
-    });
+// Navigation
+function enter(){ document.getElementById("login").classList.remove("active"); document.getElementById("dashboard").classList.add("active"); }
+function openPage(id){ document.querySelectorAll(".screen").forEach(p=>p.classList.remove("active")); document.getElementById(id).classList.add("active"); }
+function back(){ document.querySelectorAll(".screen").forEach(p=>p.classList.remove("active")); document.getElementById("dashboard").classList.add("active"); }
+
+// Arabic/English toggle
+let arabic = false;
+document.getElementById("langBtn").onclick = function(){
+  arabic = !arabic;
+  document.getElementById("langBtn").innerText = arabic ? "English" : "Arabi";
+  document.querySelectorAll("h1, h2, p, li, button").forEach(el=>{
+    if(el.tagName=="LI") return; // keep stock/crypto symbols
+    if(el.tagName=="BUTTON" && el.innerText.includes("Back")) el.innerText = arabic ? "العودة للوحة القيادة" : "Back to Dashboard";
+    else if(el.tagName=="BUTTON" && el.innerText.includes("Login")) el.innerText = arabic ? "تسجيل دخول كضيف" : "Login as Guest";
+    else el.innerText = arabic ? translate(el.innerText) : revert(el.innerText);
   });
-
-  // Placeholder Ticker
-  const tickerContent = document.getElementById('tickerContent');
-  const sampleAssets = ['AAPL 172.45 ↑0.5','GOOGL 138.32 ↓0.2','TSLA 251.65 ↑1.1','BTC 28,000 ↑1.2','ETH 1,850 ↑0.8','XAU/USD 1,950 ↑0.1'];
-  setInterval(() => {
-    tickerContent.textContent = sampleAssets.join('   ');
-  }, 2000);
-
-  // Placeholder assets for each page
-  const sampleStocks = ['AAPL','GOOGL','TSLA','AMZN','MSFT','NVDA','FB','NFLX','BABA','INTC'];
-  const sampleCrypto = ['BTC','ETH','BNB','SOL','ADA','XRP','DOGE','LTC','DOT','AVAX'];
-  const sampleOilGold = ['Oil WTI','Brent Oil','Gold','Silver','Platinum','Palladium','Copper','Natural Gas','Crude','Nickel'];
-  const sampleFX = ['USD/EUR','USD/GBP','USD/JPY','USD/AUD','USD/CAD','USD/CHF','EUR/GBP','EUR/JPY','GBP/JPY','AUD/USD'];
-
-  function populateAssets(listId, assets) {
-    const container = document.getElementById(listId);
-    assets.forEach(a => {
-      const div = document.createElement('div');
-      div.className = 'asset';
-      div.textContent = a;
-      div.onclick = () => alert(a + ' details placeholder');
-      container.appendChild(div);
-    });
-  }
-  populateAssets('stocksList', sampleStocks);
-  populateAssets('cryptoList', sampleCrypto);
-  populateAssets('oilList', sampleOilGold);
-  populateAssets('fxList', sampleFX);
+}
+function translate(text){
+  if(text.includes("GLOBAL TRADE LTD")) return "جلوبال تريد المحدودة";
+  if(text.includes("Learn How to Trade")) return "تعلم كيفية التداول";
+  if(text.includes("Stocks")) return "الأسهم";
+  if(text.includes("Crypto")) return "العملات المشفرة";
+  if(text.includes("Forex")) return "الفوركس";
+  if(text.includes("Wallet")) return "المحفظة";
+  if(text.includes("Libyan Banks:")) return "البنوك الليبية:";
+  if(text.includes("Simulated USD / USDT")) return "ودائع وسحوبات USD / USDT المحاكاة";
+  return text;
+}
+function revert(text){
+  if(text.includes("جلوبال تريد المحدودة")) return "GLOBAL TRADE LTD";
+  if(text.includes("تعلم كيفية التداول")) return "Learn How to Trade (Arabic Libyan Dialect)";
+  if(text.includes("الأسهم")) return "Stocks";
+  if(text.includes("العملات المشفرة")) return "Crypto";
+  if(text.includes("الفوركس")) return "Forex (FX)";
+  if(text.includes("المحفظة")) return "Wallet / Deposit & Withdrawal";
+  if(text.includes("البنوك الليبية:")) return "Libyan Banks:";
+  if(text.includes("ودائع وسحوبات USD / USDT المحاكاة")) return "Simulated USD / USDT deposits and withdrawals coming soon.";
+  return text;
+}
 </script>
 </body>
 </html>
