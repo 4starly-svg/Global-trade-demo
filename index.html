@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital - Live Trading</title>
+<title>Global Trade Capital - Live Trading & Soccer Predictions</title>
 <style>
 body { margin:0; font-family:'Segoe UI',sans-serif; background:#0a0a0a; color:#fff; display:flex; flex-direction:column; align-items:center; }
 header { width:100%; padding:15px; background:linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content:space-between; align-items:center; }
@@ -35,7 +35,7 @@ button:hover { background:#FFD700; color:#000; }
 </header>
 
 <div class="what-we-do" id="whatWeDo">
-  We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.
+  We provide global trading solutions for stocks, crypto, commodities, and now live soccer predictions with USDT betting.
 </div>
 
 <div class="wallet" id="walletDisplay" style="display:none;"></div>
@@ -56,6 +56,8 @@ button:hover { background:#FFD700; color:#000; }
   <div class="folder" onclick="openSubFolder('crypto')">Crypto</div>
   <div class="folder" onclick="openSubFolder('commodities')">Gold / Oil</div>
   <div class="folder" onclick="openSubFolder('learn')">Learn / Contact</div>
+  <div class="folder" onclick="openSubFolder('sendMoney')">Send Money Worldwide</div>
+  <div class="folder" onclick="openSubFolder('soccer')">Soccer</div>
 </div>
 
 <!-- SUBFOLDERS -->
@@ -81,8 +83,11 @@ const subFoldersData = {
   stocks: ['Trending','52-Week Highs','52-Week Lows','Top Movers'],
   crypto: ['Trending','Top Coins','Stable Coins'],
   commodities: ['Gold','Oil'],
-  learn: ['Contact','FAQ','Tutorials']
+  learn: ['Contact','FAQ','Tutorials'],
+  sendMoney: ['Stocks','Crypto','Learn/Contact'],
+  soccer: ['Premier League','La Liga','Serie A','Bundesliga']
 };
+
 const itemsData = {
   'Trending':['AAPL','TSLA','BTC'],
   '52-Week Highs':['AAPL','MSFT','GOOG'],
@@ -94,7 +99,18 @@ const itemsData = {
   'Oil':['Oil Price'],
   'Contact':['Phone: +218XXXXXXXX','Email: support@globaltrade.com','Twitter: @globaltrade'],
   'FAQ':['How to trade','Fees','Support'],
-  'Tutorials':['Video 1','Video 2']
+  'Tutorials':['Video 1','Video 2'],
+  'Stocks':['AAPL','TSLA','MSFT'], 
+  'Crypto':['BTC','ETH','USDT'],
+  'Learn/Contact':['Contact','FAQ','Tutorials'],
+  'Premier League':[ {match:'Manchester United vs Chelsea', date:'2026-03-25 18:00', price:10},
+                     {match:'Liverpool vs Arsenal', date:'2026-03-26 20:00', price:12}],
+  'La Liga':[ {match:'Real Madrid vs Barcelona', date:'2026-03-25 19:00', price:10},
+              {match:'Atletico Madrid vs Sevilla', date:'2026-03-26 21:00', price:11}],
+  'Serie A':[ {match:'Juventus vs Inter', date:'2026-03-25 17:00', price:10},
+              {match:'AC Milan vs Napoli', date:'2026-03-26 19:00', price:12}],
+  'Bundesliga':[ {match:'Bayern vs Dortmund', date:'2026-03-25 18:00', price:10},
+                 {match:'Leipzig vs Gladbach', date:'2026-03-26 20:00', price:11}]
 };
 
 // --- LOGIN ---
@@ -117,7 +133,7 @@ function openSubFolder(folder){
   list.forEach(name=>{
     const div=document.createElement('div');
     div.className='subFolder';
-    div.innerText=name;
+    div.innerText=typeof name==='string'?name:name.name;
     div.onclick=()=>openItems(name);
     subFolderDiv.appendChild(div);
   });
@@ -129,21 +145,29 @@ function openItems(subFolder){
   const itemsDiv=document.getElementById('items');
   itemsDiv.innerHTML='';
   const list=itemsData[subFolder]||[];
-  list.forEach(name=>{
+  list.forEach(item=>{
     const div=document.createElement('div');
     div.className='itemCard';
-    div.innerText=name;
-    // --- PLACEHOLDERS FOR REAL APIs ---
-    if(subFolder==='Gold') fetchGoldPrice(div);
-    else if(subFolder==='Oil') fetchOilPrice(div);
-    else if(subFolder==='USDT') fetchUSDTBalance(div);
-    else if(subFolder==='Stocks' || subFolder==='Crypto') fetchMarketData(div, name);
-    div.onclick=()=>alert(`${name} info placeholder`);
+    if(subFolder==='Premier League' || subFolder==='La Liga' || subFolder==='Serie A' || subFolder==='Bundesliga'){
+      div.innerHTML=`${item.match}<br>${item.date}<br>Bet: ${item.price} USDT<br><button onclick="placeBet('${item.match}',${item.price})">Place Bet</button>`;
+    } else {
+      div.innerText=typeof item==='string'?item:item.match;
+    }
     itemsDiv.appendChild(div);
   });
   document.getElementById('itemContainer').style.display='flex';
 }
 function backToSubFolders(){document.getElementById('itemContainer').style.display='none'; openSubFolder(currentFolder);}
+
+// --- PLACE BET FUNCTION ---
+function placeBet(match, amount){
+  if(currentUser.wallet>=amount){
+    currentUser.wallet-=amount;
+    document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser.wallet}`;
+    alert(`Bet placed on ${match} for ${amount} USDT!`);
+    // Here we can add API call to log bet for real-money backend
+  } else { alert('Insufficient USDT balance!'); }
+}
 
 // --- LANGUAGE TOGGLE ---
 document.getElementById('langToggle').onclick=()=>{
@@ -158,7 +182,9 @@ document.getElementById('langToggle').onclick=()=>{
     folders[1].innerText='كريبتو';
     folders[2].innerText='ذهب / نفط';
     folders[3].innerText='تعلم / اتصل';
-    document.getElementById('whatWeDo').innerText='نحن نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع مع بيانات فورية ومعاملات سلسة.';
+    folders[4].innerText='أرسل الأموال عالمياً';
+    folders[5].innerText='كرة القدم';
+    document.getElementById('whatWeDo').innerText='نوفر حلول تداول عالمية للأسهم والعملات المشفرة والسلع والآن توقعات كرة القدم مع رهان USDT.';
     document.getElementById('walletDisplay').innerText=`رصيد USDT: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='English';
   } else {
@@ -170,7 +196,9 @@ document.getElementById('langToggle').onclick=()=>{
     folders[1].innerText='Crypto';
     folders[2].innerText='Gold / Oil';
     folders[3].innerText='Learn / Contact';
-    document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, and commodities with real-time data and seamless transactions.';
+    folders[4].innerText='Send Money Worldwide';
+    folders[5].innerText='Soccer';
+    document.getElementById('whatWeDo').innerText='We provide global trading solutions for stocks, crypto, commodities, and now live soccer predictions with USDT betting.';
     document.getElementById('walletDisplay').innerText=`USDT Balance: ${currentUser?currentUser.wallet:0}`;
     document.getElementById('langToggle').innerText='العربية';
   }
@@ -180,14 +208,13 @@ document.getElementById('langToggle').onclick=()=>{
 function fetchGoldPrice(div){ div.innerText='Gold Price: $' + (1900+Math.random()*50).toFixed(2); }
 function fetchOilPrice(div){ div.innerText='Oil Price: $' + (80+Math.random()*10).toFixed(2); }
 function fetchUSDTBalance(div){ div.innerText='USDT Balance: ' + (currentUser?currentUser.wallet:0); }
-// Live stock/crypto placeholder
 function fetchMarketData(div,symbol){ div.innerText=`${symbol}: $${(Math.random()*300+50).toFixed(2)}`; }
 
-// --- BANK AND WALLET INTEGRATION PLACEHOLDERS ---
+// --- BANK AND WALLET PLACEHOLDERS ---
 function depositToLibyaBank(amount){ console.log(`Deposit ${amount} LYD placeholder`); }
 function withdrawFromLibyaBank(amount){ console.log(`Withdraw ${amount} LYD placeholder`); }
 function sendUSDT(toUser, amount){ console.log(`Send ${amount} USDT to ${toUser} placeholder`); }
-</script>
 
+</script>
 </body>
 </html>
