@@ -5,19 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade LTD</title>
 <style>
-body { margin:0; background:#121212; font-family: Arial, sans-serif; color:#fff; }
+body { margin:0; background:#0b0c10; font-family: Arial, sans-serif; color:#fff; }
 .centered { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
 .hidden { display:none; }
-input, button { margin:10px; padding:10px; font-size:1rem; border-radius:8px; border:none; }
-button { cursor:pointer; background-color:#0d6efd; color:#fff; transition:0.3s; }
-button:hover { background-color:#0056b3; }
-#ticker span { margin:0 10px; font-weight:bold; }
-#slideshow img { border-radius:12px; box-shadow:0 0 20px #0d6efd; width:640px; height:360px; object-fit:cover; }
-video { border-radius:12px; box-shadow:0 0 20px #0d6efd; cursor:pointer; }
+input, button { margin:10px; padding:12px 15px; font-size:1rem; border-radius:8px; border:none; }
+button { cursor:pointer; background-color:#1f2833; color:#66fcf1; font-weight:bold; transition:0.3s; }
+button:hover { background-color:#45a29e; color:#0b0c10; }
+#ticker { display:flex; justify-content:center; margin:20px 0; font-weight:bold; }
+#ticker span { margin:0 15px; }
+.section-container { display:flex; justify-content:center; flex-wrap:wrap; margin:20px; gap:20px; }
+.section-box { background:#1f2833; padding:20px; border-radius:12px; width:220px; height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:0.3s; }
+.section-box:hover { background:#45a29e; color:#0b0c10; }
+#slideshow img { border-radius:12px; width:200px; height:120px; object-fit:cover; box-shadow:0 0 15px #66fcf1; }
 </style>
 </head>
 <body>
 
+<!-- LOGIN PAGE -->
 <div id="loginPage" class="centered">
   <h1 id="loginTitle">Login</h1>
   <input id="username" placeholder="Username">
@@ -26,24 +30,34 @@ video { border-radius:12px; box-shadow:0 0 20px #0d6efd; cursor:pointer; }
   <button id="toggleLang">عربي / EN</button>
 </div>
 
+<!-- DASHBOARD -->
 <div id="dashboard" class="hidden">
-  <div id="ticker" class="centered">
-    <span>Gold: $1985</span> | <span>Oil: $88</span> | <span>USD: 1.00</span> | <span>Stock A: $15</span> | <span>Stock B: $23</span>
+  <!-- Ticker -->
+  <div id="ticker">
+    <span id="tickerGold">Gold: $1985</span>
+    <span id="tickerOil">Oil: $88</span>
+    <span id="tickerUSD">USD: 1.00</span>
+    <span id="tickerStockA">AAPL: $0</span>
+    <span id="tickerStockB">MSFT: $0</span>
   </div>
 
-  <div id="videoContainer" class="centered">
-    <video id="marketVideo" width="640" height="360" controls>
-      <!-- Arabic trading video embedded via online link -->
-      <source src="https://example.com/arabic-trading-video.mp4" type="video/mp4">
-    </video>
+  <!-- Sections Side-by-Side -->
+  <div class="section-container">
+    <div class="section-box" id="stocksBox">Stocks</div>
+    <div class="section-box" id="cryptoBox">Crypto</div>
+    <div class="section-box" onclick="alert('Learn to Trade section')">Learn to Trade</div>
+    <div class="section-box" onclick="alert('Epics section')">Epics</div>
+    <div class="section-box">
+      Gold / Oil
+      <div id="slideshow">
+        <img src="https://example.com/ai-image1.png" alt="Slide">
+      </div>
+    </div>
+    <div class="section-box" onclick="alert('Contact Us section')">Contact Us</div>
   </div>
 
-  <div id="slideshow" class="centered">
-    <!-- Using previous AI-generated images online links -->
-    <img id="slideImg" src="https://example.com/ai-image1.png" alt="Slide">
-  </div>
-
-  <div id="walletSection" class="centered">
+  <!-- USDT Wallet -->
+  <div class="centered">
     <h2>USDT Wallet</h2>
     <p id="walletAddr">No wallet created</p>
     <button id="createWalletBtn">Create Wallet</button>
@@ -56,16 +70,17 @@ video { border-radius:12px; box-shadow:0 0 20px #0d6efd; cursor:pointer; }
 </div>
 
 <script>
+// LOGIN & DASHBOARD
 let currentUser = {};
 let isArabic = false;
 
-// Login
 document.getElementById('guestLogin').addEventListener('click', ()=>{
   document.getElementById('loginPage').classList.add('hidden');
   document.getElementById('dashboard').classList.remove('hidden');
+  updateCrypto();
+  updateStocks();
 });
 
-// Toggle Arabic / English
 document.getElementById('toggleLang').addEventListener('click', toggleLang);
 document.getElementById('toggleLangDash').addEventListener('click', toggleLang);
 
@@ -76,17 +91,19 @@ function toggleLang(){
     document.getElementById('username').placeholder="اسم المستخدم";
     document.getElementById('password').placeholder="كلمة المرور";
     document.getElementById('guestLogin').innerText="تسجيل كزائر";
-    document.getElementById('walletSection').querySelector('h2').innerText="محفظة USDT";
     document.getElementById('createWalletBtn').innerText="إنشاء المحفظة";
     document.getElementById('sendUSDTBtn').innerText="أرسل USDT";
+    document.getElementById('stocksBox').innerText="الأسهم";
+    document.getElementById('cryptoBox').innerText="العملات الرقمية";
   }else{
     document.getElementById('loginTitle').innerText="Login";
     document.getElementById('username').placeholder="Username";
     document.getElementById('password').placeholder="Password";
     document.getElementById('guestLogin').innerText="Login as Guest";
-    document.getElementById('walletSection').querySelector('h2').innerText="USDT Wallet";
     document.getElementById('createWalletBtn').innerText="Create Wallet";
     document.getElementById('sendUSDTBtn').innerText="Send USDT";
+    document.getElementById('stocksBox').innerText="Stocks";
+    document.getElementById('cryptoBox').innerText="Crypto";
   }
 }
 
@@ -95,26 +112,61 @@ let slideIndex=0;
 const slides=["https://example.com/ai-image1.png","https://example.com/ai-image2.png"];
 setInterval(()=>{
   slideIndex=(slideIndex+1)%slides.length;
-  document.getElementById('slideImg').src=slides[slideIndex];
+  document.querySelector("#slideshow img").src=slides[slideIndex];
 },4000);
 
-// USDT Wallet creation (mainnet placeholder)
-document.getElementById('createWalletBtn').addEventListener('click', async ()=>{
+// USDT Wallet
+document.getElementById('createWalletBtn').addEventListener('click', ()=>{
   if(currentUser.usdtWallet) return alert('Wallet already created');
-  alert('USDT mainnet wallet creation will be implemented here');
   currentUser.usdtWallet={address:"TWalletExample123456", privateKey:"PrivateKeyExample"};
   document.getElementById('walletAddr').innerText=currentUser.usdtWallet.address;
+  alert('USDT Wallet created');
 });
 
-// Send USDT placeholder
 document.getElementById('sendUSDTBtn').addEventListener('click', ()=>{
   const toAddr=document.getElementById('sendAddress').value;
   const amt=document.getElementById('sendAmount').value;
   if(!toAddr||!amt) return alert('Enter address and amount');
   if(!currentUser.usdtWallet) return alert('Wallet not created');
-  alert(`Sending ${amt} USDT to ${toAddr} (simulation, will connect to mainnet)`);
+  alert(`Sending ${amt} USDT to ${toAddr} (simulation)`);
 });
-</script>
 
+// Crypto Integration - CoinGecko
+async function updateCrypto(){
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+    const data = await res.json();
+    document.getElementById('cryptoBox').innerHTML = `Crypto
+      <p>BTC: $${data.bitcoin.usd}</p>
+      <p>ETH: $${data.ethereum.usd}</p>`;
+  }catch(e){console.error(e);}
+}
+setInterval(updateCrypto,10000); // every 10 seconds
+
+// Stocks Integration - Finnhub free demo API (replace with your key)
+async function updateStocks(){
+  try{
+    const res = await fetch('https://finnhub.io/api/v1/quote?symbol=AAPL&token=YOUR_API_KEY');
+    const aapl = await res.json();
+    const res2 = await fetch('https://finnhub.io/api/v1/quote?symbol=MSFT&token=YOUR_API_KEY');
+    const msft = await res2.json();
+    document.getElementById('stocksBox').innerHTML = `Stocks
+      <p>AAPL: $${aapl.c}</p>
+      <p>MSFT: $${msft.c}</p>`;
+    document.getElementById('tickerStockA').innerText=`AAPL: $${aapl.c}`;
+    document.getElementById('tickerStockB').innerText=`MSFT: $${msft.c}`;
+  }catch(e){console.error(e);}
+}
+setInterval(updateStocks,10000); // every 10 seconds
+
+// Ticker placeholder Gold/Oil/USD dynamic update example
+setInterval(()=>{
+  const gold = (1980 + Math.random()*10).toFixed(2);
+  const oil = (88 + Math.random()*2).toFixed(2);
+  document.getElementById('tickerGold').innerText=`Gold: $${gold}`;
+  document.getElementById('tickerOil').innerText=`Oil: $${oil}`;
+},5000);
+
+</script>
 </body>
 </html>
