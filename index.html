@@ -4,37 +4,56 @@
 <meta charset="UTF-8">
 <title>Global Trade Capital</title>
 <style>
-  body { font-family: Arial, sans-serif; background:#121212; color:#fff; margin:0; padding:0; }
-  .container { display:flex; justify-content:center; align-items:center; height:100vh; flex-wrap:wrap; gap:20px; }
-  .card { background:#1e1e1e; padding:20px; border-radius:10px; text-align:center; min-width:200px; transition:0.3s; box-shadow:0 0 10px #000; }
+  body { font-family: Arial,sans-serif; background:#121212; color:#fff; margin:0; padding:0; }
+  .logo { text-align:center; padding:20px; }
+  .logo img { height:60px; }
+  .what-we-do { text-align:center; margin-bottom:20px; font-size:18px; color:#0f0; }
+  .container { display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+  .card { background:#1e1e1e; padding:20px; border-radius:10px; text-align:center; min-width:180px; transition:0.3s; cursor:pointer; box-shadow:0 0 10px #000; }
   .card:hover { box-shadow:0 0 20px #0f0; transform:translateY(-5px); }
   button { padding:10px 15px; margin-top:10px; cursor:pointer; border:none; border-radius:5px; background:#0f0; color:#000; font-weight:bold; }
   input { padding:5px; margin:5px 0; border-radius:5px; border:none; width:80%; }
-  .card-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
+  .card-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px; }
+  #content { padding:20px; }
+  #loginPage { text-align:center; margin-top:50px; }
+  #loginPage input { display:block; margin:10px auto; width:200px; }
 </style>
 </head>
 <body>
 
-<div class="container" id="folders">
+<div class="logo">
+  <img src="https://i.ibb.co/5vZkY3q/global-trade-logo.png" alt="Global Trade">
+</div>
+<div class="what-we-do" id="whatWeDo">Invest, Trade, and Predict Worldwide Markets</div>
+
+<div id="loginPage">
+  <h2>Login / Guest Access</h2>
+  <input type="text" id="username" placeholder="Username"/>
+  <input type="password" id="password" placeholder="Password"/>
+  <button onclick="login()">Login</button>
+  <button onclick="guestLogin()">Guest Access</button>
+</div>
+
+<div class="container" id="folders" style="display:none;">
   <div class="card" onclick="loadStocks()"><span id="stocksLabel">Stocks</span></div>
   <div class="card" onclick="loadCrypto()"><span id="cryptoLabel">Crypto</span></div>
   <div class="card" onclick="loadCommodities()"><span id="commoditiesLabel">Gold/Oil</span></div>
   <div class="card" onclick="loadSoccer()"><span id="soccerLabel">Soccer</span></div>
   <div class="card" onclick="loadWallet()"><span id="walletLabel">Wallet</span></div>
   <div class="card" onclick="loadBank()"><span id="bankLabel">Libyan Bank</span></div>
+  <div class="card" onclick="loadSendMoney()"><span id="sendMoneyLabel">Send Money Worldwide</span></div>
   <div class="card" onclick="loadLearnContact()"><span id="learnLabel">Learn / Contact</span></div>
 </div>
 
-<div id="content" style="padding:20px;"></div>
+<div id="content"></div>
 
 <div style="position:fixed; top:10px; right:10px;">
   <button onclick="toggleLanguage()"><span id="langBtn">Arabic</span></button>
 </div>
 
 <script>
+// -------------------- Language Toggle --------------------
 let currentLang='en';
-
-// ------------------ Language Toggle ------------------
 function toggleLanguage(){
   currentLang = currentLang==='en'?'ar':'en';
   document.getElementById('stocksLabel').textContent = currentLang==='en'?'Stocks':'الأسهم';
@@ -43,71 +62,92 @@ function toggleLanguage(){
   document.getElementById('soccerLabel').textContent = currentLang==='en'?'Soccer':'كرة القدم';
   document.getElementById('walletLabel').textContent = currentLang==='en'?'Wallet':'المحفظة';
   document.getElementById('bankLabel').textContent = currentLang==='en'?'Libyan Bank':'البنك الليبي';
+  document.getElementById('sendMoneyLabel').textContent = currentLang==='en'?'Send Money Worldwide':'إرسال الأموال عالمياً';
   document.getElementById('learnLabel').textContent = currentLang==='en'?'Learn / Contact':'تعلم / اتصل';
   document.getElementById('langBtn').textContent = currentLang==='en'?'Arabic':'الإنجليزية';
+  document.getElementById('whatWeDo').textContent = currentLang==='en'?'Invest, Trade, and Predict Worldwide Markets':'استثمر وتداول وتنبأ بأسواق العالم';
   document.getElementById('content').innerHTML='';
 }
 
-// ------------------ Stocks / Crypto / Commodities / Soccer / Wallet (same as previous) ------------------
-async function loadStocks(){ /*... same as before ...*/ }
-async function loadCrypto(){ /*... same as before ...*/ }
-async function loadCommodities(){ /*... same as before ...*/ }
-async function loadSoccer(){ /*... same as before ...*/ }
-function loadWallet(){ /*... same as before ...*/ }
-async function usdtDeposit(){ /*... same as before ...*/ }
-async function usdtWithdraw(){ /*... same as before ...*/ }
-function betUSDT(amount){ /*... same as before ...*/ }
+// -------------------- Login / Guest --------------------
+function login(){
+  const user=document.getElementById('username').value;
+  const pass=document.getElementById('password').value;
+  if(!user || !pass){ alert(currentLang==='en'?'Enter credentials':'أدخل بيانات الدخول'); return; }
+  // For demo, accept anything
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('folders').style.display='flex';
+}
 
-// ------------------ Libyan Bank Integration ------------------
-function loadBank(){
+function guestLogin(){
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('folders').style.display='flex';
+}
+
+// -------------------- Stocks --------------------
+function loadStocks(){
   const content = document.getElementById('content'); content.innerHTML='';
   const container = document.createElement('div'); container.className='card-container';
-
-  // Deposit
-  const depositCard = document.createElement('div'); depositCard.className='card';
-  depositCard.innerHTML=`
-    <h3>${currentLang==='en'?'Deposit via Libyan Bank':'الإيداع عبر البنك الليبي'}</h3>
-    <input type="text" id="bankAccount" placeholder="${currentLang==='en'?'Account Number':'رقم الحساب'}"/>
-    <input type="number" id="bankAmount" placeholder="${currentLang==='en'?'Amount':'المبلغ'}"/>
-    <button onclick="bankDeposit()">${currentLang==='en'?'Deposit':'إيداع'}</button>
-  `;
-  container.appendChild(depositCard);
-
-  // Withdraw
-  const withdrawCard = document.createElement('div'); withdrawCard.className='card';
-  withdrawCard.innerHTML=`
-    <h3>${currentLang==='en'?'Withdraw via Libyan Bank':'السحب عبر البنك الليبي'}</h3>
-    <input type="text" id="bankWithdrawAccount" placeholder="${currentLang==='en'?'Account Number':'رقم الحساب'}"/>
-    <input type="number" id="bankWithdrawAmount" placeholder="${currentLang==='en'?'Amount':'المبلغ'}"/>
-    <button onclick="bankWithdraw()">${currentLang==='en'?'Withdraw':'سحب'}</button>
-  `;
-  container.appendChild(withdrawCard);
-
+  const folders = ['Trending','52-Week High','52-Week Low','Top Movers'];
+  folders.forEach(f=>{
+    const card=document.createElement('div'); card.className='card';
+    card.textContent=currentLang==='en'?f:(f==='Trending'?'الشائعة':f==='52-Week High'?'أعلى 52 أسبوع':'أدنى 52 أسبوع');
+    container.appendChild(card);
+  });
   content.appendChild(container);
 }
 
-async function bankDeposit(){
-  const account = document.getElementById('bankAccount').value;
-  const amount = parseFloat(document.getElementById('bankAmount').value);
-  if(!account||!amount) return alert(currentLang==='en'?'Enter valid info':'أدخل معلومات صالحة');
-  const resp = await fetch('http://localhost:5000/api/bank/deposit',{
-    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({account, amount})
+// -------------------- Crypto --------------------
+function loadCrypto(){
+  const content = document.getElementById('content'); content.innerHTML='';
+  const container = document.createElement('div'); container.className='card-container';
+  const folders = ['Trending','Top Gainers','Top Losers'];
+  folders.forEach(f=>{
+    const card=document.createElement('div'); card.className='card';
+    card.textContent=currentLang==='en'?f:(f==='Trending'?'الشائعة':f==='Top Gainers'?'الأعلى ربح':'الأعلى خسارة');
+    container.appendChild(card);
   });
-  const data = await resp.json(); alert(data.message);
+  content.appendChild(container);
 }
 
-async function bankWithdraw(){
-  const account = document.getElementById('bankWithdrawAccount').value;
-  const amount = parseFloat(document.getElementById('bankWithdrawAmount').value);
-  if(!account||!amount) return alert(currentLang==='en'?'Enter valid info':'أدخل معلومات صالحة');
-  const resp = await fetch('http://localhost:5000/api/bank/withdraw',{
-    method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({account, amount})
+// -------------------- Commodities --------------------
+function loadCommodities(){
+  const content = document.getElementById('content'); content.innerHTML='';
+  const container = document.createElement('div'); container.className='card-container';
+  const items = ['Gold','Oil'];
+  items.forEach(f=>{
+    const card=document.createElement('div'); card.className='card';
+    card.textContent=currentLang==='en'?f:(f==='Gold'?'الذهب':'النفط');
+    container.appendChild(card);
   });
-  const data = await resp.json(); alert(data.message);
+  content.appendChild(container);
 }
 
-// ------------------ Learn / Contact ------------------
-function loadLearnContact(){ /*... same as before ...*/ }
+// -------------------- Soccer --------------------
+function loadSoccer(){
+  const content=document.getElementById('content'); content.innerHTML='';
+  const container=document.createElement('div'); container.className='card-container';
+  const matches=[
+    {team:'Liverpool',teamAr:'ليفربول',date:'2026-03-20',price:'5 USDT'},
+    {team:'Real Madrid',teamAr:'ريال مدريد',date:'2026-03-21',price:'5 USDT'}
+  ];
+  matches.forEach(m=>{
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML=`<strong>${currentLang==='en'?m.team:m.teamAr}</strong><br>${m.date}<br>${m.price}<br>Call +218-914-948944`;
+    container.appendChild(card);
+  });
+  content.appendChild(container);
+}
+
+// -------------------- Wallet --------------------
+function loadWallet(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Wallet / USDT Integration</div>'; }
+// -------------------- Libyan Bank --------------------
+function loadBank(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Libyan Bank Deposit / Withdraw</div>'; }
+// -------------------- Send Money --------------------
+function loadSendMoney(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Send Money Worldwide</div>'; }
+// -------------------- Learn / Contact --------------------
+function loadLearnContact(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Learn / Contact Info</div>'; }
 </script>
+
 </body>
 </html>
