@@ -3,170 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade LTD</title>
+<title>Global Trade Capital Dashboard</title>
 <style>
-body { margin:0; background:#0b0c10; font-family: Arial, sans-serif; color:#fff; }
-.centered { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
-.hidden { display:none; }
-input, button { margin:10px; padding:12px 15px; font-size:1rem; border-radius:8px; border:none; }
-button { cursor:pointer; background-color:#1f2833; color:#66fcf1; font-weight:bold; transition:0.3s; }
-button:hover { background-color:#45a29e; color:#0b0c10; }
-#ticker { display:flex; justify-content:center; margin:20px 0; font-weight:bold; }
-#ticker span { margin:0 15px; }
-.section-container { display:flex; justify-content:center; flex-wrap:wrap; margin:20px; gap:20px; }
-.section-box { background:#1f2833; padding:20px; border-radius:12px; width:220px; height:180px; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; transition:0.3s; }
-.section-box:hover { background:#45a29e; color:#0b0c10; }
-#slideshow img { border-radius:12px; width:200px; height:120px; object-fit:cover; box-shadow:0 0 15px #66fcf1; }
+  /* --- GENERAL STYLES --- */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+  body { background-color: #0a0a0a; color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; }
+
+  /* --- HEADER / TICKER --- */
+  header { width: 100%; padding: 15px; background: linear-gradient(90deg,#0d0d0d,#1a1a1a); display:flex; justify-content: space-between; align-items:center; }
+  header h1 { font-size: 2rem; color: #FFD700; text-shadow:0 0 8px #FFD700; }
+  .ticker { font-size:1rem; color:#00ffcc; }
+  .lang-toggle { cursor:pointer; padding:5px 10px; border:1px solid #fff; border-radius:5px; }
+
+  /* --- DASHBOARD / SECTIONS --- */
+  .dashboard { display:flex; flex-wrap: wrap; justify-content:center; align-items:flex-start; margin-top:20px; gap:20px; width:90%; }
+  .card { background: linear-gradient(145deg,#1a1a1a,#333); padding:20px; border-radius:15px; width:220px; text-align:center; box-shadow:0 0 20px #00ffcc; transition: transform 0.3s, box-shadow 0.3s; cursor:pointer; }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 0 25px #FFD700; }
+
+  /* --- BUTTONS --- */
+  button { background:#00ffcc; border:none; padding:10px 20px; margin:5px; border-radius:8px; font-weight:bold; color:#000; cursor:pointer; transition:0.3s; }
+  button:hover { background:#FFD700; color:#000; }
+
+  /* --- LOGIN MODAL --- */
+  #loginModal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:flex; align-items:center; justify-content:center; z-index:100; }
+  #loginContent { background:#111; padding:30px; border-radius:15px; text-align:center; width:300px; box-shadow:0 0 20px #00ffcc; }
+  #loginContent input { width:80%; padding:10px; margin:10px 0; border-radius:5px; border:none; }
+
+  /* --- CONTACT --- */
+  #contact { margin-top:30px; text-align:center; }
+  #contact a { color:#FFD700; display:block; margin:5px 0; text-decoration:none; }
 </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="centered">
-  <h1 id="loginTitle">Login</h1>
-  <input id="username" placeholder="Username">
-  <input id="password" placeholder="Password" type="password">
-  <button id="guestLogin">Login as Guest</button>
-  <button id="toggleLang">عربي / EN</button>
+<header>
+  <h1 id="logo">Global Trade Capital</h1>
+  <div class="ticker" id="ticker">Gold: $0 | Oil: $0 | USD: 1.00 | TSLA: $0 | AAPL: $0</div>
+  <div class="lang-toggle" id="langToggle">العربية</div>
+</header>
+
+<!-- LOGIN MODAL -->
+<div id="loginModal">
+  <div id="loginContent">
+    <h2 id="loginTitle">Login</h2>
+    <input type="text" id="username" placeholder="Username"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button id="loginBtn">Login as Guest</button>
+  </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="hidden">
-  <!-- Ticker -->
-  <div id="ticker">
-    <span id="tickerGold">Gold: $1985</span>
-    <span id="tickerOil">Oil: $88</span>
-    <span id="tickerUSD">USD: 1.00</span>
-    <span id="tickerStockA">AAPL: $0</span>
-    <span id="tickerStockB">MSFT: $0</span>
+<div class="dashboard" id="dashboard">
+  <div class="card">
+    <h3>Gold</h3>
+    <div id="goldPrice">Price: $0</div>
+    <button onclick="buy('gold')">Buy</button>
+    <button onclick="sell('gold')">Sell</button>
   </div>
-
-  <!-- Sections Side-by-Side -->
-  <div class="section-container">
-    <div class="section-box" id="stocksBox">Stocks</div>
-    <div class="section-box" id="cryptoBox">Crypto</div>
-    <div class="section-box" onclick="alert('Learn to Trade section')">Learn to Trade</div>
-    <div class="section-box" onclick="alert('Epics section')">Epics</div>
-    <div class="section-box">
-      Gold / Oil
-      <div id="slideshow">
-        <img src="https://example.com/ai-image1.png" alt="Slide">
-      </div>
-    </div>
-    <div class="section-box" onclick="alert('Contact Us section')">Contact Us</div>
+  <div class="card">
+    <h3>Oil</h3>
+    <div id="oilPrice">Price: $0</div>
+    <button onclick="buy('oil')">Buy</button>
+    <button onclick="sell('oil')">Sell</button>
   </div>
-
-  <!-- USDT Wallet -->
-  <div class="centered">
-    <h2>USDT Wallet</h2>
-    <p id="walletAddr">No wallet created</p>
-    <button id="createWalletBtn">Create Wallet</button>
-    <input id="sendAddress" placeholder="Recipient Address">
-    <input id="sendAmount" placeholder="Amount">
-    <button id="sendUSDTBtn">Send USDT</button>
+  <div class="card">
+    <h3>USD</h3>
+    <button onclick="buy('usd')">Buy</button>
+    <button onclick="sell('usd')">Sell</button>
   </div>
+  <div class="card">
+    <h3>TSLA</h3>
+    <div id="tslaPrice">$0</div>
+    <button onclick="buy('TSLA')">Buy</button>
+    <button onclick="sell('TSLA')">Sell</button>
+  </div>
+  <div class="card">
+    <h3>AAPL</h3>
+    <div id="aaplPrice">$0</div>
+    <button onclick="buy('AAPL')">Buy</button>
+    <button onclick="sell('AAPL')">Sell</button>
+  </div>
+</div>
 
-  <button id="toggleLangDash">عربي / EN</button>
+<!-- CONTACT -->
+<div id="contact">
+  <h2>Contact Us</h2>
+  <a href="tel:+218912345678">Phone: +218 91 234 5678</a>
+  <a href="https://facebook.com/globaltrade" target="_blank">Facebook</a>
+  <a href="mailto:info@globaltrade.com">Email: info@globaltrade.com</a>
 </div>
 
 <script>
-// LOGIN & DASHBOARD
-let currentUser = {};
-let isArabic = false;
+let userId = null;
+const langToggle = document.getElementById('langToggle');
+let arabic = false;
 
-document.getElementById('guestLogin').addEventListener('click', ()=>{
-  document.getElementById('loginPage').classList.add('hidden');
-  document.getElementById('dashboard').classList.remove('hidden');
-  updateCrypto();
-  updateStocks();
-});
-
-document.getElementById('toggleLang').addEventListener('click', toggleLang);
-document.getElementById('toggleLangDash').addEventListener('click', toggleLang);
-
-function toggleLang(){
-  isArabic=!isArabic;
-  if(isArabic){
-    document.getElementById('loginTitle').innerText="تسجيل الدخول";
-    document.getElementById('username').placeholder="اسم المستخدم";
-    document.getElementById('password').placeholder="كلمة المرور";
-    document.getElementById('guestLogin').innerText="تسجيل كزائر";
-    document.getElementById('createWalletBtn').innerText="إنشاء المحفظة";
-    document.getElementById('sendUSDTBtn').innerText="أرسل USDT";
-    document.getElementById('stocksBox').innerText="الأسهم";
-    document.getElementById('cryptoBox').innerText="العملات الرقمية";
-  }else{
-    document.getElementById('loginTitle').innerText="Login";
-    document.getElementById('username').placeholder="Username";
-    document.getElementById('password').placeholder="Password";
-    document.getElementById('guestLogin').innerText="Login as Guest";
-    document.getElementById('createWalletBtn').innerText="Create Wallet";
-    document.getElementById('sendUSDTBtn').innerText="Send USDT";
-    document.getElementById('stocksBox').innerText="Stocks";
-    document.getElementById('cryptoBox').innerText="Crypto";
+// LOGIN MODAL
+document.getElementById('loginBtn').onclick = async () => {
+  const res = await fetch('/api/guest-login', { method:'POST' });
+  const data = await res.json();
+  if(data.success){
+    userId = data.userId;
+    document.getElementById('loginModal').style.display='none';
+    createWallet();
   }
-}
+};
 
-// Slideshow
-let slideIndex=0;
-const slides=["https://example.com/ai-image1.png","https://example.com/ai-image2.png"];
-setInterval(()=>{
-  slideIndex=(slideIndex+1)%slides.length;
-  document.querySelector("#slideshow img").src=slides[slideIndex];
-},4000);
-
-// USDT Wallet
-document.getElementById('createWalletBtn').addEventListener('click', ()=>{
-  if(currentUser.usdtWallet) return alert('Wallet already created');
-  currentUser.usdtWallet={address:"TWalletExample123456", privateKey:"PrivateKeyExample"};
-  document.getElementById('walletAddr').innerText=currentUser.usdtWallet.address;
-  alert('USDT Wallet created');
-});
-
-document.getElementById('sendUSDTBtn').addEventListener('click', ()=>{
-  const toAddr=document.getElementById('sendAddress').value;
-  const amt=document.getElementById('sendAmount').value;
-  if(!toAddr||!amt) return alert('Enter address and amount');
-  if(!currentUser.usdtWallet) return alert('Wallet not created');
-  alert(`Sending ${amt} USDT to ${toAddr} (simulation)`);
-});
-
-// Crypto Integration - CoinGecko
-async function updateCrypto(){
+// CREATE USDT WALLET
+async function createWallet(){
   try{
-    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+    const res = await fetch('/api/create-wallet', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ userId }) });
     const data = await res.json();
-    document.getElementById('cryptoBox').innerHTML = `Crypto
-      <p>BTC: $${data.bitcoin.usd}</p>
-      <p>ETH: $${data.ethereum.usd}</p>`;
-  }catch(e){console.error(e);}
+    if(data.success) console.log('Wallet created:', data.walletAddress);
+  }catch(e){ console.error(e); }
 }
-setInterval(updateCrypto,10000); // every 10 seconds
 
-// Stocks Integration - Finnhub free demo API (replace with your key)
-async function updateStocks(){
+// BUY/SELL FUNCTIONS
+function buy(asset){ alert('Buying '+asset); sendTransaction(asset,'buy'); }
+function sell(asset){ alert('Selling '+asset); sendTransaction(asset,'sell'); }
+
+async function sendTransaction(asset,type){
+  if(!userId) { alert('Login first'); return; }
   try{
-    const res = await fetch('https://finnhub.io/api/v1/quote?symbol=AAPL&token=YOUR_API_KEY');
-    const aapl = await res.json();
-    const res2 = await fetch('https://finnhub.io/api/v1/quote?symbol=MSFT&token=YOUR_API_KEY');
-    const msft = await res2.json();
-    document.getElementById('stocksBox').innerHTML = `Stocks
-      <p>AAPL: $${aapl.c}</p>
-      <p>MSFT: $${msft.c}</p>`;
-    document.getElementById('tickerStockA').innerText=`AAPL: $${aapl.c}`;
-    document.getElementById('tickerStockB').innerText=`MSFT: $${msft.c}`;
-  }catch(e){console.error(e);}
+    await fetch('/api/send-usdt', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ userId, to:'receiver-address', amount:100 }) });
+    console.log(type+' '+asset+' transaction sent');
+  }catch(e){ console.error(e); }
 }
-setInterval(updateStocks,10000); // every 10 seconds
 
-// Ticker placeholder Gold/Oil/USD dynamic update example
-setInterval(()=>{
-  const gold = (1980 + Math.random()*10).toFixed(2);
-  const oil = (88 + Math.random()*2).toFixed(2);
-  document.getElementById('tickerGold').innerText=`Gold: $${gold}`;
-  document.getElementById('tickerOil').innerText=`Oil: $${oil}`;
-},5000);
+// LANGUAGE TOGGLE
+langToggle.onclick = () => {
+  arabic = !arabic;
+  if(arabic){
+    document.getElementById('loginTitle').innerText='تسجيل الدخول';
+    document.getElementById('username').placeholder='اسم المستخدم';
+    document.getElementById('password').placeholder='كلمة المرور';
+    document.getElementById('loginBtn').innerText='تسجيل كزائر';
+    document.getElementById('logo').innerText='رأس مال التداول العالمي';
+    document.getElementById('contact').querySelector('h2').innerText='اتصل بنا';
+    document.getElementById('langToggle').innerText='English';
+  }else{
+    document.getElementById('loginTitle').innerText='Login';
+    document.getElementById('username').placeholder='Username';
+    document.getElementById('password').placeholder='Password';
+    document.getElementById('loginBtn').innerText='Login as Guest';
+    document.getElementById('logo').innerText='Global Trade Capital';
+    document.getElementById('contact').querySelector('h2').innerText='Contact Us';
+    document.getElementById('langToggle').innerText='العربية';
+  }
+};
 
+// LIVE GOLD/OIL + STOCK PRICES (EXAMPLE API)
+async function updatePrices(){
+  try{
+    // GOLD & OIL: Example API (replace with your real API keys)
+    const goldRes = await fetch('https://api.metals.live/v1/spot/gold');
+    const oilRes = await fetch('https://api.oilpriceapi.com/v1/prices/latest?key=YOUR_API_KEY');
+
+    const goldData = await goldRes.json();
+    const oilData = await oilRes.json();
+
+    document.getElementById('goldPrice').innerText = 'Price: $' + (goldData[0].price || 0);
+    document.getElementById('oilPrice').innerText = 'Price: $' + (oilData.data[0].price || 0);
+
+    // Stocks example (replace with real API)
+    document.getElementById('tslaPrice').innerText = '$' + (Math.floor(Math.random()*900)+700); // placeholder
+    document.getElementById('aaplPrice').innerText = '$' + (Math.floor(Math.random()*150)+100);
+  }catch(e){ console.error(e); }
+}
+setInterval(updatePrices,5000);
+updatePrices();
 </script>
+
 </body>
 </html>
