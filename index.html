@@ -1,153 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Global Trade Capital</title>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+let currentUser = null;
+let balance = 0;
+
+// AUTH
+window.register = async () => {
+  await setDoc(doc(db,"users",emailR.value),{
+    password: passR.value,
+    balance:0,
+    bets:[],
+    transactions:[]
+  });
+  alert("Registered");
+};
+
+window.login = async () => {
+  const ref = doc(db,"users",email.value);
+  const snap = await getDoc(ref);
+
+  if(!snap.exists()) return alert("User not found");
+
+  const data = snap.data();
+  if(data.password !== pass.value) return alert("Wrong password");
+
+  currentUser = email.value;
+  balance = data.balance;
+
+  auth.style.display="none";
+  appBox.style.display="block";
+  updateBalance();
+};
+
+// BALANCE
+function updateBalance(){
+  bal.innerText = "Balance: " + balance.toFixed(2) + " USDT";
+}
+
+// WALLET
+window.wallet = () => {
+  content.innerHTML = `
+  <div class="container">
+
+    <div class="card">
+      <h3>Deposit (USDT)</h3>
+      <input id="addr" placeholder="Your Wallet Address">
+      <input id="amt" placeholder="Amount">
+      <button onclick="deposit()">Request Deposit</button>
+    </div>
+
+    <div class="card">
+      <h3>Withdraw</h3>
+      <input id="waddr" placeholder="Wallet Address">
+      <input id="wamt" placeholder="Amount">
+      <button onclick="withdraw()">Request Withdrawal</button>
+    </div>
+
+  </div>`;
+};
+
+window.deposit = async () => {
+  await updateDoc(doc(db,"users",currentUser),{
+    transactions: arrayUnion({
+      type:"deposit",
+      amount:amt.value,
+      address:addr.value,
+      status:"pending"
+    })
+  });
+  alert("Deposit request sent");
+};
+
+window.withdraw = async () => {
+  if(wamt.value > balance) return alert("Not enough");
+
+  await updateDoc(doc(db,"users",currentUser),{
+    transactions: arrayUnion({
+      type:"withdraw",
+      amount:wamt.value,
+      address:waddr.value,
+      status:"pending"
+    })
+  });
+
+  alert("Withdraw request sent");
+};
+
+// MATCHES
+window.loadMatches = () => {
+  const matches = [
+    ["Real Madrid","Barcelona"],
+    ["Liverpool","Chelsea"]
+  ];
+
+  content.innerHTML = `<div class="container">`;
+
+  matches.forEach(m=>{
+    let odds = (Math.random()*1.5+1.5).toFixed(2);
+
+    content.innerHTML += `
+    <div class="card">
+      ${m[0]} vs ${m[1]}
+      <button onclick="bet('${m[0]}',${odds})">${m[0]} (${odds}x)</button>
+    </div>`;
+  });
+
+  content.innerHTML += `</div>`;
+};
+
+// BET
+window.bet = async (team, odds) => {
+
+  let amount = 5;
+
+  if(balance < amount) return alert("No balance");
+
+  balance -= amount;
+
+  await updateDoc(doc(db,"users",currentUser),{
+    balance,
+    bets: arrayUnion({
+      team,
+      odds,
+      amount,
+      status:"pending",
+      date:new Date().toLocaleString()
+    })
+  });
+
+  updateBalance();
+  alert("Bet placed");
+};
+
+</script>
+
 <style>
-  body { font-family: Arial,sans-serif; background:#121212; color:#fff; margin:0; padding:0; }
-  .logo { text-align:center; padding:20px; }
-  .logo img { height:60px; }
-  .what-we-do { text-align:center; margin-bottom:20px; font-size:18px; color:#0f0; }
-  .container { display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
-  .card { background:#1e1e1e; padding:20px; border-radius:10px; text-align:center; min-width:180px; transition:0.3s; cursor:pointer; box-shadow:0 0 10px #000; }
-  .card:hover { box-shadow:0 0 20px #0f0; transform:translateY(-5px); }
-  button { padding:10px 15px; margin-top:10px; cursor:pointer; border:none; border-radius:5px; background:#0f0; color:#000; font-weight:bold; }
-  input { padding:5px; margin:5px 0; border-radius:5px; border:none; width:80%; }
-  .card-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px; }
-  #content { padding:20px; }
-  #loginPage { text-align:center; margin-top:50px; }
-  #loginPage input { display:block; margin:10px auto; width:200px; }
+body { background:#0b0b0b; color:#fff; font-family:Arial; text-align:center; }
+.logo { font-size:28px; color:#00ffcc; margin:20px; }
+.container { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+.card { background:#1a1a1a; padding:20px; width:260px; border-radius:10px; }
+button { width:100%; padding:10px; margin-top:10px; background:#00ffcc; border:none; }
+input { width:90%; padding:8px; margin-top:5px; }
 </style>
+
 </head>
+
 <body>
 
-<div class="logo">
-  <img src="https://i.ibb.co/5vZkY3q/global-trade-logo.png" alt="Global Trade">
-</div>
-<div class="what-we-do" id="whatWeDo">Invest, Trade, and Predict Worldwide Markets</div>
+<div class="logo">GLOBAL TRADE CAPITAL</div>
 
-<div id="loginPage">
-  <h2>Login / Guest Access</h2>
-  <input type="text" id="username" placeholder="Username"/>
-  <input type="password" id="password" placeholder="Password"/>
-  <button onclick="login()">Login</button>
-  <button onclick="guestLogin()">Guest Access</button>
+<div id="auth">
+<div class="container">
+
+<div class="card">
+<h3>Login</h3>
+<input id="email">
+<input id="pass" type="password">
+<button onclick="login()">Login</button>
 </div>
 
-<div class="container" id="folders" style="display:none;">
-  <div class="card" onclick="loadStocks()"><span id="stocksLabel">Stocks</span></div>
-  <div class="card" onclick="loadCrypto()"><span id="cryptoLabel">Crypto</span></div>
-  <div class="card" onclick="loadCommodities()"><span id="commoditiesLabel">Gold/Oil</span></div>
-  <div class="card" onclick="loadSoccer()"><span id="soccerLabel">Soccer</span></div>
-  <div class="card" onclick="loadWallet()"><span id="walletLabel">Wallet</span></div>
-  <div class="card" onclick="loadBank()"><span id="bankLabel">Libyan Bank</span></div>
-  <div class="card" onclick="loadSendMoney()"><span id="sendMoneyLabel">Send Money Worldwide</span></div>
-  <div class="card" onclick="loadLearnContact()"><span id="learnLabel">Learn / Contact</span></div>
+<div class="card">
+<h3>Register</h3>
+<input id="emailR">
+<input id="passR" type="password">
+<button onclick="register()">Register</button>
+</div>
+
+</div>
+</div>
+
+<div id="appBox" style="display:none;">
+
+<h3 id="bal"></h3>
+
+<div class="container">
+<div class="card" onclick="loadMatches()">⚽ Soccer</div>
+<div class="card" onclick="wallet()">💰 Wallet</div>
 </div>
 
 <div id="content"></div>
 
-<div style="position:fixed; top:10px; right:10px;">
-  <button onclick="toggleLanguage()"><span id="langBtn">Arabic</span></button>
 </div>
-
-<script>
-// -------------------- Language Toggle --------------------
-let currentLang='en';
-function toggleLanguage(){
-  currentLang = currentLang==='en'?'ar':'en';
-  document.getElementById('stocksLabel').textContent = currentLang==='en'?'Stocks':'الأسهم';
-  document.getElementById('cryptoLabel').textContent = currentLang==='en'?'Crypto':'العملات';
-  document.getElementById('commoditiesLabel').textContent = currentLang==='en'?'Gold/Oil':'الذهب/النفط';
-  document.getElementById('soccerLabel').textContent = currentLang==='en'?'Soccer':'كرة القدم';
-  document.getElementById('walletLabel').textContent = currentLang==='en'?'Wallet':'المحفظة';
-  document.getElementById('bankLabel').textContent = currentLang==='en'?'Libyan Bank':'البنك الليبي';
-  document.getElementById('sendMoneyLabel').textContent = currentLang==='en'?'Send Money Worldwide':'إرسال الأموال عالمياً';
-  document.getElementById('learnLabel').textContent = currentLang==='en'?'Learn / Contact':'تعلم / اتصل';
-  document.getElementById('langBtn').textContent = currentLang==='en'?'Arabic':'الإنجليزية';
-  document.getElementById('whatWeDo').textContent = currentLang==='en'?'Invest, Trade, and Predict Worldwide Markets':'استثمر وتداول وتنبأ بأسواق العالم';
-  document.getElementById('content').innerHTML='';
-}
-
-// -------------------- Login / Guest --------------------
-function login(){
-  const user=document.getElementById('username').value;
-  const pass=document.getElementById('password').value;
-  if(!user || !pass){ alert(currentLang==='en'?'Enter credentials':'أدخل بيانات الدخول'); return; }
-  // For demo, accept anything
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('folders').style.display='flex';
-}
-
-function guestLogin(){
-  document.getElementById('loginPage').style.display='none';
-  document.getElementById('folders').style.display='flex';
-}
-
-// -------------------- Stocks --------------------
-function loadStocks(){
-  const content = document.getElementById('content'); content.innerHTML='';
-  const container = document.createElement('div'); container.className='card-container';
-  const folders = ['Trending','52-Week High','52-Week Low','Top Movers'];
-  folders.forEach(f=>{
-    const card=document.createElement('div'); card.className='card';
-    card.textContent=currentLang==='en'?f:(f==='Trending'?'الشائعة':f==='52-Week High'?'أعلى 52 أسبوع':'أدنى 52 أسبوع');
-    container.appendChild(card);
-  });
-  content.appendChild(container);
-}
-
-// -------------------- Crypto --------------------
-function loadCrypto(){
-  const content = document.getElementById('content'); content.innerHTML='';
-  const container = document.createElement('div'); container.className='card-container';
-  const folders = ['Trending','Top Gainers','Top Losers'];
-  folders.forEach(f=>{
-    const card=document.createElement('div'); card.className='card';
-    card.textContent=currentLang==='en'?f:(f==='Trending'?'الشائعة':f==='Top Gainers'?'الأعلى ربح':'الأعلى خسارة');
-    container.appendChild(card);
-  });
-  content.appendChild(container);
-}
-
-// -------------------- Commodities --------------------
-function loadCommodities(){
-  const content = document.getElementById('content'); content.innerHTML='';
-  const container = document.createElement('div'); container.className='card-container';
-  const items = ['Gold','Oil'];
-  items.forEach(f=>{
-    const card=document.createElement('div'); card.className='card';
-    card.textContent=currentLang==='en'?f:(f==='Gold'?'الذهب':'النفط');
-    container.appendChild(card);
-  });
-  content.appendChild(container);
-}
-
-// -------------------- Soccer --------------------
-function loadSoccer(){
-  const content=document.getElementById('content'); content.innerHTML='';
-  const container=document.createElement('div'); container.className='card-container';
-  const matches=[
-    {team:'Liverpool',teamAr:'ليفربول',date:'2026-03-20',price:'5 USDT'},
-    {team:'Real Madrid',teamAr:'ريال مدريد',date:'2026-03-21',price:'5 USDT'}
-  ];
-  matches.forEach(m=>{
-    const card=document.createElement('div'); card.className='card';
-    card.innerHTML=`<strong>${currentLang==='en'?m.team:m.teamAr}</strong><br>${m.date}<br>${m.price}<br>Call +218-914-948944`;
-    container.appendChild(card);
-  });
-  content.appendChild(container);
-}
-
-// -------------------- Wallet --------------------
-function loadWallet(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Wallet / USDT Integration</div>'; }
-// -------------------- Libyan Bank --------------------
-function loadBank(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Libyan Bank Deposit / Withdraw</div>'; }
-// -------------------- Send Money --------------------
-function loadSendMoney(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Send Money Worldwide</div>'; }
-// -------------------- Learn / Contact --------------------
-function loadLearnContact(){ const content=document.getElementById('content'); content.innerHTML='<div class="card">Learn / Contact Info</div>'; }
-</script>
 
 </body>
 </html>
