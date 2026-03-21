@@ -4,46 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade Capital Dashboard</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
-body {margin:0; font-family:'Segoe UI', sans-serif; background:#0b0b0f; color:#f0f0f0;}
-#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:#0b0b0f;}
-#loginBox {background:rgba(255,255,255,0.05); padding:40px; border-radius:20px; width:400px; display:flex; flex-direction:column; gap:20px; text-align:center;}
-#loginBox h2 {margin:0; color:#ffcb77;}
-input {width:100%; padding:15px; border-radius:10px; border:none; background:rgba(255,255,255,0.1); color:white; font-size:16px;}
-button {padding:15px; border:none; border-radius:10px; font-size:16px; cursor:pointer; background:#ff9f1c; color:#0b0b0f; font-weight:bold; transition:0.3s;}
-button:hover {background:#ffc16a;}
-.lang-toggle-login {cursor:pointer; margin-top:10px; background:#1b1f2a; color:white; padding:10px; border-radius:8px; font-weight:bold;}
-header {display:none; background:#0b1d3a; color:white; padding:20px 40px; justify-content:space-between; align-items:center;}
-header h1 {margin:0; display:flex; align-items:center; gap:15px; font-size:28px; color:#ffcb77;}
-header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffcb77; color:#0b1d3a; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
-header .lang-toggle:hover, header .back-dashboard:hover {background:#ffd786;}
-main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
-.card {background:rgba(255,255,255,0.05); border-radius:15px; width:280px; height:120px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 6px 20px rgba(0,0,0,0.4); cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
-.card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
-.card h2 {margin:0; font-size:20px; text-align:center;}
-#sectionContent {margin:20px auto; width:95%; max-width:1280px; display:none;}
-.section-card {background:rgba(255,255,255,0.05); border-radius:15px; padding:20px; margin:15px 0; box-shadow:0 5px 15px rgba(0,0,0,0.4);}
-.section-card h3 {margin:0 0 10px 0; color:#ffcb77;}
-.section-data {margin-top:10px; font-size:16px;}
-.payment-buttons {display:flex; flex-wrap:wrap; gap:15px; margin-top:10px;}
-.payment-buttons button {flex:1;}
+  body {margin:0; font-family:'Segoe UI', sans-serif; background:#0b0b1a; color:#f0f0f0;}
+  header {display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background:#121233;}
+  header h1 {margin:0; font-size:28px; color:#ffd86a;}
+  header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffd86a; color:#121233; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
+  header .lang-toggle:hover, header .back-dashboard:hover {background:#ffe49b;}
+  main {display:flex; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
+  .card {background:#1a1a2e; border-radius:20px; width:280px; height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
+  .card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+  .card h2 {margin:0; font-size:22px; font-weight:bold; text-align:center; color:#ffd86a;}
+  #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
+  .section-card {background:#1a1a2e; border-radius:15px; padding:20px; margin:15px 0; box-shadow:0 5px 15px rgba(0,0,0,0.4);}
+  .section-card h3 {margin:0 0 15px 0; color:#ffd86a;}
+  .section-data {font-size:16px; margin-top:10px;}
+  .soccer-game {display:flex; justify-content:space-between; padding:10px; background:#121233; margin-bottom:8px; border-radius:10px;}
+  .soccer-game img {width:40px; height:40px;}
 </style>
 </head>
 <body>
 
-<!-- Login Page -->
-<div id="loginPage">
-  <div id="loginBox">
-    <h2 id="loginTitle">Login</h2>
-    <input type="text" id="guestName" placeholder="Enter your name (guest)">
-    <button onclick="guestLogin()">Enter as Guest</button>
-    <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
-  </div>
-</div>
-
-<!-- Header -->
 <header>
   <h1>Global Trade Capital</h1>
   <div>
@@ -52,7 +33,6 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
   </div>
 </header>
 
-<!-- Dashboard Cards -->
 <main>
   <div class="card" onclick="loadSection('stocks')"><h2>Stocks</h2></div>
   <div class="card" onclick="loadSection('crypto')"><h2>Crypto</h2></div>
@@ -62,145 +42,125 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
   <div class="card" onclick="loadSection('learn')"><h2>Learn / Contact Us</h2></div>
 </main>
 
-<!-- Section Content -->
 <div id="sectionContent">
-  <div id="stocksSection" class="section-card" style="display:none;"></div>
-  <div id="cryptoSection" class="section-card" style="display:none;"></div>
-  <div id="fxSection" class="section-card" style="display:none;"></div>
-  <div id="commoditiesSection" class="section-card" style="display:none;"></div>
-  <div id="soccerSection" class="section-card" style="display:none;"></div>
-  <div id="learnSection" class="section-card" style="display:none;"></div>
+  <div id="stocksSection" class="section-card" style="display:none;">
+    <h3>Stocks</h3>
+    <div class="section-data" id="stocksData">Loading live stock data...</div>
+  </div>
+  <div id="cryptoSection" class="section-card" style="display:none;">
+    <h3>Crypto</h3>
+    <div class="section-data" id="cryptoData">Loading live crypto data...</div>
+  </div>
+  <div id="fxSection" class="section-card" style="display:none;">
+    <h3>FX</h3>
+    <div class="section-data" id="fxData">Loading live FX rates...</div>
+  </div>
+  <div id="commoditiesSection" class="section-card" style="display:none;">
+    <h3>Gold & Oil</h3>
+    <div class="section-data" id="commoditiesData">Loading live commodity prices...</div>
+  </div>
+  <div id="soccerSection" class="section-card" style="display:none;">
+    <h3>Soccer Predictions</h3>
+    <div class="section-data" id="soccerData">
+      <!-- Example games structure -->
+      <div class="soccer-game">
+        <img src="https://via.placeholder.com/40" alt="Team A"> 
+        <span>Team A vs Team B</span> 
+        <img src="https://via.placeholder.com/40" alt="Team B">
+      </div>
+      <div class="soccer-game">
+        <img src="https://via.placeholder.com/40" alt="Team C"> 
+        <span>Team C vs Team D</span> 
+        <img src="https://via.placeholder.com/40" alt="Team D">
+      </div>
+      <p>For more info call: +218 91-494-8944</p>
+    </div>
+  </div>
+  <div id="learnSection" class="section-card" style="display:none;">
+    <h3>Learn / Contact Us</h3>
+    <p>Libyan Banks: Masraf Shamal Afrika, Olympian Bank, testimonials, company info.</p>
+    <p>Contact: +218 91-494-8944</p>
+  </div>
 </div>
 
 <script>
-// State
-let isArabic=false;
+const finnhubKey = "7815da7ac2ab43ca8f4a4b73e10e";
 
-// Guest Login
-function guestLogin(){
-  const name=document.getElementById('guestName').value || 'Guest';
-  startApp(name);
-}
-
-// Start App
-function startApp(username){
-  document.getElementById('loginPage').style.display='none';
-  document.querySelector('header').style.display='flex';
-  document.querySelector('main').style.display='flex';
-  loadAllSections();
-}
-
-// Language Toggle
-function toggleLanguage(){
-  isArabic=!isArabic;
-  document.body.dir=isArabic?'rtl':'ltr';
-  document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
-  document.getElementById('loginTitle').innerText=isArabic?'تسجيل الدخول':'Login';
-  document.querySelectorAll('.card h2').forEach((h2,i)=>{
-    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],
-                 ['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
-    h2.innerText=isArabic?texts[1][i]:texts[0][i];
-  });
-}
-
-// Back to Dashboard
-function backToDashboard(){
-  document.querySelector('main').style.display='flex';
-  document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
-}
-
-// Load Section
 function loadSection(name){
   document.querySelector('main').style.display='none';
-  document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
+  document.getElementById('sectionContent').style.display='block';
+  document.querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
   document.getElementById(name+'Section').style.display='block';
+  if(name==='stocks') loadStocks();
+  if(name==='crypto') loadCrypto();
+  if(name==='fx') loadFX();
+  if(name==='commodities') loadCommodities();
 }
 
-// Load All Sections
-function loadAllSections(){
-  // --- Stocks Section (dummy) ---
-  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">Live stocks coming soon...</div>';
-
-  // --- Crypto Section (live) ---
-  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data" id="cryptoData">Loading...</div>';
-  loadCrypto();
-
-  // --- FX Section (live) ---
-  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data" id="fxData">Loading...</div>';
-  loadFX();
-
-  // --- Commodities Section (live) ---
-  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data" id="commoditiesData">Loading...</div>';
-  loadCommodities();
-
-  // --- Soccer Predictions (live) ---
-  document.getElementById('soccerSection').innerHTML='<h3>Soccer Predictions</h3><div class="section-data" id="soccerData">Loading upcoming matches...</div>';
-  loadSoccer();
-
-  // --- Learn/Contact Section ---
-  document.getElementById('learnSection').innerHTML=`
-    <h3>Learn / Contact Us</h3>
-    <p>Global Trade Capital - sending money worldwide, crypto trading, prediction markets.</p>
-    <p>Libyan Contact: +218 91-494-8944</p>
-    <div class="payment-buttons">
-      <button>PayPal</button>
-      <button>USDT</button>
-      <button>CashAgent</button>
-    </div>`;
+function backToDashboard(){
+  document.getElementById('sectionContent').style.display='none';
+  document.querySelector('main').style.display='flex';
 }
 
-// --- Live Data Functions ---
+// Arabic toggle
+let isArabic = false;
+function toggleLanguage(){
+  isArabic = !isArabic;
+  document.body.dir = isArabic ? 'rtl':'ltr';
+  document.querySelector('.lang-toggle').innerText = isArabic ? 'EN':'عربي';
+  document.querySelector('.back-dashboard').innerText = isArabic ? 'العودة':'Back to Dashboard';
+  const cardTexts = ['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'];
+  const cardArabic = ['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا'];
+  document.querySelectorAll('main .card h2').forEach((h2,i)=>{h2.innerText = isArabic ? cardArabic[i] : cardTexts[i];});
+}
+
+// --- Finnhub API Data ---
+async function loadStocks(){
+  const symbols = ['AAPL','TSLA','AMZN'];
+  let html = '';
+  for(let sym of symbols){
+    try{
+      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${finnhubKey}`);
+      html += `<div>${sym}: $${res.data.c.toFixed(2)}</div>`;
+    } catch(e){ html += `<div>${sym}: error</div>`;}
+  }
+  document.getElementById('stocksData').innerHTML = html;
+}
+
 async function loadCrypto(){
-  try{
-    const res=await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd');
-    const data=res.data;
-    document.getElementById('cryptoData').innerHTML=`
-      BTC: $${data.bitcoin.usd} <br>
-      ETH: $${data.ethereum.usd} <br>
-      USDT: $${data.tether.usd}`;
-  }catch(e){document.getElementById('cryptoData').innerText='Error loading crypto.';}
+  const symbols = ['BINANCE:BTCUSDT','BINANCE:ETHUSDT'];
+  let html='';
+  for(let sym of symbols){
+    try{
+      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${finnhubKey}`);
+      html += `<div>${sym}: $${res.data.c.toFixed(2)}</div>`;
+    } catch(e){ html += `<div>${sym}: error</div>`;}
+  }
+  document.getElementById('cryptoData').innerHTML = html;
 }
 
 async function loadFX(){
-  try{
-    const res=await axios.get('https://api.exchangerate.host/latest?base=USD&symbols=LYD,EUR,GBP');
-    const data=res.data.rates;
-    document.getElementById('fxData').innerHTML=`
-      USD-LYD: ${data.LYD} <br>
-      USD-EUR: ${data.EUR} <br>
-      USD-GBP: ${data.GBP}`;
-  }catch(e){document.getElementById('fxData').innerText='Error loading FX rates.';}
+  const pairs = ['OANDA:EUR_USD','OANDA:USD_LYD'];
+  let html='';
+  for(let pair of pairs){
+    try{
+      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${pair}&token=${finnhubKey}`);
+      html += `<div>${pair.split(':')[1]}: ${res.data.c.toFixed(4)}</div>`;
+    } catch(e){ html += `<div>${pair}: error</div>`;}
+  }
+  document.getElementById('fxData').innerHTML = html;
 }
 
 async function loadCommodities(){
-  try{
-    const goldPrice = 1965; // replace with live API if available
-    const oilPrice = 82;    // replace with live API if available
-    document.getElementById('commoditiesData').innerHTML=`
-      Gold: $${goldPrice} per oz <br>
-      Oil: $${oilPrice} per barrel`;
-  }catch(e){document.getElementById('commoditiesData').innerText='Error loading commodities.';}
-}
-
-async function loadSoccer(){
-  try{
-    const matches=[
-      {home:'Liverpool',away:'Man City',date:'2026-03-25',logoHome:'https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg',logoAway:'https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg'},
-      {home:'Real Madrid',away:'Barcelona',date:'2026-03-26',logoHome:'https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg',logoAway:'https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona.svg'}
-    ];
-    let html='';
-    matches.forEach(m=>{
-      html+=`
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:10px; border-bottom:1px solid rgba(255,255,255,0.1);">
-          <div><img src="${m.logoHome}" width="30" style="vertical-align:middle;"> ${m.home}</div>
-          <div>vs</div>
-          <div>${m.away} <img src="${m.logoAway}" width="30" style="vertical-align:middle;"></div>
-          <div>${m.date}</div>
-          <button style="background:#ff9f1c;color:#0b0b0f;padding:5px 10px;border:none;border-radius:6px;cursor:pointer;">Predict</button>
-        </div>`;
-    });
-    document.getElementById('soccerData').innerHTML=html;
-  }catch(e){document.getElementById('soccerData').innerText='Error loading soccer matches.';}
+  const commodities = {'Gold':'OANDA:XAU_USD','Oil':'OANDA:WTICO_USD'};
+  let html='';
+  for(let c in commodities){
+    try{
+      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${commodities[c]}&token=${finnhubKey}`);
+      html += `<div>${c}: $${res.data.c.toFixed(2)}</div>`;
+    } catch(e){ html += `<div>${c}: error</div>`;}
+  }
+  document.getElementById('commoditiesData').innerHTML = html;
 }
 </script>
 
