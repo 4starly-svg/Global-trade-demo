@@ -28,6 +28,10 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 .card img {max-width:70px; margin-bottom:12px;}
 .card h2 {margin:0; font-size:20px; text-align:center;}
 #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
+.section-box {background:rgba(255,255,255,0.05); padding:20px; border-radius:15px; margin:15px 0;}
+.section-box h3 {margin-top:0; color:#ffcb77;}
+.section-box table {width:100%; border-collapse:collapse;}
+.section-box table th, .section-box table td {border:1px solid rgba(255,255,255,0.2); padding:8px; text-align:center;}
 </style>
 </head>
 <body>
@@ -52,27 +56,27 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 </header>
 
 <main>
-  <div class="card" onclick="loadSection('stocks','stocks')">
+  <div class="card" onclick="loadSection('stocks')">
     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
     <h2>Stocks</h2>
   </div>
-  <div class="card" onclick="loadSection('crypto','crypto')">
+  <div class="card" onclick="loadSection('crypto')">
     <img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
     <h2>Crypto</h2>
   </div>
-  <div class="card" onclick="loadSection('fx','fx')">
+  <div class="card" onclick="loadSection('fx')">
     <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
     <h2>FX</h2>
   </div>
-  <div class="card" onclick="loadSection('commodities','commodities')">
+  <div class="card" onclick="loadSection('commodities')">
     <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
     <h2>Gold & Oil</h2>
   </div>
-  <div class="card" onclick="loadSection('soccer','soccer')">
+  <div class="card" onclick="loadSection('soccer')">
     <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
     <h2>Soccer Predictions</h2>
   </div>
-  <div class="card" onclick="loadSection('learn','learn')">
+  <div class="card" onclick="loadSection('learn')">
     <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
     <h2>Learn / Contact Us</h2>
   </div>
@@ -81,9 +85,9 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 <div id="sectionContent"></div>
 
 <script>
-// Firebase Config
+// ---- Firebase Config ----
 const firebaseConfig = {
-  apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
+  apiKey: "YOUR_FIREBASE_API_KEY",
   authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
   databaseURL: "https://YOUR_FIREBASE_PROJECT.firebaseio.com",
   projectId: "YOUR_FIREBASE_PROJECT",
@@ -95,28 +99,28 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// Login Functions
+// ---- Login Functions ----
 function login(){
   const email=document.getElementById('email').value;
   const password=document.getElementById('password').value;
   auth.signInWithEmailAndPassword(email,password)
-    .then(()=>startApp())
-    .catch(err=>alert(err.message));
+      .then(()=>startApp())
+      .catch(err=>alert(err.message));
 }
 
 function guestLogin(){
-  auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
+  auth.signInAnonymously().then(()=>startApp())
+      .catch(err=>alert(err.message));
 }
 
-// Start App Function
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
-  loadDashboardContent();
+  loadAllSections();
 }
 
-// Arabic Toggle
+// ---- Language Toggle ----
 let isArabic=false;
 function toggleLanguage(){
   isArabic=!isArabic;
@@ -126,44 +130,94 @@ function toggleLanguage(){
   document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
   document.querySelectorAll('.card h2').forEach((h2,i)=>{
-    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],
+                 ['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
     h2.innerText=isArabic?texts[1][i]:texts[0][i];
   });
 }
 
-// Back to Dashboard
+// ---- Back Button ----
 function backToDashboard(){
   document.getElementById('sectionContent').style.display='none';
   document.querySelector('main').style.display='flex';
 }
 
-// Load Section (All sections inline, interactive, placeholder API calls)
-function loadSection(name,url){
+// ---- Load Sections Inline ----
+function loadSection(name){
   document.querySelector('main').style.display='none';
   const sectionDiv=document.getElementById('sectionContent');
   sectionDiv.style.display='block';
-  sectionDiv.innerHTML=`<h2>${isArabic?name:'Loading '+name}</h2><p>Loading ${name} content...</p>`;
-  // Placeholder for API call
-  if(name==='stocks'){ fetchStocks(); }
-  if(name==='crypto'){ fetchCrypto(); }
-  if(name==='fx'){ fetchFX(); }
-  if(name==='commodities'){ fetchCommodities(); }
-  if(name==='soccer'){ fetchSoccer(); }
-  if(name==='learn'){ fetchLearn(); }
+  sectionDiv.innerHTML=''; // Clear previous
+  if(name==='stocks') loadStocks(sectionDiv);
+  if(name==='crypto') loadCrypto(sectionDiv);
+  if(name==='fx') loadFX(sectionDiv);
+  if(name==='commodities') loadCommodities(sectionDiv);
+  if(name==='soccer') loadSoccer(sectionDiv);
+  if(name==='learn') loadLearn(sectionDiv);
 }
 
-// Dashboard content loader
-function loadDashboardContent(){ console.log("Dashboard fully loaded"); }
+// ---- Section Content ----
+function loadAllSections(){
+  const div=document.getElementById('sectionContent');
+  div.style.display='block';
+  div.innerHTML='<!-- Sections will load on click -->';
+}
 
-// Example API fetch functions (using your Finnhub key)
-const FINNHUB_KEY='7815da7ac2ab43ca8f4a4b73e10e';
-function fetchStocks(){ console.log('Fetching stocks data...'); }
-function fetchCrypto(){ console.log('Fetching crypto data...'); }
-function fetchFX(){ console.log('Fetching FX data...'); }
-function fetchCommodities(){ console.log('Fetching commodities data...'); }
-function fetchSoccer(){ console.log('Fetching soccer predictions...'); }
-function fetchLearn(){ console.log('Loading Learn/Contact info...'); }
+// ---- Example Section Loaders ----
+function loadStocks(container){
+  container.innerHTML=`<div class="section-box"><h3>${isArabic?'الأسهم':'Stocks'}</h3>
+    <table><tr><th>Symbol</th><th>Price</th></tr>
+    <tr><td>AAPL</td><td>$150</td></tr>
+    <tr><td>GOOG</td><td>$2700</td></tr>
+    </table></div>`;
+}
 
+function loadCrypto(container){
+  container.innerHTML=`<div class="section-box"><h3>${isArabic?'العملات الرقمية':'Crypto'}</h3>
+    <table><tr><th>Coin</th><th>Price</th></tr>
+    <tr><td>BTC</td><td>$28,000</td></tr>
+    <tr><td>ETH</td><td>$1,800</td></tr>
+    </table></div>`;
+}
+
+function loadFX(container){
+  container.innerHTML=`<div class="section-box"><h3>${isArabic?'العملات الأجنبية':'FX'}</h3>
+    <table><tr><th>Pair</th><th>Rate</th></tr>
+    <tr><td>USD/EUR</td><td>0.93</td></tr>
+    <tr><td>USD/LYD</td><td>4.80</td></tr>
+    </table></div>`;
+}
+
+function loadCommodities(container){
+  container.innerHTML=`<div class="section-box"><h3>${isArabic?'الذهب والنفط':'Gold & Oil'}</h3>
+    <table><tr><th>Commodity</th><th>Price</th></tr>
+    <tr><td>Gold</td><td>$1,950</td></tr>
+    <tr><td>Oil</td><td>$85</td></tr>
+    </table></div>`;
+}
+
+function loadSoccer(container){
+  container.innerHTML=`<div class="section-box"><h3>${isArabic?'توقعات كرة القدم':'Soccer Predictions'}</h3>
+    <table><tr><th>Team A</th><th>Team B</th><th>Prediction</th></tr>
+    <tr><td>Real Madrid</td><td>Barcelona</td><td>1-0</td></tr>
+    <tr><td>Liverpool</td><td>Manchester City</td><td>2-2</td></tr>
+    </table></div>`;
+}
+
+function loadLearn(container){
+  container.innerHTML=`<div class="section-box"><h3>${isArabic?'تعلم / اتصل بنا':'Learn / Contact Us'}</h3>
+    <p>${isArabic?'هنا بعض المعلومات عن شركة Global Trade...':'Here is some info about Global Trade Company...'}</p>
+    <h4>${isArabic?'البنوك الليبية':'Libyan Banks We Deal With'}</h4>
+    <ul>
+      <li>Shemanda Frigia</li>
+      <li>North African Bank</li>
+    </ul>
+    <h4>${isArabic?'الشهادات':'Testimonials'}</h4>
+    <p>"Great platform for trading!"</p>
+    <p>"Easy and fast to use."</p>
+    <p>${isArabic?'للتواصل في ليبيا اتصل على':'Contact in Libya'}: +218 912 345 678</p>
+    </div>`;
+}
 </script>
 </body>
 </html>
