@@ -7,15 +7,15 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
 body {margin:0; font-family:'Segoe UI', sans-serif; background:#0a1128; color:#f0f0f0;}
-#loginPage {display:flex; justify-content:center; align-items:center; height:100vh;}
+#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:linear-gradient(135deg, #0a1128 0%, #1b2a48 100%);}
 #loginBox {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); padding:50px; border-radius:25px; width:400px; display:flex; flex-direction:column; align-items:center; gap:25px; box-shadow:0 15px 35px rgba(0,0,0,0.5);}
-#loginBox h2 {margin:0; font-size:32px; display:flex; align-items:center; gap:15px; color:#ffcb77;}
+#loginBox h2 {margin:0; font-size:32px; color:#ffcb77; display:flex; align-items:center; gap:15px;}
 input {width:100%; padding:18px; border-radius:12px; border:none; font-size:18px; background:rgba(255,255,255,0.1); color:white;}
 button {width:100%; padding:18px; border:none; border-radius:12px; font-size:18px; cursor:pointer; background:#ff9f1c; color:#1c1c1c; font-weight:bold; transition:0.3s;}
 button:hover {background:#ffc16a;}
 .lang-toggle-login {cursor:pointer; margin-top:10px; background:#1b2a48; color:white; padding:12px 20px; border-radius:10px; font-weight:bold;}
 header {display:none; background:#0b1d3a; color:white; padding:20px 40px; justify-content:space-between; align-items:center;}
-header h1 {margin:0; display:flex; align-items:center; gap:15px; font-size:32px; color:#ffcb77;}
+header h1 {margin:0; display:flex; align-items:center; gap:15px; font-size:28px; color:#ffcb77;}
 header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffcb77; color:#0b1d3a; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
 header .lang-toggle:hover, header .back-dashboard:hover {background:#ffd786;}
 main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
@@ -28,15 +28,14 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 .section-card img {max-width:50px; margin-right:15px; vertical-align:middle;}
 .section-card h3 {margin:0 0 10px 0;}
 .section-data {margin-top:10px; font-size:16px;}
-.payment-btn {margin-top:10px; padding:10px 20px; border:none; border-radius:10px; font-weight:bold; cursor:pointer;}
-.usdt-btn {background:#26a17b; color:white;}
-.paypal-btn {background:#003087; color:white;}
-.cashagent-btn {background:#f9a825; color:black;}
+.payment-button {background:#00b894; color:white; padding:12px 20px; border:none; border-radius:10px; cursor:pointer; margin-top:10px; font-weight:bold;}
+.payment-button:hover {background:#55efc4;}
+.audio-embed {margin-top:20px;}
 </style>
 </head>
 <body><div id="loginPage">
   <div id="loginBox">
-    <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:75px; vertical-align:middle;"> Login</h2>
+    <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
     <button id="loginBtn" onclick="login()">Login</button>
@@ -44,7 +43,7 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
 </div><header>
-  <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:65px;"> Global Trade Capital</h1>
+  <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px;"> Global Trade Capital</h1>
   <div>
     <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
     <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
@@ -81,9 +80,10 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
   <div id="soccerSection" class="section-card" style="display:none;"></div>
   <div id="learnSection" class="section-card" style="display:none;"></div>
 </div><script>
-// Guest login only (no Firebase)
+// Login functions (mock for demo)
 function login(){startApp();}
 function guestLogin(){startApp();}
+
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
@@ -96,7 +96,7 @@ function toggleLanguage(){
   isArabic=!isArabic;
   document.body.dir=isArabic?'rtl':'ltr';
   document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
-  document.getElementById('loginTitle').innerHTML=`<img src='https://i.ibb.co/2s4Wp2v/global-trade-logo.png' style='width:75px; vertical-align:middle;'> ${isArabic?'تسجيل الدخول':'Login'}`;
+  document.getElementById('loginTitle').innerHTML=`<img src='https://i.ibb.co/2s4Wp2v/global-trade-logo.png' style='width:55px; vertical-align:middle;'> ${isArabic?'تسجيل الدخول':'Login'}`;
   document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
   document.querySelectorAll('.card h2').forEach((h2,i)=>{
@@ -117,12 +117,30 @@ function loadSection(name){
 }
 
 function loadAllSections(){
-  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">Dummy stocks data (no images)</div>';
-  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data">Live crypto data here...</div>';
-  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">Live FX rates here...</div>';
-  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Live commodity prices here...</div>';
-  document.getElementById('soccerSection').innerHTML='<h3>Soccer Predictions</h3><div class="section-data">Upcoming games, team logos, odds, and prediction buttons. For info call +218914948944</div>';
-  document.getElementById('learnSection').innerHTML='<h3>Learn / Contact Us</h3><p>Global Trade: Send money, buy crypto, predictions, P2P services.</p><p>Contact: +218914948944</p>';
+  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">Dummy stocks data here</div>';
+  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data">Live crypto data...</div>';
+  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">Live FX rates...</div>';
+  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Live commodities prices...</div>';
+  document.getElementById('soccerSection').innerHTML=`<h3>Soccer Predictions</h3>
+  <div class="section-data">
+    <p>Next matches with betting info:</p>
+    <ul>
+      <li>Team A vs Team B - Call +218 91 494 8944 for info</li>
+      <li>Team C vs Team D - Call +218 91 494 8944 for info</li>
+    </ul>
+  </div>`;
+  document.getElementById('learnSection').innerHTML=`<h3>Learn / Contact Us</h3>
+  <p>Global Trade: Sending money worldwide, peer-to-peer crypto, soccer predictions betting.</p>
+  <p>Libyan banks: Shemanda Frigia, Masraf Shamal Afrika, testimonials.</p>
+  <p>Contact us: +218 91 494 8944</p>
+  <button class='payment-button'>PayPal</button>
+  <button class='payment-button'>USDT</button>
+  <button class='payment-button'>Cash Agent</button>
+  <div class='audio-embed'>
+    <audio controls>
+      <source src='global-trade-info-arabic.mp3' type='audio/mpeg'>
+    </audio>
+  </div>`;
 }
 </script></body>
 </html>
