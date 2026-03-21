@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard 2050</title>
+<title>Global Trade Dashboard 2050 - All Sections</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
@@ -27,10 +27,6 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 .card img {max-width:70px; margin-bottom:12px;}
 .card h2 {margin:0; font-size:20px; text-align:center;}
 #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
-.section-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:15px; padding:20px; margin:15px 0; box-shadow:0 5px 15px rgba(0,0,0,0.4);}
-.section-card img {max-width:50px; margin-right:15px; vertical-align:middle;}
-.section-card h3 {margin:0 0 10px 0;}
-.section-data {margin-top:10px; font-size:16px;}
 </style>
 </head>
 <body><div id="loginPage">
@@ -49,39 +45,31 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
   </div>
 </header><main>
-  <div class="card" onclick="loadSection('stocks')">
+  <div class="card" onclick="loadSection('stocks','sections/stocks.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
     <h2>Stocks</h2>
   </div>
-  <div class="card" onclick="loadSection('crypto')">
+  <div class="card" onclick="loadSection('crypto','sections/crypto.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
     <h2>Crypto</h2>
   </div>
-  <div class="card" onclick="loadSection('fx')">
+  <div class="card" onclick="loadSection('fx','sections/fx.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
     <h2>FX</h2>
   </div>
-  <div class="card" onclick="loadSection('commodities')">
+  <div class="card" onclick="loadSection('commodities','sections/commodities.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
     <h2>Gold & Oil</h2>
   </div>
-  <div class="card" onclick="loadSection('soccer')">
+  <div class="card" onclick="loadSection('soccer','sections/soccer.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
     <h2>Soccer Predictions</h2>
   </div>
-  <div class="card" onclick="loadSection('learn')">
+  <div class="card" onclick="loadSection('learn','sections/learn.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
     <h2>Learn / Contact Us</h2>
   </div>
-</main><div id="sectionContent">
-  <div id="stocksSection" class="section-card" style="display:none;"></div>
-  <div id="cryptoSection" class="section-card" style="display:none;"></div>
-  <div id="fxSection" class="section-card" style="display:none;"></div>
-  <div id="commoditiesSection" class="section-card" style="display:none;"></div>
-  <div id="soccerSection" class="section-card" style="display:none;"></div>
-  <div id="learnSection" class="section-card" style="display:none;"></div>
-</div><script>
-// Firebase Config
+</main><div id="sectionContent"></div><script>
 const firebaseConfig = {
   apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
   authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
@@ -100,6 +88,7 @@ function login(){
   const password=document.getElementById('password').value;
   auth.signInWithEmailAndPassword(email,password).then(()=>startApp()).catch(err=>alert(err.message));
 }
+
 function guestLogin(){
   auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
 }
@@ -108,7 +97,6 @@ function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
-  loadAllSections();
 }
 
 let isArabic=false;
@@ -126,24 +114,15 @@ function toggleLanguage(){
 }
 
 function backToDashboard(){
-  document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
+  document.getElementById('sectionContent').style.display='none';
   document.querySelector('main').style.display='flex';
 }
 
-function loadSection(name){
+function loadSection(name,url){
   document.querySelector('main').style.display='none';
-  document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
-  document.getElementById(name+'Section').style.display='block';
-}
-
-function loadAllSections(){
-  // Stocks, Crypto, FX, Commodities, Soccer, Learn sections all preloaded with sample or live data
-  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">Loading live stocks...</div>';
-  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data">Loading live crypto...</div>';
-  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">Loading live FX rates...</div>';
-  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Loading commodities prices...</div>';
-  document.getElementById('soccerSection').innerHTML='<h3>Soccer Predictions</h3><div class="section-data">Loading soccer predictions...</div>';
-  document.getElementById('learnSection').innerHTML='<h3>Learn / Contact Us</h3><p>Libyan banks: Shemanda Frigia, testimonials, company info.</p><p>Contact us: +218 XXX XXX XXX</p>';
+  const sectionDiv=document.getElementById('sectionContent');
+  sectionDiv.style.display='block';
+  fetch(url).then(r=>r.text()).then(html=>{sectionDiv.innerHTML=html});
 }
 </script></body>
 </html>
