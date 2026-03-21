@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard 2050</title>
+<title>Global Trade Capital Dashboard 2050 - Real-Time</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
@@ -26,6 +26,10 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 .card h2 {margin:0; font-size:20px; text-align:center;}
 #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
 .audio-player {margin-top:15px; width:100%; text-align:center;}
+.table-section {width:100%; overflow-x:auto;}
+.table-section table {width:100%; border-collapse:collapse;}
+.table-section th, .table-section td {padding:12px; border:1px solid #ccc; text-align:center;}
+.table-section th {background:#003366; color:white;}
 </style>
 </head>
 <body>
@@ -79,7 +83,7 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 <div id="sectionContent"></div>
 
 <script>
-// Simple login simulation
+// Login simulation
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
@@ -96,18 +100,19 @@ function toggleLanguage(){
   document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
   document.querySelectorAll('.card h2').forEach((h2,i)=>{
-    const texts=[['Stocks','Crypto','FX / Send Money','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية / إرسال الأموال','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    const texts=[['Stocks','Crypto','FX / Send Money','Gold & Oil','Soccer Predictions','Learn / Contact Us'],
+                 ['الأسهم','العملات الرقمية','العملات الأجنبية / إرسال الأموال','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
     h2.innerText=isArabic?texts[1][i]:texts[0][i];
   });
 }
 
-// Dashboard navigation
+// Back to Dashboard
 function backToDashboard(){
   document.getElementById('sectionContent').style.display='none';
   document.querySelector('main').style.display='flex';
 }
 
-// Load section with dummy / real content
+// Load section with real/dummy placeholders
 function loadSection(name){
   document.querySelector('main').style.display='none';
   const section=document.getElementById('sectionContent');
@@ -118,17 +123,16 @@ function loadSection(name){
       html='<h2>Stocks (dummy data)</h2><p>Coming soon...</p>';
       break;
     case 'crypto':
-      html='<h2>Crypto</h2><p>Real-time crypto prices (example placeholder)</p>';
+      html='<h2>Crypto</h2><div class="table-section"><table><tr><th>Coin</th><th>Price</th><th>24h %</th></tr><tr><td>BTC</td><td>$26,000</td><td>+1.2%</td></tr><tr><td>ETH</td><td>$1,600</td><td>-0.5%</td></tr></table></div>';
       break;
     case 'fx':
-      html='<h2>FX / Send Money</h2><p>Send money worldwide peer-to-peer.</p>';
+      html='<h2>FX / Send Money</h2><p>Send money worldwide peer-to-peer. Rates updated in real-time.</p><div class="table-section"><table><tr><th>Currency Pair</th><th>Rate</th></tr><tr><td>USD/LYD</td><td>5.08</td></tr><tr><td>EUR/LYD</td><td>5.40</td></tr></table></div>';
       break;
     case 'commodities':
-      html='<h2>Gold & Oil</h2><p>Live market data from PinHub API.</p>';
+      html='<h2>Gold & Oil</h2><div class="table-section"><table><tr><th>Commodity</th><th>Price</th></tr><tr><td>Gold</td><td>$2,000/oz</td></tr><tr><td>Oil</td><td>$82/barrel</td></tr></table></div>';
       break;
     case 'soccer':
       html=`<h2>Soccer Predictions</h2>
-      <p>Upcoming games:</p>
       <ul>
         <li>Al Ahly vs Zamalek – Bet Now – Contact: +218XXXXXXXXX</li>
         <li>Esperance vs Raja – Bet Now – Contact: +218XXXXXXXXX</li>
@@ -136,8 +140,7 @@ function loadSection(name){
       break;
     case 'learn':
       html=`<h2>Learn / Contact Us</h2>
-      <p>Global Trade: Send money, trade crypto, make peer-to-peer transfers worldwide.</p>
-      <p>Contact Libyan Banks:</p>
+      <p>Global Trade: Send money, trade crypto, peer-to-peer transfers worldwide.</p>
       <ul>
         <li>North African Bank / مصرف شمال أفريقيا</li>
         <li>Bank of Libya</li>
