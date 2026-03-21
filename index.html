@@ -1,147 +1,224 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Ultra Premium</title>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
-
+<title>Global Trade Capital Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
-body { margin:0; font-family:'Segoe UI', sans-serif; background:#0b1c2c; color:#e6edf3; }
-.lang { position:absolute; top:15px; right:20px; cursor:pointer; font-weight:bold; color:#c9a227; }
-#loginPage, #dashboard { display:flex; justify-content:center; align-items:center; flex-direction:column; min-height:100vh; }
-
-/* Login */
-.login-box { background:#102a43; padding:40px; border-radius:12px; width:320px; text-align:center; box-shadow:0 0 30px rgba(0,0,0,0.5); }
-.login-box input { width:100%; padding:12px; margin:10px 0; border:none; border-radius:6px; }
-button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:6px; cursor:pointer; font-weight:bold; }
-.primary { background:#c9a227; color:black; }
-.secondary { background:#334e68; color:white; }
-
-/* Dashboard */
-#dashboard { display:none; padding:30px; width:100%; }
-.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-top:40px; }
-.card { background:#102a43; padding:40px; text-align:center; border-radius:12px; cursor:pointer; transition:0.3s; font-weight:bold; font-size:1.2em; }
-.card:hover { background:#1c3d5a; box-shadow:0 0 20px #c9a227; }
-
-/* Sections */
-.section { display:none; text-align:center; padding:20px; }
-.list-item { padding:15px; margin:10px auto; width:300px; background:#102a43; border-radius:8px; cursor:pointer; transition:0.3s; }
-.list-item:hover { background:#1c3d5a; box-shadow:0 0 15px #c9a227; }
-
-/* Wallet */
-#walletDisplay, #usdtWallet { margin-top:20px; font-weight:bold; font-size:1.1em; }
-
-/* Testimonials */
-.testimonial { background:#102a43; padding:15px; margin:10px auto; border-radius:8px; width:80%; transition:0.3s; }
-.testimonial:hover { background:#1c3d5a; box-shadow:0 0 15px #c9a227; }
-
-/* Bank logos */
-.bank-logo { width:100px; margin:10px; }
+body {margin:0; font-family:'Segoe UI', sans-serif; background-color:#f5f7fa; color:#1c1c1c;}
+header {background:#0b1d3a; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center;}
+header h1 {margin:0; font-size:24px; display:flex; align-items:center; gap:10px;}
+header .lang-toggle, header .back-dashboard {cursor:pointer; background:#fff; color:#0b1d3a; border-radius:5px; padding:5px 10px; margin-left:10px;}
+main {display:flex; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px;}
+.card {background:white; border-radius:12px; width:260px; height:160px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 2px 12px rgba(0,0,0,0.1); cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;}
+.card:hover {transform:translateY(-5px); box-shadow:0 6px 18px rgba(0,0,0,0.2);}
+.card img {max-width:60px; margin-bottom:10px;}
+.card h2 {margin:0; font-size:18px; text-align:center;}
+section {margin:20px auto; width:95%; max-width:1200px;}
+.section-title {font-size:22px; margin-bottom:15px; text-align:center;}
+.list-container {display:flex; flex-wrap:wrap; justify-content:center; gap:15px;}
+.item {background:#fff; border-radius:10px; width:220px; padding:15px; box-shadow:0 1px 8px rgba(0,0,0,0.1); display:flex; flex-direction:column; align-items:center; text-align:center; transition:0.2s;}
+.item:hover {transform:translateY(-3px); box-shadow:0 4px 14px rgba(0,0,0,0.15);}
+button {padding:10px 18px; border:none; border-radius:8px; background:#0b1d3a; color:white; cursor:pointer; margin-top:8px; transition:0.2s;}
+button:hover {background:#1c3a6f;}
+#loginPage {display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#f5f7fa;}
+#loginBox {background:white; padding:40px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.15); width:300px; display:flex; flex-direction:column; gap:15px; text-align:center;}
+input {padding:10px; border-radius:8px; border:1px solid #ccc; width:100%;}
 </style>
 </head>
-<body>
-
-<div class="lang" onclick="toggleLang()">EN / AR</div>
-
-<!-- LOGIN PAGE -->
-<div id="loginPage">
-    <div class="login-box">
-        <img src="https://via.placeholder.com/150?text=Global+Trade+Logo" alt="Logo" style="margin-bottom:20px;">
-        <h2 id="title">Global Trade</h2>
-        <input id="email" placeholder="Email">
-        <input id="password" placeholder="Password" type="password">
-        <button class="primary" id="loginBtn" onclick="login()">Login</button>
-        <button class="secondary" id="guestBtn" onclick="guest()">Enter as Guest</button>
-    </div>
+<body><div id="loginPage">
+<div id="loginBox">
+<h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:50px; vertical-align:middle;"> Login</h2>
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="password" placeholder="Password">
+<button id="loginBtn" onclick="login()">Login</button>
+<button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
 </div>
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-    <h2 style="text-align:center;" id="dashboardTitle">Dashboard</h2>
-    <div id="walletDisplay">Balance: $0</div>
-    <div id="usdtWallet">USDT Balance: 0</div>
-    <button onclick="toggleAutoTrade()">Auto Trade</button>
-    <div class="grid">
-        <div class="card" onclick="openSection('stocks')">Stocks</div>
-        <div class="card" onclick="openSection('crypto')">Crypto</div>
-        <div class="card" onclick="openSection('fx')">FX</div>
-        <div class="card" onclick="openSection('gold')">Gold & Oil</div>
-        <div class="card" onclick="openSection('learn')">Learn / Contact Us</div>
-        <div class="card" onclick="openSection('soccer')">Soccer</div>
-    </div>
+</div><header style="display:none;">
+<h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:40px;"> Global Trade Capital</h1>
+<div>
+<span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
+<span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
 </div>
-
-<!-- LEARN / CONTACT US -->
-<div id="learn" class="section">
-    <h2 id="learnTitle">Learn / Contact Us</h2>
-    <img src="https://via.placeholder.com/150?text=Global+Trade+Logo" alt="Logo" style="margin:20px;">
-    <p id="companyInfo">Global Trade provides fast trading services for Libyan customers. We focus on Stocks, Crypto, FX, Gold/Oil, and Soccer betting.</p>
-
-    <h3 id="banksTitle">Our Bank Partners:</h3>
-    <div>
-        <img class="bank-logo" src="https://via.placeholder.com/100x50?text=Sahara+Bank" alt="Sahara Bank">
-        <img class="bank-logo" src="https://via.placeholder.com/100x50?text=Wahda+Bank" alt="Wahda Bank">
-        <img class="bank-logo" src="https://via.placeholder.com/100x50?text=Commerce+Bank" alt="Commerce Bank">
-    </div>
-
-    <h3 id="testimonialsTitle">Testimonials:</h3>
-    <div class="testimonial">"Great platform, very easy to use!" - Ahmed</div>
-    <div class="testimonial">"Fast deposits and excellent service." - Fatima</div>
-    <div class="testimonial">"I love the dashboard and alerts." - Khaled</div>
-
-    <h3>Deposit Funds</h3>
-    <select id="bank">
-        <option>Sahara Bank</option>
-        <option>Wahda Bank</option>
-        <option>Commerce & Development Bank</option>
-    </select>
-    <input id="amount" placeholder="Amount LYD">
-    <input id="ref" placeholder="Transfer Reference">
-    <button onclick="submitDeposit()">Submit Deposit</button>
-
-    <p>Email: contact@globaltrade.ly</p>
-    <p>Phone: +218 XXX XXX XXX</p>
-    <button onclick="back()">Back</button>
+</header><main style="display:none;">
+<div class="card" onclick="showSection('stocks')">
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
+<h2>Stocks</h2>
 </div>
-
-<!-- Scripts -->
-<script>
-// Firebase init
-const firebaseConfig = { apiKey:"YOUR_KEY", authDomain:"YOUR_PROJECT.firebaseapp.com", projectId:"YOUR_PROJECT" };
+<div class="card" onclick="showSection('crypto')">
+<img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
+<h2>Crypto</h2>
+</div>
+<div class="card" onclick="showSection('fx')">
+<img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
+<h2>FX</h2>
+</div>
+<div class="card" onclick="showSection('commodities')">
+<img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
+<h2>Gold & Oil</h2>
+</div>
+<div class="card" onclick="showSection('soccer')">
+<img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
+<h2>Soccer Predictions</h2>
+</div>
+<div class="card" onclick="showSection('learn')">
+<img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
+<h2>Learn / Contact Us</h2>
+</div>
+</main><!-- Sections --><section id="stocks" style="display:none;"><div class="section-title">Stocks</div><div class="list-container" id="stockList"></div></section>
+<section id="crypto" style="display:none;"><div class="section-title">Crypto</div><div class="list-container" id="cryptoList"></div></section>
+<section id="fx" style="display:none;"><div class="section-title">Foreign Exchange</div><div class="list-container" id="fxList"></div></section>
+<section id="commodities" style="display:none;"><div class="section-title">Gold & Oil</div><div class="list-container" id="commoditiesList"></div></section>
+<section id="soccer" style="display:none;"><div class="section-title">Soccer Prediction Market</div><div class="list-container" id="soccerList"></div></section>
+<section id="learn" style="display:none;"><div class="section-title">Learn & Contact Us</div><div class="list-container">
+<div class="item"><h3>About Global Trade</h3><p>Global Trade Capital provides trading for stocks, crypto, FX, commodities, and soccer simulations.</p></div>
+<div class="item"><h3>Testimonials</h3><p>"Amazing platform for trading and learning!" – User A</p><p>"Easy to navigate and secure." – User B</p></div>
+<div class="item"><h3>Libyan Banks</h3>
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sahara_Bank_Logo.png" alt="Sahara Bank" style="width:100px; margin:5px;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Wahda_Bank_Logo.png" alt="Wahda Bank" style="width:100px; margin:5px;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/North_Africa_Bank_Logo.png" alt="North Africa Bank" style="width:100px; margin:5px;">
+</div>
+<div class="item"><h3>Contact Us in Libya</h3><p>Phone: +218 XXX XXX XXX</p><p>Contact us for more info.</p></div>
+</div></section><footer style="display:none;"><p>&copy; 2026 Global Trade Capital. All rights reserved.</p></footer><script>
+// --- Firebase Config ---
+const firebaseConfig = {
+  apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
+  authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_FIREBASE_PROJECT.firebaseio.com",
+  projectId: "YOUR_FIREBASE_PROJECT",
+  storageBucket: "YOUR_FIREBASE_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
-const db = firebase.firestore();
+const db = firebase.database();
 
-// Global state
-let currentUser=null, arabic=false, autoTrade=false, usdtBalance=0;
+// --- Login Functions ---
+function login(){
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+  auth.signInWithEmailAndPassword(email,password).then(()=>startApp()).catch(err=>alert(err.message));
+}
+function guestLogin(){
+  auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
+}
+function startApp(){
+  document.getElementById('loginPage').style.display='none';
+  document.querySelector('header').style.display='flex';
+  document.querySelector('main').style.display='flex';
+  document.querySelector('footer').style.display='block';
+  loadLiveData();
+}
 
-// Login
-function login(){ const email=document.getElementById("email").value; const pass=document.getElementById("password").value; auth.signInWithEmailAndPassword(email,pass).then(cred=>{currentUser=cred.user; loadDashboard();}).catch(()=>alert("Login failed"));}
-function guest(){ loadDashboard(); }
-function loadDashboard(){ document.getElementById("loginPage").style.display="none"; document.getElementById("dashboard").style.display="block"; updateWalletUI(); updateUSDTWallet();}
+// --- Language Toggle ---
+let isArabic=false;
+function toggleLanguage(){
+  isArabic=!isArabic;
+  const langToggle=document.querySelector('.lang-toggle');
+  const loginTitle=document.getElementById('loginTitle');
+  const loginBtn=document.getElementById('loginBtn');
+  const guestBtn=document.getElementById('guestBtn');
+  if(isArabic){
+    langToggle.innerText='EN';
+    document.body.dir='rtl';
+    loginTitle.innerHTML='<img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" style="width:50px; vertical-align:middle;"> تسجيل الدخول';
+    loginBtn.innerText='تسجيل الدخول';
+    guestBtn.innerText='الدخول كزائر';
+    document.querySelectorAll('.card h2')[0].innerText='الأسهم';
+    document.querySelectorAll('.card h2')[1].innerText='العملات الرقمية';
+    document.querySelectorAll('.card h2')[2].innerText='العملات الأجنبية';
+    document.querySelectorAll('.card h2')[3].innerText='الذهب والنفط';
+    document.querySelectorAll('.card h2')[4].innerText='توقعات كرة القدم';
+    document.querySelectorAll('.card h2')[5].innerText='تعلم / اتصل بنا';
+  } else {
+    langToggle.innerText='عربي';
+    document.body.dir='ltr';
+    loginTitle.innerHTML='<img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" style="width:50px; vertical-align:middle;"> Login';
+    loginBtn.innerText='Login';
+    guestBtn.innerText='Enter as Guest';
+    document.querySelectorAll('.card h2')[0].innerText='Stocks';
+    document.querySelectorAll('.card h2')[1].innerText='Crypto';
+    document.querySelectorAll('.card h2')[2].innerText='FX';
+    document.querySelectorAll('.card h2')[3].innerText='Gold & Oil';
+    document.querySelectorAll('.card h2')[4].innerText='Soccer Predictions';
+    document.querySelectorAll('.card h2')[5].innerText='Learn / Contact Us';
+  }
+}
 
-// Wallet
-function updateWalletUI(){ let display=document.getElementById("walletDisplay"); display.innerText="Balance: $50000";}
-function updateUSDTWallet(){ document.getElementById("usdtWallet").innerText=arabic?"رصيد USDT: "+usdtBalance:"USDT Balance: "+usdtBalance;}
+function backToDashboard(){
+  document.querySelectorAll('section').forEach(s=>s.style.display='none');
+}
 
-// Auto Trade
-function toggleAutoTrade(){ autoTrade=!autoTrade; alert(arabic?"التداول التلقائي: "+(autoTrade?"تشغيل":"إيقاف"):"Auto Trade: "+(autoTrade?"ON":"OFF"));}
+// --- Show Section ---
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.style.display='none');
+  document.getElementById(id).style.display='block';
+}
 
-// Navigation
-function openSection(sec){ document.getElementById("dashboard").style.display="none"; document.querySelectorAll(".section").forEach(s=>s.style.display="none"); document.getElementById(sec).style.display="block"; }
-function back(){ document.querySelectorAll(".section").forEach(s=>s.style.display="none"); document.getElementById("dashboard").style.display="block"; }
+// --- Load Live Data ---
+async function loadLiveData(){
+  const stockList=document.getElementById('stockList');
+  const cryptoList=document.getElementById('cryptoList');
+  const fxList=document.getElementById('fxList');
+  const commoditiesList=document.getElementById('commoditiesList');
+  const soccerList=document.getElementById('soccerList');
 
-// Language toggle
-function toggleLang(){ arabic=!arabic; document.body.dir=arabic?"rtl":"ltr"; document.getElementById("title").innerText=arabic?"جلوبال تريد":"Global Trade"; document.getElementById("loginBtn").innerText=arabic?"تسجيل الدخول":"Login"; document.getElementById("guestBtn").innerText=arabic?"الدخول كزائر":"Enter as Guest"; document.getElementById("dashboardTitle").innerText=arabic?"لوحة التحكم":"Dashboard"; document.getElementById("learnTitle").innerText=arabic?"تعلم / اتصل بنا":"Learn / Contact Us"; document.getElementById("companyInfo").innerText=arabic?"جلوبال تريد توفر خدمات تداول سريعة للعملاء الليبيين. نركز على الأسهم، العملات الرقمية، الفوركس، الذهب/النفط، والمراهنات على كرة القدم.":"Global Trade provides fast trading services for Libyan customers. We focus on Stocks, Crypto, FX, Gold/Oil, and Soccer betting."; document.getElementById("banksTitle").innerText=arabic?"البنوك التي نتعامل معها:":"Our Bank Partners:"; document.getElementById("testimonialsTitle").innerText=arabic?"التوصيات:":"Testimonials:"; updateUSDTWallet(); }
+  // --- Stocks & FX & Commodities via Finnhub ---
+  const symbols=['AAPL','TSLA','GOOG','ARCT'];
+  for(const s of symbols){
+    try{
+      const res=await axios.get(`https://finnhub.io/api/v1/quote?symbol=${s}&token=7815da7ac2ab43ca8f4a4b73e10e`);
+      const div=document.createElement('div'); div.className='item';
+      div.innerHTML=`<h4>${s}</h4><p>Price: $${res.data.c}</p>`;
+      stockList.appendChild(div);
+    }catch(e){console.error(e);}
+  }
 
-// Deposit
-function submitDeposit(){ if(!currentUser){ alert(arabic?"لا يمكن حفظ الإيداع للزائر":"Guest deposits not saved."); return; } const bank=document.getElementById("bank").value; const amount=parseFloat(document.getElementById("amount").value); const ref=document.getElementById("ref").value; db.collection("deposits").add({user:currentUser.uid, bank, amount, ref, status:"pending", time:new Date()}); alert(arabic?"تم إرسال الإيداع. في انتظار الموافقة.":"Deposit submitted. Waiting approval.");}
-</script>
+  const fxPairs=[['USD/EUR','EURUSD'],['USD/LYD','USDLYD'],['EUR/LYD','EURLYD']];
+  for(const f of fxPairs){
+    try{
+      const res=await axios.get(`https://finnhub.io/api/v1/quote?symbol=${f[1]}&token=7815da7ac2ab43ca8f4a4b73e10e`);
+      const div=document.createElement('div'); div.className='item';
+      div.innerHTML=`<h4>${f[0]}</h4><p>Rate: ${res.data.c}</p>`;
+      fxList.appendChild(div);
+    }catch(e){console.error(e);}
+  }
 
-</body>
+  const commodities=[['Gold','XAUUSD'],['Oil','OILUS']];
+  for(const c of commodities){
+    try{
+      const res=await axios.get(`https://finnhub.io/api/v1/quote?symbol=${c[1]}&token=7815da7ac2ab43ca8f4a4b73e10e`);
+      const div=document.createElement('div'); div.className='item';
+      div.innerHTML=`<h4>${c[0]}</h4><p>Price: $${res.data.c}</p><button>Buy</button><button>Sell</button>`;
+      commoditiesList.appendChild(div);
+    }catch(e){console.error(e);}
+  }
+
+  // --- Crypto via Binance WebSocket ---
+  const cryptoPairs=['btcusdt','ethusdt','solusdt','usdtusdt'];
+  cryptoPairs.forEach(p=>{
+    const div=document.createElement('div'); div.className='item';
+    div.innerHTML=`<h4>${p.toUpperCase()}</h4><p id='${p}-price'>Loading...</p>`;
+    cryptoList.appendChild(div);
+    const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${p}@trade`);
+    ws.onmessage=msg=>{
+      const data=JSON.parse(msg.data);
+      document.getElementById(`${p}-price`).innerText='Price: $'+parseFloat(data.p).toFixed(2);
+    }
+  });
+
+  // --- Soccer Teams (Option A) ---
+  const teams=['Manchester United','Real Madrid','Bayern Munich','Juventus','PSG'];
+  teams.forEach(t=>{
+    const div=document.createElement('div'); div.className='item';
+    div.innerHTML=`<h4>${t}</h4><p>Simulated Prediction: Win ${Math.floor(Math.random()*100)}%</p>`;
+    soccerList.appendChild(div);
+  });
+}
+</script></body>
 </html>
