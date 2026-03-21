@@ -1,168 +1,172 @@
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+/* ================= DATABASE (IN MEMORY) ================= */
+let users = [];
+let bets = [];
+let transactions = [];
+
+/* ================= FRONTEND (YOUR DASHBOARD) ================= */
+app.get('/', (req, res) => {
+res.send(`
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<title>Global Trade Capital</title>
 <style>
-  body {margin:0; font-family:'Segoe UI', sans-serif; background:#0b0b1a; color:#f0f0f0;}
-  header {display:flex; justify-content:space-between; align-items:center; padding:20px 40px; background:#121233;}
-  header h1 {margin:0; font-size:28px; color:#ffd86a;}
-  header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffd86a; color:#121233; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
-  header .lang-toggle:hover, header .back-dashboard:hover {background:#ffe49b;}
-  main {display:flex; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
-  .card {background:#1a1a2e; border-radius:20px; width:280px; height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
-  .card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
-  .card h2 {margin:0; font-size:22px; font-weight:bold; text-align:center; color:#ffd86a;}
-  #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
-  .section-card {background:#1a1a2e; border-radius:15px; padding:20px; margin:15px 0; box-shadow:0 5px 15px rgba(0,0,0,0.4);}
-  .section-card h3 {margin:0 0 15px 0; color:#ffd86a;}
-  .section-data {font-size:16px; margin-top:10px;}
-  .soccer-game {display:flex; justify-content:space-between; padding:10px; background:#121233; margin-bottom:8px; border-radius:10px;}
-  .soccer-game img {width:40px; height:40px;}
+body{font-family:Arial;background:#fff;color:#111;margin:0}
+header{background:#111;color:#ffd700;padding:20px;display:flex;justify-content:space-between}
+main{display:flex;flex-wrap:wrap;gap:20px;padding:20px}
+.card{width:220px;height:120px;border:2px solid #111;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.section{display:none;padding:20px}
+button{padding:10px;background:#111;color:#ffd700;border:none;margin-top:10px}
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Global Trade Capital</h1>
-  <div>
-    <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
-    <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
-  </div>
+<h2>GLOBAL TRADE CAPITAL</h2>
+<div id="user"></div>
 </header>
 
-<main>
-  <div class="card" onclick="loadSection('stocks')"><h2>Stocks</h2></div>
-  <div class="card" onclick="loadSection('crypto')"><h2>Crypto</h2></div>
-  <div class="card" onclick="loadSection('fx')"><h2>FX</h2></div>
-  <div class="card" onclick="loadSection('commodities')"><h2>Gold & Oil</h2></div>
-  <div class="card" onclick="loadSection('soccer')"><h2>Soccer Predictions</h2></div>
-  <div class="card" onclick="loadSection('learn')"><h2>Learn / Contact Us</h2></div>
+<main id="home">
+<div class="card" onclick="openSec('crypto')">CRYPTO</div>
+<div class="card" onclick="openSec('soccer')">SOCCER</div>
+<div class="card" onclick="openSec('wallet')">WALLET</div>
 </main>
 
-<div id="sectionContent">
-  <div id="stocksSection" class="section-card" style="display:none;">
-    <h3>Stocks</h3>
-    <div class="section-data" id="stocksData">Loading live stock data...</div>
-  </div>
-  <div id="cryptoSection" class="section-card" style="display:none;">
-    <h3>Crypto</h3>
-    <div class="section-data" id="cryptoData">Loading live crypto data...</div>
-  </div>
-  <div id="fxSection" class="section-card" style="display:none;">
-    <h3>FX</h3>
-    <div class="section-data" id="fxData">Loading live FX rates...</div>
-  </div>
-  <div id="commoditiesSection" class="section-card" style="display:none;">
-    <h3>Gold & Oil</h3>
-    <div class="section-data" id="commoditiesData">Loading live commodity prices...</div>
-  </div>
-  <div id="soccerSection" class="section-card" style="display:none;">
-    <h3>Soccer Predictions</h3>
-    <div class="section-data" id="soccerData">
-      <!-- Example games structure -->
-      <div class="soccer-game">
-        <img src="https://via.placeholder.com/40" alt="Team A"> 
-        <span>Team A vs Team B</span> 
-        <img src="https://via.placeholder.com/40" alt="Team B">
-      </div>
-      <div class="soccer-game">
-        <img src="https://via.placeholder.com/40" alt="Team C"> 
-        <span>Team C vs Team D</span> 
-        <img src="https://via.placeholder.com/40" alt="Team D">
-      </div>
-      <p>For more info call: +218 91-494-8944</p>
-    </div>
-  </div>
-  <div id="learnSection" class="section-card" style="display:none;">
-    <h3>Learn / Contact Us</h3>
-    <p>Libyan Banks: Masraf Shamal Afrika, Olympian Bank, testimonials, company info.</p>
-    <p>Contact: +218 91-494-8944</p>
-  </div>
+<div id="login" class="section">
+<h2>Login</h2>
+<input id="u" placeholder="username"><br>
+<input id="p" placeholder="password"><br>
+<button onclick="login()">Login</button>
+<button onclick="register()">Register</button>
+</div>
+
+<div id="crypto" class="section">
+<h2>Crypto</h2>
+<p>BTC: $42,000</p>
+</div>
+
+<div id="soccer" class="section">
+<h2>Soccer</h2>
+<div>
+Al Ahly vs Ittihad<br>
+<button onclick="bet('Ahly Match')">BET</button>
+</div>
+</div>
+
+<div id="wallet" class="section">
+<h2>Wallet</h2>
+<div id="balance"></div>
+<button onclick="deposit()">Deposit</button>
 </div>
 
 <script>
-const finnhubKey = "7815da7ac2ab43ca8f4a4b73e10e";
+let currentUser = null;
 
-function loadSection(name){
-  document.querySelector('main').style.display='none';
-  document.getElementById('sectionContent').style.display='block';
-  document.querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
-  document.getElementById(name+'Section').style.display='block';
-  if(name==='stocks') loadStocks();
-  if(name==='crypto') loadCrypto();
-  if(name==='fx') loadFX();
-  if(name==='commodities') loadCommodities();
+function show(id){
+document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+document.getElementById(id).style.display='block';
 }
 
-function backToDashboard(){
-  document.getElementById('sectionContent').style.display='none';
-  document.querySelector('main').style.display='flex';
+function openSec(id){
+if(!currentUser){show('login');return;}
+show(id);
+loadUser();
 }
 
-// Arabic toggle
-let isArabic = false;
-function toggleLanguage(){
-  isArabic = !isArabic;
-  document.body.dir = isArabic ? 'rtl':'ltr';
-  document.querySelector('.lang-toggle').innerText = isArabic ? 'EN':'عربي';
-  document.querySelector('.back-dashboard').innerText = isArabic ? 'العودة':'Back to Dashboard';
-  const cardTexts = ['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'];
-  const cardArabic = ['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا'];
-  document.querySelectorAll('main .card h2').forEach((h2,i)=>{h2.innerText = isArabic ? cardArabic[i] : cardTexts[i];});
+async function register(){
+await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({username:u.value,password:p.value})});
+alert('Registered');
 }
 
-// --- Finnhub API Data ---
-async function loadStocks(){
-  const symbols = ['AAPL','TSLA','AMZN'];
-  let html = '';
-  for(let sym of symbols){
-    try{
-      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${finnhubKey}`);
-      html += `<div>${sym}: $${res.data.c.toFixed(2)}</div>`;
-    } catch(e){ html += `<div>${sym}: error</div>`;}
-  }
-  document.getElementById('stocksData').innerHTML = html;
+async function login(){
+let res = await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({username:u.value,password:p.value})});
+
+if(res.ok){
+currentUser = u.value;
+document.getElementById('user').innerText=currentUser;
+show('home');
+}else alert('Wrong');
 }
 
-async function loadCrypto(){
-  const symbols = ['BINANCE:BTCUSDT','BINANCE:ETHUSDT'];
-  let html='';
-  for(let sym of symbols){
-    try{
-      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${finnhubKey}`);
-      html += `<div>${sym}: $${res.data.c.toFixed(2)}</div>`;
-    } catch(e){ html += `<div>${sym}: error</div>`;}
-  }
-  document.getElementById('cryptoData').innerHTML = html;
+async function deposit(){
+let amt = prompt('Amount');
+await fetch('/deposit',{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({username:currentUser,amount:+amt})});
+loadUser();
 }
 
-async function loadFX(){
-  const pairs = ['OANDA:EUR_USD','OANDA:USD_LYD'];
-  let html='';
-  for(let pair of pairs){
-    try{
-      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${pair}&token=${finnhubKey}`);
-      html += `<div>${pair.split(':')[1]}: ${res.data.c.toFixed(4)}</div>`;
-    } catch(e){ html += `<div>${pair}: error</div>`;}
-  }
-  document.getElementById('fxData').innerHTML = html;
+async function bet(match){
+let amt = prompt('Bet amount');
+let res = await fetch('/bet',{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({username:currentUser,amount:+amt,match})});
+let data = await res.json();
+if(data.error) alert(data.error);
+else loadUser();
 }
 
-async function loadCommodities(){
-  const commodities = {'Gold':'OANDA:XAU_USD','Oil':'OANDA:WTICO_USD'};
-  let html='';
-  for(let c in commodities){
-    try{
-      const res = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${commodities[c]}&token=${finnhubKey}`);
-      html += `<div>${c}: $${res.data.c.toFixed(2)}</div>`;
-    } catch(e){ html += `<div>${c}: error</div>`;}
-  }
-  document.getElementById('commoditiesData').innerHTML = html;
+async function loadUser(){
+let res = await fetch('/user/'+currentUser);
+let data = await res.json();
+document.getElementById('balance').innerText='Balance: $'+data.balance;
 }
+
+show('login');
 </script>
 
 </body>
 </html>
+`);
+});
+
+/* ================= BACKEND ================= */
+
+// REGISTER
+app.post('/register', (req, res) => {
+users.push({ ...req.body, balance: 0 });
+res.send({ success: true });
+});
+
+// LOGIN
+app.post('/login', (req, res) => {
+let user = users.find(u=>u.username===req.body.username && u.password===req.body.password);
+if(user) res.send(user);
+else res.status(401).send();
+});
+
+// DEPOSIT
+app.post('/deposit', (req, res) => {
+let user = users.find(u=>u.username===req.body.username);
+user.balance += req.body.amount;
+transactions.push(req.body);
+res.send(user);
+});
+
+// BET
+app.post('/bet', (req, res) => {
+let user = users.find(u=>u.username===req.body.username);
+
+if(user.balance < req.body.amount){
+return res.send({error:'Not enough money'});
+}
+
+user.balance -= req.body.amount;
+bets.push(req.body);
+
+res.send({success:true});
+});
+
+// GET USER
+app.get('/user/:u', (req,res)=>{
+let user = users.find(x=>x.username===req.params.u);
+res.send(user);
+});
+
+/* ================= RUN ================= */
+app.listen(3000, () => console.log('RUNNING http://localhost:3000'));
