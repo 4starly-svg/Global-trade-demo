@@ -4,9 +4,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Global Trade Capital Dashboard 2050</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
 body {margin:0; font-family:'Segoe UI', sans-serif; background:#0a1128; color:#f0f0f0;}
@@ -32,7 +29,7 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 <body><div id="loginPage">
   <div id="loginBox">
     <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
-    <input type="email" id="email" placeholder="Email">
+    <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
     <button id="loginBtn" onclick="login()">Login</button>
     <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
@@ -70,28 +67,18 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <h2>Learn / Contact Us</h2>
   </div>
 </main><div id="sectionContent"></div><script>
-// Firebase Config
-const firebaseConfig = {
-  apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
-  authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_FIREBASE_PROJECT.firebaseio.com",
-  projectId: "YOUR_FIREBASE_PROJECT",
-  storageBucket: "YOUR_FIREBASE_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-
 function login(){
-  const email=document.getElementById('email').value;
-  const password=document.getElementById('password').value;
-  auth.signInWithEmailAndPassword(email,password).then(()=>startApp()).catch(err=>alert(err.message));
+  const user=document.getElementById('username').value;
+  const pass=document.getElementById('password').value;
+  if(user && pass){
+    startApp();
+  } else {
+    alert('Please enter username and password');
+  }
 }
 
 function guestLogin(){
-  auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
+  startApp();
 }
 
 function startApp(){
