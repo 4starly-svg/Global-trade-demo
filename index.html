@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,9 +29,7 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
 </style>
 </head>
-<body>
-
-<div id="loginPage">
+<body><div id="loginPage">
   <div id="loginBox">
     <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
     <input type="email" id="email" placeholder="Email">
@@ -41,17 +38,13 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
     <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
-</div>
-
-<header>
+</div><header>
   <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:45px;"> Global Trade Capital</h1>
   <div>
     <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
     <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
   </div>
-</header>
-
-<main>
+</header><main>
   <div class="card" onclick="loadSection('stocks','sections/stocks.html')">
     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
     <h2>Stocks</h2>
@@ -76,12 +69,8 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
     <h2>Learn / Contact Us</h2>
   </div>
-</main>
-
-<div id="sectionContent"></div>
-
-<script>
-// Firebase Config (fill in the placeholders for full login)
+</main><div id="sectionContent"></div><script>
+// Firebase Config
 const firebaseConfig = {
   apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
   authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
@@ -98,15 +87,11 @@ const db = firebase.database();
 function login(){
   const email=document.getElementById('email').value;
   const password=document.getElementById('password').value;
-  auth.signInWithEmailAndPassword(email,password)
-    .then(()=>startApp())
-    .catch(err=>alert(err.message));
+  auth.signInWithEmailAndPassword(email,password).then(()=>startApp()).catch(err=>alert(err.message));
 }
 
 function guestLogin(){
-  auth.signInAnonymously()
-    .then(()=>startApp())
-    .catch(err=>alert(err.message));
+  auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
 }
 
 function startApp(){
@@ -140,7 +125,5 @@ function loadSection(name,url){
   sectionDiv.style.display='block';
   fetch(url).then(r=>r.text()).then(html=>{sectionDiv.innerHTML=html});
 }
-</script>
-
-</body>
+</script></body>
 </html>
