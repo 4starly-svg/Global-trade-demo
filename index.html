@@ -1,172 +1,93 @@
-const express = require('express');
-const app = express();
-
-app.use(express.json());
-
-/* ================= DATABASE (IN MEMORY) ================= */
-let users = [];
-let bets = [];
-let transactions = [];
-
-/* ================= FRONTEND (YOUR DASHBOARD) ================= */
-app.get('/', (req, res) => {
-res.send(`
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Global Trade Capital</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Trade Capital - Full System</title>
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID"></script>
 <style>
-body{font-family:Arial;background:#fff;color:#111;margin:0}
-header{background:#111;color:#ffd700;padding:20px;display:flex;justify-content:space-between}
-main{display:flex;flex-wrap:wrap;gap:20px;padding:20px}
-.card{width:220px;height:120px;border:2px solid #111;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.section{display:none;padding:20px}
-button{padding:10px;background:#111;color:#ffd700;border:none;margin-top:10px}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:#1b1b1b;color:#f0f0f0;text-align:center;}
+header, main{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;}
+header{background:#111;padding:15px;gap:10px;}
+header h1{color:#ffc107;margin:0;font-size:28px;}
+.lang-toggle{cursor:pointer;background:#ffc107;color:#111;padding:8px 12px;border-radius:8px;}
+.card{background:#222;padding:20px;margin:10px;border-radius:15px;width:200px;height:120px;display:flex;justify-content:center;align-items:center;cursor:pointer;font-weight:bold;transition:0.3s;}
+.card:hover{transform:scale(1.05);background:#333;}
+#sectionContent{width:95%;max-width:1280px;margin:20px auto;}
+.section-card{background:#222;padding:20px;border-radius:15px;margin:15px 0;box-shadow:0 5px 15px rgba(0,0,0,0.4);}
+#balance{font-size:24px;margin:10px 0;color:#ffc107;}
+audio{margin-top:10px;}
+button{padding:10px 15px;margin:5px;background:#ffc107;color:#111;border:none;border-radius:8px;cursor:pointer;}
+button:hover{background:#ffca28;}
+input{padding:10px;border-radius:8px;border:none;width:60%;margin-bottom:10px;}
 </style>
 </head>
 <body>
 
 <header>
-<h2>GLOBAL TRADE CAPITAL</h2>
-<div id="user"></div>
+<h1>Global Trade Capital</h1>
+<span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
 </header>
 
-<main id="home">
-<div class="card" onclick="openSec('crypto')">CRYPTO</div>
-<div class="card" onclick="openSec('soccer')">SOCCER</div>
-<div class="card" onclick="openSec('wallet')">WALLET</div>
+<main>
+<div class="card" onclick="loadSection('stocks')">Stocks</div>
+<div class="card" onclick="loadSection('crypto')">Crypto</div>
+<div class="card" onclick="loadSection('fx')">FX</div>
+<div class="card" onclick="loadSection('commodities')">Gold & Oil</div>
+<div class="card" onclick="loadSection('soccer')">Soccer Predictions</div>
+<div class="card" onclick="loadSection('learn')">Learn / Contact</div>
 </main>
 
-<div id="login" class="section">
-<h2>Login</h2>
-<input id="u" placeholder="username"><br>
-<input id="p" placeholder="password"><br>
-<button onclick="login()">Login</button>
-<button onclick="register()">Register</button>
+<div id="sectionContent">
+<div id="stocksSection" class="section-card" style="display:none;">Loading stocks...</div>
+<div id="cryptoSection" class="section-card" style="display:none;">Loading crypto...</div>
+<div id="fxSection" class="section-card" style="display:none;">Loading FX rates...</div>
+<div id="commoditiesSection" class="section-card" style="display:none;">Loading Gold & Oil...</div>
+<div id="soccerSection" class="section-card" style="display:none;">
+<h3>Upcoming Matches</h3>
+<div>Game 1: Team A vs Team B <img src="https://via.placeholder.com/40" alt="Team Logo"></div>
+<div>Game 2: Team C vs Team D <img src="https://via.placeholder.com/40" alt="Team Logo"></div>
+<p>For more info call: 91-494-8944 (Libya)</p>
 </div>
-
-<div id="crypto" class="section">
-<h2>Crypto</h2>
-<p>BTC: $42,000</p>
+<div id="learnSection" class="section-card" style="display:none;">
+<p>Our services: Crypto, Stocks, FX, Gold/Oil, Soccer predictions, Global transfers.</p>
+<p>Libyan Banks: Olympian Bank, Shemanda Frigia (logos displayed)</p>
+<p>Contact: +218 91 494 8944</p>
+<audio controls>
+<source src="global_trade_intro.mp3" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
 </div>
-
-<div id="soccer" class="section">
-<h2>Soccer</h2>
-<div>
-Al Ahly vs Ittihad<br>
-<button onclick="bet('Ahly Match')">BET</button>
-</div>
-</div>
-
-<div id="wallet" class="section">
-<h2>Wallet</h2>
-<div id="balance"></div>
-<button onclick="deposit()">Deposit</button>
 </div>
 
 <script>
-let currentUser = null;
-
-function show(id){
-document.querySelectorAll('.section').forEach(s=>s.style.display='none');
-document.getElementById(id).style.display='block';
+let isArabic=false;
+function toggleLanguage(){
+isArabic=!isArabic;
+document.body.dir=isArabic?'rtl':'ltr';
+document.querySelectorAll('.card').forEach((c,i)=>{
+const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact'],
+['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+c.innerText=isArabic?texts[1][i]:texts[0][i];
+});
 }
 
-function openSec(id){
-if(!currentUser){show('login');return;}
-show(id);
-loadUser();
+function loadSection(name){
+document.querySelectorAll('.section-card').forEach(s=>s.style.display='none');
+document.getElementById(name+'Section').style.display='block';
 }
 
-async function register(){
-await fetch('/register',{method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({username:u.value,password:p.value})});
-alert('Registered');
+// Example: placeholder live data load
+function loadAllSections(){
+document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div>APPL 175.00 ↑</div><div>MSFT 330.50 ↑</div>';
+document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div>BTC 28,000 ↑</div><div>ETH 1,900 ↑</div>';
+document.getElementById('fxSection').innerHTML='<h3>FX</h3><div>USD/LYD 5.42</div><div>EUR/LYD 6.11</div>';
+document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div>Libyan Oil 74 USD <img src="https://via.placeholder.com/30"></div><div>WTI 80 USD</div>';
 }
 
-async function login(){
-let res = await fetch('/login',{method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({username:u.value,password:p.value})});
-
-if(res.ok){
-currentUser = u.value;
-document.getElementById('user').innerText=currentUser;
-show('home');
-}else alert('Wrong');
-}
-
-async function deposit(){
-let amt = prompt('Amount');
-await fetch('/deposit',{method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({username:currentUser,amount:+amt})});
-loadUser();
-}
-
-async function bet(match){
-let amt = prompt('Bet amount');
-let res = await fetch('/bet',{method:'POST',headers:{'Content-Type':'application/json'},
-body:JSON.stringify({username:currentUser,amount:+amt,match})});
-let data = await res.json();
-if(data.error) alert(data.error);
-else loadUser();
-}
-
-async function loadUser(){
-let res = await fetch('/user/'+currentUser);
-let data = await res.json();
-document.getElementById('balance').innerText='Balance: $'+data.balance;
-}
-
-show('login');
+// Initialize sections
+loadAllSections();
 </script>
 
 </body>
 </html>
-`);
-});
-
-/* ================= BACKEND ================= */
-
-// REGISTER
-app.post('/register', (req, res) => {
-users.push({ ...req.body, balance: 0 });
-res.send({ success: true });
-});
-
-// LOGIN
-app.post('/login', (req, res) => {
-let user = users.find(u=>u.username===req.body.username && u.password===req.body.password);
-if(user) res.send(user);
-else res.status(401).send();
-});
-
-// DEPOSIT
-app.post('/deposit', (req, res) => {
-let user = users.find(u=>u.username===req.body.username);
-user.balance += req.body.amount;
-transactions.push(req.body);
-res.send(user);
-});
-
-// BET
-app.post('/bet', (req, res) => {
-let user = users.find(u=>u.username===req.body.username);
-
-if(user.balance < req.body.amount){
-return res.send({error:'Not enough money'});
-}
-
-user.balance -= req.body.amount;
-bets.push(req.body);
-
-res.send({success:true});
-});
-
-// GET USER
-app.get('/user/:u', (req,res)=>{
-let user = users.find(x=>x.username===req.params.u);
-res.send(user);
-});
-
-/* ================= RUN ================= */
-app.listen(3000, () => console.log('RUNNING http://localhost:3000'));
