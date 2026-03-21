@@ -21,17 +21,23 @@ header .lang-toggle:hover, header .back-dashboard:hover {background:#ffd786;}
 main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
 .card {background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:20px; width:280px; height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 6px 20px rgba(0,0,0,0.4); cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
 .card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
-.card img {max-width:70px; margin-bottom:12px; filter: drop-shadow(2px 2px 5px #000);}
+.card img {max-width:70px; margin-bottom:12px;}
 .card h2 {margin:0; font-size:20px; text-align:center;}
 #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
+.section-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:15px; padding:20px; margin:15px; box-shadow:0 6px 20px rgba(0,0,0,0.4); transition:0.3s;}
+.section-card:hover {transform:translateY(-5px); box-shadow:0 10px 25px rgba(0,0,0,0.5);}
+.alert {padding:10px 15px; border-radius:10px; margin:10px 0; font-weight:bold;}
+.alert-success {background:#1abc9c; color:#0b1d3a;}
+.alert-warning {background:#ff9f1c; color:#1c1c1c;}
 </style>
 </head>
 <body><div id="loginPage">
   <div id="loginBox">
     <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
-    <input type="text" id="username" placeholder="Username">
+    <input type="text" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
-    <button id="loginBtn" onclick="guestLogin()">Enter as Guest</button>
+    <button id="loginBtn" onclick="startApp()">Login</button>
+    <button id="guestBtn" onclick="startApp()">Enter as Guest</button>
     <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
 </div><header>
@@ -51,7 +57,7 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
   </div>
   <div class="card" onclick="loadSection('fx')">
     <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
-    <h2>FX</h2>
+    <h2>FX / Send Money Worldwide</h2>
   </div>
   <div class="card" onclick="loadSection('commodities')">
     <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
@@ -72,14 +78,18 @@ function toggleLanguage(){
   document.body.dir=isArabic?'rtl':'ltr';
   document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
   document.getElementById('loginTitle').innerHTML=`<img src='https://i.ibb.co/2s4Wp2v/global-trade-logo.png' style='width:55px; vertical-align:middle;'> ${isArabic?'تسجيل الدخول':'Login'}`;
-  document.getElementById('loginBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
+  document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
+  document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
   document.querySelectorAll('.card h2').forEach((h2,i)=>{
-    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    const texts=[['Stocks','Crypto','FX / Send Money Worldwide','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية / إرسال الأموال عالمياً','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
     h2.innerText=isArabic?texts[1][i]:texts[0][i];
   });
-  if(isArabic){
-    document.getElementById('sectionContent').innerHTML='';
-  }
+}
+
+function startApp(){
+  document.getElementById('loginPage').style.display='none';
+  document.querySelector('header').style.display='flex';
+  document.querySelector('main').style.display='flex';
 }
 
 function backToDashboard(){
@@ -87,30 +97,25 @@ function backToDashboard(){
   document.querySelector('main').style.display='flex';
 }
 
-function guestLogin(){
-  document.getElementById('loginPage').style.display='none';
-  document.querySelector('header').style.display='flex';
-  document.querySelector('main').style.display='flex';
-}
-
 function loadSection(section){
   document.querySelector('main').style.display='none';
-  const sec=document.getElementById('sectionContent');
-  sec.style.display='block';
+  const sectionDiv=document.getElementById('sectionContent');
+  sectionDiv.style.display='block';
+  // Clear previous content
+  sectionDiv.innerHTML='';
+
   if(section==='stocks'){
-    sec.innerHTML=`<h2>${isArabic?'الأسهم':'Stocks'}</h2><p>${isArabic?'أسعار الأسهم المباشرة من Finnhub':'Live stock prices from Finnhub'}</p>`;
-  }else if(section==='crypto'){
-    sec.innerHTML=`<h2>${isArabic?'العملات الرقمية':'Crypto'}</h2><p>${isArabic?'أسعار العملات الرقمية المباشرة من Finnhub':'Live crypto prices from Finnhub'}</p>`;
-  }else if(section==='fx'){
-    sec.innerHTML=`<h2>${isArabic?'العملات الأجنبية':'FX'}</h2><p>${isArabic?'أسعار العملات الحية وتحويل الأموال':'Live FX rates & send money worldwide'}</p>`;
-  }else if(section==='commodities'){
-    sec.innerHTML=`<h2>${isArabic?'الذهب والنفط':'Gold & Oil'}</h2><p>${isArabic?'أسعار الذهب والنفط المباشرة':'Live Gold & Oil prices'}</p>`;
-  }else if(section==='soccer'){
-    sec.innerHTML=`<h2>${isArabic?'توقعات كرة القدم':'Soccer Predictions'}</h2><p>${isArabic?'توقعات المباريات والأسواق الرياضية':'Match predictions and betting markets'}</p>`;
-  }else if(section==='learn'){
-    sec.innerHTML=`<h2>${isArabic?'تعلم / اتصل بنا':'Learn / Contact Us'}</h2>
-    <p>${isArabic?'شركة جلوبال تريد: تحويل الأموال والتداول العالمي':'Global Trade: Trading and sending money worldwide'}</p>
-    <p>${isArabic?'اتصل بنا: +218 912345678':'Contact us: +218 912345678'}</p>`;
+    sectionDiv.innerHTML=`<div class='section-card alert alert-success'>Stocks live prices (via Finnhub API)</div>`;
+  } else if(section==='crypto'){
+    sectionDiv.innerHTML=`<div class='section-card alert alert-success'>Crypto live prices (via Finnhub API)</div>`;
+  } else if(section==='fx'){
+    sectionDiv.innerHTML=`<div class='section-card alert alert-success'>FX Rates USD/EUR/LYD and Send Money Worldwide Interface</div>`;
+  } else if(section==='commodities'){
+    sectionDiv.innerHTML=`<div class='section-card alert alert-success'>Gold & Oil Prices, Buy/Sell Indicators</div>`;
+  } else if(section==='soccer'){
+    sectionDiv.innerHTML=`<div class='section-card alert alert-success'>Soccer Predictions, Betting Markets, Team Logos, Interactive Matches</div>`;
+  } else if(section==='learn'){
+    sectionDiv.innerHTML=`<div class='section-card alert alert-success'>Learn / Contact Us, Libyan Banks: North African Bank / Masraf Shamal Afrika included, Testimonials, Company Info</div>`;
   }
 }
 </script></body>
