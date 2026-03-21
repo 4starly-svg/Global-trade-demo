@@ -3,16 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade</title>
+<title>Global Trade Platform</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 
 <style>
-
-/* ===== PREMIUM BANK STYLE ===== */
 body {
     margin:0;
     font-family: 'Segoe UI', sans-serif;
     background:#0b1c2c;
     color:#e6edf3;
+}
+
+/* ===== LANGUAGE SWITCH ===== */
+.lang {
+    position:absolute;
+    top:15px;
+    right:20px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#c9a227;
 }
 
 /* ===== LOGIN ===== */
@@ -33,7 +46,7 @@ body {
     box-shadow:0 0 30px rgba(0,0,0,0.5);
 }
 
-input {
+.login-box input {
     width:100%;
     padding:12px;
     margin:10px 0;
@@ -41,7 +54,6 @@ input {
     border-radius:6px;
 }
 
-/* BUTTONS */
 button {
     width:100%;
     padding:12px;
@@ -55,18 +67,10 @@ button {
 .primary { background:#c9a227; color:black; }
 .secondary { background:#334e68; color:white; }
 
-/* LANGUAGE */
-.lang {
-    position:absolute;
-    top:15px;
-    right:20px;
-    cursor:pointer;
-}
-
 /* ===== DASHBOARD ===== */
 #dashboard {
     display:none;
-    padding:20px;
+    padding:30px;
 }
 
 .grid {
@@ -78,21 +82,25 @@ button {
 
 .card {
     background:#102a43;
-    padding:30px;
+    padding:40px;
     text-align:center;
     border-radius:12px;
     cursor:pointer;
     transition:0.3s;
+    font-weight:bold;
+    font-size:1.2em;
 }
 
 .card:hover {
     background:#1c3d5a;
+    box-shadow:0 0 20px #c9a227;
 }
 
-/* ===== SUB PAGES ===== */
+/* ===== SECTIONS ===== */
 .section {
     display:none;
     text-align:center;
+    padding:20px;
 }
 
 .list-item {
@@ -102,153 +110,188 @@ button {
     background:#102a43;
     border-radius:8px;
     cursor:pointer;
+    transition:0.3s;
 }
 
+.list-item:hover {
+    background:#1c3d5a;
+    box-shadow:0 0 15px #c9a227;
+}
+
+/* ===== WALLETS ===== */
+#walletDisplay {
+    margin-top:20px;
+    font-weight:bold;
+    font-size:1.1em;
+}
+
+/* ===== DEPOSITS ===== */
+input, select {
+    width:300px;
+    padding:10px;
+    margin:5px 0;
+    border-radius:6px;
+    border:none;
+}
 </style>
 </head>
-
 <body>
 
-<!-- 🌍 LANGUAGE -->
+<!-- LANGUAGE SWITCH -->
 <div class="lang" onclick="toggleLang()">EN / AR</div>
 
-<!-- 🔐 LOGIN -->
+<!-- LOGIN PAGE -->
 <div id="loginPage">
     <div class="login-box">
         <h2 id="title">Global Trade</h2>
-
         <input id="email" placeholder="Email">
         <input id="password" placeholder="Password" type="password">
-
-        <button class="primary" onclick="login()" id="loginBtn">Login</button>
-        <button class="secondary" onclick="guest()" id="guestBtn">Enter as Guest</button>
+        <button class="primary" id="loginBtn" onclick="login()">Login</button>
+        <button class="secondary" id="guestBtn" onclick="guest()">Enter as Guest</button>
     </div>
 </div>
 
-<!-- 📊 DASHBOARD -->
+<!-- DASHBOARD -->
 <div id="dashboard">
-
-<h2 style="text-align:center;" id="dashboardTitle">Dashboard</h2>
-
-<div class="grid">
-    <div class="card" onclick="openSection('stocks')">Stocks</div>
-    <div class="card" onclick="openSection('crypto')">Crypto</div>
-    <div class="card" onclick="openSection('fx')">FX</div>
-    <div class="card" onclick="openSection('gold')">Gold & Oil</div>
-    <div class="card" onclick="openSection('learn')">Learn</div>
+    <h2 style="text-align:center;" id="dashboardTitle">Dashboard</h2>
+    <div id="walletDisplay">Balance: $0</div>
+    <div class="grid">
+        <div class="card" onclick="openSection('stocks')">Stocks</div>
+        <div class="card" onclick="openSection('crypto')">Crypto</div>
+        <div class="card" onclick="openSection('fx')">FX</div>
+        <div class="card" onclick="openSection('gold')">Gold & Oil</div>
+        <div class="card" onclick="openSection('learn')">Learn / Contact Us</div>
+    </div>
 </div>
 
-</div>
-
-<!-- 📈 STOCKS LIST -->
+<!-- STOCKS SECTION -->
 <div id="stocks" class="section">
     <h2>Stocks</h2>
-
     <div class="list-item" onclick="openStock('TSLA')">Tesla</div>
     <div class="list-item" onclick="openStock('NVDA')">NVIDIA</div>
     <div class="list-item" onclick="openStock('AMD')">AMD</div>
-
     <button onclick="back()">Back</button>
 </div>
 
-<!-- 📊 STOCK DETAILS -->
+<!-- STOCK DETAILS -->
 <div id="stockDetails" class="section">
     <h2 id="stockName"></h2>
-
     <p>High: ---</p>
     <p>Low: ---</p>
     <p>Open: ---</p>
-
     <button onclick="openChart()">View Chart</button>
     <button onclick="backToStocks()">Back</button>
 </div>
 
-<!-- 📉 CHART PAGE -->
+<!-- STOCK CHART -->
 <div id="chartPage" class="section">
     <h2>Chart</h2>
-
     <iframe id="chartFrame" width="90%" height="400"></iframe>
-
     <button onclick="backToDetails()">Back</button>
 </div>
 
-<script>
+<!-- LEARN / CONTACT -->
+<div id="learn" class="section">
+    <h2>Learn / Contact Us</h2>
+    <img src="https://via.placeholder.com/150" alt="Logo" style="margin:20px;">
+    <p>Welcome to Global Trade. We provide fast trading with Libyan banks and USDT.</p>
+    <h3>Our Bank Partners:</h3>
+    <ul>
+        <li>Sahara Bank</li>
+        <li>Wahda Bank</li>
+        <li>Commerce & Development Bank</li>
+    </ul>
+    <p>Email: contact@globaltrade.ly</p>
+    <p>Phone: +218 XXX XXX XXX</p>
+    <button onclick="back()">Back</button>
+</div>
 
-/* ===== LOGIN ===== */
+<script>
+// Firebase init
+const firebaseConfig = {
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+let currentUser = null;
+let arabic = false;
+
+// LOGIN / GUEST
 function login(){
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+    auth.signInWithEmailAndPassword(email, pass)
+    .then(()=>loadDashboard())
+    .catch(()=>alert("Login failed"));
+}
+function guest(){ loadDashboard(); }
+
+function loadDashboard(){
     document.getElementById("loginPage").style.display="none";
     document.getElementById("dashboard").style.display="block";
+    updateWalletUI();
 }
 
-function guest(){
-    localStorage.setItem("guest",true);
-    login();
+// WALLET (local for guest / firebase for user)
+function updateWalletUI(){
+    let display = document.getElementById("walletDisplay");
+    if(currentUser){
+        db.collection("users").doc(currentUser.uid).get()
+        .then(doc=>{
+            if(doc.exists){
+                display.innerText = "Balance: $" + doc.data().balance;
+            }
+        });
+    } else {
+        display.innerText = "Balance: $50000";
+    }
 }
 
-/* ===== NAVIGATION ===== */
+// NAVIGATION
 function openSection(sec){
     document.getElementById("dashboard").style.display="none";
+    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
     document.getElementById(sec).style.display="block";
 }
+function back(){ document.querySelectorAll(".section").forEach(s=>s.style.display="none"); document.getElementById("dashboard").style.display="block"; }
 
-function back(){
-    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-    document.getElementById("dashboard").style.display="block";
-}
-
-/* ===== STOCK FLOW ===== */
+// STOCK FLOW
 let currentStock="";
-
 function openStock(symbol){
     currentStock = symbol;
     document.getElementById("stocks").style.display="none";
     document.getElementById("stockDetails").style.display="block";
     document.getElementById("stockName").innerText = symbol;
 }
-
 function openChart(){
     document.getElementById("stockDetails").style.display="none";
     document.getElementById("chartPage").style.display="block";
-
-    document.getElementById("chartFrame").src =
-    "https://s.tradingview.com/widgetembed/?symbol=" + currentStock;
+    document.getElementById("chartFrame").src = "https://s.tradingview.com/widgetembed/?symbol=" + currentStock;
 }
+function backToStocks(){ document.getElementById("stockDetails").style.display="none"; document.getElementById("stocks").style.display="block"; }
+function backToDetails(){ document.getElementById("chartPage").style.display="none"; document.getElementById("stockDetails").style.display="block"; }
 
-function backToStocks(){
-    document.getElementById("stockDetails").style.display="none";
-    document.getElementById("stocks").style.display="block";
-}
-
-function backToDetails(){
-    document.getElementById("chartPage").style.display="none";
-    document.getElementById("stockDetails").style.display="block";
-}
-
-/* ===== LANGUAGE SYSTEM ===== */
-let arabic = false;
-
+// LANGUAGE
 function toggleLang(){
-
     arabic = !arabic;
-
     if(arabic){
         document.body.dir="rtl";
-
         document.getElementById("title").innerText="جلوبال تريد";
         document.getElementById("loginBtn").innerText="تسجيل الدخول";
         document.getElementById("guestBtn").innerText="الدخول كزائر";
         document.getElementById("dashboardTitle").innerText="لوحة التحكم";
-
     } else {
         document.body.dir="ltr";
-
         document.getElementById("title").innerText="Global Trade";
         document.getElementById("loginBtn").innerText="Login";
         document.getElementById("guestBtn").innerText="Enter as Guest";
         document.getElementById("dashboardTitle").innerText="Dashboard";
     }
 }
-
 </script>
 
 </body>
