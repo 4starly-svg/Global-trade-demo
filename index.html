@@ -1,59 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard 2050 - Real-Time</title>
+<title>Global Trade Capital Dashboard 2050</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
-body {margin:0; font-family:'Segoe UI', sans-serif; background:#f4f4f4; color:#1c1c1c;}
-#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:linear-gradient(135deg, #1c1c1c 0%, #3a3a3a 100%);}
-#loginBox {background:#ffffff; padding:50px; border-radius:25px; width:400px; display:flex; flex-direction:column; align-items:center; gap:25px; box-shadow:0 15px 35px rgba(0,0,0,0.5);}
-#loginBox h2 {margin:0; font-size:32px; display:flex; align-items:center; gap:15px; color:#003366;}
-input {width:100%; padding:18px; border-radius:12px; border:1px solid #ccc; font-size:18px; background:#f4f4f4; color:#1c1c1c;}
-button {width:100%; padding:18px; border:none; border-radius:12px; font-size:18px; cursor:pointer; background:#003366; color:#ffffff; font-weight:bold; transition:0.3s;}
-button:hover {background:#0055aa;}
-.lang-toggle-login {cursor:pointer; margin-top:10px; background:#003366; color:white; padding:12px 20px; border-radius:10px; font-weight:bold;}
-header {display:none; background:#003366; color:white; padding:20px 40px; justify-content:space-between; align-items:center;}
-header h1 {margin:0; display:flex; align-items:center; gap:15px; font-size:28px; color:#ffcc00;}
-header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffcc00; color:#003366; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
-header .lang-toggle:hover, header .back-dashboard:hover {background:#ffd700;}
+/* --- Base Styles --- */
+body {margin:0; font-family:'Segoe UI', sans-serif; background:#f5f5f5; color:#1c1c1c;}
+#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:linear-gradient(135deg, #eaeaea 0%, #c7c7c7 100%);}
+#loginBox {background:rgba(255,255,255,0.95); padding:50px; border-radius:25px; width:400px; display:flex; flex-direction:column; align-items:center; gap:25px; box-shadow:0 15px 35px rgba(0,0,0,0.3);}
+#loginBox h2 {margin:0; font-size:32px; color:#0b1d3a; display:flex; align-items:center; gap:15px;}
+input {width:100%; padding:18px; border-radius:12px; border:1px solid #0b1d3a; font-size:18px; background:#ffffff; color:#1c1c1c;}
+button {width:100%; padding:18px; border:none; border-radius:12px; font-size:18px; cursor:pointer; background:#0b1d3a; color:#ffc16a; font-weight:bold; transition:0.3s;}
+button:hover {background:#1b2a48;}
+.lang-toggle-login {cursor:pointer; margin-top:10px; background:#1b2a48; color:white; padding:12px 20px; border-radius:10px; font-weight:bold;}
+header {display:none; background:#0b1d3a; color:white; padding:20px 40px; justify-content:space-between; align-items:center;}
+header h1 {margin:0; display:flex; align-items:center; gap:15px; font-size:28px; color:#ffc16a;}
+header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffc16a; color:#0b1d3a; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
+header .lang-toggle:hover, header .back-dashboard:hover {background:#ffd786;}
 main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
-.card {background:#e6f0ff; border-radius:20px; width:280px; height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 6px 20px rgba(0,0,0,0.4); cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
-.card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+.card {background:#ffffff; border-radius:20px; width:280px; height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 6px 20px rgba(0,0,0,0.2); cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
+.card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.4);}
 .card img {max-width:70px; margin-bottom:12px;}
 .card h2 {margin:0; font-size:20px; text-align:center;}
 #sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
-.audio-player {margin-top:15px; width:100%; text-align:center;}
-.table-section {width:100%; overflow-x:auto;}
-.table-section table {width:100%; border-collapse:collapse;}
-.table-section th, .table-section td {padding:12px; border:1px solid #ccc; text-align:center;}
-.table-section th {background:#003366; color:white;}
+.section-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+.section-header h2 {margin:0; color:#0b1d3a;}
+.table {width:100%; border-collapse:collapse;}
+.table th, .table td {border:1px solid #0b1d3a; padding:12px; text-align:center;}
+.table th {background:#1b2a48; color:#ffc16a;}
+.wallet {background:#eaeaea; padding:20px; border-radius:20px; margin-bottom:20px;}
+.audio-player {margin:20px 0;}
 </style>
 </head>
-<body>
-
-<div id="loginPage">
+<body><div id="loginPage">
   <div id="loginBox">
     <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
-    <button id="loginBtn" onclick="startApp()">Login</button>
-    <button id="guestBtn" onclick="startApp()">Enter as Guest</button>
+    <button id="loginBtn" onclick="login()">Login</button>
+    <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
     <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
-</div>
-
-<header>
+</div><header>
   <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:45px;"> Global Trade Capital</h1>
   <div>
     <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
     <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
   </div>
-</header>
-
-<main>
+</header><main>
   <div class="card" onclick="loadSection('stocks')">
     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
     <h2>Stocks</h2>
@@ -64,33 +60,39 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
   </div>
   <div class="card" onclick="loadSection('fx')">
     <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
-    <h2>FX / Send Money</h2>
+    <h2>FX</h2>
   </div>
   <div class="card" onclick="loadSection('commodities')">
     <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
     <h2>Gold & Oil</h2>
   </div>
   <div class="card" onclick="loadSection('soccer')">
-    <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
+    <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer Predictions">
     <h2>Soccer Predictions</h2>
   </div>
   <div class="card" onclick="loadSection('learn')">
     <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
     <h2>Learn / Contact Us</h2>
   </div>
-</main>
-
-<div id="sectionContent"></div>
-
-<script>
-// Login simulation
+</main><div id="sectionContent"></div><div class="audio-player">
+  <audio controls>
+    <source src="audio/global_trade_arabic.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+</div><script>
+// --- Simple Login (No Firebase) ---
+function login(){
+  startApp();
+}
+function guestLogin(){
+  startApp();
+}
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
 }
 
-// Arabic toggle
 let isArabic=false;
 function toggleLanguage(){
   isArabic=!isArabic;
@@ -100,63 +102,34 @@ function toggleLanguage(){
   document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
   document.querySelectorAll('.card h2').forEach((h2,i)=>{
-    const texts=[['Stocks','Crypto','FX / Send Money','Gold & Oil','Soccer Predictions','Learn / Contact Us'],
-                 ['الأسهم','العملات الرقمية','العملات الأجنبية / إرسال الأموال','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
     h2.innerText=isArabic?texts[1][i]:texts[0][i];
   });
 }
 
-// Back to Dashboard
 function backToDashboard(){
   document.getElementById('sectionContent').style.display='none';
   document.querySelector('main').style.display='flex';
 }
 
-// Load section with real/dummy placeholders
 function loadSection(name){
   document.querySelector('main').style.display='none';
-  const section=document.getElementById('sectionContent');
-  section.style.display='block';
-  let html='';
-  switch(name){
-    case 'stocks':
-      html='<h2>Stocks (dummy data)</h2><p>Coming soon...</p>';
-      break;
-    case 'crypto':
-      html='<h2>Crypto</h2><div class="table-section"><table><tr><th>Coin</th><th>Price</th><th>24h %</th></tr><tr><td>BTC</td><td>$26,000</td><td>+1.2%</td></tr><tr><td>ETH</td><td>$1,600</td><td>-0.5%</td></tr></table></div>';
-      break;
-    case 'fx':
-      html='<h2>FX / Send Money</h2><p>Send money worldwide peer-to-peer. Rates updated in real-time.</p><div class="table-section"><table><tr><th>Currency Pair</th><th>Rate</th></tr><tr><td>USD/LYD</td><td>5.08</td></tr><tr><td>EUR/LYD</td><td>5.40</td></tr></table></div>';
-      break;
-    case 'commodities':
-      html='<h2>Gold & Oil</h2><div class="table-section"><table><tr><th>Commodity</th><th>Price</th></tr><tr><td>Gold</td><td>$2,000/oz</td></tr><tr><td>Oil</td><td>$82/barrel</td></tr></table></div>';
-      break;
-    case 'soccer':
-      html=`<h2>Soccer Predictions</h2>
-      <ul>
-        <li>Al Ahly vs Zamalek – Bet Now – Contact: +218XXXXXXXXX</li>
-        <li>Esperance vs Raja – Bet Now – Contact: +218XXXXXXXXX</li>
-      </ul>`;
-      break;
-    case 'learn':
-      html=`<h2>Learn / Contact Us</h2>
-      <p>Global Trade: Send money, trade crypto, peer-to-peer transfers worldwide.</p>
-      <ul>
-        <li>North African Bank / مصرف شمال أفريقيا</li>
-        <li>Bank of Libya</li>
-        <li>Commercial Bank</li>
-      </ul>
-      <div class="audio-player">
-        <audio controls>
-          <source src="global_trade_intro.mp3" type="audio/mpeg">
-          Your browser does not support the audio element.
-        </audio>
-      </div>`;
-      break;
+  const sectionDiv=document.getElementById('sectionContent');
+  sectionDiv.style.display='block';
+  if(name==='stocks'){
+    sectionDiv.innerHTML=`<div class='section-header'><h2>Stocks</h2></div><p>Dummy data for stocks.</p>`;
+  } else if(name==='crypto'){
+    sectionDiv.innerHTML=`<div class='section-header'><h2>Crypto</h2></div><p>Live crypto prices placeholder.</p>`;
+  } else if(name==='fx'){
+    sectionDiv.innerHTML=`<div class='section-header'><h2>FX / Send Money Worldwide</h2></div><p>Live FX rates placeholder.</p>`;
+  } else if(name==='commodities'){
+    sectionDiv.innerHTML=`<div class='section-header'><h2>Gold & Oil</h2></div><p>Live gold and oil prices placeholder.</p>`;
+  } else if(name==='soccer'){
+    sectionDiv.innerHTML=`<div class='section-header'><h2>Soccer Prediction Market</h2></div><p>Upcoming matches, prediction buttons (Win/Draw/Lose) placeholder.</p>`;
+  } else if(name==='learn'){
+    sectionDiv.innerHTML=`<div class='section-header'><h2>Learn / Contact Us</h2></div>
+    <p>Global Trade: Send money worldwide, trade crypto, soccer predictions. Contact us at Libyan phone numbers. Testimonials and bank logos included.</p>`;
   }
-  section.innerHTML=html;
 }
-</script>
-
-</body>
+</script></body>
 </html>
