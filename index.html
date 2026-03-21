@@ -1,204 +1,279 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Global Trade Capital</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Global Trade System</title>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getFirestore, doc, setDoc, getDoc, updateDoc, arrayUnion
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let currentUser = null;
-let balance = 0;
-
-// AUTH
-window.register = async () => {
-  await setDoc(doc(db,"users",emailR.value),{
-    password: passR.value,
-    balance:0,
-    bets:[],
-    transactions:[]
-  });
-  alert("Registered");
-};
-
-window.login = async () => {
-  const ref = doc(db,"users",email.value);
-  const snap = await getDoc(ref);
-
-  if(!snap.exists()) return alert("User not found");
-
-  const data = snap.data();
-  if(data.password !== pass.value) return alert("Wrong password");
-
-  currentUser = email.value;
-  balance = data.balance;
-
-  auth.style.display="none";
-  appBox.style.display="block";
-  updateBalance();
-};
-
-// BALANCE
-function updateBalance(){
-  bal.innerText = "Balance: " + balance.toFixed(2) + " USDT";
-}
-
-// WALLET
-window.wallet = () => {
-  content.innerHTML = `
-  <div class="container">
-
-    <div class="card">
-      <h3>Deposit (USDT)</h3>
-      <input id="addr" placeholder="Your Wallet Address">
-      <input id="amt" placeholder="Amount">
-      <button onclick="deposit()">Request Deposit</button>
-    </div>
-
-    <div class="card">
-      <h3>Withdraw</h3>
-      <input id="waddr" placeholder="Wallet Address">
-      <input id="wamt" placeholder="Amount">
-      <button onclick="withdraw()">Request Withdrawal</button>
-    </div>
-
-  </div>`;
-};
-
-window.deposit = async () => {
-  await updateDoc(doc(db,"users",currentUser),{
-    transactions: arrayUnion({
-      type:"deposit",
-      amount:amt.value,
-      address:addr.value,
-      status:"pending"
-    })
-  });
-  alert("Deposit request sent");
-};
-
-window.withdraw = async () => {
-  if(wamt.value > balance) return alert("Not enough");
-
-  await updateDoc(doc(db,"users",currentUser),{
-    transactions: arrayUnion({
-      type:"withdraw",
-      amount:wamt.value,
-      address:waddr.value,
-      status:"pending"
-    })
-  });
-
-  alert("Withdraw request sent");
-};
-
-// MATCHES
-window.loadMatches = () => {
-  const matches = [
-    ["Real Madrid","Barcelona"],
-    ["Liverpool","Chelsea"]
-  ];
-
-  content.innerHTML = `<div class="container">`;
-
-  matches.forEach(m=>{
-    let odds = (Math.random()*1.5+1.5).toFixed(2);
-
-    content.innerHTML += `
-    <div class="card">
-      ${m[0]} vs ${m[1]}
-      <button onclick="bet('${m[0]}',${odds})">${m[0]} (${odds}x)</button>
-    </div>`;
-  });
-
-  content.innerHTML += `</div>`;
-};
-
-// BET
-window.bet = async (team, odds) => {
-
-  let amount = 5;
-
-  if(balance < amount) return alert("No balance");
-
-  balance -= amount;
-
-  await updateDoc(doc(db,"users",currentUser),{
-    balance,
-    bets: arrayUnion({
-      team,
-      odds,
-      amount,
-      status:"pending",
-      date:new Date().toLocaleString()
-    })
-  });
-
-  updateBalance();
-  alert("Bet placed");
-};
-
-</script>
+<script src="https://s3.tradingview.com/tv.js"></script>
 
 <style>
-body { background:#0b0b0b; color:#fff; font-family:Arial; text-align:center; }
-.logo { font-size:28px; color:#00ffcc; margin:20px; }
-.container { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
-.card { background:#1a1a1a; padding:20px; width:260px; border-radius:10px; }
-button { width:100%; padding:10px; margin-top:10px; background:#00ffcc; border:none; }
-input { width:90%; padding:8px; margin-top:5px; }
-</style>
+body {
+    margin:0;
+    font-family:Arial;
+    background:#0a0f1c;
+    color:white;
+}
 
+/* CENTER EVERYTHING */
+.center {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* LOGIN */
+#loginPage {
+    height:100vh;
+    flex-direction:column;
+}
+
+.login-box {
+    background:#1f2937;
+    padding:30px;
+    border-radius:12px;
+    width:300px;
+    text-align:center;
+}
+
+input {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:6px;
+    border:none;
+}
+
+/* BUTTONS */
+button {
+    padding:10px;
+    margin:5px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.buy { background:green; color:white; }
+.sell { background:red; color:white; }
+
+/* DASHBOARD */
+#dashboard {
+    display:none;
+    padding:20px;
+}
+
+/* TABLE */
+table {
+    width:100%;
+    text-align:center;
+    background:#111827;
+    border-radius:10px;
+}
+
+td, th {
+    padding:8px;
+}
+
+/* ALERT */
+#alertBox {
+    position:fixed;
+    top:20px;
+    right:20px;
+    background:#111827;
+    padding:15px;
+    border-radius:10px;
+    display:none;
+}
+
+/* TRADE PANEL */
+#tradePanel {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:#111827;
+    padding:10px;
+    text-align:center;
+}
+</style>
 </head>
 
 <body>
 
-<div class="logo">GLOBAL TRADE CAPITAL</div>
-
-<div id="auth">
-<div class="container">
-
-<div class="card">
-<h3>Login</h3>
-<input id="email">
-<input id="pass" type="password">
-<button onclick="login()">Login</button>
+<!-- 🔐 LOGIN -->
+<div id="loginPage" class="center">
+    <div class="login-box">
+        <h2>Global Trade</h2>
+        <input placeholder="Email">
+        <input placeholder="Password" type="password">
+        <button onclick="enter()">Login</button>
+        <button onclick="guest()">Enter as Guest</button>
+    </div>
 </div>
 
-<div class="card">
-<h3>Register</h3>
-<input id="emailR">
-<input id="passR" type="password">
-<button onclick="register()">Register</button>
-</div>
+<!-- 📊 DASHBOARD -->
+<div id="dashboard">
+
+<h2 style="text-align:center;">🔥 Ultimate Trading Dashboard</h2>
+
+<!-- CHART -->
+<div id="chart" style="height:400px;"></div>
+
+<!-- SCANNER -->
+<h3>🚀 Market Scanner</h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Price</th>
+<th>%</th>
+<th>Rel Vol</th>
+<th>Float</th>
+<th>News</th>
+<th>Signal</th>
+<th>Trade</th>
+</tr>
+</thead>
+<tbody id="scanner"></tbody>
+</table>
 
 </div>
+
+<!-- ALERT -->
+<div id="alertBox"></div>
+
+<audio id="sound">
+<source src="https://www.soundjay.com/buttons/beep-01a.mp3">
+</audio>
+
+<!-- TRADE PANEL -->
+<div id="tradePanel">
+<input id="symbol" placeholder="Symbol">
+<input id="amount" placeholder="$ Amount">
+<button class="buy" onclick="buy()">BUY</button>
+<button class="sell" onclick="sell()">SELL</button>
 </div>
 
-<div id="appBox" style="display:none;">
+<script>
 
-<h3 id="bal"></h3>
+// LOGIN
+function enter() {
+    document.getElementById("loginPage").style.display="none";
+    document.getElementById("dashboard").style.display="block";
+    initChart("TSLA");
+}
 
-<div class="container">
-<div class="card" onclick="loadMatches()">⚽ Soccer</div>
-<div class="card" onclick="wallet()">💰 Wallet</div>
-</div>
+function guest() {
+    localStorage.setItem("guest", true);
+    enter();
+}
 
-<div id="content"></div>
+// ALERT
+function alertMe(msg){
+    let box = document.getElementById("alertBox");
+    box.innerText = msg;
+    box.style.display="block";
+    document.getElementById("sound").play();
+    setTimeout(()=>box.style.display="none",3000);
+}
 
-</div>
+// TRADE
+function buy(){
+    alert("BUY " + symbol.value);
+}
+function sell(){
+    alert("SELL " + symbol.value);
+}
+function select(symbolName){
+    document.getElementById("symbol").value = symbolName;
+}
+
+// CHART (REAL TRADINGVIEW)
+function initChart(sym){
+    new TradingView.widget({
+        container_id: "chart",
+        width: "100%",
+        height: 400,
+        symbol: sym,
+        interval: "5",
+        timezone: "Etc/UTC",
+        theme: "dark",
+        style: "1",
+        studies: ["RSI@tv-basicstudies","VWAP@tv-basicstudies"]
+    });
+}
+
+// DATA
+const API_KEY = "YOUR_FINNHUB_API_KEY";
+
+const stocks = ["TSLA","NVDA","AMD","ISPC","NVOS","GNS"];
+
+const floatData = {
+"ISPC":"Low","NVOS":"Low","GNS":"Low",
+"TSLA":"High","NVDA":"High","AMD":"High"
+};
+
+let volumeTrack = {};
+
+async function scan(){
+
+    let table = document.getElementById("scanner");
+    table.innerHTML="";
+
+    for(let s of stocks){
+
+        let res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${API_KEY}`);
+        let d = await res.json();
+
+        let price = d.c;
+        let change = d.dp;
+
+        let vol = d.v || Math.random()*1000000;
+
+        if(!volumeTrack[s]) volumeTrack[s]=vol;
+        let rel = vol / volumeTrack[s];
+        volumeTrack[s]=vol;
+
+        let float = floatData[s] || "Unknown";
+
+        let news = Math.random()>0.5;
+
+        let signal="WAIT", color="white";
+
+        if(change>5 && rel>1.5 && float=="Low" && news){
+            signal="🚀 BREAKOUT";
+            color="lime";
+            alertMe(s+" BREAKOUT");
+        }
+        else if(rel>2){
+            signal="⚡ VOLUME";
+            color="yellow";
+            alertMe(s+" VOLUME SPIKE");
+        }
+
+        if(rel>1.2 || change>2){
+
+            let row = document.createElement("tr");
+
+            row.innerHTML=`
+            <td>${s}</td>
+            <td>$${price}</td>
+            <td style="color:${change>=0?'lime':'red'}">${change}%</td>
+            <td>${rel.toFixed(2)}x</td>
+            <td>${float}</td>
+            <td>${news?'📰':''}</td>
+            <td style="color:${color}">${signal}</td>
+            <td><button onclick="select('${s}');initChart('${s}')">Trade</button></td>
+            `;
+
+            table.appendChild(row);
+        }
+    }
+}
+
+setInterval(scan,4000);
+scan();
+
+</script>
 
 </body>
 </html>
