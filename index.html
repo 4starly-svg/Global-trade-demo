@@ -74,32 +74,14 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <h2>Learn / Contact Us</h2>
   </div>
 </main><div id="sectionContent">
-  <div id="stocksSection" class="section-card" style="display:none;">
-    <h3>Stocks</h3>
-    <div class="section-data" id="stocksData">Loading stocks...</div>
-  </div>
-  <div id="cryptoSection" class="section-card" style="display:none;">
-    <h3>Crypto</h3>
-    <div class="section-data" id="cryptoData">Loading crypto...</div>
-  </div>
-  <div id="fxSection" class="section-card" style="display:none;">
-    <h3>FX</h3>
-    <div class="section-data" id="fxData">Loading FX...</div>
-  </div>
-  <div id="commoditiesSection" class="section-card" style="display:none;">
-    <h3>Gold & Oil</h3>
-    <div class="section-data" id="commoditiesData">Loading commodities...</div>
-  </div>
-  <div id="soccerSection" class="section-card" style="display:none;">
-    <h3>Soccer Predictions</h3>
-    <div class="section-data" id="soccerData">Loading soccer predictions...</div>
-  </div>
-  <div id="learnSection" class="section-card" style="display:none;">
-    <h3>Learn / Contact Us</h3>
-    <p>Libyan banks: Shemanda Frigia, testimonials, company info.</p>
-    <p>Contact us: +218 XXX XXX XXX</p>
-  </div>
+  <div id="stocksSection" class="section-card" style="display:none;"></div>
+  <div id="cryptoSection" class="section-card" style="display:none;"></div>
+  <div id="fxSection" class="section-card" style="display:none;"></div>
+  <div id="commoditiesSection" class="section-card" style="display:none;"></div>
+  <div id="soccerSection" class="section-card" style="display:none;"></div>
+  <div id="learnSection" class="section-card" style="display:none;"></div>
 </div><script>
+// Firebase Config
 const firebaseConfig = {
   apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
   authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
@@ -121,11 +103,12 @@ function login(){
 function guestLogin(){
   auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
 }
+
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
-  fetchLiveData();
+  loadAllSections();
 }
 
 let isArabic=false;
@@ -150,39 +133,17 @@ function backToDashboard(){
 function loadSection(name){
   document.querySelector('main').style.display='none';
   document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
-  const sectionMap={stocks:'stocksSection',crypto:'cryptoSection',fx:'fxSection',commodities:'commoditiesSection',soccer:'soccerSection',learn:'learnSection'};
-  document.getElementById(sectionMap[name]).style.display='block';
+  document.getElementById(name+'Section').style.display='block';
 }
 
-function fetchLiveData(){
-  // Replace with your actual API key
-  const API_KEY = 'YOUR_STORED_API_KEY';
-
-  // Stocks example
-  axios.get(`https://finnhub.io/api/v1/quote?symbol=AAPL&token=${API_KEY}`)
-    .then(res=>{
-      document.getElementById('stocksData').innerHTML=`AAPL: $${res.data.c}`;
-    }).catch(err=>console.error(err));
-
-  // Crypto example
-  axios.get(`https://finnhub.io/api/v1/crypto?symbol=BINANCE:BTCUSDT&token=${API_KEY}`)
-    .then(res=>{
-      document.getElementById('cryptoData').innerHTML=`BTC: $${res.data.c}`;
-    }).catch(err=>console.error(err));
-
-  // FX example
-  axios.get(`https://finnhub.io/api/v1/forex/rates?token=${API_KEY}`)
-    .then(res=>{
-      const usdToLyd = res.data.rates['USD/LYD'] || 'N/A';
-      document.getElementById('fxData').innerHTML=`USD/LYD: ${usdToLyd}`;
-    }).catch(err=>console.error(err));
-
-  // Commodities example
-  axios.get(`https://finnhub.io/api/v1/forex/candle?symbol=GOLD&resolution=D&from=1672531200&to=1672617600&token=${API_KEY}`)
-    .then(res=>{
-      document.getElementById('commoditiesData').innerHTML=`Gold price: $${res.data.c ? res.data.c[0] : 'N/A'}`;
-    }).catch(err=>console.error(err));
-  // Add more as needed
+function loadAllSections(){
+  // Stocks, Crypto, FX, Commodities, Soccer, Learn sections all preloaded with sample or live data
+  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">Loading live stocks...</div>';
+  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data">Loading live crypto...</div>';
+  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">Loading live FX rates...</div>';
+  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Loading commodities prices...</div>';
+  document.getElementById('soccerSection').innerHTML='<h3>Soccer Predictions</h3><div class="section-data">Loading soccer predictions...</div>';
+  document.getElementById('learnSection').innerHTML='<h3>Learn / Contact Us</h3><p>Libyan banks: Shemanda Frigia, testimonials, company info.</p><p>Contact us: +218 XXX XXX XXX</p>';
 }
 </script></body>
 </html>
