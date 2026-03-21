@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,64 +24,68 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
 .card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
 .card img {max-width:70px; margin-bottom:12px;}
 .card h2 {margin:0; font-size:20px; text-align:center;}
-#sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
+#sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none; color:white;}
+.section {display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px;}
+.section .item {background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:15px; padding:15px; width:220px; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.4); transition:0.3s;}
+.section .item:hover {transform:scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
+.section .item img {max-width:60px; margin-bottom:10px;}
+.section h3 {margin:5px 0; font-size:18px;}
 </style>
 </head>
-<body><div id="loginPage">
+<body>
+
+<div id="loginPage">
   <div id="loginBox">
     <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
-    <input type="text" id="username" placeholder="Username">
+    <input type="text" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
     <button id="loginBtn" onclick="login()">Login</button>
     <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
     <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
-</div><header>
+</div>
+
+<header>
   <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:45px;"> Global Trade Capital</h1>
   <div>
     <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
     <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
   </div>
-</header><main>
-  <div class="card" onclick="loadSection('stocks','sections/stocks.html')">
+</header>
+
+<main>
+  <div class="card" onclick="loadSection('stocks')">
     <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
     <h2>Stocks</h2>
   </div>
-  <div class="card" onclick="loadSection('crypto','sections/crypto.html')">
+  <div class="card" onclick="loadSection('crypto')">
     <img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
     <h2>Crypto</h2>
   </div>
-  <div class="card" onclick="loadSection('fx','sections/fx.html')">
+  <div class="card" onclick="loadSection('fx')">
     <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
     <h2>FX</h2>
   </div>
-  <div class="card" onclick="loadSection('commodities','sections/commodities.html')">
+  <div class="card" onclick="loadSection('commodities')">
     <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
     <h2>Gold & Oil</h2>
   </div>
-  <div class="card" onclick="loadSection('soccer','sections/soccer.html')">
+  <div class="card" onclick="loadSection('soccer')">
     <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
     <h2>Soccer Predictions</h2>
   </div>
-  <div class="card" onclick="loadSection('learn','sections/learn.html')">
+  <div class="card" onclick="loadSection('learn')">
     <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
     <h2>Learn / Contact Us</h2>
   </div>
-</main><div id="sectionContent"></div><script>
-function login(){
-  const user=document.getElementById('username').value;
-  const pass=document.getElementById('password').value;
-  if(user && pass){
-    startApp();
-  } else {
-    alert('Please enter username and password');
-  }
-}
+</main>
 
-function guestLogin(){
-  startApp();
-}
+<div id="sectionContent"></div>
 
+<script>
+// Guest login simulation (no Firebase)
+function login(){startApp();}
+function guestLogin(){startApp();}
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
@@ -102,15 +107,56 @@ function toggleLanguage(){
 }
 
 function backToDashboard(){
+  document.getElementById('sectionContent').innerHTML='';
   document.getElementById('sectionContent').style.display='none';
   document.querySelector('main').style.display='flex';
 }
 
-function loadSection(name,url){
+// --- Sections Data ---
+const sectionsData={
+  stocks:[
+    {name:'Apple',price:'$172',logo:'https://logo.clearbit.com/apple.com'},
+    {name:'Tesla',price:'$256',logo:'https://logo.clearbit.com/tesla.com'},
+    {name:'Amazon',price:'$145',logo:'https://logo.clearbit.com/amazon.com'}
+  ],
+  crypto:[
+    {name:'Bitcoin',price:'$28,500',logo:'https://cryptoicons.org/api/icon/btc/64'},
+    {name:'Ethereum',price:'$1,900',logo:'https://cryptoicons.org/api/icon/eth/64'},
+    {name:'Dogecoin',price:'$0.073',logo:'https://cryptoicons.org/api/icon/doge/64'}
+  ],
+  fx:[
+    {name:'USD/EUR',price:'0.91',logo:'https://cdn-icons-png.flaticon.com/512/197/197603.png'},
+    {name:'USD/LYD',price:'4.85',logo:'https://cdn-icons-png.flaticon.com/512/197/197484.png'},
+    {name:'USD/GBP',price:'0.82',logo:'https://cdn-icons-png.flaticon.com/512/197/197374.png'}
+  ],
+  commodities:[
+    {name:'Gold',price:'$2,040',logo:'https://cdn-icons-png.flaticon.com/512/616/616554.png'},
+    {name:'Oil',price:'$85',logo:'https://cdn-icons-png.flaticon.com/512/616/616493.png'}
+  ],
+  soccer:[
+    {name:'Manchester United',logo:'https://crests.football-data.org/66.svg'},
+    {name:'Real Madrid',logo:'https://crests.football-data.org/86.svg'},
+    {name:'Barcelona',logo:'https://crests.football-data.org/81.svg'}
+  ],
+  learn:[
+    {name:'Global Trade Capital','info':'We provide trading services worldwide.'},
+    {name:'Testimonials','info':'Best trading experience!'},
+    {name:'Banks','info':'Shemanda Frigia, North African Bank'}
+  ]
+};
+
+function loadSection(section){
   document.querySelector('main').style.display='none';
-  const sectionDiv=document.getElementById('sectionContent');
-  sectionDiv.style.display='block';
-  fetch(url).then(r=>r.text()).then(html=>{sectionDiv.innerHTML=html});
+  const div=document.getElementById('sectionContent');
+  div.style.display='block';
+  let html=`<div class='section'>`;
+  sectionsData[section].forEach(item=>{
+    html+=`<div class='item'><img src='${item.logo||''}' alt='${item.name}'><h3>${item.name}</h3>${item.price?`<p>${item.price}</p>`:item.info?`<p>${item.info}</p>`:''}</div>`;
+  });
+  html+='</div>';
+  div.innerHTML=html;
 }
-</script></body>
+</script>
+
+</body>
 </html>
