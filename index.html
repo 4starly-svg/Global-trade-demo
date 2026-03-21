@@ -2,32 +2,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard</title>
+<title>Global Trade Capital Dashboard - Full Premium v3</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-body {margin:0; font-family:'Segoe UI',sans-serif; background:#121212; color:#e0e0e0; display:flex; flex-direction:column; align-items:center;}
-h1,h2,h3,p {margin:0;}
-button {cursor:pointer; border:none; border-radius:12px; padding:14px 22px; font-weight:bold; transition:0.3s;}
-a {color:inherit; text-decoration:none;}
-.flex {display:flex; gap:20px; flex-wrap:wrap;}
-.center {justify-content:center; align-items:center;}
-#loginPage {width:100vw; height:100vh; display:flex; justify-content:center; align-items:center; background:#0a0a0a;}
-#loginBox {background:#1c1c1c; padding:50px; border-radius:25px; display:flex; flex-direction:column; align-items:center; gap:20px; width:380px;}
-#loginBox input {width:100%; padding:16px; border-radius:12px; border:none; background:#2e2e2e; color:white;}
-#loginBox button {width:100%; background:#ff6f61; color:white; font-size:16px;}
-#loginBox button:hover {background:#ff8f7f;}
-header {display:none; width:100%; background:#1a1a1a; padding:20px 40px; display:flex; justify-content:space-between; align-items:center; color:#ffd700;}
-header h1 {font-size:30px;}
-header .lang-toggle, header .back-dashboard {background:#ffd700; color:#1a1a1a; padding:10px 18px; border-radius:10px; transition:0.2s;}
-header .lang-toggle:hover, header .back-dashboard:hover {background:#ffe066;}
-main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
-.card {background:#222; border-radius:20px; width:220px; height:130px; display:flex; flex-direction:column; justify-content:center; align-items:center; font-weight:bold; font-size:19px; transition:0.3s;}
-.card:hover {background:#333; transform:scale(1.06);}
-#sectionContent {display:none; width:95%; max-width:1280px; margin:20px auto;}
-.section-card {background:#222; border-radius:20px; padding:25px; margin:12px 0;}
-.section-card h3 {margin-bottom:12px;}
-.section-data div {margin-bottom:10px; font-size:17px;}
-.payments button {margin:6px; background:#ff6f61; color:white;}
-.payments button:hover {background:#ff8f7f;}
+body {margin:0; font-family:'Segoe UI', sans-serif; background:#101025; color:#fff;}
+#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:#1a1a3f;}
+#loginBox {background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); padding:45px; border-radius:25px; width:400px; display:flex; flex-direction:column; align-items:center; gap:20px;}
+input {width:100%; padding:16px; border-radius:12px; border:none; font-size:18px; background:rgba(255,255,255,0.1); color:white;}
+button {width:100%; padding:16px; border:none; border-radius:12px; font-size:18px; cursor:pointer; background:#ff6f61; color:#fff; font-weight:bold; transition:0.3s;}
+button:hover {background:#ff8c75;}
+.lang-toggle-login {cursor:pointer; margin-top:10px; background:#2c2c55; color:white; padding:10px 18px; border-radius:10px; font-weight:bold;}
+header {display:none; background:#0b0b1f; color:white; padding:20px 30px; justify-content:space-between; align-items:center;}
+header h1 {margin:0; font-size:28px; color:#ff6f61;}
+header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ff6f61; color:#0b0b1f; border-radius:8px; padding:8px 12px; font-weight:bold; margin-left:10px; transition:0.2s;}
+header .lang-toggle:hover, header .back-dashboard:hover {background:#ff8c75;}
+main {display:none; flex-wrap:wrap; justify-content:center; padding:25px; gap:20px;}
+.card {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border-radius:15px; width:180px; height:80px; display:flex; justify-content:center; align-items:center; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s; font-size:18px; font-weight:bold; text-align:center;}
+.card:hover {transform:translateY(-8px) scale(1.05); box-shadow:0 8px 25px rgba(0,0,0,0.5);}
+#sectionContent {margin:20px auto; width:95%; max-width:1280px; display:none;}
+.section-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border-radius:12px; padding:15px; margin:12px 0; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
+.section-card h3 {margin:0 0 8px 0;}
+.section-data {margin-top:8px; font-size:16px; line-height:1.4;}
+.audio-container {margin-top:12px;}
+.payment-buttons {margin-top:10px; display:flex; flex-wrap:wrap; gap:12px;}
+.payment-buttons button {width:auto; padding:10px 18px; font-size:16px;}
 </style>
 </head>
 <body><div id="loginPage">
@@ -35,9 +33,9 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
     <h2 id="loginTitle">Login</h2>
     <input type="text" id="username" placeholder="Username">
     <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <button onclick="guestLogin()">Enter as Guest</button>
-    <button class="lang-toggle-login" onclick="toggleLanguage()">عربي</button>
+    <button id="loginBtn" onclick="login()">Login</button>
+    <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
+    <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
 </div><header>
   <h1>Global Trade Capital</h1>
@@ -49,79 +47,82 @@ main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25
   <div class="card" onclick="loadSection('stocks')">Stocks</div>
   <div class="card" onclick="loadSection('crypto')">Crypto</div>
   <div class="card" onclick="loadSection('fx')">FX</div>
-  <div class="card" onclick="loadSection('commodities')">Commodities</div>
+  <div class="card" onclick="loadSection('commodities')">Gold & Oil</div>
   <div class="card" onclick="loadSection('soccer')">Soccer Predictions</div>
-  <div class="card" onclick="loadSection('learn')">Learn / Contact Us</div>
-  <div class="card" onclick="loadSection('payments')">Payments</div>
+  <div class="card" onclick="loadSection('learn')">Learn / Contact</div>
 </main><div id="sectionContent">
-  <div id="stocksSection" class="section-card"></div>
-  <div id="cryptoSection" class="section-card"></div>
-  <div id="fxSection" class="section-card"></div>
-  <div id="commoditiesSection" class="section-card"></div>
-  <div id="soccerSection" class="section-card"></div>
-  <div id="learnSection" class="section-card"></div>
-  <div id="paymentsSection" class="section-card payments"></div>
+  <div id="stocksSection" class="section-card" style="display:none;"></div>
+  <div id="cryptoSection" class="section-card" style="display:none;"></div>
+  <div id="fxSection" class="section-card" style="display:none;"></div>
+  <div id="commoditiesSection" class="section-card" style="display:none;"></div>
+  <div id="soccerSection" class="section-card" style="display:none;"></div>
+  <div id="learnSection" class="section-card" style="display:none;"></div>
 </div><script>
-let isArabic=false;
-function login(){ startApp(); }
-function guestLogin(){ startApp(); }
+const FINNHUB_KEY = '7815da7ac2ab43ca8f4a4b73e10e';
+
+function login(){document.getElementById('loginPage').style.display='none';startApp();}
+function guestLogin(){document.getElementById('loginPage').style.display='none';startApp();}
+
 function startApp(){
-  document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
   loadAllSections();
 }
 
+let isArabic=false;
 function toggleLanguage(){
   isArabic=!isArabic;
   document.body.dir=isArabic?'rtl':'ltr';
   document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
-  document.querySelectorAll('main .card').forEach((card,i)=>{
-    const texts=[['Stocks','Crypto','FX','Commodities','Soccer Predictions','Learn / Contact Us','Payments'],['الأسهم','العملات الرقمية','العملات الأجنبية','السلع','توقعات كرة القدم','تعلم / اتصل بنا','المدفوعات']];
-    card.innerText=isArabic?texts[1][i]:texts[0][i];
-  });
   document.getElementById('loginTitle').innerText=isArabic?'تسجيل الدخول':'Login';
+  document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
+  document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
+  document.querySelectorAll('.card').forEach((el,i)=>{
+    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    el.innerText=isArabic?texts[1][i]:texts[0][i];
+  });
 }
 
 function backToDashboard(){
   document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
   document.querySelector('main').style.display='flex';
 }
+
 function loadSection(name){
   document.querySelector('main').style.display='none';
   document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
   document.getElementById(name+'Section').style.display='block';
 }
 
-async function loadAllSections(){
-  const FINNHUB_KEY='7815da7ac2ab43ca8f4a4b73e10e';
-  const stocks = ["AAPL","MSFT","XOM","CVX","JPM","GS"];
-  let stockHTML='';
-  stocks.forEach(s=>{ stockHTML+=`<div id="stock-${s}">${s} Loading...</div>`; });
-  document.getElementById('stocksSection').innerHTML=`<h3>Stocks</h3><div class="section-data">${stockHTML}</div>`;
-  stocks.forEach(async sym=>{
-    const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FINNHUB_KEY}`);
-    const data = await res.json();
-    document.getElementById(`stock-${sym}`).innerText=`${sym} ${data.c.toFixed(2)}`;
+function loadAllSections(){
+  // Stocks
+  const stocks=['AAPL','TSLA','AMZN','MSFT','NVDA'];
+  let stockHTML='<h3>Stocks</h3>';
+  stocks.forEach(sym=>{
+    stockHTML+=`<div class='section-data'>${sym}: <span id='${sym}'>Loading...</span></div>`;
+    fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=${FINNHUB_KEY}`).then(res=>res.json()).then(data=>{document.getElementById(sym).innerText=`$${data.c}`});
+  });
+  document.getElementById('stocksSection').innerHTML=stockHTML;
+
+  // Crypto
+  const crypto=['bitcoin','ethereum','bnb','usdt','xrp','ada','dogecoin','solana','link','dot','matic','ltc','shib'];
+  let cryptoHTML='<h3>Crypto</h3>';
+  fetch('https://api.coingecko.com/api/v3/simple/price?ids='+crypto.join(',')+'&vs_currencies=usd').then(res=>res.json()).then(data=>{
+    crypto.forEach(c=>cryptoHTML+=`<div class='section-data'>${c.toUpperCase()}: $${data[c].usd}</div>`);
+    document.getElementById('cryptoSection').innerHTML=cryptoHTML;
   });
 
-  const cryptoRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,cardano&vs_currencies=usd');
-  const cryptoData = await cryptoRes.json();
-  document.getElementById('cryptoSection').innerHTML=`<h3>Crypto</h3><div class="section-data"><div>BTC ${cryptoData.bitcoin.usd}</div><div>ETH ${cryptoData.ethereum.usd}</div><div>BNB ${cryptoData.binancecoin.usd}</div><div>ADA ${cryptoData.cardano.usd}</div></div>`;
+  // FX
+  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">USD/LYD: 5.07<br>EUR/USD: 1.09<br>GBP/USD: 1.25</div>';
 
-  try {
-    const fxRes = await fetch('https://open.er-api.com/v6/latest/USD');
-    const fxData = await fxRes.json();
-    document.getElementById('fxSection').innerHTML=`<h3>FX Rates</h3><div class="section-data"><div>USD/LYD ${fxData.rates.LYD} 🇱🇾</div><div>EUR/LYD ${(fxData.rates.EUR/fxData.rates.USD*fxData.rates.LYD).toFixed(2)} 🇪🇺</div><div>GBP/LYD ${(fxData.rates.GBP/fxData.rates.USD*fxData.rates.LYD).toFixed(2)} 🇬🇧</div></div>`;
-  } catch(e){console.log('FX API error',e);}
+  // Commodities
+  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Libyan Oil: $70<br>Gold: $1970<br>WTI: $72</div>';
 
-  document.getElementById('commoditiesSection').innerHTML='<h3>Commodities</h3><div class="section-data"><div>Libyan Oil 74 USD 🇴🇱</div><div>WTI 80 USD</div><div>Gold 1,950 USD</div></div>';
+  // Soccer Predictions
+  document.getElementById('soccerSection').innerHTML='<h3>Soccer Predictions</h3><div class="section-data">Upcoming Matches:<br>Team A vs Team B<br>Team C vs Team D<br>Contact: 91-494-8944</div>';
 
-  document.getElementById('soccerSection').innerHTML='<h3>Soccer Predictions</h3><div class="section-data"><div>Team A 🆚 Team B <img src="https://via.placeholder.com/40"></div><div>Team C 🆚 Team D <img src="https://via.placeholder.com/40"></div><p>For info contact: 91-494-8944</p></div>';
-
-  document.getElementById('learnSection').innerHTML='<h3>Learn / Contact Us</h3><p>Global Trade Capital helps you trade stocks, crypto, FX, and commodities. Send money worldwide with USDT, PayPal, CashAgent.</p><p>Libyan banks logos here...</p><audio controls><source src="audio_placeholder.mp3" type="audio/mpeg"></audio>';
-
-  document.getElementById('paymentsSection').innerHTML='<h3>Payments</h3><button>USDT</button><button>PayPal</button><button>CashAgent</button>';
+  // Learn / Contact
+  document.getElementById('learnSection').innerHTML='<h3>Learn / Contact</h3><p>Global Trade Capital - crypto, stocks, payments, soccer predictions.</p><div class="audio-container"><audio controls><source src="audio_global_trade.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio></div><div class="payment-buttons"><button>USDT</button><button>PayPal</button><button>CashAgent</button></div>';
 }
 </script></body>
 </html>
