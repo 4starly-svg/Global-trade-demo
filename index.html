@@ -3,275 +3,251 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade System</title>
-
-<script src="https://s3.tradingview.com/tv.js"></script>
+<title>Global Trade</title>
 
 <style>
+
+/* ===== PREMIUM BANK STYLE ===== */
 body {
     margin:0;
-    font-family:Arial;
-    background:#0a0f1c;
-    color:white;
+    font-family: 'Segoe UI', sans-serif;
+    background:#0b1c2c;
+    color:#e6edf3;
 }
 
-/* CENTER EVERYTHING */
-.center {
+/* ===== LOGIN ===== */
+#loginPage {
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-}
-
-/* LOGIN */
-#loginPage {
-    height:100vh;
     flex-direction:column;
 }
 
 .login-box {
-    background:#1f2937;
-    padding:30px;
+    background:#102a43;
+    padding:40px;
     border-radius:12px;
-    width:300px;
+    width:320px;
     text-align:center;
+    box-shadow:0 0 30px rgba(0,0,0,0.5);
 }
 
 input {
     width:100%;
-    padding:10px;
+    padding:12px;
     margin:10px 0;
-    border-radius:6px;
     border:none;
+    border-radius:6px;
 }
 
 /* BUTTONS */
 button {
-    padding:10px;
-    margin:5px;
+    width:100%;
+    padding:12px;
+    margin-top:10px;
     border:none;
     border-radius:6px;
     cursor:pointer;
+    font-weight:bold;
 }
 
-.buy { background:green; color:white; }
-.sell { background:red; color:white; }
+.primary { background:#c9a227; color:black; }
+.secondary { background:#334e68; color:white; }
 
-/* DASHBOARD */
+/* LANGUAGE */
+.lang {
+    position:absolute;
+    top:15px;
+    right:20px;
+    cursor:pointer;
+}
+
+/* ===== DASHBOARD ===== */
 #dashboard {
     display:none;
     padding:20px;
 }
 
-/* TABLE */
-table {
-    width:100%;
+.grid {
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:20px;
+    margin-top:40px;
+}
+
+.card {
+    background:#102a43;
+    padding:30px;
     text-align:center;
-    background:#111827;
-    border-radius:10px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
 }
 
-td, th {
-    padding:8px;
+.card:hover {
+    background:#1c3d5a;
 }
 
-/* ALERT */
-#alertBox {
-    position:fixed;
-    top:20px;
-    right:20px;
-    background:#111827;
-    padding:15px;
-    border-radius:10px;
+/* ===== SUB PAGES ===== */
+.section {
     display:none;
-}
-
-/* TRADE PANEL */
-#tradePanel {
-    position:fixed;
-    bottom:0;
-    width:100%;
-    background:#111827;
-    padding:10px;
     text-align:center;
 }
+
+.list-item {
+    padding:15px;
+    margin:10px auto;
+    width:300px;
+    background:#102a43;
+    border-radius:8px;
+    cursor:pointer;
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- 🌍 LANGUAGE -->
+<div class="lang" onclick="toggleLang()">EN / AR</div>
+
 <!-- 🔐 LOGIN -->
-<div id="loginPage" class="center">
+<div id="loginPage">
     <div class="login-box">
-        <h2>Global Trade</h2>
-        <input placeholder="Email">
-        <input placeholder="Password" type="password">
-        <button onclick="enter()">Login</button>
-        <button onclick="guest()">Enter as Guest</button>
+        <h2 id="title">Global Trade</h2>
+
+        <input id="email" placeholder="Email">
+        <input id="password" placeholder="Password" type="password">
+
+        <button class="primary" onclick="login()" id="loginBtn">Login</button>
+        <button class="secondary" onclick="guest()" id="guestBtn">Enter as Guest</button>
     </div>
 </div>
 
 <!-- 📊 DASHBOARD -->
 <div id="dashboard">
 
-<h2 style="text-align:center;">🔥 Ultimate Trading Dashboard</h2>
+<h2 style="text-align:center;" id="dashboardTitle">Dashboard</h2>
 
-<!-- CHART -->
-<div id="chart" style="height:400px;"></div>
-
-<!-- SCANNER -->
-<h3>🚀 Market Scanner</h3>
-<table>
-<thead>
-<tr>
-<th>Symbol</th>
-<th>Price</th>
-<th>%</th>
-<th>Rel Vol</th>
-<th>Float</th>
-<th>News</th>
-<th>Signal</th>
-<th>Trade</th>
-</tr>
-</thead>
-<tbody id="scanner"></tbody>
-</table>
+<div class="grid">
+    <div class="card" onclick="openSection('stocks')">Stocks</div>
+    <div class="card" onclick="openSection('crypto')">Crypto</div>
+    <div class="card" onclick="openSection('fx')">FX</div>
+    <div class="card" onclick="openSection('gold')">Gold & Oil</div>
+    <div class="card" onclick="openSection('learn')">Learn</div>
+</div>
 
 </div>
 
-<!-- ALERT -->
-<div id="alertBox"></div>
+<!-- 📈 STOCKS LIST -->
+<div id="stocks" class="section">
+    <h2>Stocks</h2>
 
-<audio id="sound">
-<source src="https://www.soundjay.com/buttons/beep-01a.mp3">
-</audio>
+    <div class="list-item" onclick="openStock('TSLA')">Tesla</div>
+    <div class="list-item" onclick="openStock('NVDA')">NVIDIA</div>
+    <div class="list-item" onclick="openStock('AMD')">AMD</div>
 
-<!-- TRADE PANEL -->
-<div id="tradePanel">
-<input id="symbol" placeholder="Symbol">
-<input id="amount" placeholder="$ Amount">
-<button class="buy" onclick="buy()">BUY</button>
-<button class="sell" onclick="sell()">SELL</button>
+    <button onclick="back()">Back</button>
+</div>
+
+<!-- 📊 STOCK DETAILS -->
+<div id="stockDetails" class="section">
+    <h2 id="stockName"></h2>
+
+    <p>High: ---</p>
+    <p>Low: ---</p>
+    <p>Open: ---</p>
+
+    <button onclick="openChart()">View Chart</button>
+    <button onclick="backToStocks()">Back</button>
+</div>
+
+<!-- 📉 CHART PAGE -->
+<div id="chartPage" class="section">
+    <h2>Chart</h2>
+
+    <iframe id="chartFrame" width="90%" height="400"></iframe>
+
+    <button onclick="backToDetails()">Back</button>
 </div>
 
 <script>
 
-// LOGIN
-function enter() {
+/* ===== LOGIN ===== */
+function login(){
     document.getElementById("loginPage").style.display="none";
     document.getElementById("dashboard").style.display="block";
-    initChart("TSLA");
 }
 
-function guest() {
-    localStorage.setItem("guest", true);
-    enter();
+function guest(){
+    localStorage.setItem("guest",true);
+    login();
 }
 
-// ALERT
-function alertMe(msg){
-    let box = document.getElementById("alertBox");
-    box.innerText = msg;
-    box.style.display="block";
-    document.getElementById("sound").play();
-    setTimeout(()=>box.style.display="none",3000);
+/* ===== NAVIGATION ===== */
+function openSection(sec){
+    document.getElementById("dashboard").style.display="none";
+    document.getElementById(sec).style.display="block";
 }
 
-// TRADE
-function buy(){
-    alert("BUY " + symbol.value);
-}
-function sell(){
-    alert("SELL " + symbol.value);
-}
-function select(symbolName){
-    document.getElementById("symbol").value = symbolName;
+function back(){
+    document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+    document.getElementById("dashboard").style.display="block";
 }
 
-// CHART (REAL TRADINGVIEW)
-function initChart(sym){
-    new TradingView.widget({
-        container_id: "chart",
-        width: "100%",
-        height: 400,
-        symbol: sym,
-        interval: "5",
-        timezone: "Etc/UTC",
-        theme: "dark",
-        style: "1",
-        studies: ["RSI@tv-basicstudies","VWAP@tv-basicstudies"]
-    });
+/* ===== STOCK FLOW ===== */
+let currentStock="";
+
+function openStock(symbol){
+    currentStock = symbol;
+    document.getElementById("stocks").style.display="none";
+    document.getElementById("stockDetails").style.display="block";
+    document.getElementById("stockName").innerText = symbol;
 }
 
-// DATA
-const API_KEY = "YOUR_FINNHUB_API_KEY";
+function openChart(){
+    document.getElementById("stockDetails").style.display="none";
+    document.getElementById("chartPage").style.display="block";
 
-const stocks = ["TSLA","NVDA","AMD","ISPC","NVOS","GNS"];
+    document.getElementById("chartFrame").src =
+    "https://s.tradingview.com/widgetembed/?symbol=" + currentStock;
+}
 
-const floatData = {
-"ISPC":"Low","NVOS":"Low","GNS":"Low",
-"TSLA":"High","NVDA":"High","AMD":"High"
-};
+function backToStocks(){
+    document.getElementById("stockDetails").style.display="none";
+    document.getElementById("stocks").style.display="block";
+}
 
-let volumeTrack = {};
+function backToDetails(){
+    document.getElementById("chartPage").style.display="none";
+    document.getElementById("stockDetails").style.display="block";
+}
 
-async function scan(){
+/* ===== LANGUAGE SYSTEM ===== */
+let arabic = false;
 
-    let table = document.getElementById("scanner");
-    table.innerHTML="";
+function toggleLang(){
 
-    for(let s of stocks){
+    arabic = !arabic;
 
-        let res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${s}&token=${API_KEY}`);
-        let d = await res.json();
+    if(arabic){
+        document.body.dir="rtl";
 
-        let price = d.c;
-        let change = d.dp;
+        document.getElementById("title").innerText="جلوبال تريد";
+        document.getElementById("loginBtn").innerText="تسجيل الدخول";
+        document.getElementById("guestBtn").innerText="الدخول كزائر";
+        document.getElementById("dashboardTitle").innerText="لوحة التحكم";
 
-        let vol = d.v || Math.random()*1000000;
+    } else {
+        document.body.dir="ltr";
 
-        if(!volumeTrack[s]) volumeTrack[s]=vol;
-        let rel = vol / volumeTrack[s];
-        volumeTrack[s]=vol;
-
-        let float = floatData[s] || "Unknown";
-
-        let news = Math.random()>0.5;
-
-        let signal="WAIT", color="white";
-
-        if(change>5 && rel>1.5 && float=="Low" && news){
-            signal="🚀 BREAKOUT";
-            color="lime";
-            alertMe(s+" BREAKOUT");
-        }
-        else if(rel>2){
-            signal="⚡ VOLUME";
-            color="yellow";
-            alertMe(s+" VOLUME SPIKE");
-        }
-
-        if(rel>1.2 || change>2){
-
-            let row = document.createElement("tr");
-
-            row.innerHTML=`
-            <td>${s}</td>
-            <td>$${price}</td>
-            <td style="color:${change>=0?'lime':'red'}">${change}%</td>
-            <td>${rel.toFixed(2)}x</td>
-            <td>${float}</td>
-            <td>${news?'📰':''}</td>
-            <td style="color:${color}">${signal}</td>
-            <td><button onclick="select('${s}');initChart('${s}')">Trade</button></td>
-            `;
-
-            table.appendChild(row);
-        }
+        document.getElementById("title").innerText="Global Trade";
+        document.getElementById("loginBtn").innerText="Login";
+        document.getElementById("guestBtn").innerText="Enter as Guest";
+        document.getElementById("dashboardTitle").innerText="Dashboard";
     }
 }
-
-setInterval(scan,4000);
-scan();
 
 </script>
 
