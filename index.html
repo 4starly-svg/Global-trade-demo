@@ -1,89 +1,104 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard 2050</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<title>Global Trade Capital Dashboard</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
-body {margin:0; font-family:'Segoe UI', sans-serif; background:#0a1128; color:#f0f0f0;}
-#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:linear-gradient(135deg, #0a1128 0%, #1b2a48 100%);}
-#loginBox {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); padding:50px; border-radius:25px; width:400px; display:flex; flex-direction:column; align-items:center; gap:25px; box-shadow:0 15px 35px rgba(0,0,0,0.5);}
-#loginBox h2 {margin:0; font-size:32px; color:#ffcb77; display:flex; align-items:center; gap:15px;}
-input {width:100%; padding:18px; border-radius:12px; border:none; font-size:18px; background:rgba(255,255,255,0.1); color:white;}
-button {width:100%; padding:18px; border:none; border-radius:12px; font-size:18px; cursor:pointer; background:#ff9f1c; color:#1c1c1c; font-weight:bold; transition:0.3s;}
-button:hover {background:#ffc16a;}
-.lang-toggle-login {cursor:pointer; margin-top:10px; background:#1b2a48; color:white; padding:12px 20px; border-radius:10px; font-weight:bold;}
-header {display:none; background:#0b1d3a; color:white; padding:20px 40px; justify-content:space-between; align-items:center;}
-header h1 {margin:0; display:flex; align-items:center; gap:15px; font-size:28px; color:#ffcb77;}
-header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffcb77; color:#0b1d3a; border-radius:8px; padding:8px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
-header .lang-toggle:hover, header .back-dashboard:hover {background:#ffd786;}
-main {display:none; flex-wrap:wrap; justify-content:center; padding:30px; gap:25px;}
-.card {background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:20px; width:280px; height:180px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 6px 20px rgba(0,0,0,0.4); cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
-.card:hover {transform:translateY(-10px) scale(1.05); box-shadow:0 10px 30px rgba(0,0,0,0.6);}
-.card img {max-width:70px; margin-bottom:12px;}
-.card h2 {margin:0; font-size:20px; text-align:center;}
-#sectionContent {margin:25px auto; width:95%; max-width:1280px; display:none;}
-.section-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-radius:15px; padding:20px; margin:15px 0; box-shadow:0 5px 15px rgba(0,0,0,0.4);}
-.section-card img {max-width:50px; margin-right:15px; vertical-align:middle;}
-.section-card h3 {margin:0 0 10px 0;}
+body {margin:0; font-family:'Segoe UI', sans-serif; background:#0a0f25; color:#fff;}
+#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:#0a0f25;}
+#loginBox {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); padding:40px; border-radius:20px; width:350px; display:flex; flex-direction:column; align-items:center; gap:20px;}
+#loginBox h2 {margin:0; font-size:28px; color:#ffd700;}
+input {width:100%; padding:15px; border-radius:12px; border:none; font-size:16px; background:rgba(255,255,255,0.1); color:white;}
+button {width:100%; padding:15px; border:none; border-radius:12px; font-size:16px; cursor:pointer; background:#ffd700; color:#0a0f25; font-weight:bold; transition:0.3s;}
+button:hover {background:#ffc107;}
+.lang-toggle-login {cursor:pointer; margin-top:10px; background:#1b1f3a; color:white; padding:10px 20px; border-radius:10px; font-weight:bold;}
+header {display:none; background:#0b1d3a; color:white; padding:15px 30px; justify-content:space-between; align-items:center;}
+header h1 {margin:0; font-size:26px; color:#ffd700;}
+header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ffd700; color:#0b1d3a; border-radius:8px; padding:6px 15px; font-weight:bold; margin-left:10px; transition:0.2s;}
+header .lang-toggle:hover, header .back-dashboard:hover {background:#ffc107;}
+main {display:none; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px;}
+.card {background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border-radius:15px; width:260px; height:150px; display:flex; justify-content:center; align-items:center; font-size:20px; font-weight:bold; text-align:center; box-shadow:0 6px 15px rgba(0,0,0,0.4); cursor:pointer; transition:transform 0.3s, box-shadow 0.3s;}
+.card:hover {transform:translateY(-6px); box-shadow:0 10px 25px rgba(0,0,0,0.6);}
+#sectionContent {margin:20px auto; width:95%; max-width:1200px; display:none;}
+.section-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border-radius:12px; padding:20px; margin:15px 0; box-shadow:0 5px 15px rgba(0,0,0,0.4);}
+.section-card h3 {margin:0 0 10px 0; color:#ffd700;}
 .section-data {margin-top:10px; font-size:16px;}
-.payment-button {background:#00b894; color:white; padding:12px 20px; border:none; border-radius:10px; cursor:pointer; margin-top:10px; font-weight:bold;}
-.payment-button:hover {background:#55efc4;}
-.audio-embed {margin-top:20px;}
+.bank-logos img, .soccer-logos img {max-width:60px; margin:5px;}
 </style>
 </head>
-<body><div id="loginPage">
+<body>
+
+<div id="loginPage">
   <div id="loginBox">
-    <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px; vertical-align:middle;"> Login</h2>
+    <h2 id="loginTitle">Login</h2>
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
     <button id="loginBtn" onclick="login()">Login</button>
     <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
     <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
   </div>
-</div><header>
-  <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:55px;"> Global Trade Capital</h1>
+</div>
+
+<header>
+  <h1>Global Trade Capital</h1>
   <div>
     <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
     <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
   </div>
-</header><main>
-  <div class="card" onclick="loadSection('stocks')">
-    <h2>Stocks</h2>
-  </div>
-  <div class="card" onclick="loadSection('crypto')">
-    <img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
-    <h2>Crypto</h2>
-  </div>
-  <div class="card" onclick="loadSection('fx')">
-    <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
-    <h2>FX</h2>
-  </div>
-  <div class="card" onclick="loadSection('commodities')">
-    <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
-    <h2>Gold & Oil</h2>
-  </div>
-  <div class="card" onclick="loadSection('soccer')">
-    <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
-    <h2>Soccer Predictions</h2>
-  </div>
-  <div class="card" onclick="loadSection('learn')">
-    <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
-    <h2>Learn / Contact Us</h2>
-  </div>
-</main><div id="sectionContent">
+</header>
+
+<main>
+  <div class="card" onclick="loadSection('stocks')">Stocks</div>
+  <div class="card" onclick="loadSection('crypto')">Crypto</div>
+  <div class="card" onclick="loadSection('fx')">FX</div>
+  <div class="card" onclick="loadSection('commodities')">Gold & Oil</div>
+  <div class="card" onclick="loadSection('soccer')">Soccer Predictions</div>
+  <div class="card" onclick="loadSection('learn')">Learn / Contact Us</div>
+</main>
+
+<div id="sectionContent">
   <div id="stocksSection" class="section-card" style="display:none;"></div>
   <div id="cryptoSection" class="section-card" style="display:none;"></div>
   <div id="fxSection" class="section-card" style="display:none;"></div>
   <div id="commoditiesSection" class="section-card" style="display:none;"></div>
   <div id="soccerSection" class="section-card" style="display:none;"></div>
   <div id="learnSection" class="section-card" style="display:none;"></div>
-</div><script>
-// Login functions (mock for demo)
-function login(){startApp();}
-function guestLogin(){startApp();}
+</div>
 
+<audio id="arabicAudio" controls style="display:none;">
+  <source src="audio/global_trade_arabic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
+  authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_FIREBASE_PROJECT.firebaseio.com",
+  projectId: "YOUR_FIREBASE_PROJECT",
+  storageBucket: "YOUR_FIREBASE_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+// Login functions
+function login(){
+  const email=document.getElementById('email').value;
+  const password=document.getElementById('password').value;
+  auth.signInWithEmailAndPassword(email,password).then(()=>startApp()).catch(err=>alert(err.message));
+}
+function guestLogin(){
+  auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
+}
+
+// App start
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
@@ -91,56 +106,68 @@ function startApp(){
   loadAllSections();
 }
 
+// Language toggle
 let isArabic=false;
 function toggleLanguage(){
   isArabic=!isArabic;
   document.body.dir=isArabic?'rtl':'ltr';
   document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
-  document.getElementById('loginTitle').innerHTML=`<img src='https://i.ibb.co/2s4Wp2v/global-trade-logo.png' style='width:55px; vertical-align:middle;'> ${isArabic?'تسجيل الدخول':'Login'}`;
+  document.getElementById('loginTitle').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
-  document.querySelectorAll('.card h2').forEach((h2,i)=>{
-    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
-    h2.innerText=isArabic?texts[1][i]:texts[0][i];
+  document.querySelectorAll('.card').forEach((c,i)=>{
+    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],
+                 ['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    c.innerText=isArabic?texts[1][i]:texts[0][i];
   });
 }
 
+// Navigation
 function backToDashboard(){
   document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
   document.querySelector('main').style.display='flex';
 }
-
 function loadSection(name){
   document.querySelector('main').style.display='none';
   document.getElementById('sectionContent').querySelectorAll('.section-card').forEach(sec=>sec.style.display='none');
   document.getElementById(name+'Section').style.display='block';
 }
 
+// Load all sections
 function loadAllSections(){
-  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">Dummy stocks data here</div>';
-  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data">Live crypto data...</div>';
-  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">Live FX rates...</div>';
-  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Live commodities prices...</div>';
-  document.getElementById('soccerSection').innerHTML=`<h3>Soccer Predictions</h3>
-  <div class="section-data">
-    <p>Next matches with betting info:</p>
-    <ul>
-      <li>Team A vs Team B - Call +218 91 494 8944 for info</li>
-      <li>Team C vs Team D - Call +218 91 494 8944 for info</li>
-    </ul>
-  </div>`;
-  document.getElementById('learnSection').innerHTML=`<h3>Learn / Contact Us</h3>
-  <p>Global Trade: Sending money worldwide, peer-to-peer crypto, soccer predictions betting.</p>
-  <p>Libyan banks: Shemanda Frigia, Masraf Shamal Afrika, testimonials.</p>
-  <p>Contact us: +218 91 494 8944</p>
-  <button class='payment-button'>PayPal</button>
-  <button class='payment-button'>USDT</button>
-  <button class='payment-button'>Cash Agent</button>
-  <div class='audio-embed'>
-    <audio controls>
-      <source src='global-trade-info-arabic.mp3' type='audio/mpeg'>
-    </audio>
-  </div>`;
+  // Stocks (dummy)
+  document.getElementById('stocksSection').innerHTML='<h3>Stocks</h3><div class="section-data">AAPL, MSFT, GOOGL, TSLA...</div>';
+  
+  // Crypto (sample live-like)
+  document.getElementById('cryptoSection').innerHTML='<h3>Crypto</h3><div class="section-data">BTC: $30,000 | ETH: $1,900 | USDT: $1</div>';
+  
+  // FX
+  document.getElementById('fxSection').innerHTML='<h3>FX</h3><div class="section-data">USD/EUR: 0.93 | USD/LYD: 4.85 | USD/GBP: 0.80</div>';
+  
+  // Commodities
+  document.getElementById('commoditiesSection').innerHTML='<h3>Gold & Oil</h3><div class="section-data">Gold: $2,000 | Oil: $85</div>';
+  
+  // Soccer Predictions
+  document.getElementById('soccerSection').innerHTML=`
+    <h3>Soccer Predictions</h3>
+    <div class="soccer-logos">
+      <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Team1">
+      <img src="https://cdn-icons-png.flaticon.com/512/232/232070.png" alt="Team2">
+    </div>
+    <div class="section-data">Next games available. Contact +218 91 494 8944 for betting info.</div>`;
+  
+  // Learn / Contact Us
+  document.getElementById('learnSection').innerHTML=`
+    <h3>Learn / Contact Us</h3>
+    <p>Libyan Banks: Olympian Bank, North African Bank (Masraf Shamal Afrika), Shemanda Frigia</p>
+    <div class="bank-logos">
+      <img src="https://via.placeholder.com/60x40?text=Olympian" alt="Olympian Bank">
+      <img src="https://via.placeholder.com/60x40?text=Shamal+Afrika" alt="North African Bank">
+    </div>
+    <p>Contact us: +218 91 494 8944</p>
+    <p>Services: send money worldwide, crypto, soccer predictions, financial services.</p>`;
 }
-</script></body>
+</script>
+
+</body>
 </html>
