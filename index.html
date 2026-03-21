@@ -9,67 +9,66 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <style>
-body {margin:0; font-family:'Segoe UI', sans-serif; background-color:#f5f7fa; color:#1c1c1c;}
-header {background:#0b1d3a; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center;}
-header h1 {margin:0; font-size:24px; display:flex; align-items:center; gap:10px;}
+body {margin:0; font-family:'Segoe UI', sans-serif; background:#f0f2f5; color:#1c1c1c;}
+#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:#0b1d3a;}
+#loginBox {background:#1c2a4a; padding:50px; border-radius:15px; width:360px; display:flex; flex-direction:column; align-items:center; gap:20px; color:white; box-shadow:0 10px 25px rgba(0,0,0,0.3);}
+#loginBox h2 {margin:0; font-size:28px; display:flex; align-items:center; gap:10px;}
+input {width:100%; padding:15px; border-radius:10px; border:none; font-size:16px;}
+button {width:100%; padding:15px; border:none; border-radius:10px; font-size:16px; cursor:pointer; background:#ff9f1c; color:#1c1c1c; font-weight:bold; transition:0.2s;}
+button:hover {background:#ffb84c;}
+.lang-toggle-login {cursor:pointer; margin-top:10px; background:#0b1d3a; color:white; padding:10px 15px; border-radius:8px;}
+header {display:none; background:#0b1d3a; color:white; padding:15px 30px; justify-content:space-between; align-items:center;}
+header h1 {margin:0; display:flex; align-items:center; gap:10px; font-size:24px;}
 header .lang-toggle, header .back-dashboard {cursor:pointer; background:#fff; color:#0b1d3a; border-radius:5px; padding:5px 10px; margin-left:10px;}
-main {display:flex; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px;}
+main {display:none; flex-wrap:wrap; justify-content:center; padding:20px; gap:20px;}
 .card {background:white; border-radius:12px; width:260px; height:160px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 2px 12px rgba(0,0,0,0.1); cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;}
 .card:hover {transform:translateY(-5px); box-shadow:0 6px 18px rgba(0,0,0,0.2);}
 .card img {max-width:60px; margin-bottom:10px;}
 .card h2 {margin:0; font-size:18px; text-align:center;}
-section {margin:20px auto; width:95%; max-width:1200px;}
-.section-title {font-size:22px; margin-bottom:15px; text-align:center;}
-.list-container {display:flex; flex-wrap:wrap; justify-content:center; gap:15px;}
-.item {background:#fff; border-radius:10px; width:220px; padding:15px; box-shadow:0 1px 8px rgba(0,0,0,0.1); display:flex; flex-direction:column; align-items:center; text-align:center; transition:0.2s;}
-.item:hover {transform:translateY(-3px); box-shadow:0 4px 14px rgba(0,0,0,0.15);}
-button {padding:10px 18px; border:none; border-radius:8px; background:#0b1d3a; color:white; cursor:pointer; margin-top:8px; transition:0.2s;}
-button:hover {background:#1c3a6f;}
-#loginPage {display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; background:#f5f7fa;}
-#loginBox {background:white; padding:40px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.15); width:300px; display:flex; flex-direction:column; gap:15px; text-align:center;}
-input {padding:10px; border-radius:8px; border:1px solid #ccc; width:100%;}
+#sectionContent {margin:20px auto; width:95%; max-width:1200px; display:none;}
 </style>
 </head>
 <body><div id="loginPage">
-<div id="loginBox">
-<h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:50px; vertical-align:middle;"> Login</h2>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
-<button id="loginBtn" onclick="login()">Login</button>
-<button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
-</div>
-</div><header style="display:none;">
-<h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:40px;"> Global Trade Capital</h1>
-<div>
-<span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
-<span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
-</div>
-</header><main style="display:none;">
-<div class="card" onclick="loadSection('stocks','sections/stocks.html')">
-<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
-<h2>Stocks</h2>
-</div>
-<div class="card" onclick="loadSection('crypto','sections/crypto.html')">
-<img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
-<h2>Crypto</h2>
-</div>
-<div class="card" onclick="loadSection('fx','sections/fx.html')">
-<img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
-<h2>FX</h2>
-</div>
-<div class="card" onclick="loadSection('commodities','sections/commodities.html')">
-<img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
-<h2>Gold & Oil</h2>
-</div>
-<div class="card" onclick="loadSection('soccer','sections/soccer.html')">
-<img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
-<h2>Soccer Predictions</h2>
-</div>
-<div class="card" onclick="loadSection('learn','sections/learn.html')">
-<img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
-<h2>Learn / Contact Us</h2>
-</div>
-</main><div id="sectionContent" style="margin:20px auto; width:95%; max-width:1200px; display:none;"></div><script>
+  <div id="loginBox">
+    <h2 id="loginTitle"><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:50px; vertical-align:middle;"> Login</h2>
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginBtn" onclick="login()">Login</button>
+    <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
+    <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
+  </div>
+</div><header>
+  <h1><img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" alt="Logo" style="width:40px;"> Global Trade Capital</h1>
+  <div>
+    <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
+    <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
+  </div>
+</header><main>
+  <div class="card" onclick="loadSection('stocks','sections/stocks.html')">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
+    <h2>Stocks</h2>
+  </div>
+  <div class="card" onclick="loadSection('crypto','sections/crypto.html')">
+    <img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
+    <h2>Crypto</h2>
+  </div>
+  <div class="card" onclick="loadSection('fx','sections/fx.html')">
+    <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
+    <h2>FX</h2>
+  </div>
+  <div class="card" onclick="loadSection('commodities','sections/commodities.html')">
+    <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
+    <h2>Gold & Oil</h2>
+  </div>
+  <div class="card" onclick="loadSection('soccer','sections/soccer.html')">
+    <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
+    <h2>Soccer Predictions</h2>
+  </div>
+  <div class="card" onclick="loadSection('learn','sections/learn.html')">
+    <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
+    <h2>Learn / Contact Us</h2>
+  </div>
+</main><div id="sectionContent"></div><script>
 // Firebase Config
 const firebaseConfig = {
   apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
@@ -92,18 +91,18 @@ function login(){
 function guestLogin(){
   auth.signInAnonymously().then(()=>startApp()).catch(err=>alert(err.message));
 }
+
 function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
-  document.querySelector('footer')?.style.display='block';
 }
 
 let isArabic=false;
 function toggleLanguage(){
   isArabic=!isArabic;
   document.body.dir=isArabic?'rtl':'ltr';
-  document.querySelector('.lang-toggle').innerText=isArabic?'EN':'عربي';
+  document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
   document.getElementById('loginTitle').innerHTML=`<img src='https://i.ibb.co/2s4Wp2v/global-trade-logo.png' style='width:50px; vertical-align:middle;'> ${isArabic?'تسجيل الدخول':'Login'}`;
   document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
   document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
