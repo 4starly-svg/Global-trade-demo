@@ -45,46 +45,32 @@ input {padding:10px; border-radius:8px; border:1px solid #ccc; width:100%;}
 <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
 </div>
 </header><main style="display:none;">
-<div class="card" onclick="showSection('stocks')">
+<div class="card" onclick="loadSection('stocks','sections/stocks.html')">
 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Stocks">
 <h2>Stocks</h2>
 </div>
-<div class="card" onclick="showSection('crypto')">
+<div class="card" onclick="loadSection('crypto','sections/crypto.html')">
 <img src="https://cdn-icons-png.flaticon.com/512/825/825623.png" alt="Crypto">
 <h2>Crypto</h2>
 </div>
-<div class="card" onclick="showSection('fx')">
+<div class="card" onclick="loadSection('fx','sections/fx.html')">
 <img src="https://cdn-icons-png.flaticon.com/512/188/188943.png" alt="FX">
 <h2>FX</h2>
 </div>
-<div class="card" onclick="showSection('commodities')">
+<div class="card" onclick="loadSection('commodities','sections/commodities.html')">
 <img src="https://cdn-icons-png.flaticon.com/512/3222/3222932.png" alt="Gold & Oil">
 <h2>Gold & Oil</h2>
 </div>
-<div class="card" onclick="showSection('soccer')">
+<div class="card" onclick="loadSection('soccer','sections/soccer.html')">
 <img src="https://cdn-icons-png.flaticon.com/512/232/232069.png" alt="Soccer">
 <h2>Soccer Predictions</h2>
 </div>
-<div class="card" onclick="showSection('learn')">
+<div class="card" onclick="loadSection('learn','sections/learn.html')">
 <img src="https://cdn-icons-png.flaticon.com/512/1250/1250615.png" alt="Learn">
 <h2>Learn / Contact Us</h2>
 </div>
-</main><!-- Sections --><section id="stocks" style="display:none;"><div class="section-title">Stocks</div><div class="list-container" id="stockList"></div></section>
-<section id="crypto" style="display:none;"><div class="section-title">Crypto</div><div class="list-container" id="cryptoList"></div></section>
-<section id="fx" style="display:none;"><div class="section-title">Foreign Exchange</div><div class="list-container" id="fxList"></div></section>
-<section id="commodities" style="display:none;"><div class="section-title">Gold & Oil</div><div class="list-container" id="commoditiesList"></div></section>
-<section id="soccer" style="display:none;"><div class="section-title">Soccer Prediction Market</div><div class="list-container" id="soccerList"></div></section>
-<section id="learn" style="display:none;"><div class="section-title">Learn & Contact Us</div><div class="list-container">
-<div class="item"><h3>About Global Trade</h3><p>Global Trade Capital provides trading for stocks, crypto, FX, commodities, and soccer simulations.</p></div>
-<div class="item"><h3>Testimonials</h3><p>"Amazing platform for trading and learning!" – User A</p><p>"Easy to navigate and secure." – User B</p></div>
-<div class="item"><h3>Libyan Banks</h3>
-<img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Sahara_Bank_Logo.png" alt="Sahara Bank" style="width:100px; margin:5px;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Wahda_Bank_Logo.png" alt="Wahda Bank" style="width:100px; margin:5px;">
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/North_Africa_Bank_Logo.png" alt="North Africa Bank" style="width:100px; margin:5px;">
-</div>
-<div class="item"><h3>Contact Us in Libya</h3><p>Phone: +218 XXX XXX XXX</p><p>Contact us for more info.</p></div>
-</div></section><footer style="display:none;"><p>&copy; 2026 Global Trade Capital. All rights reserved.</p></footer><script>
-// --- Firebase Config ---
+</main><div id="sectionContent" style="margin:20px auto; width:95%; max-width:1200px; display:none;"></div><script>
+// Firebase Config
 const firebaseConfig = {
   apiKey: "7815da7ac2ab43ca8f4a4b73e10e",
   authDomain: "YOUR_FIREBASE_PROJECT.firebaseapp.com",
@@ -98,7 +84,6 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// --- Login Functions ---
 function login(){
   const email=document.getElementById('email').value;
   const password=document.getElementById('password').value;
@@ -111,114 +96,33 @@ function startApp(){
   document.getElementById('loginPage').style.display='none';
   document.querySelector('header').style.display='flex';
   document.querySelector('main').style.display='flex';
-  document.querySelector('footer').style.display='block';
-  loadLiveData();
+  document.querySelector('footer')?.style.display='block';
 }
 
-// --- Language Toggle ---
 let isArabic=false;
 function toggleLanguage(){
   isArabic=!isArabic;
-  const langToggle=document.querySelector('.lang-toggle');
-  const loginTitle=document.getElementById('loginTitle');
-  const loginBtn=document.getElementById('loginBtn');
-  const guestBtn=document.getElementById('guestBtn');
-  if(isArabic){
-    langToggle.innerText='EN';
-    document.body.dir='rtl';
-    loginTitle.innerHTML='<img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" style="width:50px; vertical-align:middle;"> تسجيل الدخول';
-    loginBtn.innerText='تسجيل الدخول';
-    guestBtn.innerText='الدخول كزائر';
-    document.querySelectorAll('.card h2')[0].innerText='الأسهم';
-    document.querySelectorAll('.card h2')[1].innerText='العملات الرقمية';
-    document.querySelectorAll('.card h2')[2].innerText='العملات الأجنبية';
-    document.querySelectorAll('.card h2')[3].innerText='الذهب والنفط';
-    document.querySelectorAll('.card h2')[4].innerText='توقعات كرة القدم';
-    document.querySelectorAll('.card h2')[5].innerText='تعلم / اتصل بنا';
-  } else {
-    langToggle.innerText='عربي';
-    document.body.dir='ltr';
-    loginTitle.innerHTML='<img src="https://i.ibb.co/2s4Wp2v/global-trade-logo.png" style="width:50px; vertical-align:middle;"> Login';
-    loginBtn.innerText='Login';
-    guestBtn.innerText='Enter as Guest';
-    document.querySelectorAll('.card h2')[0].innerText='Stocks';
-    document.querySelectorAll('.card h2')[1].innerText='Crypto';
-    document.querySelectorAll('.card h2')[2].innerText='FX';
-    document.querySelectorAll('.card h2')[3].innerText='Gold & Oil';
-    document.querySelectorAll('.card h2')[4].innerText='Soccer Predictions';
-    document.querySelectorAll('.card h2')[5].innerText='Learn / Contact Us';
-  }
+  document.body.dir=isArabic?'rtl':'ltr';
+  document.querySelector('.lang-toggle').innerText=isArabic?'EN':'عربي';
+  document.getElementById('loginTitle').innerHTML=`<img src='https://i.ibb.co/2s4Wp2v/global-trade-logo.png' style='width:50px; vertical-align:middle;'> ${isArabic?'تسجيل الدخول':'Login'}`;
+  document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
+  document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
+  document.querySelectorAll('.card h2').forEach((h2,i)=>{
+    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact Us'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
+    h2.innerText=isArabic?texts[1][i]:texts[0][i];
+  });
 }
 
 function backToDashboard(){
-  document.querySelectorAll('section').forEach(s=>s.style.display='none');
+  document.getElementById('sectionContent').style.display='none';
+  document.querySelector('main').style.display='flex';
 }
 
-// --- Show Section ---
-function showSection(id){
-  document.querySelectorAll('section').forEach(s=>s.style.display='none');
-  document.getElementById(id).style.display='block';
-}
-
-// --- Load Live Data ---
-async function loadLiveData(){
-  const stockList=document.getElementById('stockList');
-  const cryptoList=document.getElementById('cryptoList');
-  const fxList=document.getElementById('fxList');
-  const commoditiesList=document.getElementById('commoditiesList');
-  const soccerList=document.getElementById('soccerList');
-
-  // --- Stocks & FX & Commodities via Finnhub ---
-  const symbols=['AAPL','TSLA','GOOG','ARCT'];
-  for(const s of symbols){
-    try{
-      const res=await axios.get(`https://finnhub.io/api/v1/quote?symbol=${s}&token=7815da7ac2ab43ca8f4a4b73e10e`);
-      const div=document.createElement('div'); div.className='item';
-      div.innerHTML=`<h4>${s}</h4><p>Price: $${res.data.c}</p>`;
-      stockList.appendChild(div);
-    }catch(e){console.error(e);}
-  }
-
-  const fxPairs=[['USD/EUR','EURUSD'],['USD/LYD','USDLYD'],['EUR/LYD','EURLYD']];
-  for(const f of fxPairs){
-    try{
-      const res=await axios.get(`https://finnhub.io/api/v1/quote?symbol=${f[1]}&token=7815da7ac2ab43ca8f4a4b73e10e`);
-      const div=document.createElement('div'); div.className='item';
-      div.innerHTML=`<h4>${f[0]}</h4><p>Rate: ${res.data.c}</p>`;
-      fxList.appendChild(div);
-    }catch(e){console.error(e);}
-  }
-
-  const commodities=[['Gold','XAUUSD'],['Oil','OILUS']];
-  for(const c of commodities){
-    try{
-      const res=await axios.get(`https://finnhub.io/api/v1/quote?symbol=${c[1]}&token=7815da7ac2ab43ca8f4a4b73e10e`);
-      const div=document.createElement('div'); div.className='item';
-      div.innerHTML=`<h4>${c[0]}</h4><p>Price: $${res.data.c}</p><button>Buy</button><button>Sell</button>`;
-      commoditiesList.appendChild(div);
-    }catch(e){console.error(e);}
-  }
-
-  // --- Crypto via Binance WebSocket ---
-  const cryptoPairs=['btcusdt','ethusdt','solusdt','usdtusdt'];
-  cryptoPairs.forEach(p=>{
-    const div=document.createElement('div'); div.className='item';
-    div.innerHTML=`<h4>${p.toUpperCase()}</h4><p id='${p}-price'>Loading...</p>`;
-    cryptoList.appendChild(div);
-    const ws=new WebSocket(`wss://stream.binance.com:9443/ws/${p}@trade`);
-    ws.onmessage=msg=>{
-      const data=JSON.parse(msg.data);
-      document.getElementById(`${p}-price`).innerText='Price: $'+parseFloat(data.p).toFixed(2);
-    }
-  });
-
-  // --- Soccer Teams (Option A) ---
-  const teams=['Manchester United','Real Madrid','Bayern Munich','Juventus','PSG'];
-  teams.forEach(t=>{
-    const div=document.createElement('div'); div.className='item';
-    div.innerHTML=`<h4>${t}</h4><p>Simulated Prediction: Win ${Math.floor(Math.random()*100)}%</p>`;
-    soccerList.appendChild(div);
-  });
+function loadSection(name,url){
+  document.querySelector('main').style.display='none';
+  const sectionDiv=document.getElementById('sectionContent');
+  sectionDiv.style.display='block';
+  fetch(url).then(r=>r.text()).then(html=>{sectionDiv.innerHTML=html});
 }
 </script></body>
 </html>
