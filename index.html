@@ -1,162 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL TRADE LTD | OFFICIAL TERMINAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>GLOBAL TRADE | نظام الإدارة والعمليات</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        :root { --emerald: #00f076; --navy: #050a14; --slate: #0f172a; --platinum: #f8fafc; --gold: #f59e0b; }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.2s; }
-        body, html { height: 100%; margin: 0; background: var(--navy); color: var(--platinum); overflow: hidden; }
-
-        /* LIVE TICKER */
-        .ticker-wrap { width: 100%; overflow: hidden; background: #000; border-bottom: 1px solid var(--emerald); height: 32px; line-height: 32px; position: fixed; top: 0; z-index: 1100; font-size: 11px; font-weight: 800; color: var(--emerald); }
-        .ticker-move { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 45s linear infinite; }
-        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
-
-        /* NAVIGATION */
-        nav { height: 75px; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); border-bottom: 1px solid #1e293b; display: flex; align-items: center; padding: 0 40px; justify-content: space-between; position: fixed; top: 32px; width: 100%; z-index: 1000; }
-        .nav-links { display: flex; gap: 15px; }
-        .nav-btn { background: transparent; border: none; color: #64748b; font-weight: 700; cursor: pointer; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; padding: 10px; }
-        .nav-btn.active, .nav-btn:hover { color: var(--emerald); border-bottom: 2px solid var(--emerald); }
-
-        /* CONTENT LAYOUT */
-        main { margin-top: 107px; height: calc(100vh - 107px); padding: 40px; overflow-y: auto; scrollbar-width: none; }
-        .view { display: none; max-width: 1400px; margin: 0 auto; }
-        .view.active { display: block; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .big-label { font-size: 70px; font-weight: 900; letter-spacing: -4px; margin-bottom: 30px; line-height: 0.9; color: #fff; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .card { background: var(--slate); border: 1px solid #1e293b; border-radius: 25px; padding: 25px; position: relative; }
-        .btn-wa { background: #25D366; color: #fff; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 15px; font-size: 12px; }
+        :root { --gold: #d4af37; --navy: #020617; --card: #0f172a; --emerald: #10b981; }
+        body { background: var(--navy); color: white; font-family: sans-serif; margin: 0; overflow: hidden; height: 100vh; }
         
-        /* VOICE & LANG BUTTONS */
-        .voice-btn { background: var(--gold); color: #000; border: none; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; }
-        .lang-switch { border: 1.5px solid var(--emerald); color: var(--emerald); background: transparent; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 800; }
+        /* AUTH OVERLAY */
+        #auth-overlay { position: fixed; inset: 0; background: var(--navy); z-index: 10000; display: flex; justify-content: center; align-items: center; }
+        .login-box { background: var(--card); padding: 40px; border: 2px solid var(--gold); border-radius: 20px; width: 350px; text-align: center; }
+        
+        /* ADMIN PANEL STYLING */
+        #admin-panel { display: none; padding: 40px; text-align: center; overflow-y: auto; height: 100vh; }
+        .user-row { background: #000; border: 1px solid #1e293b; padding: 15px; margin: 10px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* USER APP STYLING */
+        #user-app { display: none; flex-direction: column; height: 100vh; }
+        nav { height: 70px; background: #000; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; align-items: center; }
+        .screen { display: none; flex: 1; padding: 30px; text-align: center; justify-content: center; flex-direction: column; align-items: center; }
+        .screen.active { display: flex; }
 
-        .price { font-size: 32px; font-weight: 900; color: #fff; margin: 10px 0; }
-        .tag { font-size: 10px; font-weight: 800; color: var(--gold); background: rgba(245, 158, 11, 0.1); padding: 4px 10px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+        .balance-txt { font-size: 70px; font-weight: 900; color: var(--emerald); }
+        .input-dark { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid var(--gold); color: white; border-radius: 8px; text-align: center; }
+        .btn-gold { background: var(--gold); color: black; border: none; padding: 12px 25px; font-weight: 900; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="ticker-wrap">
-    <div class="ticker-move" id="ticker">
-        GLOBAL TRADE LTD ● USDT/LYD: 7.34 ● BTC: $94,402 ● REAL MADRID SEMI-FINAL ● TESLA: +2.4% ● GOLDMAN SACHS: $412.45 ● 
-    </div>
-</div>
-
-<nav>
-    <div style="font-weight:900; font-size:24px; color:var(--emerald);" id="brand">GLOBAL<span style="color:#fff">TRADE</span></div>
-    <div class="nav-links">
-        <button class="nav-btn active" onclick="showV('v-soccer', this)" id="n1">SOCCER</button>
-        <button class="nav-btn" onclick="showV('v-stocks', this)" id="n2">STOCKS</button>
-        <button class="nav-btn" onclick="showV('v-crypto', this)" id="n3">CRYPTO</button>
-        <button class="nav-btn" onclick="showV('v-finance', this)" id="n4">FINANCE</button>
-        <button class="nav-btn" onclick="showV('v-portal', this)" id="n5">PORTAL</button>
-    </div>
-    <button class="lang-switch" onclick="tgl()" id="lbtn">عربي</button>
-</nav>
-
-<main>
-    <div id="v-soccer" class="view active">
-        <h1 class="big-label" id="h1">SOCCER</h1>
-        <div class="grid">
-            <div class="card"><span class="tag" id="t1">UCL</span><div style="font-weight:800;" id="m1">Real Madrid vs Liverpool</div><button class="btn-wa" onclick="wa('UCL')">PLACE BET</button></div>
-            <div class="card"><span class="tag" id="t2">EPL</span><div style="font-weight:800;" id="m2">Man City vs Arsenal</div><button class="btn-wa" onclick="wa('EPL')">PLACE BET</button></div>
-            <div class="card"><span class="tag" id="t3">LA LIGA</span><div style="font-weight:800;" id="m3">Barca vs Atletico</div><button class="btn-wa" onclick="wa('LIGA')">PLACE BET</button></div>
+    <div id="auth-overlay">
+        <div class="login-box">
+            <h2 style="color:var(--gold)">تسجيل الدخول</h2>
+            <input type="text" id="acc_id" class="input-dark" placeholder="رقم المحفظة">
+            <input type="password" id="acc_pass" class="input-dark" placeholder="كلمة المرور">
+            <button class="btn-gold" onclick="login()">دخول آمن</button>
         </div>
     </div>
 
-    <div id="v-stocks" class="view"><h1 class="big-label" id="h2">STOCKS</h1><div class="grid">
-        <div class="card"><span class="tag">NASDAQ:TSLA</span><div class="price">$172.10</div><button class="btn-wa" onclick="wa('TSLA')">BUY</button></div>
-        <div class="card"><span class="tag">NYSE:GS</span><div class="price">$412.45</div><button class="btn-wa" onclick="wa('GS')">BUY</button></div>
-    </div></div>
-
-    <div id="v-crypto" class="view"><h1 class="big-label" id="h3">CRYPTO</h1><div class="grid">
-        <div class="card"><span class="tag">BTC / USD</span><div class="price">$94,402</div><button class="btn-wa" onclick="wa('BTC')">SETTLE</button></div>
-        <div class="card"><span class="tag">USDT / LYD</span><div class="price">7.34</div><button class="btn-wa" onclick="wa('USDT')">EXCHANGE</button></div>
-    </div></div>
-
-    <div id="v-finance" class="view">
-        <h1 class="big-label" id="h4">FINANCE</h1>
-        <div class="grid">
-            <div class="card" style="text-align:center;"><span id="f1">DEPOSIT USDT</span><br><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=YOUR_WALLET" style="margin:20px 0; border:4px solid #fff; border-radius:10px;"></div>
-            <div class="card"><span id="f2">CONVERTER</span><input type="number" id="usd" style="width:100%; background:#000; border:1px solid var(--emerald); color:#fff; padding:15px; margin-top:15px;" oninput="calc()"><div id="res" style="font-size:24px; margin-top:10px;">0.00 LYD</div></div>
-        </div>
-    </div>
-
-    <div id="v-portal" class="view">
-        <h1 class="big-label" id="h5">PORTAL</h1>
-        <div class="grid">
-            <div class="card" style="border: 2px solid var(--gold);">
-                <span id="p1" style="color:var(--gold);">GLOBAL TRADE AI ASSISTANT</span>
-                <p id="p_desc" style="font-size:12px; color:#64748b; margin-top:10px;">Click below to hear the executive audio guide (No upload required).</p>
-                <button class="voice-btn" onclick="playVoice()">
-                    <span id="v_text">PLAY AUDIO GUIDE</span> 🎙️
-                </button>
+    <div id="admin-panel">
+        <h1 style="color:var(--gold)">لوحة تحكم المدير</h1>
+        <div id="user-list">
             </div>
-            <div class="card"><span id="p2">TESTIMONIALS</span><div style="font-size:13px; margin-top:10px;" id="tm1">"Fastest USDT service in Tripoli." - Ahmed</div><div style="font-size:13px; margin-top:10px;" id="tm2">"100% Trust." - Omar</div></div>
-            <div class="card"><span id="p3">LEGAL DISCLAIMER</span><p style="font-size:10px; color:#888;" id="ds1">Global Trade LTD is a private liquidity provider. Institutional clients only.</p></div>
+        <button class="btn-gold" style="margin-top:20px;" onclick="location.reload()">تحديث البيانات</button>
+    </div>
+
+    <div id="user-app">
+        <nav>
+            <button onclick="tab('u-home')" class="btn-gold" style="background:none; color:var(--gold)">المحفظة</button>
+            <button onclick="tab('u-stocks')" class="btn-gold" style="background:none; color:white">الأسهم</button>
+            <button onclick="tab('u-wa')" class="btn-gold" style="background:none; color:white">الدعم</button>
+        </nav>
+        
+        <div id="u-home" class="screen active">
+            <h2 id="welcome-name">مرحباً</h2>
+            <div class="balance-txt" id="live-bal">$0.00</div>
+            <p style="color:#94a3b8">الرصيد المباشر متاح للسحب</p>
+            <button class="btn-gold" onclick="window.location.href='https://wa.me/218915709015?text=DEPOSIT'">إيداع جديد</button>
+        </div>
+
+        <div id="u-stocks" class="screen">
+            <iframe src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3ATSLA&theme=dark&locale=ar" style="width:100%; height:500px; border:1px solid var(--gold); border-radius:15px;"></iframe>
+        </div>
+
+        <div id="u-wa" class="screen">
+            <div style="background:var(--card); padding:30px; border-radius:15px; border:1px solid var(--gold)">
+                <h3>تواصل مع مكتب العمليات</h3>
+                <p>واتساب: +218 91 570 9015</p>
+                <button class="btn-gold" onclick="window.location.href='https://wa.me/218915709015'">فتح المحادثة</button>
+            </div>
         </div>
     </div>
-</main>
 
 <script>
-    const data = {
-        en: { 
-            h1: "SOCCER", h2: "STOCKS", h3: "CRYPTO", h4: "FINANCE", h5: "PORTAL",
-            n1: "SOCCER", n2: "STOCKS", n3: "CRYPTO", n4: "FINANCE", n5: "PORTAL",
-            m1: "Real Madrid vs Liverpool", m2: "Man City vs Arsenal", m3: "Barca vs Atletico",
-            f1: "DEPOSIT USDT", f2: "CONVERTER", p1: "AI ASSISTANT", p_desc: "Hear our executive audio guide.",
-            v_text: "PLAY AUDIO GUIDE", p2: "TESTIMONIALS", tm1: "\"Fastest USDT in Tripoli.\" - Ahmed", tm2: "\"100% Trust.\" - Omar",
-            p3: "LEGAL DISCLAIMER", ds1: "Global Trade LTD is a private liquidity provider. Digital assets carry high risk."
-        },
-        ar: {
-            h1: "كرة القدم", h2: "الأسهم", h3: "العملات", h4: "المالية", h5: "البوابة",
-            n1: "كرة القدم", n2: "الأسهم", n3: "العملات", n4: "المالية", n5: "البوابة",
-            m1: "ريال مدريد ضد ليفربول", m2: "مانشستر سيتي ضد أرسنال", m3: "برشلونة ضد أتلتيكو",
-            f1: "إيداع USDT", f2: "محول العملات", p1: "المساعد الذكي", p_desc: "استمع إلى الدليل الصوتي التنفيذي.",
-            v_text: "تشغيل الدليل الصوتي", p2: "آراء العملاء", tm1: "\"أسرع خدمة USDT في طرابلس.\" - أحمد", tm2: "\"ثقة بنسبة 100%.\" - عمر",
-            p3: "إخلاء مسؤولية", ds1: "جلوبال تريد المحدودة هي مزود سيولة خاص. الأصول الرقمية تنطوي على مخاطر عالية."
+    // These link to your GitHub Secrets/Stored API
+    const SB_URL = 'YOUR_SUPABASE_URL';
+    const SB_KEY = 'YOUR_SUPABASE_KEY';
+    const supabase = exports.createClient(SB_URL, SB_KEY);
+
+    let currentUser = null;
+
+    async function login() {
+        const id = document.getElementById('acc_id').value;
+        const pass = document.getElementById('acc_pass').value;
+
+        // ADMIN LOGIN (Hardcoded for you)
+        if(id === "ADMIN-GT" && pass === "LIBYA2026") {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('admin-panel').style.display = 'block';
+            loadAdminData();
+            return;
         }
-    };
 
-    function showV(id, b) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+        // CLIENT LOGIN
+        let { data: user, error } = await supabase.from('users').select('*').eq('account_id', id).single();
+
+        if (user && pass === user.password) {
+            currentUser = user;
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('user-app').style.display = 'flex';
+            document.getElementById('welcome-name').innerText = "مرحباً بك، " + user.full_name;
+            document.getElementById('live-bal').innerText = "$" + user.balance.toLocaleString();
+        } else {
+            alert("بيانات الدخول غير صحيحة");
+        }
+    }
+
+    // ADMIN FUNCTION: Update balance with one click
+    async function loadAdminData() {
+        let { data: users } = await supabase.from('users').select('*');
+        const list = document.getElementById('user-list');
+        list.innerHTML = '';
+        users.forEach(u => {
+            list.innerHTML += `
+                <div class="user-row">
+                    <span>${u.full_name} (${u.account_id})</span>
+                    <input type="number" id="bal-${u.id}" value="${u.balance}" style="width:100px; background:#222; color:white; border:1px solid var(--gold)">
+                    <button class="btn-gold" onclick="updateBal('${u.id}')">تحديث الرصيد</button>
+                </div>
+            `;
+        });
+    }
+
+    async function updateBal(userId) {
+        const newBal = document.getElementById('bal-' + userId).value;
+        const { error } = await supabase.from('users').update({ balance: newBal }).eq('id', userId);
+        if(!error) alert("تم تحديث الرصيد بنجاح");
+    }
+
+    function tab(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        b.classList.add('active');
-    }
-
-    function calc() {
-        const u = document.getElementById('usd').value;
-        document.getElementById('res').innerText = (u * 7.34).toFixed(2) + " LYD";
-    }
-
-    function wa(ref) { window.location.href = `https://wa.me/218915709015?text=GlobalTrade_${ref}`; }
-
-    // THIS IS THE VOICEOVER ENGINE - NO FILE NEEDED
-    function playVoice() {
-        const isAr = document.getElementById('lbtn').innerText === 'English';
-        const msg = isAr 
-            ? "مرحباً بكم في جلوبال تريد ليميتد. نحن نوفر أفضل أسعار اليو إس دي تي في ليبيا مع تسوية فورية. تمت عملية التمويل بنجاح" 
-            : "Welcome to Global Trade LTD. We provide the best USDT rates in Libya with instant settlement. The funding process is now complete.";
-        
-        const speech = new SpeechSynthesisUtterance(msg);
-        speech.lang = isAr ? 'ar-SA' : 'en-US';
-        speech.rate = 0.9;
-        window.speechSynthesis.speak(speech);
-    }
-
-    function tgl() {
-        const isAr = document.getElementById('lbtn').innerText === 'عربي';
-        const l = isAr ? 'ar' : 'en';
-        document.body.dir = isAr ? 'rtl' : 'ltr';
-        document.getElementById('lbtn').innerText = isAr ? 'English' : 'عربي';
-        Object.keys(data[l]).forEach(key => { if(document.getElementById(key)) document.getElementById(key).innerText = data[l][key]; });
     }
 </script>
 </body>
