@@ -1,122 +1,221 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Global Trade Capital Dashboard - Full System</title>
-<style>
-body {margin:0; font-family:'Segoe UI', sans-serif; background:#10101f; color:#fff;}
-#loginPage, header, main, #sectionContent {transition:all 0.3s;}
-#loginPage {display:flex; justify-content:center; align-items:center; height:100vh; background:#1a1a3f;}
-#loginBox {background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); padding:50px; border-radius:25px; width:400px; display:flex; flex-direction:column; align-items:center; gap:20px;}
-input {width:100%; padding:16px; border-radius:12px; border:none; font-size:18px; background:rgba(255,255,255,0.1); color:white;}
-button {width:100%; padding:16px; border:none; border-radius:12px; font-size:18px; cursor:pointer; background:#ff6f61; color:#fff; font-weight:bold; transition:0.3s;}
-button:hover {background:#ff8c75;}
-.lang-toggle-login {cursor:pointer; margin-top:10px; background:#2c2c55; color:white; padding:10px 18px; border-radius:10px; font-weight:bold;}
-header {display:none; background:#0b0b1f; color:white; padding:20px 30px; justify-content:space-between; align-items:center;}
-header h1 {margin:0; font-size:28px; color:#ff6f61;}
-header .lang-toggle, header .back-dashboard {cursor:pointer; background:#ff6f61; color:#0b0b1f; border-radius:8px; padding:8px 12px; font-weight:bold; margin-left:10px; transition:0.2s;}
-header .lang-toggle:hover, header .back-dashboard:hover {background:#ff8c75;}
-main {display:none; flex-wrap:wrap; justify-content:center; padding:25px; gap:20px;}
-.folder-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border-radius:15px; width:180px; height:80px; display:flex; justify-content:center; align-items:center; cursor:pointer; transition:transform 0.3s, box-shadow 0.3s; font-size:18px; font-weight:bold; text-align:center;}
-.folder-card:hover {transform:translateY(-8px) scale(1.05); box-shadow:0 8px 25px rgba(0,0,0,0.5);}
-#sectionContent {margin:20px auto; width:95%; max-width:1280px; display:none;}
-.section-card {background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border-radius:12px; padding:15px; margin:12px 0; box-shadow:0 4px 12px rgba(0,0,0,0.3);}
-.section-card h3 {margin:0 0 8px 0;}
-.section-data {margin-top:8px; font-size:16px; line-height:1.4;}
-.subfolder {margin-left:20px; margin-top:10px;}
-.currency-flag {margin-right:6px; vertical-align:middle;}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Trade | Libya 2026</title>
+    <style>
+        :root { --primary: #002349; --gold: #c5a059; --green: #2ecc71; --bg: #f4f7f6; --white: #ffffff; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: #333; }
+        body.rtl { direction: rtl; }
+        .hidden { display: none !important; }
+
+        /* Navigation */
+        nav { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .logo { font-size: 22px; font-weight: bold; letter-spacing: 1px; color: var(--gold); }
+        .wallet-info { background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); font-size: 14px; }
+
+        /* Login Screen */
+        #auth-screen { position: fixed; inset: 0; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 2000; }
+        .auth-card { background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
+        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+
+        /* Dashboard Grid */
+        .main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .file-card { background: var(--white); border-radius: 15px; padding: 25px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-top: 6px solid var(--gold); }
+        .file-card:hover { transform: translateY(-5px); }
+        
+        .price-big { font-size: 32px; font-weight: bold; color: var(--green); margin: 15px 0; }
+        .btn-action { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
+        .btn-action:hover { background: var(--gold); }
+
+        /* Features */
+        .vip-blur { filter: blur(5px); pointer-events: none; }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 999; }
+        .admin-edit { font-size: 10px; color: #ccc; cursor: pointer; display: block; margin-top: 10px; }
+
+        @media (max-width: 600px) { .main-container { grid-template-columns: 1fr; } }
+    </style>
 </head>
-<body><div id="loginPage">
-  <div id="loginBox">
-    <h2 id="loginTitle">Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button id="loginBtn" onclick="login()">Login</button>
-    <button id="guestBtn" onclick="guestLogin()">Enter as Guest</button>
-    <div class="lang-toggle-login" onclick="toggleLanguage()">عربي</div>
-  </div>
-</div><header>
-  <h1>Global Trade Capital</h1>
-  <div>
-    <span class="lang-toggle" onclick="toggleLanguage()">عربي</span>
-    <span class="back-dashboard" onclick="backToDashboard()">Back to Dashboard</span>
-  </div>
-</header><main>
-  <div class="folder-card" onclick="openFolder('stocks')">Stocks</div>
-  <div class="folder-card" onclick="openFolder('crypto')">Crypto</div>
-  <div class="folder-card" onclick="openFolder('fx')">FX</div>
-  <div class="folder-card" onclick="openFolder('commodities')">Gold & Oil</div>
-  <div class="folder-card" onclick="openFolder('soccer')">Soccer Predictions</div>
-  <div class="folder-card" onclick="openFolder('learn')">Learn / Contact</div>
-</main><div id="sectionContent"></div><script>
-let isArabic=false;
-function login(){document.getElementById('loginPage').style.display='none';startApp();}
-function guestLogin(){document.getElementById('loginPage').style.display='none';startApp();}
+<body id="body">
 
-function startApp(){document.querySelector('header').style.display='flex';document.querySelector('main').style.display='flex';}
-function toggleLanguage(){isArabic=!isArabic;document.body.dir=isArabic?'rtl':'ltr';
-  document.querySelectorAll('.lang-toggle, .lang-toggle-login').forEach(el=>el.innerText=isArabic?'EN':'عربي');
-  document.getElementById('loginTitle').innerText=isArabic?'تسجيل الدخول':'Login';
-  document.getElementById('loginBtn').innerText=isArabic?'تسجيل الدخول':'Login';
-  document.getElementById('guestBtn').innerText=isArabic?'الدخول كزائر':'Enter as Guest';
-  document.querySelectorAll('.folder-card').forEach((el,i)=>{
-    const texts=[['Stocks','Crypto','FX','Gold & Oil','Soccer Predictions','Learn / Contact'],['الأسهم','العملات الرقمية','العملات الأجنبية','الذهب والنفط','توقعات كرة القدم','تعلم / اتصل بنا']];
-    el.innerText=isArabic?texts[1][i]:texts[0][i];
-  });
-}
-function backToDashboard(){document.getElementById('sectionContent').innerHTML='';document.querySelector('main').style.display='flex';}
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h1 id="t-welcome">Global Trade</h1>
+            <p style="color: #666;" id="t-subtitle">Libya's Premier Crypto Gateway</p>
+            <input type="text" id="user" placeholder="Username / اسم المستخدم">
+            <input type="password" id="pass" placeholder="Password / كلمة المرور">
+            <button class="btn-action" onclick="enterApp()">Login / دخول</button>
+            <button onclick="enterApp()" style="margin-top:15px; background:none; border:none; color:var(--primary); cursor:pointer; font-weight:bold;" id="t-guest">Enter as Guest / الدخول كضيف</button>
+        </div>
+    </div>
 
-async function openFolder(name){
-  document.querySelector('main').style.display='none';
-  const section=document.getElementById('sectionContent');
-  section.style.display='block';
-  section.innerHTML='';
+    <nav>
+        <div class="logo">GLOBAL TRADE <span style="font-size:12px; color:white;">LY</span></div>
+        <div class="wallet-info">
+            <span id="t-bal">Balance:</span> <span id="balance-lyd">0.00</span> LYD | <span id="balance-usdt">0.00</span> USDT
+        </div>
+        <button onclick="toggleLanguage()" style="background:var(--gold); border:none; padding:5px 15px; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">EN/عربي</button>
+    </nav>
 
-  if(name==='stocks'){
-    section.innerHTML='<div class="section-card"><h3>Stocks</h3></div>';
-    const stocks=['AAPL','TSLA','AMZN','MSFT','NVDA','ARCT','CALC','ADDI'];
-    for(let sym of stocks){
-      const div=document.createElement('div');
-      div.className='section-data subfolder';
-      div.innerText=sym+' - Loading price...';
-      section.appendChild(div);
-      try{
-        const res=await fetch(`https://finnhub.io/api/v1/quote?symbol=${sym}&token=7815da7ac2ab43ca8f4a4b73e10e`);
-        const data=await res.json();
-        div.innerText=`${sym}: $${data.c}`;
-      } catch(e){div.innerText=`${sym}: Data unavailable`;}
-    }
-  }
-  else if(name==='crypto'){
-    section.innerHTML='<div class="section-card"><h3>Crypto</h3></div>';
-    const crypto=['bitcoin','ethereum','bnb','usdt','xrp','ada','dogecoin','solana','link','dot','matic','ltc','shib'];
-    try{
-      const res=await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+crypto.join(',')+'&vs_currencies=usd');
-      const data=await res.json();
-      crypto.forEach(c=>{
-        const div=document.createElement('div');
-        div.className='section-data subfolder';
-        div.innerText=c.toUpperCase()+': $'+data[c].usd;
-        section.appendChild(div);
-      });
-    } catch(e){crypto.forEach(c=>{const div=document.createElement('div');div.className='section-data subfolder';div.innerText=c.toUpperCase()+': Data unavailable';section.appendChild(div);});}
-  }
-  else if(name==='fx'){
-    section.innerHTML='<div class="section-card"><h3>FX Rates</h3><div class="section-data subfolder"><img class="currency-flag" src="flags/us.png">USD/LYD: 5.07<br><img class="currency-flag" src="flags/eu.png">EUR/USD: 1.09<br><img class="currency-flag" src="flags/gb.png">GBP/USD: 1.25</div></div>';
-  }
-  else if(name==='commodities'){
-    section.innerHTML='<div class="section-card"><h3>Gold & Oil</h3><div class="section-data subfolder"><img class="currency-flag" src="flags/ly.png">Libyan Oil: $70<br>Gold: $1970<br>WTI: $72</div></div>';
-  }
-  else if(name==='soccer'){
-    section.innerHTML='<div class="section-card"><h3>Soccer Predictions</h3></div>';
-    const matches=['Team A vs Team B','Team C vs Team D','Team E vs Team F'];
-    matches.forEach(m=>{const div=document.createElement('div');div.className='section-data subfolder';div.innerText=m+' - Predicted outcome: TBD';section.appendChild(div);});
-    const contact=document.createElement('div');contact.className='section-data subfolder';contact.innerText='Contact: 91-494-8944';section.appendChild(contact);
-  }
-  else if(name==='learn'){
-    section.innerHTML='<div class="section-card"><h3>Learn / Contact</h3><p>Global Trade Capital services: crypto, stocks, FX, commodities, soccer predictions, worldwide payments.</p><div class="audio-container"><audio controls><source src="audio_global_trade.mp3" type="audio/mpeg">Your browser does not support audio.</audio></div></div>';
-  }
-}
-</script></body>
+    <div class="main-container">
+        
+        <div class="file-card">
+            <h3 id="t-crypto">Crypto Market (Real-Time)</h3>
+            <div id="crypto-data">Loading Prices...</div>
+            <p style="font-size:12px; color:#888;">Powered by CoinGecko API</p>
+            <button class="btn-action" id="t-buy-usdt">Instant Buy USDT</button>
+        </div>
+
+        <div class="file-card">
+            <h3 id="t-fx">USD / LYD Exchange</h3>
+            <div class="price-big" id="fx-rate">7.34 LYD</div>
+            <p id="t-market-type">Street Parallel Rate (Tripoli/Benghazi)</p>
+            <hr>
+            <p style="font-size:13px;">Official Bank: 4.82 LYD</p>
+            <span class="admin-edit" onclick="updateFX()">Admin: Update Rate</span>
+        </div>
+
+        <div class="file-card">
+            <h3 id="t-wallet">Local Bank Deposit</h3>
+            <select id="bank-list">
+                <option>Al-Jumhouria Bank (الجمهورية)</option>
+                <option>Aman Bank (أمان)</option>
+                <option>Wahda Bank (الوحدة)</option>
+                <option>Sahary Bank (الصحاري)</option>
+                <option>Commerce & Development (التجارة والتنمية)</option>
+            </select>
+            <input type="number" id="dep-amt" placeholder="Amount in LYD">
+            <label style="font-size:11px;" id="t-upload">Upload Receipt Image:</label>
+            <input type="file" id="receipt" accept="image/*">
+            <button class="btn-action" style="background:var(--green);" onclick="submitDeposit()" id="t-confirm">Confirm Transfer</button>
+        </div>
+
+        <div class="file-card">
+            <h3 id="t-soccer">Soccer Predictions</h3>
+            <div style="border:1px solid #eee; padding:10px; border-radius:8px;">
+                <p><b>Real Madrid vs Man City</b></p>
+                <div class="vip-blur">Result: Home Win (2.10)</div>
+                <button class="btn-action" style="background: #e74c3c; margin-top:10px;" id="t-unlock">Unlock VIP Predictions</button>
+            </div>
+        </div>
+
+        <div class="file-card" style="background:var(--primary); color:white;">
+            <h3 id="t-testi">Customer Feedback</h3>
+            <p id="t-quote">"The most trusted USDT dealer in Libya. Fast and secure."</p>
+            <p style="color:var(--gold);">- Mohamed A., Tripoli</p>
+            <hr>
+            <p id="t-quote2">"Best exchange rates for Aman Bank users."</p>
+            <p style="color:var(--gold);">- Sara K., Benghazi</p>
+        </div>
+
+        <div class="file-card">
+            <h3 id="t-contact">Learn & Support</h3>
+            <p id="t-help">Need help buying USDT or setting up your wallet?</p>
+            <button class="btn-action" onclick="window.location.href='https://facebook.com'">Facebook Page</button>
+            <button class="btn-action" style="background:#34495e; margin-top:10px;">Tutorial Videos</button>
+        </div>
+
+    </div>
+
+    <a href="https://wa.me/218900000000" class="whatsapp-float" id="t-whatsapp">WhatsApp Boss 💬</a>
+
+    <script>
+        let currentLang = 'en';
+
+        // 1. ENTER APP LOGIC
+        function enterApp() {
+            document.getElementById('auth-screen').classList.add('hidden');
+        }
+
+        // 2. LIVE CRYPTO API
+        async function fetchPrices() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd');
+                const data = await res.json();
+                document.getElementById('crypto-data').innerHTML = `
+                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                        <span>Bitcoin:</span> <b>$${data.bitcoin.usd.toLocaleString()}</b>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                        <span>Ethereum:</span> <b>$${data.ethereum.usd.toLocaleString()}</b>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
+                        <span>USDT:</span> <b>$${data.tether.usd.toFixed(2)}</b>
+                    </div>
+                `;
+            } catch (err) {
+                document.getElementById('crypto-data').innerText = "API Limit - Refreshing...";
+            }
+        }
+        setInterval(fetchPrices, 15000);
+        fetchPrices();
+
+        // 3. ADMIN FX UPDATE
+        function updateFX() {
+            let pin = prompt("Enter Admin PIN:");
+            if (pin === "1234") {
+                let newRate = prompt("Enter New USD/LYD Rate:");
+                if(newRate) document.getElementById('fx-rate').innerText = newRate + " LYD";
+            }
+        }
+
+        // 4. DEPOSIT SIMULATION
+        function submitDeposit() {
+            const amt = document.getElementById('dep-amt').value;
+            if(!amt) { alert("Enter amount!"); return; }
+            alert(currentLang === 'en' ? "Receipt Uploaded! We will verify your deposit." : "تم رفع الإيصال! سنقوم بالتحقق من الإيداع.");
+        }
+
+        // 5. LANGUAGE TOGGLE
+        function toggleLanguage() {
+            const b = document.getElementById('body');
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            b.classList.toggle('rtl');
+
+            const text = {
+                en: {
+                    welcome: "Global Trade", sub: "Libya's Premier Crypto Gateway", guest: "Enter as Guest",
+                    bal: "Balance:", crypto: "Crypto Market (Real-Time)", buy: "Instant Buy USDT",
+                    fx: "USD / LYD Exchange", market: "Street Parallel Rate", wallet: "Local Bank Deposit",
+                    upload: "Upload Receipt Image:", confirm: "Confirm Transfer", soccer: "Soccer Predictions",
+                    unlock: "Unlock VIP Predictions", testi: "Customer Feedback", contact: "Learn & Support",
+                    help: "Need help buying USDT?", whatsapp: "WhatsApp Boss 💬",
+                    q1: '"The most trusted USDT dealer in Libya."', q2: '"Best rates for Aman Bank users."'
+                },
+                ar: {
+                    welcome: "جلوبال تريد", sub: "بوابتك الأولى للعملات الرقمية في ليبيا", guest: "الدخول كضيف",
+                    bal: "الرصيد:", crypto: "سوق العملات (مباشر)", buy: "شراء USDT فوراً",
+                    fx: "سعر صرف الدولار", market: "سعر السوق الموازي", wallet: "إيداع مصرفي محلي",
+                    upload: "رفع صورة الإيصال:", confirm: "تأكيد التحويل", soccer: "توقعات كرة القدم",
+                    unlock: "فتح التوقعات المميزة", testi: "آراء العملاء", contact: "التعليم والدعم",
+                    help: "هل تحتاج مساعدة في الشراء؟", whatsapp: "تواصل مع المدير 💬",
+                    q1: '"أكثر وسيط USDT موثوق في ليبيا."', q2: '"أفضل الأسعار لمستخدمي مصرف أمان."'
+                }
+            };
+
+            const t = text[currentLang];
+            document.getElementById('t-welcome').innerText = t.welcome;
+            document.getElementById('t-subtitle').innerText = t.sub;
+            document.getElementById('t-guest').innerText = t.guest;
+            document.getElementById('t-bal').innerText = t.bal;
+            document.getElementById('t-crypto').innerText = t.crypto;
+            document.getElementById('t-buy-usdt').innerText = t.buy;
+            document.getElementById('t-fx').innerText = t.fx;
+            document.getElementById('t-market-type').innerText = t.market;
+            document.getElementById('t-wallet').innerText = t.wallet;
+            document.getElementById('t-upload').innerText = t.upload;
+            document.getElementById('t-confirm').innerText = t.confirm;
+            document.getElementById('t-soccer').innerText = t.soccer;
+            document.getElementById('t-unlock').innerText = t.unlock;
+            document.getElementById('t-testi').innerText = t.testi;
+            document.getElementById('t-contact').innerText = t.contact;
+            document.getElementById('t-help').innerText = t.help;
+            document.getElementById('t-whatsapp').innerText = t.whatsapp;
+            document.getElementById('t-quote').innerText = t.q1;
+            document.getElementById('t-quote2').innerText = t.q2;
+        }
+    </script>
+</body>
 </html>
