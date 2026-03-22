@@ -1,175 +1,177 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="main-html">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL TRADE LTD | LIVE CLOUD TERMINAL</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <title>GT LTD | AI TERMINAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #c5a059; --bg: #050505; --border: #1e293b; --emerald: #10b981; }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.5s; }
-        body, html { height: 100%; margin: 0; background: var(--bg); color: #f1f5f9; overflow: hidden; }
+        :root { --mint: #00ffcc; --bg: #030712; --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.1); }
+        * { box-sizing: border-box; font-family: 'Inter', 'Noto Sans Arabic', sans-serif; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        body, html { height: 100%; margin: 0; background: var(--bg); color: #e5e7eb; overflow: hidden; }
 
-        /* 🔐 THE VAULT ENTRY */
-        #vault-gate { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
-        .vault-box { width: 420px; text-align: center; border: 1px solid var(--border); padding: 60px; background: #050505; border-radius: 4px; box-shadow: 0 0 50px rgba(197, 160, 89, 0.05); }
-        .vault-box h1 { font-family: 'Cinzel', serif; color: var(--gold); font-size: 28px; letter-spacing: 5px; margin-bottom: 40px; }
-        .key-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--border); padding: 15px; color: white; text-align: center; font-size: 16px; margin-bottom: 30px; letter-spacing: 5px; outline: none; }
-        .key-input:focus { border-bottom-color: var(--gold); }
-        .access-btn { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+        /* 🌌 BACKGROUND EFFECT */
+        body::before { content: ""; position: fixed; inset: 0; background: radial-gradient(circle at 10% 20%, rgba(0, 255, 204, 0.05) 0%, transparent 50%); z-index: -1; }
 
-        /* 📊 INTERFACE */
+        /* 🔐 AI LOGIN GATE */
+        #auth-gate { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        .auth-card { width: 420px; padding: 50px; background: var(--glass); border: 1px solid var(--border); border-radius: 24px; text-align: center; }
+        .auth-card h1 { font-size: 24px; font-weight: 900; letter-spacing: 2px; margin-bottom: 30px; color: #fff; }
+        
+        .ai-input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); padding: 16px; color: #fff; border-radius: 12px; margin-bottom: 15px; text-align: center; outline: none; }
+        .ai-input:focus { border-color: var(--mint); box-shadow: 0 0 15px rgba(0, 255, 204, 0.2); }
+        
+        .btn-main { width: 100%; padding: 16px; background: var(--mint); color: #000; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
+        .btn-guest { width: 100%; padding: 14px; background: transparent; color: var(--mint); border: 1px solid var(--mint); border-radius: 12px; font-weight: 700; cursor: pointer; }
+
+        /* 📊 DASHBOARD */
         #terminal { display: none; height: 100vh; flex-direction: column; }
-        header { height: 80px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 50px; background: #000; }
-        .brand { font-family: 'Cinzel', serif; color: var(--gold); font-weight: 600; font-size: 16px; letter-spacing: 3px; }
-        .nav-links { display: flex; gap: 40px; }
-        .nav-item { color: #475569; font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
-        .nav-item.active { color: var(--gold); }
+        header { height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; border-bottom: 1px solid var(--border); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-item { font-size: 13px; font-weight: 700; color: #9ca3af; cursor: pointer; letter-spacing: 1px; }
+        .nav-item.active { color: var(--mint); }
 
-        /* CONTENT */
-        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; }
-        .view { display: none; width: 100%; height: 100%; max-width: 1400px; grid-template-columns: 1fr 1fr; gap: 40px; }
-        .view.active { display: grid; animation: reveal 0.8s ease; }
-        @keyframes reveal { from { opacity: 0; filter: blur(10px); } to { opacity: 1; filter: blur(0); } }
+        /* 🖥️ VIEWPORT */
+        main { flex: 1; padding: 30px; display: flex; gap: 20px; }
+        .panel { flex: 1; background: var(--glass); border: 1px solid var(--border); border-radius: 20px; padding: 40px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        
+        .label { font-size: 11px; font-weight: 900; color: var(--mint); text-transform: uppercase; letter-spacing: 2px; }
+        .balance { font-size: 64px; font-weight: 900; margin: 15px 0; color: #fff; }
+        
+        .btn-action { padding: 14px 28px; background: var(--mint); color: #000; border-radius: 10px; border: none; font-weight: 900; width: fit-content; cursor: pointer; margin-top: 20px; }
 
-        /* PANELS */
-        .glass-panel { background: #000; border: 1px solid var(--border); padding: 50px; display: flex; flex-direction: column; justify-content: center; }
-        .label { color: var(--gold); font-size: 10px; font-weight: 900; letter-spacing: 3px; margin-bottom: 10px; }
-        .value { font-size: 75px; font-weight: 900; color: white; margin-bottom: 10px; letter-spacing: -2px; }
-        .status { color: var(--emerald); font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-        .status::before { content: ""; width: 8px; height: 8px; background: var(--emerald); border-radius: 50%; }
+        /* 🌍 LANG TOGGLE */
+        .lang-toggle { background: var(--glass); border: 1px solid var(--border); color: #fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 11px; }
 
-        .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 15px 30px; font-weight: 900; font-size: 11px; cursor: pointer; margin-top: 30px; width: fit-content; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-outline:hover { background: var(--gold); color: black; }
+        /* 🛡️ TRUST BAR */
+        .trust-bar { margin-top: 40px; display: flex; gap: 25px; opacity: 0.4; filter: invert(1); }
+        .trust-bar img { height: 18px; }
 
-        /* TRADING */
-        .form-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); padding: 15px; color: white; margin-bottom: 15px; }
-        iframe { width: 100%; height: 100%; border: none; }
-
-        .footer-logos { margin-top: 40px; display: flex; gap: 30px; opacity: 0.3; filter: invert(1); }
-        .footer-logos img { height: 20px; }
+        iframe { width: 100%; height: 100%; border-radius: 20px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
 
-    <div id="vault-gate">
-        <div class="vault-box">
-            <h1>GLOBAL TRADE</h1>
-            <input type="password" id="private-key" class="key-input" placeholder="PRIVATE KEY">
-            <button class="access-btn" id="login-btn" onclick="authorize()">Open Secure Session</button>
-            <p id="error" style="color:#ef4444; font-size:11px; margin-top:20px; display:none;">ACCESS DENIED: KEY UNRECOGNIZED</p>
+    <div id="auth-gate">
+        <div class="auth-card">
+            <h1 id="t-welcome">GLOBAL TRADE AI</h1>
+            <input type="password" id="key" class="ai-input" placeholder="PRIVATE KEY / المفتاح">
+            <button class="btn-main" onclick="login()">AUTHORIZE</button>
+            <button class="btn-guest" onclick="guest()">GUEST ACCESS</button>
+            <div style="margin-top: 25px;">
+                <button class="lang-toggle" onclick="setLang('en')">EN</button>
+                <button class="lang-toggle" onclick="setLang('ar')">AR</button>
+            </div>
         </div>
     </div>
 
     <div id="terminal">
         <header>
-            <div class="brand">GLOBAL TRADE LTD</div>
+            <div style="font-weight: 900; letter-spacing: 2px; color: var(--mint);">GT LTD // AI</div>
             <div class="nav-links">
-                <div class="nav-item active" onclick="tab('v-home', this)">Portfolio</div>
-                <div class="nav-item" onclick="tab('v-trade', this)">Execution</div>
-                <div class="nav-item" onclick="tab('v-hq', this)">Network</div>
+                <div class="nav-item active" onclick="tab('v-home', this)" id="m1">PORTFOLIO</div>
+                <div class="nav-item" onclick="tab('v-trade', this)" id="m2">EXECUTION</div>
+                <div class="nav-item" onclick="tab('v-hq', this)" id="m3">BRIEFING</div>
             </div>
-            <div id="user-tag" style="font-size: 10px; color: var(--gold); font-weight: 900; letter-spacing: 1px;">ENCRYPTED SESSION</div>
+            <button class="lang-toggle" onclick="setLang(document.dir === 'rtl' ? 'en' : 'ar')">⚙️ TOGGLE LANG</button>
         </header>
 
         <main>
-            <div id="v-home" class="view active">
-                <div class="glass-panel">
-                    <div class="label" id="user-greeting">ACCOUNT EQUITY</div>
-                    <div class="value" id="user-balance">$0.00</div>
-                    <div class="status">LIQUIDITY VERIFIED BY CBL</div>
+            <div id="v-home" class="panel" style="display: flex; flex-direction: row; width: 100%; gap: 30px;">
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="label" id="l-bal">TOTAL EQUITY</div>
+                    <div class="balance" id="val-bal">$0.00</div>
+                    <div style="color: var(--mint); font-size: 12px; font-weight: 700;" id="l-status">● NEURAL DATA SYNC ACTIVE</div>
+                    <button class="btn-action" onclick="window.location.href='https://wa.me/218915709015'" id="l-btn">TRANSFER FUNDS</button>
                     
-                    <button class="btn-outline" onclick="window.location.href='https://wa.me/218915709015'">Instant Withdrawal</button>
-                    
-                    <div class="footer-logos">
+                    <div class="trust-bar">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
                     </div>
                 </div>
-                <div style="border: 1px solid var(--border);">
-                    <iframe src="https://www.tradingview.com/widgetembed/?symbol=OANDA:XAUUSD&theme=dark"></iframe>
+                <div style="flex: 1.5;">
+                    <iframe src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ:TSLA&theme=dark"></iframe>
                 </div>
             </div>
 
-            <div id="v-trade" class="view">
-                <div style="border: 1px solid var(--border);">
+            <div id="v-trade" class="panel" style="display: none; flex-direction: row; width: 100%; gap: 30px;">
+                <div style="flex: 1.5;">
                     <iframe src="https://www.tradingview.com/widgetembed/?symbol=BITSTAMP:BTCUSD&theme=dark"></iframe>
                 </div>
-                <div class="glass-panel">
-                    <div class="label">EXECUTION DESK</div>
-                    <input type="text" id="t-sym" class="form-input" placeholder="Symbol (XAU/USD)">
-                    <input type="number" id="t-amt" class="form-input" placeholder="Volume (USD)">
-                    <button class="access-btn" style="background:var(--emerald); color:white;" onclick="exec('BUY')">Place Buy Order</button>
-                    <button class="access-btn" style="background:#ef4444; color:white; margin-top:10px;" onclick="exec('SELL')">Place Sell Order</button>
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="label">TRADE EXECUTION</div>
+                    <input type="text" id="t-sym" class="ai-input" placeholder="Asset Symbol">
+                    <input type="number" id="t-amt" class="ai-input" placeholder="Amount (USD)">
+                    <button class="btn-main" onclick="exec('BUY')">BUY</button>
+                    <button class="btn-main" style="background:#ff4d4d;" onclick="exec('SELL')">SELL</button>
                 </div>
             </div>
 
-            <div id="v-hq" class="view">
-                <div class="glass-panel">
-                    <div class="label">EXECUTIVE AUDIO</div>
-                    <button class="btn-outline" onclick="speak()">Initialize Briefing 🎙️</button>
-                </div>
-                <div class="glass-panel">
-                    <div class="label">INSTITUTIONAL LINE</div>
-                    <p style="font-size: 24px; font-weight: 900;">+218 91 570 9015</p>
-                    <button class="access-btn" onclick="window.location.href='https://wa.me/218915709015'">Secure WhatsApp</button>
-                </div>
+            <div id="v-hq" class="panel" style="display: none; width: 100%; text-align: center;">
+                <div class="label">AI VOICE REPORT</div>
+                <button class="btn-action" style="margin: 30px auto;" onclick="speak()">GENERATE BRIEFING 🎙️</button>
+                <div class="label" style="margin-top: 40px;">DIRECT SUPPORT</div>
+                <h2 style="font-size: 32px; font-weight: 900;">+218 91 570 9015</h2>
+                <button class="btn-guest" style="width: 200px; margin: 0 auto;" onclick="window.location.href='https://wa.me/218915709015'">WHATSAPP AI</button>
             </div>
         </main>
     </div>
 
 <script>
-    // 🏦 CLOUD CONFIGURATION
-    // Replace these with your own Supabase credentials later
-    const SUPABASE_URL = "YOUR_SUPABASE_URL_HERE"; 
-    const SUPABASE_KEY = "YOUR_SUPABASE_KEY_HERE";
-    const supabase = (SUPABASE_URL !== "YOUR_SUPABASE_URL_HERE") ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
-    // LOCAL DATABASE (Fallback until you connect Supabase)
-    const localData = {
-        "GT-777": { name: "VIP INVESTOR", balance: "$25,000.00" },
-        "GT-100": { name: "PRIVATE CLIENT", balance: "$10,000.00" }
+    const database = {
+        "GT-VIP": { name: "EXECUTIVE CLIENT", bal: "$500,000.00" },
+        "GUEST": { name: "VISITOR", bal: "$10,000.00" }
     };
 
-    function authorize() {
-        const key = document.getElementById('private-key').value;
-        const btn = document.getElementById('login-btn');
-        btn.innerText = "VERIFYING...";
+    function setLang(l) {
+        const h = document.getElementById('main-html');
+        h.dir = (l === 'ar') ? 'rtl' : 'ltr';
+        h.lang = l;
+        
+        // Dynamic translation
+        document.getElementById('m1').innerText = (l === 'ar') ? 'المحفظة' : 'PORTFOLIO';
+        document.getElementById('m2').innerText = (l === 'ar') ? 'التنفيذ' : 'EXECUTION';
+        document.getElementById('m3').innerText = (l === 'ar') ? 'التقرير' : 'BRIEFING';
+        document.getElementById('l-bal').innerText = (l === 'ar') ? 'إجمالي الأصول' : 'TOTAL EQUITY';
+        document.getElementById('l-btn').innerText = (l === 'ar') ? 'تحويل الأموال' : 'TRANSFER FUNDS';
+    }
 
-        setTimeout(() => {
-            if (localData[key]) {
-                const user = localData[key];
-                document.getElementById('vault-gate').style.display = 'none';
-                document.getElementById('terminal').style.display = 'flex';
-                document.getElementById('user-greeting').innerText = `WELCOME, ${user.name}`;
-                document.getElementById('user-balance').innerText = user.balance;
-            } else {
-                document.getElementById('error').style.display = 'block';
-                btn.innerText = "Open Secure Session";
-            }
-        }, 1200);
+    function login() {
+        const k = document.getElementById('key').value;
+        if(database[k]) render(database[k]);
+        else alert("ACCESS DENIED");
+    }
+
+    function guest() { render(database["GUEST"]); }
+
+    function render(user) {
+        document.getElementById('auth-gate').style.display = 'none';
+        document.getElementById('terminal').style.display = 'flex';
+        document.getElementById('val-bal').innerText = user.bal;
     }
 
     function tab(id, el) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById('v-home').style.display = 'none';
+        document.getElementById('v-trade').style.display = 'none';
+        document.getElementById('v-hq').style.display = 'none';
+        document.getElementById(id).style.display = 'flex';
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
         el.classList.add('active');
-    }
-
-    function speak() {
-        window.speechSynthesis.cancel();
-        const msg = new SpeechSynthesisUtterance("مرحباً بكم في جلوبال تريد ليميتد. تم التحقق من هويتك وسيولة حسابك. نحن جاهزون للعمل.");
-        msg.lang = 'ar-SA';
-        window.speechSynthesis.speak(msg);
     }
 
     function exec(type) {
         const s = document.getElementById('t-sym').value;
         const a = document.getElementById('t-amt').value;
-        window.location.href = `https://wa.me/218915709015?text=ORDER_${type}_${a}_${s}`;
+        window.location.href = `https://wa.me/218915709015?text=AI_ORDER_${type}_${a}_${s}`;
+    }
+
+    function speak() {
+        window.speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(document.dir === 'rtl' ? "مرحباً بك في نظام التداول الذكي الخاص بجلوبال تريد. سيولة حسابك مؤمنة بالكامل وجاهزة للتنفيذ." : "Welcome to Global Trade AI system. Your liquidity is fully secured and ready for execution.");
+        msg.lang = (document.dir === 'rtl') ? 'ar-SA' : 'en-US';
+        window.speechSynthesis.speak(msg);
     }
 </script>
 </body>
