@@ -1,136 +1,174 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="main-html">
 <head>
     <meta charset="UTF-8">
-    <title>GLOBAL TRADE | نظام الإدارة والعمليات</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLOBAL TRADE LTD | OFFICIAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Sans+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #d4af37; --navy: #020617; --card: #0f172a; --emerald: #10b981; }
-        body { background: var(--navy); color: white; font-family: sans-serif; margin: 0; overflow: hidden; height: 100vh; }
+        :root { --gold: #d4af37; --obsidian: #050505; --card: #0a0a0a; --emerald: #10b981; }
+        * { box-sizing: border-box; font-family: 'Noto Sans Arabic', 'Cinzel', serif; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         
-        /* AUTH OVERLAY */
-        #auth-overlay { position: fixed; inset: 0; background: var(--navy); z-index: 10000; display: flex; justify-content: center; align-items: center; }
-        .login-box { background: var(--card); padding: 40px; border: 2px solid var(--gold); border-radius: 20px; width: 350px; text-align: center; }
-        
-        /* ADMIN PANEL STYLING */
-        #admin-panel { display: none; padding: 40px; text-align: center; overflow-y: auto; height: 100vh; }
-        .user-row { background: #000; border: 1px solid #1e293b; padding: 15px; margin: 10px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* USER APP STYLING */
-        #user-app { display: none; flex-direction: column; height: 100vh; }
-        nav { height: 70px; background: #000; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-around; align-items: center; }
-        .screen { display: none; flex: 1; padding: 30px; text-align: center; justify-content: center; flex-direction: column; align-items: center; }
-        .screen.active { display: flex; }
+        body, html { height: 100%; margin: 0; background: var(--obsidian); color: white; overflow: hidden; }
 
-        .balance-txt { font-size: 70px; font-weight: 900; color: var(--emerald); }
-        .input-dark { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid var(--gold); color: white; border-radius: 8px; text-align: center; }
-        .btn-gold { background: var(--gold); color: black; border: none; padding: 12px 25px; font-weight: 900; border-radius: 8px; cursor: pointer; }
+        /* THE "RED SIGN" FIX HEADER */
+        header { height: 40px; background: #000; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--gold); letter-spacing: 2px; font-weight: 900; }
+
+        /* LANGUAGE SELECTOR */
+        .lang-switcher { position: fixed; top: 50px; left: 50%; transform: translateX(-50%); z-index: 10000; }
+        .lang-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--gold); color: var(--gold); padding: 8px 20px; border-radius: 30px; cursor: pointer; font-weight: 900; backdrop-filter: blur(10px); }
+
+        /* LOGIN SCREEN - BEAUTIFUL GLASS */
+        #login-screen { position: fixed; inset: 0; background: radial-gradient(circle, #111 0%, #000 100%); z-index: 9000; display: flex; justify-content: center; align-items: center; }
+        .login-card { background: var(--card); border: 1px solid var(--gold); padding: 60px; border-radius: 30px; text-align: center; width: 450px; box-shadow: 0 0 50px rgba(212, 175, 55, 0.1); }
+        .login-card h1 { font-size: 35px; color: var(--gold); margin-bottom: 30px; }
+        
+        /* INPUTS */
+        .input-box { width: 100%; padding: 18px; margin: 12px 0; background: #000; border: 1px solid #222; color: white; border-radius: 12px; text-align: center; font-size: 18px; }
+        .input-box:focus { border-color: var(--gold); outline: none; }
+        .btn-prime { background: var(--gold); color: black; border: none; padding: 18px; width: 100%; border-radius: 12px; font-weight: 900; cursor: pointer; font-size: 18px; margin-top: 20px; }
+
+        /* MAIN INTERFACE */
+        #app-interface { display: none; height: 100vh; flex-direction: column; }
+        nav { height: 100px; display: flex; justify-content: center; gap: 40px; align-items: center; background: rgba(0,0,0,0.8); border-bottom: 1px solid #1a1a1a; }
+        .nav-link { color: #555; text-decoration: none; font-weight: 900; font-size: 14px; cursor: pointer; text-transform: uppercase; }
+        .nav-link.active { color: var(--gold); border-bottom: 2px solid var(--gold); padding-bottom: 5px; }
+
+        /* CENTERED CONTENT BOXES */
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px; }
+        .view { display: none; width: 100%; max-width: 1200px; height: 100%; flex-direction: column; align-items: center; justify-content: center; }
+        .view.active { display: flex; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+
+        /* FOLDER TILES (SIDE BY SIDE) */
+        .grid-folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+        .tile { background: var(--card); border: 1px solid #1a1a1a; padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; }
+        .tile:hover { border-color: var(--gold); background: #0f0f0f; }
+        .tile h3 { color: var(--gold); margin-bottom: 10px; }
+
+        /* LOGO BAR */
+        .trust-bar { display: flex; gap: 30px; margin-top: 40px; opacity: 0.4; filter: grayscale(1); align-items: center; }
+        .trust-bar img { height: 25px; }
+
+        .balance-hero { font-size: 80px; font-weight: 900; color: var(--emerald); margin: 20px 0; }
     </style>
 </head>
 <body>
 
-    <div id="auth-overlay">
-        <div class="login-box">
-            <h2 style="color:var(--gold)">تسجيل الدخول</h2>
-            <input type="text" id="acc_id" class="input-dark" placeholder="رقم المحفظة">
-            <input type="password" id="acc_pass" class="input-dark" placeholder="كلمة المرور">
-            <button class="btn-gold" onclick="login()">دخول آمن</button>
+    <header>SECURE TERMINAL ● GLOBAL TRADE LIMITED ● VERIFIED LIQUIDITY</header>
+
+    <div class="lang-switcher">
+        <button class="lang-btn" onclick="toggleLanguage()" id="l-btn">ENGLISH</button>
+    </div>
+
+    <div id="login-screen">
+        <div class="login-card">
+            <h1 id="t-brand">GLOBAL TRADE</h1>
+            <p id="t-login-sub" style="color:#666;">البوابة الرسمية للمستثمرين</p>
+            <input type="text" id="wallet_id" class="input-box" placeholder="رقم المحفظة">
+            <input type="password" id="wallet_pass" class="input-box" placeholder="كلمة المرور">
+            <button class="btn-prime" onclick="entry()" id="t-enter">دخول آمن</button>
         </div>
     </div>
 
-    <div id="admin-panel">
-        <h1 style="color:var(--gold)">لوحة تحكم المدير</h1>
-        <div id="user-list">
-            </div>
-        <button class="btn-gold" style="margin-top:20px;" onclick="location.reload()">تحديث البيانات</button>
-    </div>
-
-    <div id="user-app">
+    <div id="app-interface">
         <nav>
-            <button onclick="tab('u-home')" class="btn-gold" style="background:none; color:var(--gold)">المحفظة</button>
-            <button onclick="tab('u-stocks')" class="btn-gold" style="background:none; color:white">الأسهم</button>
-            <button onclick="tab('u-wa')" class="btn-gold" style="background:none; color:white">الدعم</button>
+            <div class="nav-link active" onclick="tab('v-home', this)" id="n1">المحفظة</div>
+            <div class="nav-link" onclick="tab('v-markets', this)" id="n2">الأسواق</div>
+            <div class="nav-link" onclick="tab('v-fx', this)" id="n3">تحويل عملات</div>
+            <div class="nav-link" onclick="tab('v-learn', this)" id="n4">تعلم واتصل</div>
         </nav>
-        
-        <div id="u-home" class="screen active">
-            <h2 id="welcome-name">مرحباً</h2>
-            <div class="balance-txt" id="live-bal">$0.00</div>
-            <p style="color:#94a3b8">الرصيد المباشر متاح للسحب</p>
-            <button class="btn-gold" onclick="window.location.href='https://wa.me/218915709015?text=DEPOSIT'">إيداع جديد</button>
-        </div>
 
-        <div id="u-stocks" class="screen">
-            <iframe src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3ATSLA&theme=dark&locale=ar" style="width:100%; height:500px; border:1px solid var(--gold); border-radius:15px;"></iframe>
-        </div>
-
-        <div id="u-wa" class="screen">
-            <div style="background:var(--card); padding:30px; border-radius:15px; border:1px solid var(--gold)">
-                <h3>تواصل مع مكتب العمليات</h3>
-                <p>واتساب: +218 91 570 9015</p>
-                <button class="btn-gold" onclick="window.location.href='https://wa.me/218915709015'">فتح المحادثة</button>
+        <main>
+            <div id="v-home" class="view active">
+                <p id="t-bal-lbl" style="color:#666; font-weight:900;">إجمالي الرصيد المباشر</p>
+                <div class="balance-hero">$10,000.00</div>
+                <button class="btn-prime" style="width:300px;" onclick="window.location.href='https://wa.me/218915709015'">إيداع / سحب</button>
             </div>
-        </div>
+
+            <div id="v-markets" class="view">
+                <div class="grid-folders">
+                    <div class="tile"><h3>الأسهم</h3><p>NASDAQ / NYSE</p></div>
+                    <div class="tile"><h3>الكريبتو</h3><p>BTC / USDT</p></div>
+                    <div class="tile"><h3>الذهب</h3><p>XAU / USD</p></div>
+                </div>
+                <iframe src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3ATSLA&theme=dark&locale=ar" style="width:100%; height:400px; margin-top:20px; border:1px solid #1a1a1a; border-radius:20px;"></iframe>
+            </div>
+
+            <div id="v-fx" class="view">
+                <div class="tile" style="width:400px;">
+                    <h2 id="t-fx-title">صرف الدولار / دينار</h2>
+                    <input type="number" class="input-box" placeholder="USD" id="fx-in" oninput="calcFX()">
+                    <div id="fx-out" style="font-size:30px; color:var(--emerald); font-weight:900;">0.00 LYD</div>
+                    <button class="btn-prime" onclick="window.location.href='https://wa.me/218915709015'">تنفيذ العملية</button>
+                </div>
+            </div>
+
+            <div id="v-learn" class="view">
+                <h2 id="t-audio-title" style="color:var(--gold)">الإيجاز الصوتي التنفيذي</h2>
+                <button class="btn-prime" style="width:300px; background:white;" onclick="playAudio()">تشغيل الملف الصوتي 🎙️</button>
+                
+                <div class="trust-bar">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
+                    <div style="font-size:10px; font-weight:900;">CBL | JUMHOURIA | SAHARA</div>
+                </div>
+            </div>
+        </main>
     </div>
 
 <script>
-    // These link to your GitHub Secrets/Stored API
-    const SB_URL = 'YOUR_SUPABASE_URL';
-    const SB_KEY = 'YOUR_SUPABASE_KEY';
-    const supabase = exports.createClient(SB_URL, SB_KEY);
+    const dictionary = {
+        ar: { n1: "المحفظة", n2: "الأسواق", n3: "تحويل عملات", n4: "تعلم واتصل", t_enter: "دخول آمن", t_bal_lbl: "إجمالي الرصيد المباشر", t_fx_title: "صرف الدولار / دينار", t_audio_title: "الإيجاز الصوتي التنفيذي" },
+        en: { n1: "Portfolio", n2: "Markets", n3: "FX Swap", n4: "Learn & Contact", t_enter: "Secure Entry", t_bal_lbl: "Total Live Balance", t_fx_title: "USD / LYD Exchange", t_audio_title: "Executive Audio Briefing" }
+    };
 
-    let currentUser = null;
+    function toggleLanguage() {
+        const h = document.getElementById('main-html');
+        const isAr = h.dir === "rtl";
+        const lang = isAr ? 'en' : 'ar';
+        h.dir = isAr ? 'ltr' : 'rtl';
+        document.getElementById('l-btn').innerText = isAr ? 'عربي' : 'ENGLISH';
+        
+        document.getElementById('n1').innerText = dictionary[lang].n1;
+        document.getElementById('n2').innerText = dictionary[lang].n2;
+        document.getElementById('n3').innerText = dictionary[lang].n3;
+        document.getElementById('n4').innerText = dictionary[lang].n4;
+        document.getElementById('t-enter').innerText = dictionary[lang].t_enter;
+        document.getElementById('t-bal-lbl').innerText = dictionary[lang].t_bal_lbl;
+        document.getElementById('t-fx-title').innerText = dictionary[lang].t_fx_title;
+        document.getElementById('t-audio-title').innerText = dictionary[lang].t_audio_title;
+    }
 
-    async function login() {
-        const id = document.getElementById('acc_id').value;
-        const pass = document.getElementById('acc_pass').value;
-
-        // ADMIN LOGIN (Hardcoded for you)
-        if(id === "ADMIN-GT" && pass === "LIBYA2026") {
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('admin-panel').style.display = 'block';
-            loadAdminData();
-            return;
-        }
-
-        // CLIENT LOGIN
-        let { data: user, error } = await supabase.from('users').select('*').eq('account_id', id).single();
-
-        if (user && pass === user.password) {
-            currentUser = user;
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('user-app').style.display = 'flex';
-            document.getElementById('welcome-name').innerText = "مرحباً بك، " + user.full_name;
-            document.getElementById('live-bal').innerText = "$" + user.balance.toLocaleString();
+    function entry() {
+        const id = document.getElementById('wallet_id').value;
+        if(id !== "") {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-interface').style.display = 'flex';
         } else {
-            alert("بيانات الدخول غير صحيحة");
+            alert("ID Required / مطلوب رقم المحفظة");
         }
     }
 
-    // ADMIN FUNCTION: Update balance with one click
-    async function loadAdminData() {
-        let { data: users } = await supabase.from('users').select('*');
-        const list = document.getElementById('user-list');
-        list.innerHTML = '';
-        users.forEach(u => {
-            list.innerHTML += `
-                <div class="user-row">
-                    <span>${u.full_name} (${u.account_id})</span>
-                    <input type="number" id="bal-${u.id}" value="${u.balance}" style="width:100px; background:#222; color:white; border:1px solid var(--gold)">
-                    <button class="btn-gold" onclick="updateBal('${u.id}')">تحديث الرصيد</button>
-                </div>
-            `;
-        });
-    }
-
-    async function updateBal(userId) {
-        const newBal = document.getElementById('bal-' + userId).value;
-        const { error } = await supabase.from('users').update({ balance: newBal }).eq('id', userId);
-        if(!error) alert("تم تحديث الرصيد بنجاح");
-    }
-
-    function tab(id) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    function tab(id, el) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
         document.getElementById(id).classList.add('active');
+        el.classList.add('active');
+    }
+
+    function calcFX() {
+        const val = document.getElementById('fx-in').value;
+        document.getElementById('fx-out').innerText = (val * 7.34).toFixed(2) + " LYD";
+    }
+
+    function playAudio() {
+        const msg = "مرحباً بكم في جلوبال تريد ليميتد. نحن وجهتكم الأولى والآمنة للتمويل والتحويل الدولي. معنا، يمكنك إرسال واستلام الأموال في جميع أنحاء العالم بكل سهولة وثقة. نحن نوفر السيولة في سوق يو إس دي تي ونمنحكم الفرصة للنمو والاستثمار. فريقنا متاح دائماً للرد على استفساراتكم عبر واتساب. ثقتكم هي رأس مالنا.";
+        const speech = new SpeechSynthesisUtterance(msg);
+        speech.lang = 'ar-SA';
+        speech.rate = 0.9;
+        window.speechSynthesis.speak(speech);
     }
 </script>
 </body>
