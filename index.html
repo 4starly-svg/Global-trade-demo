@@ -1,178 +1,201 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="root">
+<html lang="en" id="gt-app" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT LTD | COMMAND CENTER</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700;900&display=swap" rel="stylesheet">
+    <title>GT // GLOBAL TERMINAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #ffffff; --bg: #050505; --card: #0f0f11; --border: #1f1f21; --dim: #555; }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        :root { --neon: #00ffcc; --bg: #000000; --card: #111111; --border: #222222; }
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; transition: 0.2s; }
         
         body, html { height: 100%; margin: 0; background: var(--bg); color: #fff; overflow: hidden; display: flex; flex-direction: column; }
 
-        /* 🔐 ENTRY VAULT */
+        /* 🔒 THE LOGIN GATE (FINTECH LOOK) */
         #gate { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center; }
-        .gate-card { width: 350px; padding: 40px; border: 1px solid var(--border); text-align: center; background: #080808; }
-        .v-input { width: 100%; background: #000; border: 1px solid var(--border); padding: 15px; color: #fff; margin-bottom: 20px; text-align: center; outline: none; letter-spacing: 5px; }
-        .v-btn { width: 100%; padding: 15px; background: #fff; color: #000; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; font-size: 11px; }
+        .gate-card { width: 340px; text-align: center; padding: 40px; border: 1px solid var(--border); border-radius: 24px; background: #080808; }
+        .v-input { width: 100%; background: #111; border: 1px solid var(--border); padding: 18px; color: #fff; margin-bottom: 15px; border-radius: 14px; text-align: center; outline: none; font-size: 16px; }
+        .v-input:focus { border-color: var(--neon); }
+        .v-btn { width: 100%; padding: 16px; background: var(--neon); color: #000; border: none; font-weight: 900; border-radius: 14px; cursor: pointer; text-transform: uppercase; }
+        .guest-btn { display: block; margin-top: 20px; color: #555; font-size: 13px; text-decoration: underline; cursor: pointer; border: none; background: none; width: 100%; }
 
-        /* 🛰️ FIXED TOP DASHBOARD */
-        header { height: 120px; background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; justify-content: center; padding: 0 40px; z-index: 999; flex-shrink: 0; }
-        .dash-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .nav-row { display: flex; gap: 10px; justify-content: center; }
-        .nav-tab { background: transparent; border: 1px solid var(--border); color: var(--dim); padding: 10px 25px; cursor: pointer; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-tab:hover { border-color: #fff; color: #fff; }
-        .nav-tab.active { background: #fff; color: #000; border-color: #fff; }
+        /* 🛰️ FIXED MAIN DASHBOARD (TOP) */
+        header { height: 150px; border-bottom: 1px solid var(--border); padding: 20px 40px; background: rgba(0,0,0,0.9); backdrop-filter: blur(20px); z-index: 999; flex-shrink: 0; }
+        .top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .brand { font-weight: 900; font-size: 22px; letter-spacing: -1px; }
+        .live-stat { color: var(--neon); font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        .dot { width: 6px; height: 6px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 10px var(--neon); }
 
-        /* 📁 CONTENT AREA */
-        main { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
-        .file-view { display: none; width: 100%; max-width: 900px; animation: slideUp 0.4s ease; }
-        .file-view.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* 📂 NAVIGATION FILES */
+        .file-nav { display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; }
+        .file-tab { background: #111; border: 1px solid var(--border); color: #666; padding: 10px 24px; border-radius: 100px; font-size: 12px; font-weight: 700; white-space: nowrap; cursor: pointer; }
+        .file-tab.active { background: #fff; color: #000; border-color: #fff; }
 
-        /* 🗂️ CARD SYSTEM */
-        .item-card { background: var(--card); border: 1px solid var(--border); padding: 25px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .item-card:hover { border-color: #fff; transform: scale(1.01); background: #151518; }
-        .item-label { font-size: 10px; color: var(--dim); text-transform: uppercase; margin-bottom: 5px; }
-        .item-title { font-weight: 700; font-size: 18px; letter-spacing: 1px; }
+        /* 📁 MAIN CONTENT VIEW */
+        main { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+        .folder-content { display: none; width: 100%; max-width: 800px; animation: slideUp 0.3s ease; }
+        .folder-content.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* 💹 SUB-FOLDER ANALYTICS */
-        #analytics-vault { position: fixed; inset: 0; background: #000; z-index: 9000; display: none; flex-direction: column; padding: 40px; }
-        .close-vault { color: #fff; cursor: pointer; font-size: 11px; margin-bottom: 20px; font-weight: 900; letter-spacing: 2px; }
+        /* 💹 ASSET CARDS */
+        .asset-card { background: var(--card); border: 1px solid var(--border); padding: 25px; border-radius: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .asset-card:hover { border-color: #444; transform: translateY(-2px); }
+        .asset-name { font-size: 18px; font-weight: 700; }
+        .asset-tag { font-size: 10px; color: #555; text-transform: uppercase; font-weight: 800; margin-bottom: 4px; }
+        
+        .action-group { display: flex; gap: 8px; }
+        .btn-sm { background: #1a1a1a; border: 1px solid var(--border); color: #fff; padding: 10px 18px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
+        .btn-sm.buy { background: #fff; color: #000; border: none; }
 
-        /* 🏧 FUNDING GRID */
-        .pay-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
-        .pay-item { background: #fff; height: 50px; border-radius: 2px; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 10px; }
-        .pay-item img { max-height: 20px; filter: contrast(1.1); }
+        /* 📈 DATA SUB-VIEW */
+        #data-view { position: fixed; inset: 0; background: #000; z-index: 9000; display: none; flex-direction: column; padding: 30px; }
+        .back-link { font-size: 12px; font-weight: 800; color: var(--neon); cursor: pointer; margin-bottom: 20px; }
 
-        .equity-hero { font-size: 50px; font-weight: 200; letter-spacing: -2px; color: #fff; }
+        .hero-bal { font-size: 55px; font-weight: 900; letter-spacing: -3px; text-align: center; margin: 15px 0; }
+        .lang-link { font-size: 10px; color: #444; cursor: pointer; border: 1px solid #222; padding: 5px 10px; border-radius: 6px; }
     </style>
 </head>
 <body>
 
     <div id="gate">
         <div class="gate-card">
-            <h1 style="font-weight: 900; letter-spacing: 5px; font-size: 14px;">GLOBAL TRADE LTD</h1>
-            <input type="password" id="key" class="v-input" placeholder="PASSKEY">
-            <button class="v-btn" onclick="unlock()">Initialize</button>
+            <div class="brand" style="margin-bottom: 30px;">GLOBAL TRADE</div>
+            <input type="password" id="passkey" class="v-input" placeholder="Access Key">
+            <button class="v-btn" onclick="login()">AUTHORIZE</button>
+            <button class="guest-btn" onclick="login('GUEST')">Login as Guest / دخول زائر</button>
         </div>
     </div>
 
     <header>
-        <div class="dash-top">
-            <div style="font-weight: 900; font-size: 12px; letter-spacing: 3px;">SYSTEM // ARCHITECT</div>
-            <div id="status-clock" style="font-size: 10px; color: #00ff88; font-family: monospace;">● ENCRYPTED SESSION ACTIVE</div>
-            <div style="display: flex; gap: 10px;">
-                <button onclick="setLang('en')" style="background:none; border:none; color:var(--dim); font-size:10px; cursor:pointer;">EN</button>
-                <button onclick="setLang('ar')" style="background:none; border:none; color:var(--dim); font-size:10px; cursor:pointer;">AR</button>
+        <div class="top-row">
+            <div class="brand">GT TERMINAL</div>
+            <div class="live-stat">
+                <div class="dot"></div>
+                LIQUIDITY: <span id="pool">$842,510.22</span>
             </div>
+            <div class="lang-link" onclick="toggleLang()">EN / العربية</div>
         </div>
-        <div class="nav-row">
-            <button class="nav-tab active" onclick="show('v-assets', this)">Assets</button>
-            <button class="nav-tab" onclick="show('v-soccer', this)">Soccer Intel</button>
-            <button class="nav-tab" onclick="show('v-funds', this)">Funding</button>
-            <button class="nav-tab" onclick="show('v-docs', this)">Documents</button>
+        <div class="file-nav">
+            <div class="file-tab active" onclick="tab('f-stocks', this)">Stocks</div>
+            <div class="file-tab" onclick="tab('f-crypto', this)">Crypto</div>
+            <div class="file-tab" onclick="tab('f-comm', this)">Gold / Oil</div>
+            <div class="file-tab" onclick="tab('f-contact', this)">Learn / Contact</div>
         </div>
     </header>
 
     <main>
-        <div id="v-assets" class="file-view active">
-            <div style="text-align: center; margin-bottom: 30px;">
-                <p class="item-label">TOTAL LIQUIDITY</p>
-                <div class="equity-hero" id="main-bal">$10,000.00</div>
-            </div>
-            <div class="item-card" onclick="openVault('OANDA:XAUUSD', 'Gold Reserve Analysis')">
-                <div><p class="item-label">Commodity</p><div class="item-title">GOLD // الذهب</div></div>
-                <div style="text-align:right;"><div style="color:#00ff88; font-size:12px;">+1.4%</div><div class="item-label">View Folder</div></div>
-            </div>
-            <div class="item-card" onclick="openVault('BITSTAMP:BTCUSD', 'Bitcoin Deep Dive')">
-                <div><p class="item-label">Digital Asset</p><div class="item-title">BITCOIN // بيتكوين</div></div>
-                <div style="text-align:right;"><div style="color:#00ff88; font-size:12px;">+3.1%</div><div class="item-label">View Folder</div></div>
-            </div>
-        </div>
-
-        <div id="v-soccer" class="file-view">
-            <h3 style="font-weight: 200; letter-spacing: 2px;">90-DAY EVENT ALLOCATION</h3>
-            <div class="item-card" onclick="contact('UCL_Real_Man')">
-                <div><p class="item-label">April 14 // UCL</p><div class="item-title">Real Madrid vs. Man City</div></div>
-                <button class="v-btn" style="width:auto; padding: 10px 20px;">ALLOCATE</button>
-            </div>
-            <div class="item-card" onclick="contact('WC_Libya_Tun')">
-                <div><p class="item-label">June 12 // WC Qual.</p><div class="item-title">Libya vs. Tunisia</div></div>
-                <button class="v-btn" style="width:auto; padding: 10px 20px;">ALLOCATE</button>
-            </div>
-        </div>
-
-        <div id="v-funds" class="file-view" style="text-align: center;">
-            <div class="item-card" style="flex-direction: column; padding: 50px;">
-                <p class="item-label">SECURE VAULT ACCESS</p>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/218915709015" style="border: 4px solid #fff; margin: 20px 0;">
-                <div class="pay-grid">
-                    <div class="pay-item" onclick="contact('Visa_Pay')"><img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"></div>
-                    <div class="pay-item" onclick="contact('PayPal_Pay')"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg"></div>
-                    <div class="pay-item" onclick="contact('Master_Pay')"><img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"></div>
+        <div id="f-stocks" class="folder-content active">
+            <p class="asset-tag" style="text-align: center;">Verified Equity</p>
+            <div class="hero-bal">$10,000.00</div>
+            
+            <div class="asset-card">
+                <div><span class="asset-tag">Stock</span><div class="asset-name">NVIDIA // NVDA</div></div>
+                <div class="action-group">
+                    <button class="btn-sm" onclick="openChart('NASDAQ:NVDA', 'Nvidia')">DATA</button>
+                    <button class="btn-sm buy" onclick="exec('Buy_NVDA')">BUY</button>
                 </div>
-                <button class="v-btn" style="margin-top:20px; background:transparent; border:1px solid #333; color:#fff;" onclick="contact('Wire')">Request Wire Details</button>
+            </div>
+            <div class="asset-card">
+                <div><span class="asset-tag">Stock</span><div class="asset-name">TESLA // TSLA</div></div>
+                <div class="action-group">
+                    <button class="btn-sm" onclick="openChart('NASDAQ:TSLA', 'Tesla')">DATA</button>
+                    <button class="btn-sm buy" onclick="exec('Buy_TSLA')">BUY</button>
+                </div>
             </div>
         </div>
 
-        <div id="v-docs" class="file-view">
-            <h3 style="font-weight: 200;">COMPLIANCE & LEGAL</h3>
-            <div class="item-card" onclick="speak()">
-                <div><p class="item-label">Audio Protocol</p><div class="item-title">System Briefing 🎙️</div></div>
-                <div class="item-label" style="color:#00ff88;">PLAY NOW</div>
+        <div id="f-crypto" class="folder-content">
+            <div class="asset-card">
+                <div><span class="asset-tag">Coin</span><div class="asset-name">BITCOIN // BTC</div></div>
+                <div class="action-group">
+                    <button class="btn-sm" onclick="openChart('BITSTAMP:BTCUSD', 'Bitcoin')">DATA</button>
+                    <button class="btn-sm buy" onclick="exec('Buy_BTC')">BUY</button>
+                </div>
             </div>
-            <div class="item-card" onclick="contact('License_View')">
-                <div><p class="item-label">Certification</p><div class="item-title">Trade License 2026.pdf</div></div>
-                <div class="item-label">VERIFIED</div>
+        </div>
+
+        <div id="f-comm" class="folder-content">
+            <div class="asset-card">
+                <div><span class="asset-tag">Metal</span><div class="asset-name">GOLD // XAUUSD</div></div>
+                <div class="action-group">
+                    <button class="btn-sm" onclick="openChart('OANDA:XAUUSD', 'Gold')">DATA</button>
+                    <button class="btn-sm buy" onclick="exec('Buy_Gold')">BUY</button>
+                </div>
+            </div>
+            <div class="asset-card">
+                <div><span class="asset-tag">Energy</span><div class="asset-name">CRUDE OIL // WTI</div></div>
+                <div class="action-group">
+                    <button class="btn-sm" onclick="openChart('TVC:USOIL', 'Oil')">DATA</button>
+                    <button class="btn-sm buy" onclick="exec('Buy_Oil')">BUY</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="f-contact" class="folder-content" style="text-align: center;">
+            <div class="asset-card" style="flex-direction: column; padding: 40px; gap: 20px;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/218915709015" style="border: 2px solid var(--neon); border-radius: 12px;">
+                <p class="asset-tag">Institutional Funding Desk</p>
+                <button class="v-btn" onclick="exec('Support')">WhatsApp Secure Chat</button>
+                <button class="btn-sm" style="width:100%" onclick="speak()">Play Audio Briefing 🎙️</button>
             </div>
         </div>
     </main>
 
-    <div id="analytics-vault">
-        <div class="close-vault" onclick="closeVault()">[ EXIT SUB-FOLDER ]</div>
-        <h1 id="v-title" style="font-weight: 200; font-size: 28px; letter-spacing: 5px;">ANALYSIS</h1>
-        <div style="flex: 1; border: 1px solid var(--border); overflow: hidden;">
-            <div id="chart-mount" style="height: 100%;"></div>
+    <div id="data-view">
+        <div class="back-link" onclick="closeChart()">← BACK TO TERMINAL</div>
+        <h2 id="chart-title">Market Analysis</h2>
+        <div style="flex: 1; border: 1px solid var(--border); border-radius: 20px; overflow: hidden;">
+            <div id="mount" style="height: 100%;"></div>
         </div>
     </div>
 
 <script>
-    function unlock() {
-        if(document.getElementById('key').value === 'GT-777') {
+    // 🔓 LOGIN SYSTEM
+    function login(m) {
+        if(m === 'GUEST' || document.getElementById('passkey').value === 'GT-777') {
             document.getElementById('gate').style.display = 'none';
-        } else { alert("ACCESS DENIED"); }
+        }
     }
 
-    function show(id, el) {
-        document.querySelectorAll('.file-view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    // 📁 NAVIGATION SYSTEM
+    function tab(id, el) {
+        document.querySelectorAll('.folder-content').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.file-tab').forEach(t => t.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         el.classList.add('active');
     }
 
-    function openVault(sym, name) {
-        document.getElementById('analytics-vault').style.display = 'flex';
-        document.getElementById('v-title').innerText = name;
-        document.getElementById('chart-mount').innerHTML = `<iframe src="https://www.tradingview.com/widgetembed/?symbol=${sym}&theme=dark" style="width:100%; height:100%; border:none;"></iframe>`;
+    // 📊 DATA VIEW SYSTEM
+    function openChart(sym, name) {
+        document.getElementById('data-view').style.display = 'flex';
+        document.getElementById('chart-title').innerText = name + " Intel";
+        document.getElementById('mount').innerHTML = `<iframe src="https://www.tradingview.com/widgetembed/?symbol=${sym}&theme=dark" style="width:100%; height:100%; border:none;"></iframe>`;
     }
 
-    function closeVault() { document.getElementById('analytics-vault').style.display = 'none'; }
-    function contact(m) { window.location.href = `https://wa.me/218915709015?text=GT_Executive_Action_${m}`; }
+    function closeChart() { document.getElementById('data-view').style.display = 'none'; }
 
-    // 🎙️ FIXED AUDIO ENGINE
+    // 📞 WHATSAPP CONNECTION
+    function exec(a) { window.location.href = `https://wa.me/218915709015?text=GT_Action_${a}`; }
+
+    // 🎙️ AUDIO SYSTEM
     function speak() {
         window.speechSynthesis.cancel();
-        const text = document.getElementById('root').dir === 'rtl' ? 
-            "مرحباً بكم في جلوبال تريد. جميع العمليات مشفرة ومؤمنة بالكامل." : 
-            "Welcome to Global Trade. All operations are fully encrypted and secured.";
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = document.getElementById('root').dir === 'rtl' ? 'ar-SA' : 'en-US';
+        const msg = new SpeechSynthesisUtterance("Welcome to Global Trade. Your neural terminal is active. Contact us via WhatsApp for secure execution.");
+        msg.lang = 'en-US';
         window.speechSynthesis.speak(msg);
     }
 
-    function setLang(l) { document.getElementById('root').dir = (l === 'ar' ? 'rtl' : 'ltr'); }
+    // 🌐 LANGUAGE SYSTEM
+    function toggleLang() {
+        const shell = document.getElementById('gt-app');
+        shell.dir = shell.dir === 'ltr' ? 'rtl' : 'ltr';
+    }
+
+    // 💹 LIVE TICKER (MONETIZATION VISUAL)
+    setInterval(() => {
+        let val = 842510 + Math.random() * 50;
+        document.getElementById('pool').innerText = "$" + val.toLocaleString(undefined, {minimumFractionDigits: 2});
+    }, 3000);
 </script>
 </body>
 </html>
