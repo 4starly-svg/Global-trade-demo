@@ -3,315 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLOBAL TRADE | Worldwide Markets</title>
+    <title>GLOBAL TRADE | Full Market Access</title>
     <style>
-        :root {
-            --bg: #0a0f1a;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --carbon-mint: #00ffc2;
-            --danger: #ff4d4d;
-            --gold: #c5a059;
-            --text: #ffffff;
-        }
-
-        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: all 0.2s ease; }
-        body { background: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
+        :root { --bg: #05080f; --card: rgba(255,255,255,0.04); --mint: #00ffc2; --gold: #c5a059; --text: #ffffff; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        body { background: var(--bg); color: var(--text); margin: 0; }
         body.rtl { direction: rtl; text-align: right; }
-
-        /* The Elite Navigation Bar */
-        nav {
-            background: rgba(10, 15, 26, 0.9);
-            backdrop-filter: blur(15px);
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            position: sticky; top: 0; z-index: 1000;
-        }
-
-        .logo-container { display: flex; align-items: center; gap: 15px; cursor: pointer; user-select: none; }
-        .logo-text { font-size: 20px; font-weight: bold; color: var(--carbon-mint); letter-spacing: 1.5px; }
-        
-        /* The Big Arabic Toggle (Bigger & Clearer) */
-        .btn-elite-lang {
-            background: var(--carbon-mint);
-            color: #000000;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 900;
-            font-size: 20px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 255, 194, 0.3);
-        }
-        .btn-elite-lang:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(0, 255, 194, 0.5); }
-
-        /* Wallet Display */
-        .wallet { font-weight: bold; color: var(--carbon-mint); font-size: 14px; margin: 0 10px; }
-
-        /* The Dashboard Grid */
-        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; padding: 40px; max-width: 1400px; margin: auto; }
-        
-        /* The High-Tech "Glass" Cards */
-        .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 30px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-        }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--carbon-mint); opacity: 0.5; }
-
-        /* Modern Typography */
-        h2 { border-bottom: 1px solid #1e2d44; padding-bottom: 10px; margin-top: 0; color: var(--text); font-weight: 800; }
-        .price-hero { font-size: 48px; font-weight: 900; color: var(--carbon-mint); margin: 15px 0; letter-spacing: -1px; }
-
-        /* The Main "Elite" Button */
-        .btn-elite {
-            background: var(--carbon-mint);
-            color: #000000;
-            padding: 18px;
-            border-radius: 12px;
-            font-weight: bold;
-            width: 100%;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 15px;
-        }
-        .btn-elite:hover { background: #ffffff; letter-spacing: 2px; }
-        .btn-sec { background: transparent; border: 1px solid rgba(0, 255, 194, 0.5); color: var(--carbon-mint); }
-        .btn-sec:hover { background: rgba(0, 255, 194, 0.1); }
-
-        /* Robinhood Predictions Market UI */
-        .market-row { display: flex; gap: 10px; margin: 20px 0; }
-        .contract { flex: 1; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
-
-        /* Secure ID/Verification Card */
-        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; background: #34495e; color: #fff; margin-bottom: 15px; }
-        .status-pending { background: #f39c12; color: #000; }
-        .status-verified { background: #27ae60; }
-        
-        /* Floating WhatsApp Button */
-        .chat-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; }
-        .chat-float:hover { transform: scale(1.1); }
-
-        /* Layout Fixes & Hidden Elements */
+        nav { background: rgba(5,8,15,0.9); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e2d44; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 20px; font-weight: 900; color: var(--mint); cursor: pointer; letter-spacing: 1px; }
+        .lang-btn { background: var(--mint); color: #000; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 900; font-size: 18px; cursor: pointer; }
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; padding: 30px; max-width: 1400px; margin: auto; }
+        .card { background: var(--card); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 25px; position: relative; overflow: hidden; }
+        .card:hover { border-color: var(--mint); background: rgba(255,255,255,0.06); }
+        .price { font-size: 32px; font-weight: 800; color: var(--mint); margin: 10px 0; }
+        .stock-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); align-items: center; }
+        .btn-trade { background: var(--mint); color: #000; border: none; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 10px; }
+        .btn-trade:hover { background: #fff; transform: translateY(-2px); }
+        .tag { font-size: 10px; background: rgba(0,255,194,0.1); color: var(--mint); padding: 3px 8px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
         .hidden { display: none; }
-        .rtl .logo-container { flex-direction: row-reverse; }
-        
-        /* Footer */
-        footer { padding: 30px; text-align: center; color: rgba(255,255,255,0.3); font-size: 12px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+        .whatsapp-float { position: fixed; bottom: 25px; right: 25px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
     </style>
 </head>
-<body id="body">
+<body id="b">
 
-    <nav>
-        <div class="logo-container" onclick="adminClick()">
-            <img src="image_4.png" alt="GT" width="35">
-            <div class="logo-text">GLOBAL TRADE</div>
-        </div>
-        <div style="display:flex; align-items:center;">
-            <div class="wallet hidden" id="wallet-display">
-                <span id="t-bal">Wallet:</span> <b id="bal-amount">0.00 LYD</b>
-            </div>
-            <button class="btn-elite-lang" onclick="toggleLang()" id="langBtn">عربي</button>
-        </div>
-    </nav>
+<nav>
+    <div class="logo" onclick="boss()">GLOBAL TRADE</div>
+    <button class="lang-btn" onclick="toggle()">عربي</button>
+</nav>
 
-    <div class="container">
-        
-        <div class="card">
-            <h2 id="t-market">Worldwide Exchange</h2>
-            <div id="crypto-ticker" style="color: #666; font-size: 12px; margin-bottom: 5px;">BTC $67,432 | Tether $1.00</div>
-            <div class="price-hero" id="display-fx">7.34 <span style="font-size: 18px; color: #fff;">LYD / USDT</span></div>
-            <p style="font-size: 12px; opacity: 0.7;" id="t-market-desc">Global Black Market Index (Rate subject to change)</p>
-            
-            <button class="btn-elite" onclick="window.location.href='https://wa.me/218915709015'">Buy / Sell Now</button>
-            <div style="font-size:11px; text-align:center; color:#e74c3c; margin-top:5px;" id="verify-lock">⚠️ Complete Verification to unlock instant bank trades.</div>
-        </div>
-
-        <div class="card">
-            <h2 id="t-banks">Bank Transfer</h2>
-            <p id="t-transfer-msg">Select your preferred local bank for deposit.</p>
-            
-            <select style="width:100%; padding:15px; background:rgba(0,0,0,0.3); border:1px solid #333; color:#fff; border-radius:10px; margin-top:10px;">
-                <option value="jumhouria">Al-Jumhouria Bank (مصرف الجمهورية)</option>
-                <option value="aman">Aman Bank (مصرف أمان)</option>
-                <option value="wahda">Wahda Bank (مصرف الوحدة)</option>
-                <option value="sahary">Sahary Bank (مصرف الصحاري)</option>
-            </select>
-            
-            <input type="number" placeholder="Deposit Amount (LYD)" style="width:100%; padding:15px; background:rgba(0,0,0,0.3); border:1px solid #333; color:#fff; border-radius:10px; margin-top:10px;">
-            <p style="font-size:11px; opacity:0.6;">(You will receive payment details on the next step.)</p>
-            <button class="btn-elite btn-sec" onclick="alert('Proceeding to Verification');">Continue to Trade</button>
-        </div>
-
-        <div class="card">
-            <h2 id="t-predictions">Predictions Market</h2>
-            <p id="t-predictions-match">Ahli Tripoli vs Al-Ittihad (LPL Derby)</p>
-            <div class="market-row">
-                <div class="contract">
-                    <div style="font-size: 10px; color: var(--carbon-mint);">YES (BUY)</div>
-                    <div style="font-size: 24px; font-weight: bold;">0.65 LYD</div>
-                </div>
-                <div class="contract">
-                    <div style="font-size: 10px; color: var(--danger);">NO (SELL)</div>
-                    <div style="font-size: 24px; font-weight: bold;">0.35 LYD</div>
-                </div>
-            </div>
-            <button class="btn-elite" style="background: transparent; border: 1px solid var(--carbon-mint); color: var(--carbon-mint);" onclick="window.location.href='https://wa.me/218915709015'">Trade Contract</button>
-        </div>
-
-        <div class="card">
-            <h2 id="t-kyc">Verify Account</h2>
-            <div class="status-badge" id="kyc-status">Status: Unverified</div>
-            <p style="font-size: 14px; opacity: 0.7;" id="t-kyc-msg">In 2026, verification is required for instant bank dealing. Data sent to: 4starly@gmail.com.</p>
-            
-            <input type="text" placeholder="Full Legal Name" style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid #333; color:#fff; border-radius:10px; margin-top:10px;">
-            <input type="text" placeholder="National ID or Passport" style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid #333; color:#fff; border-radius:10px; margin-top:10px;">
-            <label style="font-size:11px; display:block; margin:5px 0;">Upload Photo ID:</label>
-            <input type="file" style="font-size:11px; width:100%;">
-            
-            <button class="btn-elite" id="t-kyc-btn" onclick="submitKYC()">Submit Verification</button>
-        </div>
-
-        <div class="card" style="grid-column: 1 / -1;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
-                <div>
-                    <h2 id="t-learn">How to Deal? تعلّم</h2>
-                    <div style="background: #000; border-radius: 20px; height: 180px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); margin-top:10px;">
-                        <span style="color: #444;">[ 90s Tutorial Video Placeholder ]</span>
-                    </div>
-                </div>
-                <div id="dialect-box">
-                    <h3 id="t-worldwide-title" style="color: var(--carbon-mint);">Worldwide Transfers</h3>
-                    <p id="t-worldwide-text" style="line-height: 1.6; opacity: 0.8; font-size:14px;">
-                        تبي تبعت فلوس لأي مكان في العالم؟ الموضوع ساهل بكل. عن طريق الـ USDT تقدر تحول أموالك وتفك روحك من زحمة المصارف والقيود. نحنا هنا باش نسهلوها عليك ونعطوك أفضل سعر في السوق. (Worldwide transfers made simple with USDT. Avoid Libyan bank constraints. Instant, secure, and competitive.)
-                    </p>
-                    <button class="btn-elite btn-sec" onclick="window.location.href='https://wa.me/218915709015'">Contact Support</button>
-                </div>
-            </div>
-        </div>
-
+<div class="container">
+    <div class="card">
+        <span class="tag">EXCHANGE</span>
+        <h3 id="h-fx">Libyan Dinar Rate</h3>
+        <div class="price" id="rate-display">7.34 <small style="font-size:12px; color:#fff;">LYD/USDT</small></div>
+        <p style="font-size:12px; opacity:0.6;" id="d-fx">Parallel market rate index.</p>
+        <button class="btn-trade" onclick="doTrade('USDT')">Buy / Sell USDT</button>
     </div>
 
-    <div id="admin-area" class="hidden" style="position: fixed; top: 15%; left: 50%; transform: translateX(-50%); background: #1a0000; padding: 40px; border-radius: 30px; border: 2px solid red; z-index: 10000; width: 90%; max-width: 400px; box-shadow: 0 0 50px rgba(255,0,0,0.3);">
-        <h1 style="color: red; margin-top:0;">BOSS SETTINGS</h1>
-        <p>Set Global USDT Price (LYD):</p>
-        <input type="number" id="input-fx" step="0.01" placeholder="Update Rate (e.g. 7.45)" style="width: 100%; padding: 15px; background: #000; border: 1px solid red; color: white; border-radius: 10px;">
-        <button class="btn-elite" style="background: red; color: white; margin-top: 20px;" onclick="applySettings()">Update All Users</button>
-        <p style="text-align:center; font-size:11px; margin-top:10px; cursor:pointer;" onclick="toggleAdmin()">[Cancel]</p>
+    <div class="card">
+        <span class="tag">STOCKS</span>
+        <h3 id="h-stk">Global Stocks</h3>
+        <div class="stock-row">
+            <div><b>TSLA</b><br><small>Tesla Inc.</small></div>
+            <div style="color:var(--mint);">$172.40</div>
+            <button onclick="doTrade('Tesla')" style="padding:5px 10px; font-size:10px; cursor:pointer;">BUY</button>
+        </div>
+        <div class="stock-row">
+            <div><b>NVDA</b><br><small>Nvidia</small></div>
+            <div style="color:var(--mint);">$875.10</div>
+            <button onclick="doTrade('Nvidia')" style="padding:5px 10px; font-size:10px; cursor:pointer;">BUY</button>
+        </div>
+        <div class="stock-row">
+            <div><b>AAPL</b><br><small>Apple</small></div>
+            <div style="color:var(--mint);">$189.50</div>
+            <button onclick="doTrade('Apple')" style="padding:5px 10px; font-size:10px; cursor:pointer;">BUY</button>
+        </div>
     </div>
 
-    <a href="https://wa.me/218915709015" class="chat-float">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="40" alt="Chat">
-    </a>
+    <div class="card">
+        <span class="tag">CRYPTO</span>
+        <h3 id="h-cry">Digital Assets</h3>
+        <div id="ticker" style="font-size:12px; color:#888;">Updating prices...</div>
+        <div class="stock-row">
+            <div><b>BTC</b><br><small>Bitcoin</small></div>
+            <div id="btc-price" style="color:var(--mint);">$...</div>
+            <button onclick="doTrade('Bitcoin')" style="padding:5px 10px; font-size:10px; cursor:pointer;">BUY</button>
+        </div>
+        <div class="stock-row">
+            <div><b>ETH</b><br><small>Ethereum</small></div>
+            <div id="eth-price" style="color:var(--mint);">$...</div>
+            <button onclick="doTrade('Ethereum')" style="padding:5px 10px; font-size:10px; cursor:pointer;">BUY</button>
+        </div>
+    </div>
 
-    <footer>
-        <p>GLOBAL TRADE | Copyright 2026. All rights reserved.</p>
-        <p style="font-size:10px; opacity:0.5;">A financial and predictions exchange platform.</p>
-    </footer>
+    <div class="card">
+        <span class="tag">PREDICTIONS</span>
+        <h3 id="h-prd">Match Contracts</h3>
+        <p style="font-size:13px;" id="match">LPL: Al-Ahli vs Al-Ittihad</p>
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1; background:#000; padding:10px; border-radius:10px; text-align:center;">
+                <small>YES</small><br><b style="color:var(--mint);">0.68</b>
+            </div>
+            <div style="flex:1; background:#000; padding:10px; border-radius:10px; text-align:center;">
+                <small>NO</small><br><b style="color:red;">0.32</b>
+            </div>
+        </div>
+        <button class="btn-trade" onclick="doTrade('Prediction Contract')">Trade Market</button>
+    </div>
+</div>
 
-    <script>
-        // Data and State
-        let currentRate = 7.34;
-        let lang = 'en';
-        let kycStatus = 'Unverified';
-        const bal = 0.00;
+<div id="admin" class="hidden" style="position:fixed; top:20%; left:50%; transform:translateX(-50%); background:#1a0000; padding:30px; border-radius:20px; border:2px solid red; z-index:9999; width:300px;">
+    <h3 style="color:red;">BOSS MODE</h3>
+    <input type="number" id="new-rate" placeholder="New USDT Price" style="width:100%; padding:10px; margin-bottom:10px;">
+    <button class="btn-trade" style="background:red; color:white;" onclick="updateRate()">UPDATE ALL</button>
+</div>
 
-        // Content (Translations)
-        const content = {
-            en: { market: "Worldwide Exchange", marketDesc: "Global Black Market Index (Rate subject to change)", banks: "Bank Transfer", transferMsg: "Select your preferred local bank for deposit.", predictions: "Predictions Market", predictionsMatch: "Ahli Tripoli vs Al-Ittihad (LPL Derby)", kyc: "Verify Account", kycMsg: "In 2026, verification is required for instant bank dealing. Data sent to: 4starly@gmail.com.", kycStatus: "Status: Unverified", kycBtn: "Submit Verification", bal: "Wallet:", learn: "How to Deal? تعلّم", worldwideTitle: "Worldwide Transfers", worldwideText: "Worldwide transfers made simple with USDT. Avoid Libyan bank constraints. Instant, secure, and competitive." },
-            ar: { market: "سعر الصرف الموازي", marketDesc: "مؤشر السوق الموازي العالمي (السعر قابل للتغيير)", banks: "تحويل مصرفي", transferMsg: "اختر مصرفك المحلي للقيام بالإيداع.", predictions: "توقعات السوق", predictionsMatch: "الأهلي طرابلس vs الإتحاد (الديربي الليبي)", kyc: "توثيق الحساب", kycMsg: "في 2026، التوثيق ضروري للتعاملات المصرفية الفورية. سيتم إرسال البيانات إلى: 4starly@gmail.com.", kycStatus: "الحالة: غير موثق", kycBtn: "إرسال بيانات التحقق", bal: "المحفظة:", learn: "كيف تبدأ؟", worldwideTitle: "تحويلات عالمية", worldwideText: "تبي تبعت فلوس لأي مكان في العالم؟ الموضوع ساهل بكل. عن طريق الـ USDT تقدر تحول أموالك وتفك روحك من زحمة المصارف والقيود. نحنا هنا باش نسهلوها عليك ونعطوك أفضل سعر في السوق." }
-        };
+<a href="https://wa.me/218915709015" class="whatsapp-float"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35"></a>
 
-        // 1. Core Functions
-        function toggleLang() {
-            lang = lang === 'en' ? 'ar' : 'en';
-            document.getElementById('body').classList.toggle('rtl');
-            document.getElementById('langBtn').innerText = lang === 'en' ? 'عربي' : 'EN';
-            
-            // Apply Content
-            document.getElementById('t-market').innerText = content[lang].market;
-            document.getElementById('t-market-desc').innerText = content[lang].marketDesc;
-            document.getElementById('t-banks').innerText = content[lang].banks;
-            document.getElementById('t-transfer-msg').innerText = content[lang].transferMsg;
-            document.getElementById('t-predictions').innerText = content[lang].predictions;
-            document.getElementById('t-predictions-match').innerText = content[lang].predictionsMatch;
-            document.getElementById('t-kyc').innerText = content[lang].kyc;
-            document.getElementById('t-kyc-msg').innerText = content[lang].kycMsg;
-            updateKYCStatus(); // Maintain status in correct lang
-            document.getElementById('t-kyc-btn').innerText = content[lang].kycBtn;
-            document.getElementById('t-bal').innerText = content[lang].bal;
-            document.getElementById('t-learn').innerText = content[lang].learn;
-            document.getElementById('t-worldwide-title').innerText = content[lang].worldwideTitle;
-            document.getElementById('t-worldwide-text').innerText = content[lang].worldwideText;
-        }
+<script>
+    function toggle() {
+        const body = document.getElementById('b');
+        const isAr = body.dir === 'rtl';
+        body.dir = isAr ? 'ltr' : 'rtl';
+        document.getElementById('h-fx').innerText = isAr ? 'Libyan Dinar Rate' : 'سعر الدينار الليبي';
+        document.getElementById('h-stk').innerText = isAr ? 'Global Stocks' : 'الأسهم العالمية';
+        document.getElementById('h-cry').innerText = isAr ? 'Digital Assets' : 'العملات الرقمية';
+        document.getElementById('h-prd').innerText = isAr ? 'Match Contracts' : 'عقود المباريات';
+    }
 
-        function updateKYCStatus() {
-            const k = document.getElementById('kyc-status');
-            const lock = document.getElementById('verify-lock');
-            k.classList.remove('status-verified');
-            
-            if(kycStatus === 'Verified') {
-                k.innerText = lang === 'en' ? 'Status: Verified ✅' : 'الحالة: موثق ✅';
-                k.classList.add('status-verified');
-                lock.style.opacity = '0.3'; // Dim the lock message
-            } else if(kycStatus === 'Pending') {
-                k.innerText = lang === 'en' ? 'Status: Pending Review ⏳' : 'الحالة: جاري التحقق ⏳';
-                k.classList.add('status-pending');
-            } else {
-                k.innerText = lang === 'en' ? 'Status: Unverified ⚠️' : 'الحالة: غير موثق ⚠️';
-            }
-        }
+    function doTrade(asset) {
+        window.location.href = `https://wa.me/218915709015?text=Hello, I want to trade: ${asset}`;
+    }
 
-        function submitKYC() {
-            kycStatus = 'Pending';
-            updateKYCStatus();
-            alert('Verification submitted to 4starly@gmail.com.');
-        }
+    let clicks = 0;
+    function boss() {
+        clicks++;
+        if(clicks === 3) { document.getElementById('admin').classList.toggle('hidden'); clicks = 0; }
+        setTimeout(() => clicks = 0, 1000);
+    }
 
-        // 2. Secret Boss Panel (No 1-2-3-4 Confusion)
-        let clickCount = 0;
-        function adminClick() {
-            clickCount++;
-            if(clickCount === 3) {
-                toggleAdmin();
-                clickCount = 0;
-            }
-            setTimeout(() => { clickCount = 0; }, 1000); // Reset clicks after 1 second
-        }
+    function updateRate() {
+        const val = document.getElementById('new-rate').value;
+        if(val) document.getElementById('rate-display').innerHTML = `${val} <small style="font-size:12px; color:#fff;">LYD/USDT</small>`;
+        document.getElementById('admin').classList.add('hidden');
+    }
 
-        function toggleAdmin() { document.getElementById('admin-area').classList.toggle('hidden'); }
+    async function getPrices() {
+        try {
+            const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
+            const d = await r.json();
+            document.getElementById('btc-price').innerText = `$${d.bitcoin.usd.toLocaleString()}`;
+            document.getElementById('eth-price').innerText = `$${d.ethereum.usd.toLocaleString()}`;
+            document.getElementById('ticker').innerText = "All systems live.";
+        } catch(e) {}
+    }
+    setInterval(getPrices, 20000); getPrices();
+</script>
 
-        function applySettings() {
-            const val = document.getElementById('input-fx').value;
-            if(val) {
-                currentRate = parseFloat(val);
-                document.getElementById('display-fx').innerHTML = `${currentRate.toFixed(2)} <span style="font-size: 18px; color: #fff;">LYD / USDT</span>`;
-            }
-            toggleAdmin();
-        }
-
-        // 3. Automated Data
-        async function getCryptoTicker() {
-            try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-                const data = await res.json();
-                document.getElementById('crypto-ticker').innerHTML = `BTC: $${data.bitcoin.usd.toLocaleString()} | Tether $1.00`;
-            } catch(e) {}
-        }
-        setInterval(getCryptoTicker, 20000); getCryptoTicker(); // Auto-update
-
-        // Init Setup
-        updateKYCStatus();
-    </script>
 </body>
 </html>
