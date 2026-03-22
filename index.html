@@ -1,268 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Trade - Libya</title>
+    <title>GLOBAL TRADE LTD | OFFICIAL TERMINAL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Sans+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #002349; /* Deep Navy */
-            --gold: #c5a059;
-            --white: #ffffff;
-            --bg: #f4f7f6;
-        }
+        :root { --gold: #d4af37; --navy: #020617; --card: #0f172a; --emerald: #10b981; --red: #ef4444; }
+        * { box-sizing: border-box; font-family: 'Noto Sans Arabic', sans-serif; transition: 0.3s; }
+        
+        body, html { height: 100%; margin: 0; background: var(--navy); color: white; overflow: hidden; display: flex; flex-direction: column; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            background-color: var(--bg);
-            transition: direction 0.3s;
+        /* THE ICONIC HEADER NAV */
+        nav {
+            height: 100px; display: flex; align-items: center; justify-content: center;
+            gap: 20px; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--gold); padding: 0 30px;
         }
-
-        /* Language Toggle Styling */
-        .lang-bar {
-            background: var(--primary);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
+        .nav-btn {
+            background: transparent; border: 2px solid #1e293b; color: #94a3b8;
+            padding: 15px 35px; cursor: pointer; font-weight: 900; font-size: 16px; border-radius: 5px; 
+            text-transform: uppercase; letter-spacing: 1px;
         }
+        .nav-btn.active { color: var(--gold); border-color: var(--gold); background: rgba(212, 175, 55, 0.1); }
 
-        .btn-lang {
-            background: var(--gold);
-            border: none;
-            padding: 8px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-        }
+        /* MAIN CONTENT AREA */
+        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 30px; }
+        .view { display: none; width: 100%; max-width: 1200px; text-align: center; flex-direction: column; height: 100%; justify-content: center; }
+        .view.active { display: flex; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Login Screen */
-        #login-screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 90vh;
-        }
+        /* THE SIGNATURE CARDS */
+        .card-panel { background: var(--card); border: 1px solid #1e293b; border-radius: 20px; padding: 50px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .big-title { font-family: 'Cinzel', serif; font-size: 55px; color: var(--gold); margin-bottom: 10px; }
+        
+        /* SIDE-BY-SIDE TRADING ENGINE */
+        .trade-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; width: 100%; height: 500px; }
+        .market-box { background: #000; border-radius: 15px; border: 1px solid #1e293b; overflow: hidden; }
+        .order-box { display: flex; flex-direction: column; justify-content: center; gap: 15px; text-align: right; }
 
-        .login-card {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 320px;
-        }
+        /* INPUTS & BUTTONS */
+        .input-pro { width: 100%; padding: 18px; background: #000; border: 1px solid var(--gold); color: white; border-radius: 10px; text-align: center; font-size: 20px; font-weight: 700; }
+        .btn-pro { background: var(--gold); color: black; border: none; padding: 20px; font-weight: 900; cursor: pointer; border-radius: 10px; font-size: 18px; width: 100%; }
+        .btn-pro:hover { background: white; transform: scale(1.02); }
 
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .btn-main {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .btn-guest {
-            margin-top: 15px;
-            background: none;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            width: 100%;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        /* Dashboard Grid */
-        #dashboard {
-            display: none;
-            padding: 40px 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            justify-content: center;
-        }
-
-        .file-card {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--gold);
-            transition: transform 0.2s;
-        }
-
-        .file-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .price-text {
-            font-size: 24px;
-            font-weight: bold;
-            color: #27ae60;
-            margin: 15px 0;
-        }
-
-        /* RTL Adjustments */
-        body.rtl {
-            direction: rtl;
-        }
-
-        .hidden { display: none !important; }
+        /* BANKING TRUST CENTER */
+        .trust-section { margin-top: 50px; border-top: 1px solid #1e293b; padding-top: 30px; }
+        .logo-row { display: flex; justify-content: center; align-items: center; gap: 40px; filter: grayscale(1) brightness(2.5); opacity: 0.7; }
+        .logo-row img { height: 35px; }
+        .bank-text { color: var(--gold); font-size: 14px; font-weight: 900; margin-top: 20px; letter-spacing: 2px; }
     </style>
 </head>
-<body id="body-tag">
+<body>
 
-    <div class="lang-bar">
-        <h2 id="brand-name">Global Trade</h2>
-        <button class="btn-lang" onclick="toggleLanguage()" id="lang-btn">العربية</button>
-    </div>
+<nav>
+    <button class="nav-btn active" onclick="tab('v-home', this)">المحفظة</button>
+    <button class="nav-btn" onclick="tab('v-trade', this)">التداول المباشر</button>
+    <button class="nav-btn" onclick="tab('v-fx', this)">صرف العملات</button>
+    <button class="nav-btn" onclick="tab('v-info', this)">مركز الاتصال</button>
+</nav>
 
-    <div id="login-screen">
-        <div class="login-card">
-            <h1 id="login-title">Welcome</h1>
-            <input type="text" id="user-field" placeholder="Username">
-            <input type="password" id="pass-field" placeholder="Password">
-            <button class="btn-main" onclick="enterApp()" id="login-btn">Login</button>
-            <button class="btn-guest" onclick="enterApp()" id="guest-btn">Enter as Guest</button>
-        </div>
-    </div>
-
-    <div id="dashboard">
-        <div class="grid-container">
-            <div class="file-card">
-                <h3 class="t-crypto">Crypto Market</h3>
-                <div class="price-text">BTC: $64,200</div>
-                <p>ETH: $3,450</p>
-            </div>
-
-            <div class="file-card">
-                <h3 class="t-fx">FX (USD/LYD)</h3>
-                <div class="price-text">7.25 LYD</div>
-                <p id="t-market">Black Market Rate</p>
-            </div>
-
-            <div class="file-card">
-                <h3 class="t-gold">Gold & Oil</h3>
-                <div class="price-text">Gold: $2,150</div>
-                <p>Brent Crude: $82.40</p>
-            </div>
-
-            <div class="file-card">
-                <h3 class="t-soccer">Soccer Predictions</h3>
-                <div style="color: var(--gold); font-weight: bold;">Real Madrid vs Barca</div>
-                <p>Prediction: Over 2.5 Goals</p>
-            </div>
-
-            <div class="file-card">
-                <h3 class="t-contact">Contact Us</h3>
-                <p>Facebook: GlobalTradeLY</p>
-                <p>WhatsApp: +218 XX XXX XXX</p>
-            </div>
-
-            <div class="file-card" style="background: var(--primary); color: white;">
-                <h3 class="t-test">Testimonials</h3>
-                <p id="quote">"Fastest USDT exchange in Libya!"</p>
-                <small>- Ahmed from Tripoli</small>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentLang = 'en';
-
-        function toggleLanguage() {
-            const body = document.getElementById('body-tag');
-            const langBtn = document.getElementById('lang-btn');
+<main>
+    <div id="v-home" class="view active">
+        <div class="card-panel">
+            <h1 class="big-title">GLOBAL TRADE LTD</h1>
+            <p style="color:#94a3b8; font-size: 18px;">إجمالي الأصول المتاحة</p>
+            <div style="font-size: 85px; font-weight: 900; color: var(--emerald); margin: 20px 0;">$10,000.00</div>
+            <button class="btn-pro" onclick="wa('Account_Funding')">تمويل الحساب / سحب أرباح</button>
             
-            if (currentLang === 'en') {
-                // Switch to Arabic
-                body.classList.add('rtl');
-                langBtn.innerText = "English";
-                updateText('ar');
-                currentLang = 'ar';
-            } else {
-                // Switch to English
-                body.classList.remove('rtl');
-                langBtn.innerText = "العربية";
-                updateText('en');
-                currentLang = 'en';
-            }
-        }
+            <div class="trust-section">
+                <div class="logo-row">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg">
+                </div>
+                <div class="bank-text">مصرف ليبيا المركزي ● مصرف الجمهورية ● مصرف الصحارى</div>
+            </div>
+        </div>
+    </div>
 
-        function updateText(lang) {
-            const strings = {
-                en: {
-                    loginTitle: "Welcome",
-                    user: "Username",
-                    pass: "Password",
-                    login: "Login",
-                    guest: "Enter as Guest",
-                    crypto: "Crypto Market",
-                    fx: "FX (USD/LYD)",
-                    gold: "Gold & Oil",
-                    soccer: "Soccer Predictions",
-                    contact: "Contact Us",
-                    test: "Testimonials",
-                    market: "Black Market Rate",
-                    quote: '"Fastest USDT exchange in Libya!"'
-                },
-                ar: {
-                    loginTitle: "مرحباً بكم",
-                    user: "اسم المستخدم",
-                    pass: "كلمة المرور",
-                    login: "تسجيل الدخول",
-                    guest: "الدخول كضيف",
-                    crypto: "سوق الكريبتو",
-                    fx: "سعر الصرف (دولار/دينار)",
-                    gold: "الذهب والنفط",
-                    soccer: "توقعات كرة القدم",
-                    contact: "اتصل بنا",
-                    test: "آراء العملاء",
-                    market: "سعر السوق الموازي",
-                    quote: '"أسرع خدمة تبادل USDT في ليبيا!"'
-                }
-            };
+    <div id="v-trade" class="view">
+        <h1 class="big-title" style="font-size: 35px;">منصة التداول العالمية</h1>
+        <div class="trade-grid">
+            <div class="market-box">
+                <iframe src="https://www.tradingview.com/widgetembed/?symbol=NASDAQ%3ATSLA&theme=dark&locale=ar" style="width:100%; height:100%; border:none;"></iframe>
+            </div>
+            <div class="order-box">
+                <h2 style="color:var(--gold)">تنفيذ الأوامر</h2>
+                <input type="text" id="t-sym" class="input-pro" placeholder="رمز السهم (e.g. BTC)">
+                <input type="number" id="t-amt" class="input-pro" placeholder="المبلغ المطلوبة">
+                <button class="btn-pro" style="background:var(--emerald); color:white;" onclick="order('شراء')">شراء فوري / BUY</button>
+                <button class="btn-pro" style="background:var(--red); color:white;" onclick="order('بيع')">بيع فوري / SELL</button>
+            </div>
+        </div>
+    </div>
 
-            document.getElementById('login-title').innerText = strings[lang].loginTitle;
-            document.getElementById('user-field').placeholder = strings[lang].user;
-            document.getElementById('pass-field').placeholder = strings[lang].pass;
-            document.getElementById('login-btn').innerText = strings[lang].login;
-            document.getElementById('guest-btn').innerText = strings[lang].guest;
-            document.querySelector('.t-crypto').innerText = strings[lang].crypto;
-            document.querySelector('.t-fx').innerText = strings[lang].fx;
-            document.querySelector('.t-gold').innerText = strings[lang].gold;
-            document.querySelector('.t-soccer').innerText = strings[lang].soccer;
-            document.querySelector('.t-contact').innerText = strings[lang].contact;
-            document.querySelector('.t-test').innerText = strings[lang].test;
-            document.getElementById('t-market').innerText = strings[lang].market;
-            document.getElementById('quote').innerText = strings[lang].quote;
-        }
+    <div id="v-fx" class="view">
+        <div class="card-panel" style="max-width: 600px;">
+            <h1 class="big-title" style="font-size: 35px;">مكتب الصرف</h1>
+            <p>سعر الصرف المباشر: 7.34 LYD</p>
+            <input type="number" id="usd-val" class="input-pro" placeholder="أدخل المبلغ بالدولار USD" oninput="calcFX()">
+            <div id="lyd-res" style="font-size: 50px; font-weight: 900; color: var(--gold); margin: 30px 0;">0.00 LYD</div>
+            <button class="btn-pro" onclick="wa('FX_Request')">تأكيد عملية الصرف</button>
+        </div>
+    </div>
 
-        function enterApp() {
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('dashboard').style.display = 'block';
-        }
-    </script>
+    <div id="v-info" class="view">
+        <div class="card-panel">
+            <h1 class="big-title" style="font-size: 35px;">مركز الدعم والتعليم</h1>
+            <button class="btn-pro" style="background:white; color:black; margin-bottom: 40px;" onclick="speak()">تشغيل الإيجاز الصوتي الرسمي 🎙️</button>
+            <h2 style="font-size: 30px;">واتساب: +218 91 570 9015</h2>
+            <p style="color:#94a3b8; font-size: 18px;">ليبيا - طرابلس - بنغازي</p>
+            <button class="btn-pro" onclick="wa('Official_Support')">تحدث مع الإدارة</button>
+        </div>
+    </div>
+</main>
+
+<script>
+    function tab(id, btn) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function calcFX() {
+        const val = document.getElementById('usd-val').value;
+        document.getElementById('lyd-res').innerText = (val * 7.34).toFixed(2) + " LYD";
+    }
+
+    function order(type) {
+        const s = document.getElementById('t-sym').value;
+        const a = document.getElementById('t-amt').value;
+        if(!s || !a) return alert("يرجى إكمال البيانات");
+        window.location.href = `https://wa.me/218915709015?text=طلب_${type}_${a}_من_${s}`;
+    }
+
+    function wa(msg) {
+        window.location.href = `https://wa.me/218915709015?text=GlobalTrade_Inquiry_${msg}`;
+    }
+
+    function speak() {
+        window.speechSynthesis.cancel(); // Clears any glitches
+        const msg = new SpeechSynthesisUtterance("مرحباً بكم في جلوبال تريد ليميتد. نحن وجهتكم الأولى والآمنة للتمويل والتحويل الدولي. معنا، يمكنك إرسال واستلام الأموال في جميع أنحاء العالم بكل سهولة وثقة. ثقتكم هي رأس مالنا.");
+        msg.lang = 'ar-SA';
+        msg.rate = 0.85; // Natural speed
+        window.speechSynthesis.speak(msg);
+    }
+</script>
 </body>
 </html>
