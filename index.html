@@ -1,145 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Trade Libya | 2026</title>
-    <style>
-        :root { --primary: #002349; --gold: #c5a059; --green: #27ae60; --bg: #f0f2f5; }
-        body { font-family: 'Arial', sans-serif; margin: 0; background: var(--bg); transition: 0.3s; }
-        body.rtl { direction: rtl; }
-        .hidden { display: none !important; }
-        
-        /* Header & Nav */
-        nav { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .wallet-pill { background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--gold); }
-
-        /* Grid Layout */
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border-bottom: 4px solid var(--gold); }
-
-        /* Monetization Styles */
-        .price { font-size: 28px; font-weight: bold; color: var(--green); margin: 10px 0; }
-        .bank-select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; }
-        .btn-trade { background: var(--gold); color: white; border: none; padding: 10px 20px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        
-        /* Login Overlay */
-        #auth-overlay { position: fixed; inset: 0; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .auth-box { background: white; padding: 40px; border-radius: 15px; width: 350px; text-align: center; }
-    </style>
-</head>
-<body id="mainBody">
-
-    <div id="auth-overlay">
-        <div class="auth-box">
-            <h2 id="l-welcome">Global Trade Libya</h2>
-            <input type="text" placeholder="Username / اسم المستخدم" style="width:100%; padding:10px; margin:10px 0;">
-            <input type="password" placeholder="Password / كلمة المرور" style="width:100%; padding:10px; margin:10px 0;">
-            <button class="btn-trade" onclick="login()">Login / دخول</button>
-            <p style="margin: 15px 0;">OR</p>
-            <button onclick="login()" style="background:none; border: 1px solid var(--primary); cursor:pointer; padding:5px 10px; border-radius:5px;">Enter as Guest / دخول كضيف</button>
-        </div>
+<div class="card">
+    <h3 id="l-fx">USD/LYD Rate (Parallel)</h3>
+    <div class="price" id="black-rate" style="color: #d35400;">7.34 LYD</div> 
+    <p id="l-blackmarket">Last Updated: Just Now</p>
+    <div style="font-size: 12px; color: #7f8c8d;">
+        Official Bank: 6.39 LYD <br>
+        Your Profit Spread: +0.95 LYD
     </div>
+    <button class="btn-trade" onclick="openAdmin()" style="margin-top:10px; font-size:10px; background:#eee; color:#666;">Admin: Update Rate</button>
+</div>
 
-    <nav>
-        <div style="font-weight:bold; font-size:20px;">GLOBAL TRADE</div>
-        <div class="wallet-pill">
-            <span id="l-balance">Balance:</span> <b id="balance-amt">0.00 LYD</b> | <b>0.00 USDT</b>
-        </div>
-        <button onclick="toggleLang()" style="background:var(--gold); border:none; padding:5px 10px; cursor:pointer; border-radius:5px; color:white;">English/عربي</button>
-    </nav>
+<div id="admin-panel" class="hidden" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:2px solid var(--gold); border-radius:10px; z-index:2000;">
+    <h4>Update Street Rate</h4>
+    <input type="number" id="new-rate" step="0.01" placeholder="7.34">
+    <button onclick="updateRate()" class="btn-trade">Save Rate</button>
+    <button onclick="closeAdmin()" style="border:none; background:none; cursor:pointer;">Close</button>
+</div>
 
-    <div class="container">
-        <div class="card">
-            <h3 id="l-crypto">Live Crypto Market</h3>
-            <div id="crypto-list">Loading real-time prices...</div>
-            <button class="btn-trade" style="margin-top:10px;" id="l-buy">Buy USDT</button>
-        </div>
-
-        <div class="card">
-            <h3 id="l-fx">USD/LYD Rate</h3>
-            <div class="price">7.28 LYD</div>
-            <p id="l-blackmarket">Local Black Market Rate</p>
-            <hr>
-            <p>Official Bank Rate: 4.82 LYD</p>
-        </div>
-
-        <div class="card">
-            <h3 id="l-wallet">Deposit / Wallet</h3>
-            <p id="l-selectbank">Select your Bank:</p>
-            <select class="bank-select">
-                <option>Al-Jumhouria Bank (مصرف الجمهورية)</option>
-                <option>Aman Bank (مصرف أمان)</option>
-                <option>Wahda Bank (مصرف الوحدة)</option>
-                <option>Sahary Bank (مصرف الصحاري)</option>
-            </select>
-            <input type="number" placeholder="Amount (LYD)" style="width:80%; padding:5px;">
-            <button class="btn-trade" style="margin-top:10px; background:var(--primary);" id="l-deposit">Send Deposit Request</button>
-        </div>
-
-        <div class="card" style="background: #fff9eb;">
-            <h3 id="l-soccer">Soccer Predictions</h3>
-            <p><b>Ahli Tripoli vs Ahli Benghazi</b></p>
-            <div style="filter: blur(4px);">Home Win (2.10)</div>
-            <button class="btn-trade" style="background:red;">Unlock VIP Signals</button>
-        </div>
-
-        <div class="card">
-            <h3 id="l-test">User Trust</h3>
-            <p id="l-quote">"Best rates for USDT in Benghazi!"</p>
-            <small>- Salem M.</small>
-        </div>
-
-        <div class="card">
-            <h3 id="l-gold">Gold & Brent Oil</h3>
-            <div class="price" style="color: #b8860b;">Gold: $2,185</div>
-            <p>Oil: $84.12 / Barrel</p>
-        </div>
-    </div>
-
-    <script>
-        // LIVE CRYPTO API CALL
-        async function getPrices() {
-            try {
-                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd');
-                const data = await response.json();
-                document.getElementById('crypto-list').innerHTML = `
-                    <p><b>Bitcoin:</b> $${data.bitcoin.usd}</p>
-                    <p><b>Ethereum:</b> $${data.ethereum.usd}</p>
-                    <p><b>USDT:</b> $${data.tether.usd}</p>
-                `;
-            } catch (e) {
-                console.log("API Limit reached, using placeholder prices.");
-            }
+<script>
+    // THE SECRET ADMIN LOGIC
+    function openAdmin() {
+        let pin = prompt("Enter Admin PIN:");
+        if(pin === "1234") { // You can change this PIN
+            document.getElementById('admin-panel').classList.remove('hidden');
+        } else {
+            alert("Wrong PIN!");
         }
-        setInterval(getPrices, 10000); // Update every 10 seconds
-        getPrices();
+    }
 
-        function login() { document.getElementById('auth-overlay').classList.add('hidden'); }
-
-        let lang = 'en';
-        function toggleLang() {
-            const body = document.getElementById('mainBody');
-            lang = (lang === 'en') ? 'ar' : 'en';
-            body.classList.toggle('rtl');
-            
-            const trans = {
-                en: { crypto: "Live Crypto Market", fx: "USD/LYD Rate", wallet: "Deposit / Wallet", soccer: "Soccer Predictions", test: "User Trust", gold: "Gold & Oil", balance: "Balance:", buy: "Buy USDT", black: "Black Market Rate", dep: "Send Deposit Request", select: "Select Bank" },
-                ar: { crypto: "سوق الكريبتو المباشر", fx: "سعر الدولار مقابل الدينار", wallet: "المحفظة / الإيداع", soccer: "توقعات كرة القدم", test: "آراء المستخدمين", gold: "الذهب والنفط", balance: "الرصيد:", buy: "شراء USDT", black: "سعر السوق الموازي", dep: "إرسال طلب إيداع", select: "اختر مصرفك" }
-            };
-
-            document.getElementById('l-crypto').innerText = trans[lang].crypto;
-            document.getElementById('l-fx').innerText = trans[lang].fx;
-            document.getElementById('l-wallet').innerText = trans[lang].wallet;
-            document.getElementById('l-soccer').innerText = trans[lang].soccer;
-            document.getElementById('l-test').innerText = trans[lang].test;
-            document.getElementById('l-gold').innerText = trans[lang].gold;
-            document.getElementById('l-balance').innerText = trans[lang].balance;
-            document.getElementById('l-buy').innerText = trans[lang].buy;
-            document.getElementById('l-blackmarket').innerText = trans[lang].black;
-            document.getElementById('l-deposit').innerText = trans[lang].dep;
-            document.getElementById('l-selectbank').innerText = trans[lang].select;
+    function updateRate() {
+        const val = document.getElementById('new-rate').value;
+        if(val) {
+            document.getElementById('black-rate').innerText = val + " LYD";
+            document.getElementById('admin-panel').classList.add('hidden');
+            alert("Rate updated for all users!");
         }
-    </script>
-</body>
-</html>
+    }
+
+    function closeAdmin() {
+        document.getElementById('admin-panel').classList.add('hidden');
+    }
+</script>
