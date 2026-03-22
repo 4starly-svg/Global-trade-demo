@@ -3,183 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT VANGUARD | HORIZON TERMINAL</title>
+    <title>GLOBAL TRADE LTD | OFFICIAL TERMINAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --emerald: #00c853; --navy: #0a192f; --slate: #112240; --platinum: #e6f1ff; --gold: #D4AF37; }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        :root { --emerald: #00f076; --navy: #050a14; --slate: #0f172a; --platinum: #f8fafc; --gold: #f59e0b; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.2s; }
         body, html { height: 100%; margin: 0; background: var(--navy); color: var(--platinum); overflow: hidden; }
 
-        /* Login Screen */
-        #login-screen { position: fixed; inset: 0; z-index: 9999; background: var(--navy); display: flex; align-items: center; justify-content: center; }
-        .login-box { width: 400px; text-align: center; padding: 50px; border: 1px solid var(--slate); border-radius: 40px; background: #000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-        
-        /* Horizontal Navigation */
-        nav { height: 80px; background: #000; border-bottom: 1px solid var(--slate); display: flex; align-items: center; padding: 0 40px; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-btn { background: transparent; border: none; color: #8892b0; font-weight: 700; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-btn:hover, .nav-btn.active { color: var(--emerald); border-bottom: 2px solid var(--emerald); padding-bottom: 5px; }
+        /* LIVE TICKER */
+        .ticker-wrap { width: 100%; overflow: hidden; background: #000; border-bottom: 1px solid var(--emerald); height: 32px; line-height: 32px; position: fixed; top: 0; z-index: 1100; font-size: 11px; font-weight: 800; color: var(--emerald); }
+        .ticker-move { display: inline-block; white-space: nowrap; padding-right: 100%; animation: ticker 45s linear infinite; }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
 
-        /* Content Area */
-        main { height: calc(100vh - 80px); padding: 60px; overflow-y: auto; position: relative; }
-        .view { display: none; width: 100%; max-width: 1200px; margin: 0 auto; }
-        .view.active { display: block; animation: slideUp 0.4s ease; }
+        /* NAV */
+        nav { height: 75px; background: rgba(0,0,0,0.95); backdrop-filter: blur(15px); border-bottom: 1px solid #1e293b; display: flex; align-items: center; padding: 0 40px; justify-content: space-between; position: fixed; top: 32px; width: 100%; z-index: 1000; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-btn { background: transparent; border: none; color: #64748b; font-weight: 700; cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-btn.active, .nav-btn:hover { color: var(--emerald); border-bottom: 2px solid var(--emerald); padding-bottom: 5px; }
+
+        /* LAYOUT */
+        main { margin-top: 107px; height: calc(100vh - 107px); padding: 40px; overflow-y: auto; scrollbar-width: none; }
+        .view { display: none; max-width: 1400px; margin: 0 auto; }
+        .view.active { display: block; animation: slideUp 0.3s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Bold Headers */
-        .big-label { font-size: 110px; font-weight: 900; letter-spacing: -6px; margin: 0 0 40px 0; color: #fff; line-height: 0.8; opacity: 0.9; }
+        /* TYPOGRAPHY */
+        .big-label { font-size: 80px; font-weight: 900; letter-spacing: -4px; margin-bottom: 30px; line-height: 0.9; color: #fff; }
 
-        /* Bento Grid */
-        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-        .card { background: var(--slate); border: 1px solid #233554; border-radius: 30px; padding: 35px; position: relative; }
-        .card:hover { border-color: var(--emerald); transform: translateY(-5px); }
-        .card-tag { color: var(--emerald); font-size: 10px; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 15px; }
-
-        /* Price Styling */
-        .price { font-size: 56px; font-weight: 900; color: #fff; margin: 10px 0; letter-spacing: -2px; }
+        /* CARDS & GRID */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: var(--slate); border: 1px solid #1e293b; border-radius: 25px; padding: 25px; position: relative; }
+        .league-tag { font-size: 9px; font-weight: 800; color: var(--gold); background: rgba(245, 158, 11, 0.1); padding: 4px 10px; border-radius: 20px; margin-bottom: 12px; display: inline-block; }
         
-        /* Utility */
-        .btn-action { background: var(--emerald); color: #000; border: none; padding: 20px; border-radius: 15px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; margin-top: 20px; font-size: 13px; }
-        .lang-switch { background: transparent; border: 1px solid var(--emerald); color: var(--emerald); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 800; }
+        /* SOCCER UI */
+        .odds-row { display: flex; gap: 8px; margin-top: 15px; }
+        .odd-btn { flex: 1; background: #000; border: 1px solid #1e293b; padding: 12px; border-radius: 10px; text-align: center; cursor: pointer; }
+        .odd-btn:hover { border-color: var(--emerald); }
+        .odd-val { font-size: 20px; font-weight: 900; color: var(--emerald); display: block; }
+        .odd-lbl { font-size: 9px; color: #555; font-weight: 700; }
 
-        /* Audit Table */
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { text-align: left; color: var(--emerald); font-size: 11px; padding: 15px; border-bottom: 1px solid #233554; }
-        td { padding: 15px; border-bottom: 1px solid #233554; font-size: 13px; color: #8892b0; }
+        /* BUTTONS */
+        .btn-wa { background: #25D366; color: #fff; border: none; width: 100%; padding: 15px; border-radius: 12px; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 15px; font-size: 12px; }
+        .lang-switch { border: 1.5px solid var(--emerald); color: var(--emerald); background: transparent; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 800; }
+
+        /* DISCLAIMER */
+        .disclaimer-box { background: rgba(255,0,0,0.05); border: 1px solid rgba(255,0,0,0.2); border-radius: 15px; padding: 20px; font-size: 12px; color: #888; margin-top: 30px; }
     </style>
 </head>
-<body>
+<body id="b">
 
-<div id="login-screen">
-    <div class="login-box">
-        <div style="font-weight:900; color:var(--emerald); letter-spacing:3px;">GT VANGUARD</div>
-        <input type="password" style="background:#0a192f; border:1px solid #233554; color:#fff; padding:15px; width:100%; margin-top:20px; text-align:center;" placeholder="ACCESS KEY">
-        <button class="btn-action" onclick="auth()">VERIFY IDENTITY</button>
+<div class="ticker-wrap">
+    <div class="ticker-move" id="ticker">
+        GLOBAL TRADE LTD ● USDT/LYD: 7.34 ● MAR 22, 2026 ● UCL: REAL MADRID VS LIVERPOOL SEMI-FINAL CONFIRMED ● MARKET STATUS: ACTIVE ●
     </div>
 </div>
 
-<div id="app" style="display:none;">
-    <nav>
-        <div style="font-weight:900; font-size:20px; color:var(--emerald);">GT<span style="color:#fff;">VANGUARD</span></div>
-        <div class="nav-links">
-            <button class="nav-btn active" onclick="showView('v-stocks', this)" id="n-stocks">STOCKS</button>
-            <button class="nav-btn" onclick="showView('v-crypto', this)" id="n-crypto">CRYPTO</button>
-            <button class="nav-btn" onclick="showView('v-predict', this)" id="n-predict">PREDICTIONS</button>
-            <button class="nav-btn" onclick="showView('v-portal', this)" id="n-portal">LEARN / CONTACT</button>
-            <button class="nav-btn" onclick="showView('v-audit', this)" id="n-audit">AUDIT</button>
-        </div>
-        <button class="lang-switch" onclick="toggleLang()" id="lang-btn">عربي</button>
-    </nav>
+<nav>
+    <div style="font-weight:900; font-size:24px; color:var(--emerald);" id="brand">GLOBAL<span style="color:#fff">TRADE</span></div>
+    <div class="nav-links">
+        <button class="nav-btn active" onclick="showV('v-soccer', this)" id="n-soccer">SOCCER</button>
+        <button class="nav-btn" onclick="showV('v-finance', this)" id="n-finance">FINANCE</button>
+        <button class="nav-btn" onclick="showV('v-portal', this)" id="n-portal">LEARN/CONTACT</button>
+    </div>
+    <button class="lang-switch" onclick="tgl()" id="lbtn">عربي</button>
+</nav>
 
-    <main>
-        <div id="v-stocks" class="view active">
-            <h1 class="big-label" id="h-stocks">STOCKS</h1>
-            <div class="grid">
-                <div class="card">
-                    <span class="card-tag">NYSE:GOLDMAN SACHS</span>
-                    <div class="price">$412.45</div>
-                    <button class="btn-action" onclick="trade('GS')">INSTITUTIONAL BUY</button>
-                </div>
-                <div class="card">
-                    <span class="card-tag">NASDAQ:NVDA</span>
-                    <div class="price">$875.32</div>
-                    <button class="btn-action" onclick="trade('NVDA')">INSTITUTIONAL BUY</button>
-                </div>
-                <div class="card">
-                    <span class="card-tag">NASDAQ:TSLA</span>
-                    <div class="price">$172.10</div>
-                    <button class="btn-action" onclick="trade('TSLA')">INSTITUTIONAL BUY</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="v-crypto" class="view">
-            <h1 class="big-label" id="h-crypto">CRYPTO</h1>
-            <div class="grid">
-                <div class="card">
-                    <span class="card-tag">BTC / USD CORE</span>
-                    <div class="price">$94,402</div>
-                    <button class="btn-action" onclick="trade('BTC')">SETTLE ASSET</button>
-                </div>
-                <div class="card">
-                    <span class="card-tag">USDT / LYD LIQUIDITY</span>
-                    <div class="price">7.34</div>
-                    <button class="btn-action" onclick="trade('USDT')">EXCHANGE CASH</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="v-predict" class="view">
-            <h1 class="big-label" id="h-predict">PREDICT</h1>
-            <div class="card" style="max-width: 800px;">
-                <span class="card-tag">UEFA CHAMPIONS LEAGUE QUARTER-FINAL</span>
-                <div style="font-size:24px; font-weight:700; margin-bottom:30px;">Will Real Madrid qualify against Manchester City?</div>
-                <div style="display:flex; gap:20px;">
-                    <button style="flex:1; background:#112240; border:1px solid #233554; padding:30px; border-radius:20px; cursor:pointer;" onclick="trade('RMAD_YES')">
-                        <span style="color:var(--emerald); font-weight:800;">YES</span><br><b style="font-size:32px; color:#fff;">$0.58</b>
-                    </button>
-                    <button style="flex:1; background:#112240; border:1px solid #233554; padding:30px; border-radius:20px; cursor:pointer;" onclick="trade('RMAD_NO')">
-                        <span style="color:#ff4d4d; font-weight:800;">NO</span><br><b style="font-size:32px; color:#fff;">$0.43</b>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="v-portal" class="view">
-            <h1 class="big-label" id="h-portal">PORTAL</h1>
-            <div class="grid">
-                <div class="card" style="grid-column: span 2;">
-                    <span class="card-tag">EXECUTIVE VIDEO GUIDE</span>
-                    <video controls poster="https://via.placeholder.com/800x450/0a192f/00c853?text=GT+VANGUARD+GUIDE">
-                        <source src="tutorial.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="card">
-                    <span class="card-tag">AUDIO CONCIERGE (LIBYAN DIALECT)</span>
-                    <audio controls style="width:100%; margin:20px 0;">
-                        <source src="audio_guide.mp3" type="audio/mpeg">
-                    </audio>
-                    <hr style="border:0; border-top:1px solid #233554; margin:20px 0;">
-                    <div style="font-size:18px; font-weight:900;">+218 91 570 9015</div>
-                    <button class="btn-action" style="background:#fff; color:#000;" onclick="trade('WHATSAPP')">START VIP CHAT</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="v-audit" class="view">
-            <h1 class="big-label" id="h-audit">AUDIT</h1>
+<main>
+    <div id="v-soccer" class="view active">
+        <h1 class="big-label" id="h-soccer">SOCCER</h1>
+        <div class="grid">
             <div class="card">
-                <table>
-                    <thead>
-                        <tr><th>TIMESTAMP</th><th>INSTRUMENT</th><th>VOLUME (LYD)</th><th>STATUS</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>2026-03-22 17:40</td><td>USDT/LYD</td><td>450,000</td><td style="color:var(--emerald);">COMPLETED</td></tr>
-                        <tr><td>2026-03-22 17:32</td><td>BTC CORE</td><td>85,000</td><td style="color:var(--emerald);">COMPLETED</td></tr>
-                        <tr><td>2026-03-22 17:10</td><td>USDT/LYD</td><td>1,200,000</td><td style="color:var(--emerald);">COMPLETED</td></tr>
-                    </tbody>
-                </table>
+                <span class="league-tag">UCL SEMI-FINAL</span>
+                <div style="font-weight:800;" id="m1">Real Madrid vs Liverpool</div>
+                <div class="odds-row">
+                    <div class="odd-btn"><span class="odd-lbl">HOME</span><span class="odd-val">2.10</span></div>
+                    <div class="odd-btn"><span class="odd-lbl">DRAW</span><span class="odd-val">3.40</span></div>
+                    <div class="odd-btn"><span class="odd-lbl">AWAY</span><span class="odd-val">2.85</span></div>
+                </div>
+                <button class="btn-wa" onclick="wa('Bet_UCL')">PLACE BET</button>
+            </div>
+            <div class="card">
+                <span class="league-tag">PREMIER LEAGUE</span>
+                <div style="font-weight:800;" id="m2">Man City vs Arsenal</div>
+                <div class="odds-row">
+                    <div class="odd-btn"><span class="odd-val">1.90</span></div><div class="odd-btn"><span class="odd-val">3.80</span></div><div class="odd-btn"><span class="odd-val">3.20</span></div>
+                </div>
+                <button class="btn-wa" onclick="wa('Bet_EPL')">PLACE BET</button>
+            </div>
+            <div class="card">
+                <span class="league-tag">LA LIGA</span>
+                <div style="font-weight:800;" id="m3">Barcelona vs Atletico</div>
+                <div class="odds-row">
+                    <div class="odd-btn"><span class="odd-val">2.25</span></div><div class="odd-btn"><span class="odd-val">3.20</span></div><div class="odd-btn"><span class="odd-val">2.90</span></div>
+                </div>
+                <button class="btn-wa" onclick="wa('Bet_Liga')">PLACE BET</button>
+            </div>
+            <div class="card" style="border-style: dashed;">
+                <span class="league-tag" id="up-tag">UPCOMING APRIL 2026</span>
+                <div style="color:#555; font-size:14px;" id="up-msg">World Cup Qualifiers & FA Cup Finals...</div>
             </div>
         </div>
-    </main>
-</div>
+    </div>
+
+    <div id="v-finance" class="view">
+        <h1 class="big-label" id="h-finance">FINANCE</h1>
+        <div class="grid">
+            <div class="card" style="text-align:center;">
+                <span id="q1">USDT TRC20 SCAN</span><br>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=YOUR_ADDRESS" style="margin:20px 0; border:4px solid #fff; border-radius:10px;">
+                <code style="display:block; font-size:10px; color:var(--emerald);">TXY_GLOBAL_TRADE_LTD_8899</code>
+            </div>
+            <div class="card">
+                <span id="c1">CALCULATOR (USD to LYD)</span>
+                <input type="number" id="usd" style="width:100%; background:#000; border:1px solid var(--emerald); color:#fff; padding:15px; margin:15px 0; border-radius:10px;" oninput="calc()">
+                <div style="font-size:24px; font-weight:900;" id="res">0.00 LYD</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="v-portal" class="view">
+        <h1 class="big-label" id="h-portal">PORTAL</h1>
+        <div class="grid">
+            <div class="card">
+                <span style="color:var(--gold); font-weight:800;" id="a1">EXECUTIVE AUDIO GUIDE</span>
+                <audio controls style="width:100%; margin-top:20px;">
+                    <source src="audio_guide.mp3" type="audio/mpeg">
+                </audio>
+                <p style="font-size:11px; margin-top:10px; color:#64748b;" id="a2">Libyan Dialect - 1:00 Duration</p>
+            </div>
+            <div class="card">
+                <span style="color:var(--gold); font-weight:800;" id="t1">TESTIMONIALS</span>
+                <div style="font-style:italic; font-size:13px; margin-top:15px;">"The fastest USDT settlement in Tripoli. 100% trusted." - Ahmed B.</div>
+                <div style="font-style:italic; font-size:13px; margin-top:10px;">"Best soccer odds for UCL." - Mustafa K.</div>
+            </div>
+            <div class="card">
+                <span style="color:var(--gold); font-weight:800;" id="co1">CONTACT US</span>
+                <div style="margin-top:15px; font-weight:900; font-size:18px;">+218 91 570 9015</div>
+                <button class="btn-wa" onclick="wa('Support')">WHATSAPP CHAT</button>
+            </div>
+        </div>
+        <div class="disclaimer-box" id="disc">
+            DISCLAIMER: Global Trade LTD is a private liquidity provider. Digital assets carry risk. All soccer settlements are based on official league results. Institutional clients only.
+        </div>
+    </div>
+</main>
 
 <script>
-    function auth() { document.getElementById('login-screen').style.display='none'; document.getElementById('app').style.display='block'; }
-    function showView(id, btn) {
+    const tr = {
+        en: { 
+            soccer: "SOCCER", finance: "FINANCE", portal: "PORTAL", ticker: "GLOBAL TRADE LTD ● USDT/LYD: 7.34 ● MAR 22, 2026 ● UCL: REAL MADRID VS LIVERPOOL ●",
+            ns: "SOCCER", nf: "FINANCE", np: "LEARN/CONTACT",
+            m1: "Real Madrid vs Liverpool", m2: "Man City vs Arsenal", m3: "Barcelona vs Atletico",
+            up_tag: "UPCOMING APRIL 2026", up_msg: "World Cup Qualifiers & FA Cup Finals...",
+            q1: "USDT TRC20 SCAN", c1: "CALCULATOR (USD to LYD)", a1: "EXECUTIVE AUDIO GUIDE", a2: "Libyan Dialect - 1:00 Duration",
+            t1: "TESTIMONIALS", co1: "CONTACT US", disc: "DISCLAIMER: Global Trade LTD is a private liquidity provider. Digital assets carry risk."
+        },
+        ar: {
+            soccer: "كرة القدم", finance: "المالية", portal: "البوابة", ticker: "جلوبال تريد المحدودة ● سعر الدولار: 7.34 ● 22 مارس 2026 ● ريال مدريد ضد ليفربول ●",
+            ns: "كرة القدم", nf: "المالية", np: "اتصل بنا",
+            m1: "ريال مدريد ضد ليفربول", m2: "مانشستر سيتي ضد أرسنال", m3: "برشلونة ضد أتلتيكو",
+            up_tag: "القادم في أبريل 2026", up_msg: "تصفيات كأس العالم ونهائيات كأس الاتحاد...",
+            q1: "مسح كود USDT", c1: "حاسبة العملة (دولار لـ دينار)", a1: "الدليل الصوتي التنفيذي", a2: "اللهجة الليبية - مدة دقيقة",
+            t1: "آراء العملاء", co1: "اتصل بنا", disc: "إخلاء مسؤولية: جلوبال تريد هي شركة خاصة لتوفير السيولة. الأصول الرقمية تنطوي على مخاطر."
+        }
+    };
+
+    function showV(id, b) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        btn.classList.add('active');
+        b.classList.add('active');
     }
-    function trade(item) { window.location.href=`https://wa.me/218915709015?text=REF:GT_${item}`; }
-    function toggleLang() {
-        const isAr = document.getElementById('lang-btn').innerText === 'English';
-        document.body.dir = isAr ? 'ltr' : 'rtl';
-        document.getElementById('lang-btn').innerText = isAr ? 'عربي' : 'English';
-        // Logic for translation can be expanded here as per previous versions
+
+    function calc() {
+        const u = document.getElementById('usd').value;
+        document.getElementById('res').innerText = (u * 7.34).toFixed(2) + " LYD";
+    }
+
+    function wa(ref) { window.location.href = `https://wa.me/218915709015?text=GlobalTrade_${ref}`; }
+
+    function tgl() {
+        const isAr = document.getElementById('lbtn').innerText === 'عربي';
+        const l = isAr ? 'ar' : 'en';
+        document.body.dir = isAr ? 'rtl' : 'ltr';
+        document.getElementById('lbtn').innerText = isAr ? 'English' : 'عربي';
+        
+        document.getElementById('h-soccer').innerText = tr[l].soccer;
+        document.getElementById('h-finance').innerText = tr[l].finance;
+        document.getElementById('h-portal').innerText = tr[l].portal;
+        document.getElementById('ticker').innerText = tr[l].ticker;
+        
+        document.getElementById('n-soccer').innerText = tr[l].ns;
+        document.getElementById('n-finance').innerText = tr[l].nf;
+        document.getElementById('n-portal').innerText = tr[l].np;
+
+        document.getElementById('m1').innerText = tr[l].m1;
+        document.getElementById('m2').innerText = tr[l].m2;
+        document.getElementById('m3').innerText = tr[l].m3;
+        document.getElementById('up-tag').innerText = tr[l].up_tag;
+        document.getElementById('up-msg').innerText = tr[l].up_msg;
+
+        document.getElementById('q1').innerText = tr[l].q1;
+        document.getElementById('c1').innerText = tr[l].c1;
+        document.getElementById('a1').innerText = tr[l].a1;
+        document.getElementById('a2').innerText = tr[l].a2;
+        document.getElementById('t1').innerText = tr[l].t1;
+        document.getElementById('co1').innerText = tr[l].co1;
+        document.getElementById('disc').innerText = tr[l].disc;
     }
 </script>
-
 </body>
 </html>
