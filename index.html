@@ -3,223 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT VANGUARD | PRIVATE TERMINAL</title>
+    <title>GT VANGUARD | HORIZON TERMINAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #D4AF37; --bg: #05070a; --card: #0e121a; --border: #1a1e26; --white: #ffffff; }
-        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        body, html { height: 100%; margin: 0; background: var(--bg); color: var(--white); overflow: hidden; }
+        :root { --emerald: #00c853; --navy: #0a192f; --slate: #112240; --platinum: #e6f1ff; --gold: #D4AF37; }
+        * { box-sizing: border-box; font-family: 'Inter', sans-serif; transition: 0.3s; }
+        body, html { height: 100%; margin: 0; background: var(--navy); color: var(--platinum); overflow: hidden; }
 
         /* Login Screen */
-        #login-screen { position: fixed; inset: 0; z-index: 9999; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .login-box { width: 350px; text-align: center; padding: 40px; border: 1px solid var(--border); border-radius: 30px; background: #000; }
-        .input-pro { background: #0b0e14; border: 1px solid var(--border); color: var(--white); padding: 18px; width: 100%; border-radius: 12px; margin-top: 25px; text-align: center; letter-spacing: 8px; font-weight: 900; }
-
-        /* Main OS Layout */
-        #app { display: none; height: 100vh; grid-template-columns: 300px 1fr; }
-        aside { background: #000; border-right: 1px solid var(--border); padding: 50px 25px; display: flex; flex-direction: column; }
-        .nav-btn { background: transparent; border: 1px solid transparent; color: #555; padding: 18px; border-radius: 15px; cursor: pointer; text-align: left; font-weight: 800; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; }
-        .nav-btn:hover, .nav-btn.active { background: var(--card); color: var(--gold); border-color: var(--border); }
+        #login-screen { position: fixed; inset: 0; z-index: 9999; background: var(--navy); display: flex; align-items: center; justify-content: center; }
+        .login-box { width: 400px; text-align: center; padding: 50px; border: 1px solid var(--slate); border-radius: 40px; background: #000; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        
+        /* Horizontal Navigation */
+        nav { height: 80px; background: #000; border-bottom: 1px solid var(--slate); display: flex; align-items: center; padding: 0 40px; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-btn { background: transparent; border: none; color: #8892b0; font-weight: 700; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-btn:hover, .nav-btn.active { color: var(--emerald); border-bottom: 2px solid var(--emerald); padding-bottom: 5px; }
 
         /* Content Area */
-        main { padding: 60px; position: relative; display: flex; flex-direction: column; overflow: hidden; }
-        .view { display: none; width: 100%; height: 100%; }
-        .view.active { display: flex; flex-direction: column; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        main { height: calc(100vh - 80px); padding: 60px; overflow-y: auto; position: relative; }
+        .view { display: none; width: 100%; max-width: 1200px; margin: 0 auto; }
+        .view.active { display: block; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Big Bold Folders */
-        .folder-header { font-size: 100px; font-weight: 900; letter-spacing: -6px; margin: 0 0 50px 0; text-transform: uppercase; line-height: 0.8; color: #fff; }
-        .bento-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .bento-item { background: var(--card); border: 1px solid var(--border); padding: 40px; border-radius: 35px; position: relative; overflow: hidden; }
-        .bento-item:hover { border-color: var(--gold); box-shadow: 0 0 30px rgba(212, 175, 55, 0.1); }
+        /* Bold Headers */
+        .big-label { font-size: 110px; font-weight: 900; letter-spacing: -6px; margin: 0 0 40px 0; color: #fff; line-height: 0.8; opacity: 0.9; }
 
-        /* Utility */
-        .btn-gold { background: var(--gold); color: #000; border: none; padding: 22px; border-radius: 18px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; margin-top: 20px; font-size: 14px; }
-        .disclaimer { font-size: 10px; color: #333; margin-top: auto; letter-spacing: 1px; }
-        .lang-switch { position: absolute; top: 40px; right: 60px; background: transparent; border: 1.5px solid var(--gold); color: var(--gold); padding: 10px 22px; border-radius: 25px; cursor: pointer; font-weight: 900; font-size: 12px; z-index: 100; }
+        /* Bento Grid */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .card { background: var(--slate); border: 1px solid #233554; border-radius: 30px; padding: 35px; position: relative; }
+        .card:hover { border-color: var(--emerald); transform: translateY(-5px); }
+        .card-tag { color: var(--emerald); font-size: 10px; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 15px; }
 
-        /* Media */
-        video { width: 100%; border-radius: 20px; border: 1px solid var(--border); }
-        .price-text { font-size: 64px; font-weight: 900; color: var(--gold); margin: 10px 0; letter-spacing: -2px; }
+        /* Price Styling */
+        .price { font-size: 56px; font-weight: 900; color: #fff; margin: 10px 0; letter-spacing: -2px; }
         
-        /* Audit List */
-        .audit-line { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #161a21; font-size: 12px; color: #777; font-weight: 600; }
+        /* Utility */
+        .btn-action { background: var(--emerald); color: #000; border: none; padding: 20px; border-radius: 15px; font-weight: 900; width: 100%; cursor: pointer; text-transform: uppercase; margin-top: 20px; font-size: 13px; }
+        .lang-switch { background: transparent; border: 1px solid var(--emerald); color: var(--emerald); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 800; }
+
+        /* Audit Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { text-align: left; color: var(--emerald); font-size: 11px; padding: 15px; border-bottom: 1px solid #233554; }
+        td { padding: 15px; border-bottom: 1px solid #233554; font-size: 13px; color: #8892b0; }
     </style>
 </head>
-<body id="body">
+<body>
 
 <div id="login-screen">
     <div class="login-box">
-        <div style="font-size: 28px; font-weight: 900; color: var(--gold); letter-spacing: 4px;">GT VANGUARD</div>
-        <div style="font-size: 11px; color: #444; margin-top: 10px; font-weight: 800;">INVESTOR PORTAL v9.0</div>
-        <input type="password" class="input-pro" placeholder="••••" id="pass">
-        <button class="btn-gold" onclick="auth()">AUTHORIZE ACCESS</button>
+        <div style="font-weight:900; color:var(--emerald); letter-spacing:3px;">GT VANGUARD</div>
+        <input type="password" style="background:#0a192f; border:1px solid #233554; color:#fff; padding:15px; width:100%; margin-top:20px; text-align:center;" placeholder="ACCESS KEY">
+        <button class="btn-action" onclick="auth()">VERIFY IDENTITY</button>
     </div>
 </div>
 
-<div id="app">
-    <aside>
-        <div style="font-weight: 900; color: var(--gold); font-size: 24px; margin-bottom: 60px; letter-spacing: -1px;">GT <span style="color:#fff">OS</span></div>
-        <button class="nav-btn active" onclick="showView('v-stocks', this)" id="n-stocks">STOCKS</button>
-        <button class="nav-btn" onclick="showView('v-crypto', this)" id="n-crypto">CRYPTO</button>
-        <button class="nav-btn" onclick="showView('v-predict', this)" id="n-predict">PREDICT</button>
-        <button class="nav-btn" onclick="showView('v-learn', this)" id="n-learn">CLIENT PORTAL</button>
-        <button class="nav-btn" onclick="showView('v-audit', this)" id="n-audit">LIVE AUDIT</button>
-        <button class="nav-btn" onclick="showView('v-white', this)" id="n-white">EXECUTIVE SUMMARY</button>
-        
-        <div style="margin-top: auto; font-size: 11px; font-weight: 700; color: #333;">ENCRYPTED_TRIPOLI_DESK</div>
-    </aside>
+<div id="app" style="display:none;">
+    <nav>
+        <div style="font-weight:900; font-size:20px; color:var(--emerald);">GT<span style="color:#fff;">VANGUARD</span></div>
+        <div class="nav-links">
+            <button class="nav-btn active" onclick="showView('v-stocks', this)" id="n-stocks">STOCKS</button>
+            <button class="nav-btn" onclick="showView('v-crypto', this)" id="n-crypto">CRYPTO</button>
+            <button class="nav-btn" onclick="showView('v-predict', this)" id="n-predict">PREDICTIONS</button>
+            <button class="nav-btn" onclick="showView('v-portal', this)" id="n-portal">LEARN / CONTACT</button>
+            <button class="nav-btn" onclick="showView('v-audit', this)" id="n-audit">AUDIT</button>
+        </div>
+        <button class="lang-switch" onclick="toggleLang()" id="lang-btn">عربي</button>
+    </nav>
 
     <main>
-        <button class="lang-switch" onclick="toggleLang()" id="lang-btn">عربي</button>
-
         <div id="v-stocks" class="view active">
-            <h1 class="folder-header" id="h-stocks">STOCKS</h1>
-            <div class="bento-row">
-                <div class="bento-item">
-                    <div style="color: var(--gold); font-weight: 800; font-size: 12px;">NASDAQ:NVDA</div>
-                    <div class="price-text">$875.32</div>
-                    <button class="btn-gold" onclick="trade('STOCKS')">BUY CONTRACT</button>
+            <h1 class="big-label" id="h-stocks">STOCKS</h1>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-tag">NYSE:GOLDMAN SACHS</span>
+                    <div class="price">$412.45</div>
+                    <button class="btn-action" onclick="trade('GS')">INSTITUTIONAL BUY</button>
                 </div>
-                <div class="bento-item">
-                    <div style="color: var(--gold); font-weight: 800; font-size: 12px;">NASDAQ:TSLA</div>
-                    <div class="price-text">$172.10</div>
-                    <button class="btn-gold" onclick="trade('STOCKS')">BUY CONTRACT</button>
+                <div class="card">
+                    <span class="card-tag">NASDAQ:NVDA</span>
+                    <div class="price">$875.32</div>
+                    <button class="btn-action" onclick="trade('NVDA')">INSTITUTIONAL BUY</button>
+                </div>
+                <div class="card">
+                    <span class="card-tag">NASDAQ:TSLA</span>
+                    <div class="price">$172.10</div>
+                    <button class="btn-action" onclick="trade('TSLA')">INSTITUTIONAL BUY</button>
                 </div>
             </div>
         </div>
 
         <div id="v-crypto" class="view">
-            <h1 class="folder-header" id="h-crypto">CRYPTO</h1>
-            <div class="bento-row">
-                <div class="bento-item">
-                    <div style="color: var(--gold); font-weight: 800; font-size: 12px;">BITCOIN CORE</div>
-                    <div class="price-text">$94,402</div>
-                    <button class="btn-gold" onclick="trade('BTC')">BUY ASSET</button>
+            <h1 class="big-label" id="h-crypto">CRYPTO</h1>
+            <div class="grid">
+                <div class="card">
+                    <span class="card-tag">BTC / USD CORE</span>
+                    <div class="price">$94,402</div>
+                    <button class="btn-action" onclick="trade('BTC')">SETTLE ASSET</button>
                 </div>
-                <div class="bento-item">
-                    <div style="color: var(--gold); font-weight: 800; font-size: 12px;">USDT / LYD (STREET)</div>
-                    <div class="price-text">7.34</div>
-                    <button class="btn-gold" onclick="trade('USDT')">EXCHANGE LIQUIDITY</button>
+                <div class="card">
+                    <span class="card-tag">USDT / LYD LIQUIDITY</span>
+                    <div class="price">7.34</div>
+                    <button class="btn-action" onclick="trade('USDT')">EXCHANGE CASH</button>
                 </div>
             </div>
         </div>
 
         <div id="v-predict" class="view">
-            <h1 class="folder-header" id="h-predict">PREDICT</h1>
-            <div class="bento-item">
-                <div style="color: var(--gold); font-weight: 800; margin-bottom: 25px; font-size: 14px;">UCL QUARTER-FINALS: RMAD VS MCIT</div>
-                <div style="display: flex; gap: 30px;">
-                    <div style="flex:1; background: #000; border: 1px solid var(--border); padding: 30px; border-radius: 25px; text-align: center; cursor: pointer;" onclick="trade('YES')">
-                        <span style="font-size: 11px; color:#555;">MADRID YES</span><br><b style="font-size: 48px; color: var(--gold);">$0.58</b>
-                    </div>
-                    <div style="flex:1; background: #000; border: 1px solid var(--border); padding: 30px; border-radius: 25px; text-align: center; cursor: pointer;" onclick="trade('NO')">
-                        <span style="font-size: 11px; color:#555;">MADRID NO</span><br><b style="font-size: 48px;">$0.43</b>
-                    </div>
+            <h1 class="big-label" id="h-predict">PREDICT</h1>
+            <div class="card" style="max-width: 800px;">
+                <span class="card-tag">UEFA CHAMPIONS LEAGUE QUARTER-FINAL</span>
+                <div style="font-size:24px; font-weight:700; margin-bottom:30px;">Will Real Madrid qualify against Manchester City?</div>
+                <div style="display:flex; gap:20px;">
+                    <button style="flex:1; background:#112240; border:1px solid #233554; padding:30px; border-radius:20px; cursor:pointer;" onclick="trade('RMAD_YES')">
+                        <span style="color:var(--emerald); font-weight:800;">YES</span><br><b style="font-size:32px; color:#fff;">$0.58</b>
+                    </button>
+                    <button style="flex:1; background:#112240; border:1px solid #233554; padding:30px; border-radius:20px; cursor:pointer;" onclick="trade('RMAD_NO')">
+                        <span style="color:#ff4d4d; font-weight:800;">NO</span><br><b style="font-size:32px; color:#fff;">$0.43</b>
+                    </button>
                 </div>
-                <button class="btn-gold" onclick="trade('UCL_ORDER')">EXECUTE FORECAST CONTRACT</button>
             </div>
         </div>
 
-        <div id="v-learn" class="view">
-            <h1 class="folder-header" id="h-learn">CLIENT</h1>
-            <div class="bento-row">
-                <div class="bento-item">
-                    <span style="color:var(--gold); font-weight:800; font-size:10px;">EXECUTIVE VIDEO GUIDE</span>
-                    <video controls poster="https://via.placeholder.com/800x450/000/D4AF37?text=VIDEO+GUIDE">
+        <div id="v-portal" class="view">
+            <h1 class="big-label" id="h-portal">PORTAL</h1>
+            <div class="grid">
+                <div class="card" style="grid-column: span 2;">
+                    <span class="card-tag">EXECUTIVE VIDEO GUIDE</span>
+                    <video controls poster="https://via.placeholder.com/800x450/0a192f/00c853?text=GT+VANGUARD+GUIDE">
                         <source src="tutorial.mp4" type="video/mp4">
                     </video>
                 </div>
-                <div class="bento-item">
-                    <span style="color:var(--gold); font-weight:800; font-size:10px;">VIP AUDIO CONCIERGE</span>
-                    <audio controls src="audio_guide.mp3" style="width: 100%; margin: 40px 0;"></audio>
-                    <hr style="border:0; border-top:1px solid #222; margin-bottom: 30px;">
-                    <div style="font-weight:900; font-size: 24px;">+218 91 570 9015</div>
-                    <button class="btn-gold" style="background:#fff; color:#000;" onclick="trade('VIP')">CONNECT TO WHATSAPP</button>
+                <div class="card">
+                    <span class="card-tag">AUDIO CONCIERGE (LIBYAN DIALECT)</span>
+                    <audio controls style="width:100%; margin:20px 0;">
+                        <source src="audio_guide.mp3" type="audio/mpeg">
+                    </audio>
+                    <hr style="border:0; border-top:1px solid #233554; margin:20px 0;">
+                    <div style="font-size:18px; font-weight:900;">+218 91 570 9015</div>
+                    <button class="btn-action" style="background:#fff; color:#000;" onclick="trade('WHATSAPP')">START VIP CHAT</button>
                 </div>
             </div>
         </div>
 
         <div id="v-audit" class="view">
-            <h1 class="folder-header" id="h-audit">AUDIT</h1>
-            <div class="bento-item">
-                <div style="display:flex; justify-content:space-between; color:var(--gold); font-size:11px; font-weight:900; border-bottom:2px solid #222; padding-bottom:15px; margin-bottom:10px;">
-                    <span>TIMESTAMP</span><span>ASSET</span><span>VOLUME</span><span>STATUS</span>
-                </div>
-                <div class="audit-line"><span>17:21:05</span><span>USDT/LYD</span><span>250,000</span><span style="color:var(--gold)">SETTLED</span></div>
-                <div class="audit-line"><span>17:15:42</span><span>BTC/USD</span><span>2.14</span><span style="color:var(--gold)">SETTLED</span></div>
-                <div class="audit-line"><span>16:50:11</span><span>USDT/LYD</span><span>45,000</span><span style="color:var(--gold)">SETTLED</span></div>
-                <div class="audit-line"><span>16:32:55</span><span>ETH/USD</span><span>10.00</span><span style="color:var(--gold)">SETTLED</span></div>
-                <div class="audit-line"><span>16:10:04</span><span>USDT/LYD</span><span>100,000</span><span style="color:var(--gold)">SETTLED</span></div>
+            <h1 class="big-label" id="h-audit">AUDIT</h1>
+            <div class="card">
+                <table>
+                    <thead>
+                        <tr><th>TIMESTAMP</th><th>INSTRUMENT</th><th>VOLUME (LYD)</th><th>STATUS</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2026-03-22 17:40</td><td>USDT/LYD</td><td>450,000</td><td style="color:var(--emerald);">COMPLETED</td></tr>
+                        <tr><td>2026-03-22 17:32</td><td>BTC CORE</td><td>85,000</td><td style="color:var(--emerald);">COMPLETED</td></tr>
+                        <tr><td>2026-03-22 17:10</td><td>USDT/LYD</td><td>1,200,000</td><td style="color:var(--emerald);">COMPLETED</td></tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
-
-        <div id="v-white" class="view">
-            <h1 class="folder-header" id="h-white">ALPHA</h1>
-            <div class="bento-item">
-                <h2 style="color:var(--gold); margin-top:0;">Liquidity Protocol Executive Summary</h2>
-                <p id="wp-text" style="color:#888; line-height:1.8; font-size:16px;">
-                    Global Trade LTD provides a high-frequency bridge between traditional Libyan dinar liquidity and digital USDT markets. Our desk utilizes cold-storage security and deep-pool partnerships to ensure 0% slippage on orders up to 500,000 LYD. Our Prediction Market platform offers institutional-grade contracts on global European sporting outcomes, settled in real-time via local bank transfer.
-                </p>
-            </div>
-        </div>
-
-        <div class="disclaimer" id="disclaimer">
-            GT VANGUARD OS IS FOR INSTITUTIONAL COUNTERPARTIES ONLY. 2026 GLOBAL TRADE LTD. ALL RIGHTS RESERVED.
         </div>
     </main>
 </div>
 
 <script>
-    const trans = {
-        en: { 
-            s: "STOCKS", c: "CRYPTO", p: "PREDICT", l: "CLIENT", a: "AUDIT", w: "ALPHA",
-            ns: "STOCKS", nc: "CRYPTO", np: "PREDICT", nl: "CLIENT PORTAL", na: "LIVE AUDIT", nw: "EXECUTIVE SUMMARY",
-            bt: "عربي", disc: "GT VANGUARD OS IS FOR INSTITUTIONAL COUNTERPARTIES ONLY. 2026 GLOBAL TRADE LTD."
-        },
-        ar: { 
-            s: "الأسهم", c: "كريبتو", p: "توقع", l: "عملاء", a: "تدقيق", w: "ألفا",
-            ns: "الأسهم", nc: "عملات رقمية", np: "سوق التوقعات", nl: "بوابة العملاء", na: "التدقيق المباشر", nw: "ملخص تنفيذي",
-            bt: "English", disc: "جلوبال تريد هي منصة مؤسسية. جميع الحقوق محفوظة 2026."
-        }
-    };
-
-    function auth() {
-        document.getElementById('login-screen').style.display = 'none';
-        document.getElementById('app').style.display = 'grid';
-    }
-
+    function auth() { document.getElementById('login-screen').style.display='none'; document.getElementById('app').style.display='block'; }
     function showView(id, btn) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(id).classList.add('active');
         btn.classList.add('active');
     }
-
+    function trade(item) { window.location.href=`https://wa.me/218915709015?text=REF:GT_${item}`; }
     function toggleLang() {
         const isAr = document.getElementById('lang-btn').innerText === 'English';
-        const l = isAr ? 'en' : 'ar';
         document.body.dir = isAr ? 'ltr' : 'rtl';
-        document.getElementById('h-stocks').innerText = trans[l].s;
-        document.getElementById('h-crypto').innerText = trans[l].c;
-        document.getElementById('h-predict').innerText = trans[l].p;
-        document.getElementById('h-learn').innerText = trans[l].l;
-        document.getElementById('h-audit').innerText = trans[l].a;
-        document.getElementById('h-white').innerText = trans[l].w;
-        
-        document.getElementById('n-stocks').innerText = trans[l].ns;
-        document.getElementById('n-crypto').innerText = trans[l].nc;
-        document.getElementById('n-predict').innerText = trans[l].np;
-        document.getElementById('n-learn').innerText = trans[l].nl;
-        document.getElementById('n-audit').innerText = trans[l].na;
-        document.getElementById('n-white').innerText = trans[l].nw;
-        
-        document.getElementById('lang-btn').innerText = trans[l].bt;
-        document.getElementById('disclaimer').innerText = trans[l].disc;
-    }
-
-    function trade(item) {
-        window.location.href = `https://wa.me/218915709015?text=GT_INSTITUTIONAL_ORDER_${item}`;
+        document.getElementById('lang-btn').innerText = isAr ? 'عربي' : 'English';
+        // Logic for translation can be expanded here as per previous versions
     }
 </script>
 
