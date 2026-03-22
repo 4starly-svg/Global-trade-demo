@@ -3,218 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Trade | Libya 2026</title>
+    <title>Global Trade Libya | 2026 Pro</title>
     <style>
-        :root { --primary: #002349; --gold: #c5a059; --green: #2ecc71; --bg: #f4f7f6; --white: #ffffff; }
-        * { box-sizing: border-box; transition: all 0.3s ease; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg); color: #333; }
+        :root { --primary: #050b14; --card-bg: #111e32; --gold: #c5a059; --green: #00ff88; --text: #e0e0e0; }
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: var(--primary); color: var(--text); margin: 0; overflow-x: hidden; }
         body.rtl { direction: rtl; }
-        .hidden { display: none !important; }
 
         /* Navigation */
-        nav { background: var(--primary); color: white; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .logo { font-size: 22px; font-weight: bold; letter-spacing: 1px; color: var(--gold); }
-        .wallet-info { background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 30px; border: 1px solid var(--gold); font-size: 14px; }
-
-        /* Login Screen */
-        #auth-screen { position: fixed; inset: 0; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 2000; }
-        .auth-card { background: white; padding: 40px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
-        input[type="text"], input[type="password"], input[type="number"], select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
-
-        /* Dashboard Grid */
-        .main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
-        .file-card { background: var(--white); border-radius: 15px; padding: 25px; position: relative; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-top: 6px solid var(--gold); }
-        .file-card:hover { transform: translateY(-5px); }
+        nav { background: #0b1a30; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-size: 24px; font-weight: bold; color: var(--gold); cursor: pointer; user-select: none; }
         
-        .price-big { font-size: 32px; font-weight: bold; color: var(--green); margin: 15px 0; }
-        .btn-action { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; }
-        .btn-action:hover { background: var(--gold); }
+        /* Grid System */
+        .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; padding: 30px; max-width: 1400px; margin: auto; }
+        .card { background: var(--card-bg); border-radius: 16px; padding: 25px; border: 1px solid #1e2d44; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card h3 { border-bottom: 1px solid #1e2d44; padding-bottom: 10px; margin-top: 0; color: var(--gold); }
+        
+        /* Form & Input */
+        input, select, textarea { width: 100%; background: #050b14; border: 1px solid #1e2d44; color: white; padding: 12px; border-radius: 8px; margin: 10px 0; }
+        .btn { background: var(--gold); color: #050b14; border: none; padding: 15px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 14px; }
+        .btn:hover { background: #d4af37; transform: scale(1.02); }
+        .price { font-size: 36px; font-weight: bold; color: var(--green); margin: 10px 0; }
 
-        /* Features */
-        .vip-blur { filter: blur(5px); pointer-events: none; }
-        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 999; }
-        .admin-edit { font-size: 10px; color: #ccc; cursor: pointer; display: block; margin-top: 10px; }
+        /* Verification Overlay */
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; background: #34495e; margin-bottom: 10px; }
 
-        @media (max-width: 600px) { .main-container { grid-template-columns: 1fr; } }
+        /* Admin & Support */
+        #admin-panel { background: #2c0000; padding: 20px; border-radius: 12px; margin: 30px; border: 2px solid red; }
+        .chat-btn { position: fixed; bottom: 30px; right: 30px; background: #25d366; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 9999; text-decoration: none; }
+        .hidden { display: none !important; }
+        .blur-section { filter: blur(5px); opacity: 0.5; pointer-events: none; }
     </style>
 </head>
-<body id="body">
-
-    <div id="auth-screen">
-        <div class="auth-card">
-            <h1 id="t-welcome">Global Trade</h1>
-            <p style="color: #666;" id="t-subtitle">Libya's Premier Crypto Gateway</p>
-            <input type="text" id="user" placeholder="Username / اسم المستخدم">
-            <input type="password" id="pass" placeholder="Password / كلمة المرور">
-            <button class="btn-action" onclick="enterApp()">Login / دخول</button>
-            <button onclick="enterApp()" style="margin-top:15px; background:none; border:none; color:var(--primary); cursor:pointer; font-weight:bold;" id="t-guest">Enter as Guest / الدخول كضيف</button>
-        </div>
-    </div>
+<body id="mainBody">
 
     <nav>
-        <div class="logo">GLOBAL TRADE <span style="font-size:12px; color:white;">LY</span></div>
-        <div class="wallet-info">
-            <span id="t-bal">Balance:</span> <span id="balance-lyd">0.00</span> LYD | <span id="balance-usdt">0.00</span> USDT
+        <div class="logo" id="mainLogo" onclick="adminClick()">GLOBAL TRADE <span style="font-size:12px;">LY 2026</span></div>
+        <div id="nav-wallet">
+            <span id="t-bal">Wallet:</span> <b style="color:var(--green);">0.00 LYD</b>
+            <button onclick="toggleLang()" style="background:none; border:1px solid var(--gold); color:white; padding:4px 10px; margin-left:10px; cursor:pointer;">AR/EN</button>
         </div>
-        <button onclick="toggleLanguage()" style="background:var(--gold); border:none; padding:5px 15px; border-radius:5px; color:white; cursor:pointer; font-weight:bold;">EN/عربي</button>
     </nav>
 
-    <div class="main-container">
+    <div class="container">
         
-        <div class="file-card">
-            <h3 id="t-crypto">Crypto Market (Real-Time)</h3>
-            <div id="crypto-data">Loading Prices...</div>
-            <p style="font-size:12px; color:#888;">Powered by CoinGecko API</p>
-            <button class="btn-action" id="t-buy-usdt">Instant Buy USDT</button>
+        <div class="card">
+            <h3 id="t-market">Live Exchange Center</h3>
+            <div id="crypto-ticker">Loading real-time data...</div>
+            <div class="price" id="display-fx">7.34 <span style="font-size:14px; color:white;">LYD / USDT</span></div>
+            <p style="font-size:12px; color:#888;">CBL Rate: 4.82 | Street Spread: +2.52</p>
+            
+            <div id="trade-lock-msg" style="color: #e74c3c; font-size: 13px; margin: 10px 0;">
+                ⚠️ Complete ID Verification to unlock trading.
+            </div>
+            <button class="btn" id="btn-buy" disabled>Buy USDT Now</button>
         </div>
 
-        <div class="file-card">
-            <h3 id="t-fx">USD / LYD Exchange</h3>
-            <div class="price-big" id="fx-rate">7.34 LYD</div>
-            <p id="t-market-type">Street Parallel Rate (Tripoli/Benghazi)</p>
-            <hr>
-            <p style="font-size:13px;">Official Bank: 4.82 LYD</p>
-            <span class="admin-edit" onclick="updateFX()">Admin: Update Rate</span>
+        <div class="card">
+            <h3 id="t-deposit">Local Bank Deposit</h3>
+            <form action="YOUR_FORMSPREE_URL_HERE" method="POST" enctype="multipart/form-data">
+                <label id="t-choose">Transfer to: Al-Jumhouria (001-XXXX-011)</label>
+                <select name="Bank Name">
+                    <option>Al-Jumhouria (الجمهورية)</option>
+                    <option>Aman Bank (مصرف أمان)</option>
+                    <option>Wahda Bank (مصرف الوحدة)</option>
+                    <option>Sahary (مصرف الصحاري)</option>
+                </select>
+                <input type="number" name="Amount" placeholder="Amount in LYD" required>
+                <label style="font-size:11px;">Attach Payment Receipt (Image/PDF):</label>
+                <input type="file" name="Receipt" required>
+                <button type="submit" class="btn" style="background:var(--green); color:#000;">Submit Payment Proof</button>
+            </form>
         </div>
 
-        <div class="file-card">
-            <h3 id="t-wallet">Local Bank Deposit</h3>
-            <select id="bank-list">
-                <option>Al-Jumhouria Bank (الجمهورية)</option>
-                <option>Aman Bank (أمان)</option>
-                <option>Wahda Bank (الوحدة)</option>
-                <option>Sahary Bank (الصحاري)</option>
-                <option>Commerce & Development (التجارة والتنمية)</option>
-            </select>
-            <input type="number" id="dep-amt" placeholder="Amount in LYD">
-            <label style="font-size:11px;" id="t-upload">Upload Receipt Image:</label>
-            <input type="file" id="receipt" accept="image/*">
-            <button class="btn-action" style="background:var(--green);" onclick="submitDeposit()" id="t-confirm">Confirm Transfer</button>
+        <div class="card" id="kyc-card">
+            <h3 id="t-kyc">KYC Verification</h3>
+            <div class="status-badge" id="kyc-status">Status: Unverified</div>
+            <p style="font-size:12px;">Upload National ID or Passport to start trading.</p>
+            <form action="YOUR_FORMSPREE_URL_HERE" method="POST" enctype="multipart/form-data">
+                <input type="text" name="Full Name" placeholder="Full Legal Name" required>
+                <input type="text" name="National ID" placeholder="National ID Number" required>
+                <input type="file" name="ID Photo" required>
+                <button type="submit" class="btn btn-sec">Verify Identity</button>
+            </form>
         </div>
 
-        <div class="file-card">
-            <h3 id="t-soccer">Soccer Predictions</h3>
-            <div style="border:1px solid #eee; padding:10px; border-radius:8px;">
-                <p><b>Real Madrid vs Man City</b></p>
-                <div class="vip-blur">Result: Home Win (2.10)</div>
-                <button class="btn-action" style="background: #e74c3c; margin-top:10px;" id="t-unlock">Unlock VIP Predictions</button>
+        <div class="card">
+            <h3 id="t-soccer">Soccer VIP Predictions</h3>
+            <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px;">
+                <p><b>Libyan Premier League</b></p>
+                <p>Al-Ahli Tripoli vs Al-Ittihad</p>
+                <div style="filter:blur(5px); background:#444; color:transparent; user-select:none;">PREDICTION: HOME WIN 2.0</div>
+                <button class="btn" style="background:#e74c3c; margin-top:10px;">Buy VIP Access (50 LYD)</button>
             </div>
         </div>
 
-        <div class="file-card" style="background:var(--primary); color:white;">
-            <h3 id="t-testi">Customer Feedback</h3>
-            <p id="t-quote">"The most trusted USDT dealer in Libya. Fast and secure."</p>
-            <p style="color:var(--gold);">- Mohamed A., Tripoli</p>
-            <hr>
-            <p id="t-quote2">"Best exchange rates for Aman Bank users."</p>
-            <p style="color:var(--gold);">- Sara K., Benghazi</p>
-        </div>
-
-        <div class="file-card">
-            <h3 id="t-contact">Learn & Support</h3>
-            <p id="t-help">Need help buying USDT or setting up your wallet?</p>
-            <button class="btn-action" onclick="window.location.href='https://facebook.com'">Facebook Page</button>
-            <button class="btn-action" style="background:#34495e; margin-top:10px;">Tutorial Videos</button>
-        </div>
-
     </div>
 
-    <a href="https://wa.me/218900000000" class="whatsapp-float" id="t-whatsapp">WhatsApp Boss 💬</a>
+    <div id="admin-area" class="hidden">
+        <div id="admin-panel">
+            <h2 style="color:red;">BOSS MODE: Global Settings</h2>
+            <label>Set Global USDT Price (LYD):</label>
+            <input type="number" id="input-fx" step="0.01" placeholder="e.g. 7.45">
+            <button class="btn" onclick="applySettings()">Update All Users</button>
+            <button onclick="toggleAdmin()" style="background:none; color:white; border:none; margin-top:10px; cursor:pointer;">[Close Panel]</button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/218900000000" class="chat-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="35" alt="Chat">
+    </a>
 
     <script>
-        let currentLang = 'en';
-
-        // 1. ENTER APP LOGIC
-        function enterApp() {
-            document.getElementById('auth-screen').classList.add('hidden');
-        }
-
-        // 2. LIVE CRYPTO API
-        async function fetchPrices() {
+        // 1. Live Price Automation
+        async function updateCrypto() {
             try {
-                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd');
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether&vs_currencies=usd');
                 const data = await res.json();
-                document.getElementById('crypto-data').innerHTML = `
-                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
-                        <span>Bitcoin:</span> <b>$${data.bitcoin.usd.toLocaleString()}</b>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
-                        <span>Ethereum:</span> <b>$${data.ethereum.usd.toLocaleString()}</b>
-                    </div>
-                    <div style="display:flex; justify-content:space-between; margin:10px 0;">
-                        <span>USDT:</span> <b>$${data.tether.usd.toFixed(2)}</b>
-                    </div>
+                document.getElementById('crypto-ticker').innerHTML = `
+                    <span style="color:var(--gold)">BTC:</span> $${data.bitcoin.usd.toLocaleString()} | 
+                    <span style="color:var(--gold)">USDT:</span> $${data.tether.usd.toFixed(2)}
                 `;
-            } catch (err) {
-                document.getElementById('crypto-data').innerText = "API Limit - Refreshing...";
+            } catch(e) { console.log("Ticker Delay"); }
+        }
+        setInterval(updateCrypto, 10000); updateCrypto();
+
+        // 2. Secret Admin Logic (Triple Click Logo)
+        let clickCount = 0;
+        function adminClick() {
+            clickCount++;
+            if(clickCount === 3) {
+                toggleAdmin();
+                clickCount = 0;
             }
+            setTimeout(() => { clickCount = 0; }, 1000);
         }
-        setInterval(fetchPrices, 15000);
-        fetchPrices();
-
-        // 3. ADMIN FX UPDATE
-        function updateFX() {
-            let pin = prompt("Enter Admin PIN:");
-            if (pin === "1234") {
-                let newRate = prompt("Enter New USD/LYD Rate:");
-                if(newRate) document.getElementById('fx-rate').innerText = newRate + " LYD";
-            }
+        function toggleAdmin() { document.getElementById('admin-area').classList.toggle('hidden'); }
+        function applySettings() {
+            const val = document.getElementById('input-fx').value;
+            if(val) document.getElementById('display-fx').innerHTML = val + ' <span style="font-size:14px; color:white;">LYD / USDT</span>';
+            toggleAdmin();
         }
 
-        // 4. DEPOSIT SIMULATION
-        function submitDeposit() {
-            const amt = document.getElementById('dep-amt').value;
-            if(!amt) { alert("Enter amount!"); return; }
-            alert(currentLang === 'en' ? "Receipt Uploaded! We will verify your deposit." : "تم رفع الإيصال! سنقوم بالتحقق من الإيداع.");
-        }
-
-        // 5. LANGUAGE TOGGLE
-        function toggleLanguage() {
-            const b = document.getElementById('body');
-            currentLang = currentLang === 'en' ? 'ar' : 'en';
-            b.classList.toggle('rtl');
-
-            const text = {
-                en: {
-                    welcome: "Global Trade", sub: "Libya's Premier Crypto Gateway", guest: "Enter as Guest",
-                    bal: "Balance:", crypto: "Crypto Market (Real-Time)", buy: "Instant Buy USDT",
-                    fx: "USD / LYD Exchange", market: "Street Parallel Rate", wallet: "Local Bank Deposit",
-                    upload: "Upload Receipt Image:", confirm: "Confirm Transfer", soccer: "Soccer Predictions",
-                    unlock: "Unlock VIP Predictions", testi: "Customer Feedback", contact: "Learn & Support",
-                    help: "Need help buying USDT?", whatsapp: "WhatsApp Boss 💬",
-                    q1: '"The most trusted USDT dealer in Libya."', q2: '"Best rates for Aman Bank users."'
-                },
-                ar: {
-                    welcome: "جلوبال تريد", sub: "بوابتك الأولى للعملات الرقمية في ليبيا", guest: "الدخول كضيف",
-                    bal: "الرصيد:", crypto: "سوق العملات (مباشر)", buy: "شراء USDT فوراً",
-                    fx: "سعر صرف الدولار", market: "سعر السوق الموازي", wallet: "إيداع مصرفي محلي",
-                    upload: "رفع صورة الإيصال:", confirm: "تأكيد التحويل", soccer: "توقعات كرة القدم",
-                    unlock: "فتح التوقعات المميزة", testi: "آراء العملاء", contact: "التعليم والدعم",
-                    help: "هل تحتاج مساعدة في الشراء؟", whatsapp: "تواصل مع المدير 💬",
-                    q1: '"أكثر وسيط USDT موثوق في ليبيا."', q2: '"أفضل الأسعار لمستخدمي مصرف أمان."'
-                }
+        // 3. Language Engine
+        let lang = 'en';
+        function toggleLang() {
+            lang = lang === 'en' ? 'ar' : 'en';
+            document.getElementById('mainBody').classList.toggle('rtl');
+            const t = {
+                en: { market: "Live Exchange Center", deposit: "Local Bank Deposit", choose: "Transfer to: Al-Jumhouria (001-XXXX-011)", kyc: "KYC Verification", soccer: "Soccer VIP Predictions" },
+                ar: { market: "مركز التداول المباشر", deposit: "إيداع مصرفي محلي", choose: "حول إلى: مصرف الجمهورية (001-XXXX-011)", kyc: "التحقق من الهوية", soccer: "توقعات كرة القدم VIP" }
             };
-
-            const t = text[currentLang];
-            document.getElementById('t-welcome').innerText = t.welcome;
-            document.getElementById('t-subtitle').innerText = t.sub;
-            document.getElementById('t-guest').innerText = t.guest;
-            document.getElementById('t-bal').innerText = t.bal;
-            document.getElementById('t-crypto').innerText = t.crypto;
-            document.getElementById('t-buy-usdt').innerText = t.buy;
-            document.getElementById('t-fx').innerText = t.fx;
-            document.getElementById('t-market-type').innerText = t.market;
-            document.getElementById('t-wallet').innerText = t.wallet;
-            document.getElementById('t-upload').innerText = t.upload;
-            document.getElementById('t-confirm').innerText = t.confirm;
-            document.getElementById('t-soccer').innerText = t.soccer;
-            document.getElementById('t-unlock').innerText = t.unlock;
-            document.getElementById('t-testi').innerText = t.testi;
-            document.getElementById('t-contact').innerText = t.contact;
-            document.getElementById('t-help').innerText = t.help;
-            document.getElementById('t-whatsapp').innerText = t.whatsapp;
-            document.getElementById('t-quote').innerText = t.q1;
-            document.getElementById('t-quote2').innerText = t.q2;
+            document.getElementById('t-market').innerText = t[lang].market;
+            document.getElementById('t-deposit').innerText = t[lang].deposit;
+            document.getElementById('t-choose').innerText = t[lang].choose;
+            document.getElementById('t-kyc').innerText = t[lang].kyc;
+            document.getElementById('t-soccer').innerText = t[lang].soccer;
         }
     </script>
 </body>
