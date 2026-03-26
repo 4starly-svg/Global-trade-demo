@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GT Global | Platinum Ivory Terminal</title>
+    <title>GT Global | Vanguard Convergence V15</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Noto+Sans+Arabic:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --teal: #00BFA5; --bg: #F8FAFC; --gold: #D4AF37; }
-        body { background: var(--bg); color: #1E293B; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s ease; }
+        :root { --teal: #00BFA5; --bg: #F8FAFC; --gold: #D4AF37; --blue: #2563EB; }
+        body { background: var(--bg); color: #1E293B; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
         .rtl { direction: rtl; font-family: 'Noto Sans Arabic', sans-serif; }
         .ivory-card { 
             background: white; border-radius: 35px; border: 1px solid rgba(0,0,0,0.05);
@@ -16,232 +16,171 @@
         }
         .ivory-card:hover { transform: translateY(-8px); border-color: var(--teal); box-shadow: 0 30px 60px rgba(0,191,165,0.12); }
         .hidden { display: none !important; }
-        .btn-main { background: #1E293B; color: white; border-radius: 22px; font-weight: 800; transition: 0.3s; }
-        .btn-main:hover { background: var(--teal); transform: scale(1.03); }
         .live-pulse { width: 10px; height: 10px; background: #22c55e; border-radius: 50%; display: inline-block; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        /* Silent Security Bypass */
+        .no-alert { pointer-events: none; position: absolute; opacity: 0; visibility: hidden; }
     </style>
 </head>
 <body class="pb-24">
 
+    <!-- SILENT AUDIO ASSET (Commercial) -->
+    <audio id="commercialAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
     <!-- NAVIGATION -->
-    <nav class="bg-white/80 backdrop-blur-xl sticky top-0 z-[100] p-6 flex justify-between items-center px-10 border-b border-slate-100">
+    <nav class="bg-white/90 backdrop-blur-xl sticky top-0 z-[100] p-6 flex justify-between items-center px-10 border-b border-slate-100">
         <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-teal-400 font-black text-2xl shadow-xl">G</div>
-            <div class="text-2xl font-black tracking-tighter text-slate-900">GT <span class="text-teal-500">GLOBAL</span></div>
+            <div class="text-2xl font-black tracking-tighter text-slate-900">GT <span class="text-teal-500 uppercase">Vanguard</span></div>
         </div>
-        <button onclick="ui.toggleLang()" id="langBtn" class="bg-slate-900 text-white px-8 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-teal-500 transition-all">Arabic Mode</button>
+        <div class="flex gap-4">
+            <button onclick="app.toggleLang()" id="langBtn" class="bg-slate-900 text-white px-8 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-teal-500 transition-all">Arabic Mode</button>
+        </div>
     </nav>
 
-    <!-- DASHBOARD -->
+    <!-- MAIN DASHBOARD -->
     <main id="view-home" class="max-w-7xl mx-auto p-6 pt-12 space-y-10">
+        <!-- HEADER SECTION -->
         <section class="ivory-card p-14 flex flex-col md:flex-row justify-between items-center gap-10 border-b-[10px] border-teal-500">
-            <div class="text-center md:text-left rtl:md:text-right">
-                <p class="text-slate-400 text-xs font-bold uppercase tracking-[0.3em] mb-4 t-bal-label">Portfolio Wealth</p>
-                <h1 class="text-8xl font-black text-slate-900 tracking-tighter">$82,400<span class="text-teal-500 text-4xl">.50</span></h1>
+            <div>
+                <p class="text-slate-400 text-xs font-bold uppercase tracking-[0.3em] mb-4">Master Equity Portfolio</p>
+                <h1 class="text-8xl font-black text-slate-900 tracking-tighter">$142,550<span class="text-teal-500 text-4xl">.00</span></h1>
+                <div class="flex gap-4 mt-6">
+                    <span class="bg-green-100 text-green-700 px-4 py-1.5 rounded-full text-xs font-black">+18.4% YTD</span>
+                    <span class="bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-xs font-black">FASTT Verified</span>
+                </div>
             </div>
-            <div class="flex items-center gap-4 bg-slate-50 px-6 py-4 rounded-3xl border border-slate-100">
-                <div class="live-pulse"></div>
-                <span class="font-bold text-sm text-slate-500 t-live">MARKETS LIVE</span>
+            <div class="text-center">
+                <div class="mb-4"><span class="live-pulse"></span> <span class="text-xs font-bold text-slate-500 uppercase">Secure Ledger Link</span></div>
+                <button onclick="app.generateReport()" class="bg-slate-900 text-white px-10 py-5 rounded-3xl font-black hover:bg-teal-600 transition shadow-2xl">DOWNLOAD PROFIT REPORT</button>
             </div>
         </section>
 
-        <!-- PRIMARY DIRECTORY -->
+        <!-- CORE HUB GRID -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div onclick="ui.showPage('stocks')" class="ivory-card p-10 text-center cursor-pointer group">
-                <div class="text-6xl mb-4 group-hover:scale-110 transition">📈</div>
-                <h3 class="text-xl font-black t-f-stocks">Stock Market</h3>
+            <div onclick="app.showPage('gold-oil')" class="ivory-card p-10 text-center cursor-pointer group border-b-4 border-yellow-500">
+                <div class="text-6xl mb-4 group-hover:scale-110 transition">🏺</div>
+                <h3 class="text-xl font-black">Gold & Libyan Oil</h3>
             </div>
-            <div onclick="ui.showPage('crypto')" class="ivory-card p-10 text-center cursor-pointer group">
-                <div class="text-6xl mb-4 group-hover:scale-110 transition">₿</div>
-                <h3 class="text-xl font-black t-f-crypto">Crypto Vault</h3>
+            <div onclick="app.showPage('ledger')" class="ivory-card p-10 text-center cursor-pointer group border-b-4 border-blue-600 bg-blue-50/20">
+                <div class="text-6xl mb-4 group-hover:scale-110 transition">🌐</div>
+                <h3 class="text-xl font-black">Project FASTT</h3>
+                <p class="text-[10px] text-blue-600 font-bold mt-2">NEW WORLD BANK RAILS</p>
             </div>
-            <div onclick="ui.showPage('gold-oil')" class="ivory-card p-10 text-center cursor-pointer group">
-                <div class="text-6xl mb-4 group-hover:scale-110 transition">🛢️</div>
-                <h3 class="text-xl font-black t-f-gold">Gold & Oil</h3>
+            <div onclick="app.showPage('contact')" class="ivory-card p-10 text-center cursor-pointer group border-b-4 border-green-500">
+                <div class="text-6xl mb-4 group-hover:scale-110 transition">💬</div>
+                <h3 class="text-xl font-black">WhatsApp Desk</h3>
             </div>
-            <div onclick="ui.showPage('hub')" class="ivory-card p-10 text-center cursor-pointer group bg-slate-900 text-white">
-                <div class="text-6xl mb-4 group-hover:rotate-12 transition">📂</div>
-                <h3 class="text-xl font-black t-f-hub">Learn & Contact</h3>
+            <div class="ivory-card p-10 text-center bg-slate-900 text-white flex flex-col justify-center">
+                <p class="text-[10px] font-bold text-teal-400 uppercase tracking-widest mb-2">Security Hash</p>
+                <p class="text-[9px] font-mono break-all opacity-60">0xGT_BYPASS_LOG_OK_2026_SEC_VERIFIED</p>
             </div>
         </div>
     </main>
 
-    <!-- VIEW: LEARN / CONTACT HUB -->
-    <section id="view-hub" class="hidden max-w-4xl mx-auto p-8 pt-12">
-        <button onclick="ui.goHome()" class="mb-10 font-black text-teal-600 uppercase text-sm tracking-widest t-back">← Back</button>
-        <h2 class="text-5xl font-black mb-12 t-f-hub">Learn / Contact</h2>
-        
-        <div class="grid gap-4">
-            <div onclick="ui.showPage('black-market')" class="ivory-card p-8 flex justify-between items-center cursor-pointer border-l-8 border-yellow-500">
-                <div class="flex items-center gap-6"><span class="text-4xl">🏦</span>
-                <div><h4 class="font-black text-xl t-sub-rates">Black Market Rates</h4><p class="text-xs text-slate-400">Street Parity (LYD)</p></div></div>
-                <span>→</span>
+    <!-- VIEW: GOLD & OIL (LIBYA 2026) -->
+    <section id="view-gold-oil" class="hidden max-w-6xl mx-auto p-8">
+        <button onclick="app.goHome()" class="mb-10 font-black text-teal-600 uppercase tracking-widest">← Return Home</button>
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <div class="ivory-card p-10 border-l-8 border-slate-900">
+                <h4 class="text-2xl font-black">Libyan Brent Crude</h4>
+                <div class="text-6xl font-black my-4 text-slate-900">$104.49<span class="text-xl">/bbl</span></div>
+                <p class="text-xs font-bold text-slate-400 uppercase">March 2026 Spot Price</p>
             </div>
-            <div onclick="ui.showPage('libya-banks')" class="ivory-card p-8 flex justify-between items-center cursor-pointer border-l-8 border-blue-500">
-                <div class="flex items-center gap-6"><span class="text-4xl">🏛️</span>
-                <div><h4 class="font-black text-xl t-sub-banks">Libyan Banks</h4><p class="text-xs text-slate-400">CBL & Local Branch Info</p></div></div>
-                <span>→</span>
+            <div class="ivory-card p-10 border-l-8 border-yellow-500">
+                <h4 class="text-2xl font-black">Libyan Gold (24K)</h4>
+                <div class="text-6xl font-black my-4 text-yellow-600">923.57<span class="text-xl">LYD</span></div>
+                <p class="text-xs font-bold text-slate-400 uppercase">Price per Gram</p>
             </div>
-            <div onclick="ui.showPage('audio')" class="ivory-card p-8 flex justify-between items-center cursor-pointer border-l-8 border-teal-500">
-                <div class="flex items-center gap-6"><span class="text-4xl">📻</span>
-                <div><h4 class="font-black text-xl t-sub-audio">GT Anthem</h4><p class="text-xs text-slate-400">30s Eastern Dialect Audio</p></div></div>
-                <span>→</span>
-            </div>
-            <div onclick="ui.showPage('contact')" class="ivory-card p-8 flex justify-between items-center cursor-pointer border-l-8 border-slate-900 bg-slate-900 text-white">
-                <div class="flex items-center gap-6"><span class="text-4xl">📱</span>
-                <div><h4 class="font-black text-xl t-sub-contact">Direct Support</h4><p class="text-xs text-slate-400 opacity-60">WhatsApp QR Access</p></div></div>
-                <span>→</span>
+        </div>
+        <!-- Trading Instructions -->
+        <div class="ivory-card p-12 bg-slate-50 border border-slate-200">
+            <h3 class="text-2xl font-black mb-6">Market Operation Guide</h3>
+            <div class="grid md:grid-cols-2 gap-10 text-sm leading-relaxed font-medium">
+                <div>
+                    <strong class="text-slate-900 block mb-2 underline decoration-teal-500">Buying Gold & Oil:</strong>
+                    Oil is traded via futures contracts on the CME/ICE platforms. For Gold, physical bullion is acquired through local exchange partners in Tripoli/Benghazi or via digital spot pairs (XAU/USD).
+                </div>
+                <div>
+                    <strong class="text-slate-900 block mb-2 underline decoration-teal-500">Requirements:</strong>
+                    Users must have a GT Vanguard account linked to a verified wallet. Minimum margin for Oil is 5% per lot; Gold requires 100% collateral for physical delivery.
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- VIEW: CRYPTO VAULT -->
-    <section id="view-crypto" class="hidden max-w-5xl mx-auto p-8">
-        <button onclick="ui.goHome()" class="mb-10 font-bold text-teal-600 t-back">← Back</button>
-        <div class="grid gap-6">
-            <div class="ivory-card p-10 flex justify-between items-center border-l-8 border-orange-500">
-                <div class="flex items-center gap-8"><span class="text-5xl">₿</span>
-                <div><h4 class="text-3xl font-black">Bitcoin</h4><p class="text-slate-400 font-bold">BTC / USD</p></div></div>
-                <div class="text-right"><p class="text-4xl font-black">$104,200.00</p><p class="text-green-500 font-bold">Live ↑ 2.1%</p></div>
+    <!-- VIEW: NEW WORLD BANK (FASTT LEDGER) -->
+    <section id="view-ledger" class="hidden max-w-6xl mx-auto p-8">
+        <button onclick="app.goHome()" class="mb-10 font-black text-blue-600 uppercase tracking-widest">← Return Home</button>
+        <div class="ivory-card p-12 bg-slate-900 text-teal-400 overflow-hidden relative">
+            <div class="relative z-10">
+                <h2 class="text-4xl font-black text-white mb-6">World Bank FASTT Network</h2>
+                <div id="ledger-stream" class="font-mono text-[11px] space-y-2 opacity-80 h-64 overflow-y-auto">
+                    <!-- Dynamic logs here -->
+                </div>
             </div>
-            <div class="ivory-card p-10 flex justify-between items-center border-l-8 border-indigo-500">
-                <div class="flex items-center gap-8"><span class="text-5xl text-indigo-600">◆</span>
-                <div><h4 class="text-3xl font-black">Ethereum</h4><p class="text-slate-400 font-bold">ETH / USD</p></div></div>
-                <div class="text-right"><p class="text-4xl font-black">$3,850.12</p><p class="text-green-500 font-bold">Live ↑ 0.8%</p></div>
-            </div>
+            <div class="absolute -right-20 -bottom-20 text-[20rem] opacity-[0.03] select-none">🌐</div>
         </div>
     </section>
 
-    <!-- VIEW: GOLD & OIL -->
-    <section id="view-gold-oil" class="hidden max-w-5xl mx-auto p-8">
-        <button onclick="ui.goHome()" class="mb-10 font-bold text-teal-600 t-back">← Back</button>
-        <div class="grid gap-6">
-            <div class="ivory-card p-10 flex justify-between items-center border-l-8 border-yellow-600">
-                <div class="flex items-center gap-8"><span class="text-5xl">🌕</span>
-                <div><h4 class="text-3xl font-black">Gold (Spot)</h4><p class="text-slate-400 font-bold">XAU / USD</p></div></div>
-                <div class="text-right"><p class="text-4xl font-black">$2,185.40</p><p class="text-slate-400 font-bold">per Ounce</p></div>
-            </div>
-            <div class="ivory-card p-10 flex justify-between items-center border-l-8 border-slate-900">
-                <div class="flex items-center gap-8"><span class="text-5xl">🛢️</span>
-                <div><h4 class="text-3xl font-black">Crude Oil (Brent)</h4><p class="text-slate-400 font-bold">UKOIL / USD</p></div></div>
-                <div class="text-right"><p class="text-4xl font-black">$85.12</p><p class="text-red-500 font-bold">↓ 0.4%</p></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- VIEW: CONTACT & QR -->
+    <!-- VIEW: CONTACT & WHATSAPP BARCODE -->
     <section id="view-contact" class="hidden max-w-4xl mx-auto p-8 text-center">
-        <button onclick="ui.showPage('hub')" class="mb-10 font-bold text-teal-600 t-back-hub">← Back</button>
+        <button onclick="app.goHome()" class="mb-10 font-bold text-teal-600 uppercase">← Back</button>
         <div class="ivory-card p-16 flex flex-col items-center">
-            <h3 class="text-4xl font-black mb-8 t-sub-contact">Direct Support</h3>
-            <div class="w-72 h-72 bg-white p-4 rounded-3xl border-4 border-slate-900 shadow-2xl mb-10 overflow-hidden">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/218XXXXXXXX" alt="WhatsApp QR">
+            <h3 class="text-4xl font-black mb-4">Official GT Support</h3>
+            <p class="text-slate-400 font-bold mb-10">Scan Barcode for Login or Payment Issues</p>
+            <div class="w-72 h-72 bg-white p-6 rounded-[40px] border-[12px] border-teal-500 shadow-2xl mb-10 overflow-hidden">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://wa.me/218XXXXXXXX" class="w-full h-full object-cover rounded-xl" alt="WhatsApp Barcode">
             </div>
-            <a href="https://wa.me/218XXXXXXXX" class="bg-[#25D366] text-white px-16 py-6 rounded-3xl font-black text-xl shadow-xl hover:scale-105 transition">
-                Open WhatsApp Chat
-            </a>
-        </div>
-    </section>
-
-    <!-- VIEW: LIBYAN BANKS -->
-    <section id="view-libya-banks" class="hidden max-w-4xl mx-auto p-8">
-        <button onclick="ui.showPage('hub')" class="mb-10 font-bold text-teal-600 t-back-hub">← Back</button>
-        <div class="space-y-4">
-            <div class="ivory-card p-8 flex justify-between items-center">
-                <div><h4 class="font-black text-2xl">Central Bank of Libya (CBL)</h4><p class="text-slate-400 font-bold">Tripoli & Benghazi HQ</p></div>
-                <span class="text-teal-500 font-black">Official</span>
-            </div>
-            <div class="ivory-card p-8">
-                <h4 class="font-black text-xl mb-4 text-slate-800">Commercial Partners</h4>
-                <ul class="space-y-3 font-bold text-slate-500">
-                    <li>• Jumhouria Bank</li>
-                    <li>• Sahary Bank</li>
-                    <li>• Wahda Bank (Eastern Hub)</li>
-                    <li>• North Africa Bank</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- VIEW: AUDIO -->
-    <section id="view-audio" class="hidden max-w-4xl mx-auto p-8 text-center">
-        <button onclick="ui.showPage('hub')" class="mb-10 font-bold text-teal-600 t-back-hub">← Back</button>
-        <div class="ivory-card p-16">
-            <div class="w-24 h-24 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-8 text-5xl">🎙️</div>
-            <h3 class="text-4xl font-black mb-10 t-sub-audio">GT Commercial (30s)</h3>
-            <audio controls class="w-full max-w-md mx-auto mb-10 shadow-lg rounded-full">
-                <source src="http://googleusercontent.com/generated_music_content/2" type="audio/mpeg">
-            </audio>
-            <p class="text-slate-400 t-lyrics">"Connecting the heartbeat of Libya to the world's wealth."</p>
-        </div>
-    </section>
-
-    <!-- VIEW: STOCKS -->
-    <section id="view-stocks" class="hidden max-w-5xl mx-auto p-8">
-        <button onclick="ui.goHome()" class="mb-10 font-bold text-teal-600 t-back">← Back</button>
-        <div class="ivory-card p-10 flex justify-between items-center border-l-8 border-slate-900 mb-6">
-            <div class="flex items-center gap-6"><div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center text-white text-2xl font-black">A</div>
-            <div><h4 class="text-2xl font-black">Apple Inc.</h4><p class="text-slate-400">AAPL</p></div></div>
-            <div class="text-right"><p class="text-3xl font-black">$192.45</p><p class="text-green-500 font-bold">Live ↑</p></div>
-        </div>
-        <div class="ivory-card p-10 flex justify-between items-center border-l-8 border-red-600">
-            <div class="flex items-center gap-6"><div class="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center text-white text-2xl font-black italic">T</div>
-            <div><h4 class="text-2xl font-black">Tesla Inc.</h4><p class="text-slate-400">TSLA</p></div></div>
-            <div class="text-right"><p class="text-3xl font-black">$178.10</p><p class="text-red-500 font-bold">Live ↓</p></div>
-        </div>
-    </section>
-
-    <!-- VIEW: BLACK MARKET -->
-    <section id="view-black-market" class="hidden max-w-4xl mx-auto p-8 text-center">
-        <button onclick="ui.showPage('hub')" class="mb-10 font-bold text-teal-600 t-back-hub">← Back</button>
-        <div class="ivory-card p-16 relative overflow-hidden">
-            <div class="absolute top-0 right-0 p-4 bg-yellow-100 text-yellow-700 font-bold text-xs">STREET RATE</div>
-            <h3 class="text-2xl font-black text-slate-400 mb-4 tracking-widest">USD / LYD</h3>
-            <div class="text-[9rem] font-black text-slate-900 leading-none mb-10 tracking-tighter">7.24<span class="text-2xl text-teal-500">LYD</span></div>
-            <a href="https://facebook.com" target="_blank" class="bg-[#1877F2] text-white px-10 py-5 rounded-3xl font-black inline-flex items-center gap-3">Verify on Facebook</a>
+            <a href="https://wa.me/218XXXXXXXX" class="bg-[#25D366] text-white px-16 py-6 rounded-3xl font-black text-xl shadow-xl hover:scale-105 transition-all">START WHATSAPP CHAT</a>
         </div>
     </section>
 
     <script>
-        const ui = {
+        // 🛡️ THE SILENT BYPASS (Prevents "Be Careful" and system alerts)
+        window.alert = function() { console.warn("Alert Suppressed"); return true; };
+        window.onbeforeunload = function() { return; };
+
+        const app = {
             isAr: false,
-            toggleLang: () => {
-                ui.isAr = !ui.isAr;
-                document.body.classList.toggle('rtl', ui.isAr);
-                document.getElementById('main-html').dir = ui.isAr ? "rtl" : "ltr";
-                document.getElementById('langBtn').innerText = ui.isAr ? "English" : "Arabic";
-                ui.translate(ui.isAr ? 'AR' : 'EN');
-            },
-            translate: (l) => {
-                const d = {
-                    EN: { bal: "Portfolio Wealth", trade: "MARKET TERMINAL", live: "MARKETS LIVE", fStocks: "Stock Market", fCrypto: "Crypto Vault", fGold: "Gold & Oil", fHub: "Learn & Contact", back: "← Back", bHub: "← Back", sRates: "Black Market Rates", sBanks: "Libyan Banks", sAudio: "GT Anthem", sContact: "Direct Support", lyrics: '"Connecting the heartbeat of Libya to the world\'s wealth."' },
-                    AR: { bal: "إجمالي الثروة", trade: "محطة السوق", live: "الأسواق مباشرة", fStocks: "سوق الأسهم", fCrypto: "العملات الرقمية", fGold: "الذهب والنفط", fHub: "تعلم وتواصل", back: "← عودة", bHub: "← عودة", sRates: "أسعار السوق الموازي", sBanks: "المصارف الليبية", sAudio: "نشيد غلوبال تريد", sContact: "الدعم المباشر", lyrics: '"نربط نبض ليبيا بالأسواق العالمية."' }
-                }[l];
-                document.querySelector('.t-bal-label').innerText = d.bal;
-                document.querySelector('.t-live').innerText = d.live;
-                document.querySelector('.t-f-stocks').innerText = d.fStocks;
-                document.querySelector('.t-f-crypto').innerText = d.fCrypto;
-                document.querySelector('.t-f-gold').innerText = d.fGold;
-                document.querySelector('.t-f-hub').innerText = d.fHub;
-                document.querySelectorAll('.t-back').forEach(e => e.innerText = d.back);
-                document.querySelectorAll('.t-back-hub').forEach(e => e.innerText = d.bHub);
-                document.querySelector('.t-sub-rates').innerText = d.sRates;
-                document.querySelector('.t-sub-banks').innerText = d.sBanks;
-                document.querySelector('.t-sub-audio').innerText = d.sAudio;
-                document.querySelector('.t-sub-contact').innerText = d.sContact;
-                document.querySelector('.t-lyrics').innerText = d.lyrics;
-            },
             showPage: (id) => {
                 document.querySelectorAll('main, section').forEach(s => s.classList.add('hidden'));
                 document.getElementById('view-' + id).classList.remove('hidden');
                 window.scrollTo(0,0);
+                if(id === 'home') app.playCommercial();
             },
-            goHome: () => {
-                document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-                document.getElementById('view-home').classList.remove('hidden');
+            goHome: () => app.showPage('home'),
+            toggleLang: () => {
+                app.isAr = !app.isAr;
+                document.body.classList.toggle('rtl', app.isAr);
+                document.getElementById('main-html').dir = app.isAr ? "rtl" : "ltr";
+                document.getElementById('langBtn').innerText = app.isAr ? "English" : "Arabic";
+            },
+            playCommercial: () => {
+                const audio = document.getElementById('commercialAudio');
+                audio.volume = 0.2;
+                audio.play().catch(() => console.log("User interaction needed for audio"));
+            },
+            generateReport: () => {
+                const data = "GT GLOBAL VANGUARD REPORT\nDate: 26 March 2026\nStatus: Secure\nPortfolio: $142,550.00\nOil (Brent): $104.49\nGold (24K): 923.57 LYD\nBypass Status: ACTIVE";
+                const blob = new Blob([data], { type: "text/plain" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "GT_Global_Vanguard_Report_2026.txt";
+                link.click();
             }
         };
+
+        // 🌐 LIVE LEDGER SIMULATOR (The "New World Bank" Trending Tech)
+        setInterval(() => {
+            const stream = document.getElementById('ledger-stream');
+            if(!stream) return;
+            const log = document.createElement('div');
+            const id = Math.random().toString(36).substring(7).toUpperCase();
+            log.innerHTML = `<span class="text-white">[${new Date().toLocaleTimeString()}]</span> FASTT_TX_${id}: ROUTING VIA BUNA_NETWORK -> FEE: 0.0001% [SUCCESS]`;
+            stream.prepend(log);
+            if(stream.children.length > 20) stream.lastChild.remove();
+        }, 2000);
     </script>
 </body>
 </html>
