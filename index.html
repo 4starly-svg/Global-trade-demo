@@ -3,34 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahmoudin Company | Global Trade</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Mahmoudin Company | Libya Trade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0b0e11; color: #eaecef; }
+        .ticker-gradient { background: linear-gradient(90deg, #1e2329 0%, #0b0e11 100%); }
+        .price-up { color: #02c076; }
+        .price-down { color: #f84960; }
+    </style>
 </head>
-<body class="fintech-dark">
-    <nav class="navbar">
-        <div class="logo">MAHMOUDIN <span>CO.</span></div>
-        <div class="nav-links">
-            <button id="lang-toggle" onclick="toggleLanguage()">العربية</button>
-            <button class="btn-secondary">Login as Guest</button>
-            <button class="btn-primary">Sign In</button>
+<body>
+    <nav class="border-b border-gray-800 p-4 flex justify-between items-center bg-[#161a1e]">
+        <div class="text-xl font-bold tracking-tighter">MAHMOUDIN <span class="text-blue-500">CO.</span></div>
+        <div class="flex gap-4 items-center">
+            <button onclick="toggleLang()" id="langBtn" class="text-sm border border-gray-600 px-3 py-1 rounded">العربية</button>
+            <span class="text-gray-500">|</span>
+            <button class="text-sm text-gray-300">Guest Access</button>
+            <button class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded text-sm font-bold">Sign In</button>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-content">
-            <h1 id="hero-title">Premier Liquidity Solutions in Libya</h1>
-            <p id="hero-desc">Powered by Khaldoon & Mahmoud. Professional trade services for the modern market.</p>
-            <div class="cta-group">
-                <button class="btn-main">Get Started</button>
-                <button class="btn-outline">View Markets</button>
+    <div class="ticker-gradient border-b border-gray-800 p-2 overflow-hidden whitespace-nowrap">
+        <div class="inline-block animate-pulse text-sm px-4">
+            <span class="text-gray-400">USD/LYD (Parallel):</span> <span id="parallel-usd" class="price-up">7.34</span>
+            <span class="mx-4 text-gray-700">|</span>
+            <span class="text-gray-400">Gold 24K (LYD):</span> <span id="gold-price">412.50</span>
+            <span class="mx-4 text-gray-700">|</span>
+            <span class="text-gray-400">Brent Oil:</span> <span class="price-down">$82.40</span>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto p-8">
+        <header class="mb-12 text-center">
+            <h1 id="h-title" class="text-5xl font-extrabold mb-4">Libya’s Premier Liquidity Hub</h1>
+            <p id="h-desc" class="text-gray-400 text-lg">Managed by Khaldoon & Mahmoud. Global standards, local expertise.</p>
+        </header>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-[#1e2329] p-6 rounded-xl border border-gray-800">
+                <h3 id="c1-title" class="text-gray-400 mb-2">Official CBL Rate</h3>
+                <div class="text-3xl font-bold">4.82 <span class="text-sm text-gray-500">LYD</span></div>
+                <div class="mt-4 text-xs text-green-500">Updated: April 2026</div>
+            </div>
+            <div class="bg-[#1e2329] p-6 rounded-xl border border-gray-800">
+                <h3 id="c2-title" class="text-gray-400 mb-2">Market Sentiment</h3>
+                <div class="text-3xl font-bold text-blue-400">Stable</div>
+                <div class="mt-4 text-xs text-gray-500">Based on Benghazi/Tripoli markets</div>
+            </div>
+            <div class="bg-[#1e2329] p-6 rounded-xl border border-gray-800">
+                <h3 id="c3-title" class="text-gray-400 mb-2">Global Commodities</h3>
+                <div class="text-3xl font-bold">$2,340 <span class="text-sm text-gray-500">Gold/oz</span></div>
+                <div class="mt-4 text-xs text-red-500">Volatility: High</div>
             </div>
         </div>
-    </header>
+    </main>
 
-    <section class="partners">
-        <p>Leadership: Khaldoon | Mahmoud</p>
-    </section>
+    <script>
+        const content = {
+            en: {
+                h_title: "Libya’s Premier Liquidity Hub",
+                h_desc: "Managed by Khaldoon & Mahmoud. Global standards, local expertise.",
+                c1: "Official CBL Rate", c2: "Market Sentiment", c3: "Global Commodities",
+                lang: "العربية", dir: "ltr"
+            },
+            ar: {
+                h_title: "مركز السيولة الرائد في ليبيا",
+                h_desc: "بإدارة خلدون ومحمود. معايير عالمية بخبرة محلية.",
+                c1: "سعر مصرف ليبيا المركزي", c2: "حالة السوق", c3: "السلع العالمية",
+                lang: "English", dir: "rtl"
+            }
+        };
 
-    <script src="script.js"></script>
+        let currentLang = 'en';
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            const data = content[currentLang];
+            
+            document.documentElement.dir = data.dir;
+            document.getElementById('h-title').innerText = data.h_title;
+            document.getElementById('h-desc').innerText = data.h_desc;
+            document.getElementById('c1-title').innerText = data.c1;
+            document.getElementById('c2-title').innerText = data.c2;
+            document.getElementById('c3-title').innerText = data.c3;
+            document.getElementById('langBtn').innerText = data.lang;
+        }
+
+        // Simulating Real-time backend updates
+        setInterval(() => {
+            const mockPrice = (7.30 + Math.random() * 0.1).toFixed(2);
+            document.getElementById('parallel-usd').innerText = mockPrice;
+        }, 5000);
+    </script>
 </body>
 </html>
